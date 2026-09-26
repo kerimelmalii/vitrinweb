@@ -35,7 +35,7 @@ export function Footer() {
                 <SectionLink id="sss">Sık sorulan sorular</SectionLink>
               </li>
               <li>
-                <SectionLink id="iletisim">İletişim</SectionLink>
+                <Link href="/iletisim">İletişim</Link>
               </li>
             </ul>
           </div>

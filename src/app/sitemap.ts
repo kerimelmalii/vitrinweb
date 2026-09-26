@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 const buildDate = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["/", "/neden", "/ucretlendirme", "/blog"].map((path) => ({
+  const staticRoutes = ["/", "/neden", "/ucretlendirme", "/blog", "/iletisim"].map((path) => ({
     url: SITE_URL + path,
     lastModified: buildDate,
     changeFrequency: "monthly" as const,

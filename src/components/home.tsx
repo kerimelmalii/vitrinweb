@@ -312,26 +312,6 @@ export function FAQ() {
   );
 }
 
-export function Contact() {
-  return (
-    <section id="iletisim" className="sec" style={{ paddingTop: "0" }}>
-      <div className="container-x">
-        <SectionHead
-          title="Bir sorunuz mu var? Yazın."
-          sub="Siparişten önce veya sonra, aklınıza takılan her şey için doğrudan e-posta ile ulaşabilirsiniz."
-        />
-        <a className="contact-card" href="mailto:iletisim@vitrinweb.com.tr">
-          <Icon n="mail" size={26} />
-          <div>
-            <span className="contact-label">E-posta</span>
-            <span className="contact-email">iletisim@vitrinweb.com.tr</span>
-          </div>
-        </a>
-      </div>
-    </section>
-  );
-}
-
 export function FinalCTA() {
   const { startCheckout } = useApp();
   return (
@@ -370,7 +350,6 @@ export function Home() {
       <AnnualService />
       <About />
       <FAQ />
-      <Contact />
       <FinalCTA />
       <StickyCTA />
     </main>

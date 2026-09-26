@@ -15,8 +15,7 @@ export const COMPANY = {
   kep: "[KEP adresi]",
 };
 
-/** Instagram hesabınızın tam adresi, ör. "https://www.instagram.com/vitrin". */
-export const INSTAGRAM_URL = "https://www.instagram.com/";
+export const INSTAGRAM_URL = "https://www.instagram.com/vitrinweb.com.tr/";
 export const LEGAL_UPDATED = "25 Eylül 2026";
 
 export const companyLine = (): string =>

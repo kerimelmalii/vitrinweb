@@ -77,8 +77,9 @@ Fiyat değişikliği yalnızca `BASE_PRICE`, `YEARLY` ve `ADDONS` üzerinden yap
 - **Ana sayfa sırası:** Hero → Neden web sitesi (6 kutu, 2×3 düzen) → Paket (fiyat + dahil olanlar tek panelde, açıklamalarıyla) → Süreç → Yıllık servis → Hakkımızda → SSS → Son çağrı. Eski "fiyat paneli" ve ayrı "Neler dahil?" bölümü tek bölümde birleşti; hero'daki butonun hemen altında ikinci bir başlatma butonu yok.
 - **Mobil başlatma çubuğu** (`StickyCTA`): yalnızca 768 px altında, ilk ekran geçilince görünür, alt bilgiye gelince gizlenir.
 - **Buton dili:** Birincil eylem her yerde **"Web Sitesi Edinin"**: hero, paket paneli, ücretlendirme, Neden Web Sitesi?, blog yazıları, son çağrı, üst menü, mobil menü ve mobil alt çubuk (sahibinin kararı, v5.1). İkincil: "Paket Detaylarını İnceleyin", "Paketinizi Oluşturun", "Araştırmaları İnceleyin". Sipariş içindeki adım butonları kalıplaşmış arayüz fiilleriyle kaldı ("Devam Et", "Ödemeye Geç", "… TL Öde").
-- **Instagram:** başlıkta (1024 px ve üstü), mobil menüde ve alt bilgide. Adres `INSTAGRAM_URL` sabitinde; şu an Instagram ana sayfasına gidiyor, hesap adresiyle değiştirilmeli.
-- **Alt bilgi:** sayfalar, altı yasal metin ve 6563 sayılı Kanun gereği "Satıcı bilgileri" (unvan, adres, e-posta, telefon, MERSİS, KEP, vergi bilgisi). Bilgiler `COMPANY` sabitinde, köşeli parantezli yer tutucular doldurulmalı.
+- **Instagram:** başlıkta (1024 px ve üstü), mobil menüde, alt bilgide ve `/iletisim` sayfasında. Adres `INSTAGRAM_URL` sabitinde, gerçek hesap adresine ayarlı.
+- **İletişim sayfası** (`/iletisim`, `contact-page.tsx`): e-posta (`iletisim@vitrinweb.com.tr`) ve Instagram için iki büyük kart. Üst menüde ve alt bilgide gerçek bir sayfa linki olarak yer alır (bölüme kaydıran diğer menü öğelerinin aksine).
+- **Alt bilgi:** sayfalar, altı yasal metin ve 6563 sayılı Kanun gereği "Satıcı bilgileri" (unvan, adres, e-posta, telefon, MERSİS, KEP, vergi bilgisi). Bilgiler `COMPANY` sabitinde; `email` hariç köşeli parantezli yer tutucular hâlâ doldurulmalı.
 - **Mobil uyum:** 320, 360, 390, 414, 768, 1024 ve 1280 px genişliklerde tüm sayfalar, sipariş adımları, pencere ve menü otomatik olarak yatay taşma için tarandı; bulunan taşmalar (uzun e-posta, dar ekranda pencere) düzeltildi. Başlıklarda dengeli satır kırılımı, uzun kelime ve adreslerde güvenli kırılma, çentikli telefonlar için güvenli alan boşlukları var.
 
 
@@ -330,13 +331,14 @@ Yayından önce yapılması gerekenler:
   - Ön bilgilendirme formu + mesafeli satış sözleşmesi (cayma hakkı ve istisnası, yıllık ücret güncelleme ve iptal koşulları dahil)
   - Kullanım koşulları
 - [x] Alan adı bağlandı (`vitrinweb.com.tr`, `public/CNAME`) ve `NEXT_PUBLIC_SITE_URL` gerçek adrese ayarlandı (`.github/workflows/deploy-pages.yml`; site haritası, `robots.txt` ve canonical URL'ler bunu kullanır). `GITHUB_PAGES` bayrağı bu yüzden `"false"`'a çekildi — özel domain kökten sunuluyor, alt yol basePath'i artık gerekmiyor.
+- [x] Gerçek iletişim kanalları: `COMPANY.email` ve `INSTAGRAM_URL` gerçek değerlerine ayarlandı, ayrı bir `/iletisim` sayfası eklendi (üst menü ve alt bilgiden bağlı; bölüme kaydıran diğer menü öğelerinden farklı olarak gerçek bir sayfa — sahibinin kararı: bu tür kalıcı iletişim kanalları anlık kaydırma değil, kendi adresi olan bir sayfa hak ediyor)
 - [ ] Vercel'e geçiş: özel domain artık gerçek trafik aldığından GitHub Pages'in HTTP başlığı sınırlaması (yukarıda) öncelikli hâle geldi
 - [ ] OG görseli, Lighthouse ve erişilebilirlik denetimi
 - [ ] Gerçek referanslar geldikçe `REFERENCES`'a ekleme
 
 ## 10. Sahibinden netleşmesi gerekenler
 - **Marka adı:** "Vitrin" şu an yer tutucu.
-- **Satıcı bilgileri** (`COMPANY`) ve **Instagram adresi** (`INSTAGRAM_URL`).
+- **Satıcı bilgileri** (`COMPANY`) — `email` ve `INSTAGRAM_URL` artık gerçek, geri kalanı (unvan, adres, MERSİS, KEP, vergi bilgisi) hâlâ netleşmeli.
 - **KDV:** Prototip "KDV dahil" gösteriyor (`VAT_INCLUDED=true`).
 - **Yıllık ücret:**
   - 2. yıl 1.000 TL sabit mi, yoksa o da sipariş tarihinden itibaren TÜFE ile mi güncellenecek? Sitede "2. yıl 1.000 TL, sonraki yıllarda TÜFE oranında" yazıyor.

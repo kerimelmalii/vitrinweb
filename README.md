@@ -10,7 +10,7 @@ Bu bir **prototiptir**, yayına hazır değildir:
 
 - Ödeme, sipariş kaydı ve dosya yükleme **simüle edilir**. Gerçek ödeme alınmaz; veriler yalnızca tarayıcıda tutulur.
 - Yasal metinler **taslaktır**. Köşeli parantezli alanlar doldurulmalı ve metinler bir hukukçu tarafından gözden geçirilmelidir.
-- Satıcı bilgileri (`COMPANY`) ve Instagram adresi (`INSTAGRAM_URL`) yer tutucudur — `email` alanı hariç, o artık gerçek (`iletisim@vitrinweb.com.tr`).
+- Satıcı bilgileri (`COMPANY`) hâlâ büyük ölçüde yer tutucu — `email` alanı hariç, o artık gerçek (`iletisim@vitrinweb.com.tr`). Instagram adresi (`INSTAGRAM_URL`) de artık gerçek.
 
 Ayrıntılar, yapılacaklar ve backend planı için: [DEVIR-BELGESI.md](DEVIR-BELGESI.md). Tamamlanan siparişleri bir Google E-Tablo'da görmek için: [SIPARIS-TAKIBI.md](SIPARIS-TAKIBI.md), Supabase'de bir veritabanı tablosunda görmek için: [SUPABASE-KURULUM.md](SUPABASE-KURULUM.md).
 

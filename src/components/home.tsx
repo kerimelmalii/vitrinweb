@@ -132,6 +132,9 @@ export function Hero() {
             <MockPhone d={d1} />
           </div>
         </div>
+        <p className="hv-cap fine" aria-hidden="true">
+          Örnek: sektörünüze göre hazırlanan bir tasarım önizlemesi, gerçek bir müşteri değildir.
+        </p>
       </div>
     </section>
   );

@@ -33,7 +33,10 @@ const SITE_DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `Vitrin | ${SITE_TITLE}`, template: "%s | Vitrin" },
+  /* Marka ("Vitrin") henüz aranan bir isim değil; asıl teklifin (fiyat + "profesyonel web
+     sitesi") başlıkta önce gelmesi, tıklama ve alaka skorunu markanın önde olmasından daha
+     çok artırır. Diğer tüm sayfalarda zaten bu sırada (bkz. template). */
+  title: { default: `${SITE_TITLE} | Vitrin`, template: "%s | Vitrin" },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
@@ -65,7 +68,9 @@ const jsonLd = {
   "@type": "Service",
   name: "Profesyonel web sitesi",
   description: "Modern, hızlı ve mobil uyumlu web sitesi. İlk yıl servis ve bakım ücretsiz.",
-  offers: { "@type": "Offer", price: String(BASE_PRICE), priceCurrency: "TRY" },
+  provider: { "@type": "Organization", name: "Vitrin", url: SITE_URL },
+  areaServed: "TR",
+  offers: { "@type": "Offer", price: String(BASE_PRICE), priceCurrency: "TRY", url: SITE_URL },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

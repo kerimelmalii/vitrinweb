@@ -80,6 +80,8 @@ body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip}
 .trust li{display:inline-flex;align-items:center;gap:8px}
 .trust .ic{color:var(--brand)}
 .hero-visual{position:relative;padding:0 0 48px}
+.hv-cap{margin-top:-34px;text-align:center}
+@media(min-width:1024px){.hv-cap{grid-column:2}}
 .hv-phone{position:absolute;right:-6px;bottom:0;width:27%;z-index:2}
 .hv-price{position:absolute;left:-18px;bottom:8px;z-index:3;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 24px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
 .hv-price small{font-size:.82rem;color:var(--mute);font-weight:500}

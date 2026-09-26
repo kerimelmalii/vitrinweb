@@ -4,7 +4,7 @@ import { InstaLink, Logo } from "@/components/header";
 import { COMPANY } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
 import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
-import { FaqSectionLink } from "@/components/faq-section-link";
+import { SectionLink } from "@/components/section-link";
 
 export function Footer() {
   return (
@@ -32,7 +32,10 @@ export function Footer() {
                 <Link href="/blog">Blog</Link>
               </li>
               <li>
-                <FaqSectionLink />
+                <SectionLink id="sss">Sık sorulan sorular</SectionLink>
+              </li>
+              <li>
+                <SectionLink id="iletisim">İletişim</SectionLink>
               </li>
             </ul>
           </div>

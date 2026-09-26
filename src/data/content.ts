@@ -204,4 +204,5 @@ export const NAV: NavItem[] = [
   { label: "Blog", to: "/blog" },
   { label: "Hakkımızda", sec: "hakkimizda" },
   { label: "SSS", sec: "sss" },
+  { label: "İletişim", sec: "iletisim" },
 ];

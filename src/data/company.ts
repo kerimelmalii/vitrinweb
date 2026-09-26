@@ -8,7 +8,9 @@ export const COMPANY = {
   taxOffice: "[Vergi dairesi]",
   taxNo: "[Vergi numarası]",
   address: "[Merkez adresi]",
-  email: "[E-posta adresi]",
+  /* Gerçek ve izlenen bir kutu; cayma/KVKK başvurularının gidebileceği tek gerçek
+     alan bu olduğu için (aşağıdaki diğer alanların aksine) yer tutucu bırakılmadı. */
+  email: "iletisim@vitrinweb.com.tr",
   phone: "[Telefon numarası]",
   kep: "[KEP adresi]",
 };

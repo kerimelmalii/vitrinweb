@@ -41,6 +41,8 @@ jobs:
           NEXT_PUBLIC_SITE_URL: "https://vitrinweb.com.tr"
           NEXT_PUBLIC_ORDER_WEBHOOK_URL: ${{ secrets.ORDER_WEBHOOK_URL }}
           NEXT_PUBLIC_ORDER_WEBHOOK_SECRET: ${{ secrets.ORDER_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_CONTACT_FORM_URL: ${{ secrets.CONTACT_FORM_URL }}
+          NEXT_PUBLIC_CONTACT_FORM_SECRET: ${{ secrets.CONTACT_FORM_SECRET }}
 
       - name: Pages için hazırla
         uses: actions/configure-pages@v5

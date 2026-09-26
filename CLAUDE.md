@@ -23,6 +23,9 @@ statik host'ta çalışır. Detaylı iş/hukuk/backend planı: `DEVIR-BELGESI.md
   kurulum: `SIPARIS-TAKIBI.md`) ve isteğe bağlı olarak Supabase'e (`src/lib/supabase-order.ts`,
   kurulum: `SUPABASE-KURULUM.md`) bildirilir — ikisi de INSERT-only, ortam değişkeni tanımlı
   değilse sessizce atlanır.
+- `/iletisim` sayfasındaki form da aynı desende: `src/lib/contact-webhook.ts`, kurulum
+  `ILETISIM-FORMU-KURULUMU.md`. Fark: ortam değişkeni tanımlı değilse sessizce atlamak yerine
+  ziyaretçinin kendi e-posta uygulamasını (`mailto:`) prefilled açar — mesaj hiç kaybolmaz.
 
 ## Kod yapısı
 

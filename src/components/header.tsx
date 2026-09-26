@@ -90,7 +90,10 @@ function NavButton({ item, onNavigate }: { item: NavItem; onNavigate: () => void
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
         onNavigate();
-        goSection(item.sec as string);
+        /* Mobil menü açıksa onNavigate() onu kapatır ve sayfa yüksekliği değişir;
+           kaydırma hedefi bu kapanma DOM'a yansıyıp bir kare boyanmadan hesaplanırsa
+           menünün yüksekliği kadar aşağı taşar. İki rAF, o boyamayı bekler. */
+        requestAnimationFrame(() => requestAnimationFrame(() => goSection(item.sec as string)));
       }}
     >
       {item.label}

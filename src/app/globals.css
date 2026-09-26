@@ -321,8 +321,10 @@ img,svg{max-width:100%}
 .cancel-s .ic{color:var(--ok);flex:none;margin-top:3px}.cancel-s b{color:var(--ink)}
 .cancel{display:flex;gap:14px;align-items:flex-start;margin-top:14px;padding:22px 24px;border:1.5px solid var(--ink);border-radius:22px;background:var(--surface)}
 .cancel .ic{color:var(--ok);flex:none;margin-top:2px}.cancel p{margin:4px 0 0;color:var(--ink-2)}
-.contact-grid{display:flex;flex-wrap:wrap;gap:16px}
-.contact-card{display:inline-flex;align-items:center;gap:18px;padding:26px 30px;border:1.5px solid var(--ink);border-radius:22px;background:var(--surface);text-decoration:none;color:var(--ink);transition:background .15s}
+.contact-layout{display:grid;gap:32px}
+@media(min-width:960px){.contact-layout{grid-template-columns:1.4fr 1fr;align-items:start}}
+.contact-side{display:flex;flex-direction:column;gap:16px}
+.contact-card{display:flex;align-items:center;gap:18px;padding:26px 30px;border:1.5px solid var(--ink);border-radius:22px;background:var(--surface);text-decoration:none;color:var(--ink);transition:background .15s}
 .contact-card:hover{background:var(--surface-2)}
 .contact-card .ic{flex:none}
 .contact-label{display:block;font:600 .86rem var(--sans);color:var(--ink-2);margin-bottom:2px}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Icon } from "@/components/icons";
 import { INSTAGRAM_URL } from "@/data/company";
-import { sendContactMessage } from "@/lib/contact-webhook";
+import { sendContactMessage } from "@/lib/form-webhook";
 import { LIMITS, RX, clean } from "@/lib/security";
 
 const CONTACT_EMAIL = "iletisim@vitrinweb.com.tr";

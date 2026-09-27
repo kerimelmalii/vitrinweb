@@ -37,6 +37,9 @@ export function Footer() {
               <li>
                 <Link href="/iletisim">İletişim</Link>
               </li>
+              <li>
+                <Link href="/girisim-programi">Girişim Destek Programı</Link>
+              </li>
             </ul>
           </div>
           <div>

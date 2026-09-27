@@ -1,15 +1,15 @@
-# İletişim formunu e-postaya bağlama (kurulum)
+# Form bildirimlerini e-postaya bağlama (kurulum)
 
-`/iletisim` sayfasındaki form, doldurulup gönderildiğinde site tamamen statik olduğu için **kendi başına hiçbir yere e-posta gönderemez**. Bu belge, formun gönderildiğinde mesajın otomatik olarak **iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır — SIPARIS-TAKIBI.md'deki sipariş bildirimiyle birebir aynı yöntem (Google Apps Script), farklı olarak bu sefer bir tabloya satır eklemek yerine doğrudan e-posta gönderiyor.
+`/iletisim` ve `/girisim-programi` sayfalarındaki formlar, doldurulup gönderildiğinde site tamamen statik olduğu için **kendi başına hiçbir yere e-posta gönderemez**. Bu belge, her iki formun da gönderildiğinde otomatik olarak **iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır — SIPARIS-TAKIBI.md'deki sipariş bildirimiyle birebir aynı yöntem (Google Apps Script), farklı olarak bu sefer bir tabloya satır eklemek yerine doğrudan e-posta gönderiyor. **Tek bir Apps Script dağıtımı ve tek bir secret çifti iki formu da kapsar** — her form gönderdiği veriye bir `kind` alanı ekler (`iletisim` veya `girisim`), betik buna göre farklı bir e-posta konusu/gövdesi oluşturur.
 
-Bu kurulum yapılmadan da form **çalışır**: ziyaretçinin "Gönder" tuşuna basması, mesajı hazır şekilde kendi e-posta uygulamasında açar (ziyaretçi oradan Gönder'e basar). Aşağıdaki kurulum, bu ekstra adımı ortadan kaldırıp gönderimi tamamen otomatik hale getirir.
+Bu kurulum yapılmadan da formlar **çalışır**: ziyaretçinin "Gönder" tuşuna basması, mesajı hazır şekilde kendi e-posta uygulamasında açar (ziyaretçi oradan Gönder'e basar). Aşağıdaki kurulum, bu ekstra adımı ortadan kaldırıp gönderimi tamamen otomatik hale getirir.
 
 Ücretsiz ve ~10 dakikalık bir kurulumdur.
 
 ## 1. Google E-Tablo oluştur (yalnızca betiği barındırmak için)
 
 1. [sheets.new](https://sheets.new) adresine git.
-2. Adını **"Vitrin İletişim Formu"** yap (içeriği boş kalacak, yalnızca aşağıdaki betiği barındırıyor).
+2. Adını **"Vitrin Form Bildirimi"** yap (içeriği boş kalacak, yalnızca aşağıdaki betiği barındırıyor).
 
 ## 2. Apps Script'i ekle
 
@@ -30,17 +30,35 @@ function doPost(e) {
     if (data.secret !== SHARED_SECRET) {
       return ContentService.createTextOutput("forbidden");
     }
-    const name = (data.name || "").slice(0, 200);
-    const email = (data.email || "").slice(0, 200);
-    const subject = (data.subject || "").slice(0, 300);
-    const message = (data.message || "").slice(0, 5000);
+    const clip = (v, n) => (v || "").slice(0, n);
 
-    MailApp.sendEmail({
-      to: ALICI,
-      replyTo: email,
-      subject: "[vitrinweb.com.tr İletişim Formu] " + subject,
-      body: message + "\n\n—\n" + name + " <" + email + ">",
-    });
+    if (data.kind === "girisim") {
+      const founderName = clip(data.founderName, 200);
+      const companyName = clip(data.companyName, 200);
+      const email = clip(data.email, 200);
+      MailApp.sendEmail({
+        to: ALICI,
+        replyTo: email,
+        subject: "[Girişim Destek Programı] " + companyName,
+        body: [
+          "Kurucu: " + founderName + " <" + email + ">",
+          "Telefon: " + clip(data.phone, 50),
+          "Şehir: " + clip(data.city, 100),
+          "Kuruluş durumu: " + clip(data.status, 100),
+          "",
+          clip(data.description, 5000),
+        ].join("\n"),
+      });
+    } else {
+      const name = clip(data.name, 200);
+      const email = clip(data.email, 200);
+      MailApp.sendEmail({
+        to: ALICI,
+        replyTo: email,
+        subject: "[vitrinweb.com.tr İletişim Formu] " + clip(data.subject, 300),
+        body: clip(data.message, 5000) + "\n\n—\n" + name + " <" + email + ">",
+      });
+    }
     return ContentService.createTextOutput("ok");
   } catch (err) {
     return ContentService.createTextOutput("error: " + err);
@@ -48,7 +66,7 @@ function doPost(e) {
 }
 ```
 
-3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin İletişim Formu Bildirimi"** yap, disket (kaydet) simgesine bas.
+3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin Form Bildirimi"** yap, disket (kaydet) simgesine bas.
 
 > `SHARED_SECRET`'i mutlaka değiştirin — aşağıdaki adım 4'te GitHub'a gireceğiniz `CONTACT_FORM_SECRET` ile **birebir aynı** olmalı. Sipariş bildirimindeki `SHARED_SECRET` ile aynı değeri kullanmayın; ayrı bir değer üretin.
 
@@ -76,11 +94,11 @@ Kaydettikten sonra `main`'e yapılacak bir sonraki push (veya Actions sekmesinde
 
 ## Nasıl çalışır?
 
-- **Kurulum tamamlandıysa:** Form gönderildiğinde mesaj doğrudan bu Web app adresine POST edilir, Apps Script `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Ziyaretçiye "Mesajınız gönderildi" yazar.
-- **Kurulum henüz yapılmadıysa** (`CONTACT_FORM_URL` tanımsız): form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz.
+- **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim programı başvurusu), veri doğrudan bu tek Web app adresine POST edilir; Apps Script `kind` alanına bakıp uygun konuyla `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Ziyaretçiye başarı mesajı gösterilir.
+- **Kurulum henüz yapılmadıysa** (`CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz.
 
 ## Sınırlamalar (bilerek kabul edilen)
 
 - `CONTACT_FORM_URL` ve `CONTACT_FORM_SECRET`, statik site olduğu için tarayıcıya gönderilen kodun içinde bulunur — bir "şifre" değil, yalnızca rastgele bot isteklerini eleyen bir filtredir. Sipariş bildirimindekiyle aynı tehdit modeli (bkz. SIPARIS-TAKIBI.md).
-- Form ayrıca gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa gönderim sessizce durur.
+- Her iki form da gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa gönderim sessizce durur.
 - Spam/hız sınırlaması yoktur (istemci tarafı doğrulama dışında). Sorun çıkarsa Apps Script dağıtımını iptal edip yeniden kurmak (yeni bir `SHARED_SECRET` ile) sıfırlamanın en hızlı yoludur.

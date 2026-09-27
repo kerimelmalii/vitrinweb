@@ -126,7 +126,6 @@ export function Header() {
           ))}
         </nav>
         <div className="hdr-r">
-          <InstaLink cls="iconbtn ig-h" />
           <Link href="/girisim-programi" className="btn btn-line hdr-cta" onClick={() => setOpen(false)}>
             Girişim Programı
           </Link>
@@ -139,6 +138,7 @@ export function Header() {
           >
             Web Sitesi Edinin
           </button>
+          <InstaLink cls="iconbtn ig-h" />
           <button
             className="iconbtn burger"
             aria-label={open ? "Menüyü kapat" : "Menüyü aç"}

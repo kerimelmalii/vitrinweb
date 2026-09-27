@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { IsgaleHayirPage } from "@/components/isgale-hayir-page";
+import { safeJsonLd } from "@/lib/json-ld";
+import { SITE_URL } from "@/lib/site";
 
 const TITLE = "İşgale Hayır!";
 const DESCRIPTION =
@@ -14,6 +16,20 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: TITLE, item: `${SITE_URL}/isgale-hayir` },
+  ],
+};
+
 export default function Page() {
-  return <IsgaleHayirPage />;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbLd) }} />
+      <IsgaleHayirPage />
+    </>
+  );
 }

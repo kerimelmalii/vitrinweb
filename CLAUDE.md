@@ -23,14 +23,15 @@ statik host'ta çalışır. Detaylı iş/hukuk/backend planı: `DEVIR-BELGESI.md
   kurulum: `SIPARIS-TAKIBI.md`) ve isteğe bağlı olarak Supabase'e (`src/lib/supabase-order.ts`,
   kurulum: `SUPABASE-KURULUM.md`) bildirilir — ikisi de INSERT-only, ortam değişkeni tanımlı
   değilse sessizce atlanır.
-- `/iletisim` sayfasındaki form da aynı desende: `src/lib/contact-webhook.ts`, kurulum
+- `/iletisim` ve `/girisim-programi` sayfalarındaki formlar da aynı desende, TEK bir Apps Script
+  dağıtımını paylaşır: `src/lib/form-webhook.ts` (`kind` alanıyla ayrışır), kurulum
   `ILETISIM-FORMU-KURULUMU.md`. Fark: ortam değişkeni tanımlı değilse sessizce atlamak yerine
   ziyaretçinin kendi e-posta uygulamasını (`mailto:`) prefilled açar — mesaj hiç kaybolmaz.
 
 ## Kod yapısı
 
 - `src/app/` — sayfa rotaları (App Router): `/`, `neden`, `ucretlendirme`, `blog`, `blog/[slug]`,
-  `siparis`, `baslangic`, `yasal/[id]`, artı `sitemap.ts`/`robots.ts`.
+  `iletisim`, `girisim-programi`, `siparis`, `baslangic`, `yasal/[id]`, artı `sitemap.ts`/`robots.ts`.
 - `src/components/` — UI; `src/components/checkout/` — sipariş adımları.
 - `src/lib/` — yapılandırma, güvenlik/doğrulama (`security.ts`), sipariş durumu (`order-context.tsx`,
   React Context + `localStorage`), sahte backend (`backend.ts`), ödeme simülasyonu (`payment.ts`),

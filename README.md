@@ -12,7 +12,7 @@ Bu bir **prototiptir**, yayına hazır değildir:
 - Yasal metinler **taslaktır**. Köşeli parantezli alanlar doldurulmalı ve metinler bir hukukçu tarafından gözden geçirilmelidir.
 - Satıcı bilgileri (`COMPANY`) hâlâ büyük ölçüde yer tutucu — `email` alanı hariç, o artık gerçek (`iletisim@vitrinweb.com.tr`). Instagram adresi (`INSTAGRAM_URL`) de artık gerçek.
 
-Ayrıntılar, yapılacaklar ve backend planı için: [DEVIR-BELGESI.md](DEVIR-BELGESI.md). Tamamlanan siparişleri bir Google E-Tablo'da görmek için: [SIPARIS-TAKIBI.md](SIPARIS-TAKIBI.md), Supabase'de bir veritabanı tablosunda görmek için: [SUPABASE-KURULUM.md](SUPABASE-KURULUM.md), `/iletisim` formunu e-postaya bağlamak için: [ILETISIM-FORMU-KURULUMU.md](ILETISIM-FORMU-KURULUMU.md).
+Ayrıntılar, yapılacaklar ve backend planı için: [DEVIR-BELGESI.md](DEVIR-BELGESI.md). Tamamlanan siparişleri bir Google E-Tablo'da görmek için: [SIPARIS-TAKIBI.md](SIPARIS-TAKIBI.md), Supabase'de bir veritabanı tablosunda görmek için: [SUPABASE-KURULUM.md](SUPABASE-KURULUM.md), `/iletisim` ve `/girisim-programi` formlarını e-postaya bağlamak için: [ILETISIM-FORMU-KURULUMU.md](ILETISIM-FORMU-KURULUMU.md).
 
 ## Çalıştırma
 
@@ -57,7 +57,7 @@ Demo ödemede `0002` ile biten kart numaraları reddedilir, diğerleri kabul edi
 
 | Yol | İçerik |
 |---|---|
-| `src/app/` | Sayfa rotaları (App Router): ana sayfa, `neden`, `ucretlendirme`, `blog`, `siparis`, `baslangic`, `yasal/[id]`, `sitemap.ts`, `robots.ts` |
+| `src/app/` | Sayfa rotaları (App Router): ana sayfa, `neden`, `ucretlendirme`, `blog`, `iletisim`, `girisim-programi`, `siparis`, `baslangic`, `yasal/[id]`, `sitemap.ts`, `robots.ts` |
 | `src/components/` | UI bileşenleri (başlık, altbilgi, sipariş adımları, blog, yasal metin gösterimi, ...) |
 | `src/lib/` | Yapılandırma, güvenlik/doğrulama yardımcıları, fiyatlandırma, sipariş depolama ve ödeme simülasyonu, tipler |
 | `src/data/` | İçerik: sektörler, ek özellikler, SSS, yasal metinler, blog yazıları, satıcı bilgileri |
@@ -65,12 +65,12 @@ Demo ödemede `0002` ile biten kart numaraları reddedilir, diğerleri kabul edi
 | `src/app/og-fonts/` | Manrope `ttf` dosyaları (yalnızca derleme sırasında Open Graph görselleri için, `next/og` woff2 desteklemez) |
 | `src/lib/order-webhook.ts` | Ödeme tamamlanınca sipariş özetini Google E-Tablo'ya bildiren yardımcı (bkz. SIPARIS-TAKIBI.md) |
 | `src/lib/supabase-order.ts` | Ödeme tamamlanınca sipariş kaydını Supabase'e yazan yardımcı (bkz. SUPABASE-KURULUM.md) |
-| `src/lib/contact-webhook.ts` | `/iletisim` formunu Google Apps Script üzerinden e-postaya bildiren yardımcı (bkz. ILETISIM-FORMU-KURULUMU.md) |
+| `src/lib/form-webhook.ts` | `/iletisim` ve `/girisim-programi` formlarını Google Apps Script üzerinden e-postaya bildiren yardımcı (bkz. ILETISIM-FORMU-KURULUMU.md) |
 | `supabase/schema.sql` | Supabase `orders` tablosu ve RLS politikası |
 | `DEVIR-BELGESI.md` | Projeyi devralacak geliştirici için ayrıntılı belge |
 | `SIPARIS-TAKIBI.md` | Sipariş bildirimi (Google E-Tablo) kurulum rehberi |
 | `SUPABASE-KURULUM.md` | Sipariş verisi (Supabase) kurulum rehberi |
-| `ILETISIM-FORMU-KURULUMU.md` | İletişim formu → e-posta bildirimi kurulum rehberi |
+| `ILETISIM-FORMU-KURULUMU.md` | İletişim ve girişim programı formları → e-posta bildirimi kurulum rehberi |
 
 Planlanan canlı sürüm: bu statik önyüz + Supabase (veri) + iyzico (ödeme), sunucu tarafı mantık Supabase Edge Functions'ta (DEVIR-BELGESI.md, bölüm 8).
 

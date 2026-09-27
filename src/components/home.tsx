@@ -338,22 +338,21 @@ export function FinalCTA() {
             <p className="fine">Dakikalar içinde siparişinizi oluşturun.</p>
           </div>
         </div>
-        <div className="solidarity-wrap">
-          <Link
-            href="/isgale-hayir"
-            className="solidarity-link"
-            aria-label="İşgale Hayır! - Filistin ve Doğu Türkistan için farkındalık sayfası"
-          >
-            <span className="solidarity-stripe" aria-hidden="true">
-              <i></i>
-              <i></i>
-              <i></i>
-              <i></i>
-            </span>
-            İşgale Hayır!
-          </Link>
-        </div>
       </div>
+      <Link
+        href="/isgale-hayir"
+        className="solidarity-strip"
+        aria-label="İşgale Hayır! - Filistin ve Doğu Türkistan için farkındalık sayfası"
+      >
+        <span className="solidarity-stripe" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+        İşgale Hayır!
+        <Icon n="arrow" size={15} sw={2.2} />
+      </Link>
     </section>
   );
 }

@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
@@ -16,8 +13,23 @@ const EAST_TURKISTAN_SOURCES: [string, string][] = [
   ["Uluslararası Af Örgütü raporları", "#"],
 ];
 
-const LEARN_LINKS = ["[Kaynak adı]", "[Kaynak adı]", "[Kaynak adı]", "[Kaynak adı]"];
-const DONATE_LINKS = ["[Kuruluş adı]", "[Kuruluş adı]", "[Kuruluş adı]", "[Kuruluş adı]"];
+const ACTION_CARDS: { icon: "search" | "shield" | "pin"; title: string; body: string }[] = [
+  {
+    icon: "search",
+    title: "Bilgilen",
+    body: "Yaşananlara karşı en önemli adımlardan biri yaşanan zulme ve sürece hakim olmak. Güvendiğiniz kaynaklardan süreci öğrenin.",
+  },
+  {
+    icon: "shield",
+    title: "Güvendiğiniz Kuruluşlar Vasıtası ile Destek olun",
+    body: "Filistin ve Doğu Türkistan için çalışan, güvendiğiniz insani yardım kuruluşları aracılığıyla destek olun. Önemli olan yardımın ihtiyaç sahibine ulaşmasıdır.",
+  },
+  {
+    icon: "pin",
+    title: "Gündemde Tut",
+    body: "Bu yaşananları gündeminizde tutun, insanlığın unutulmasına izin vermeyin.",
+  },
+];
 
 function SourceList({ items }: { items: [string, string][] }) {
   return (
@@ -34,61 +46,6 @@ function SourceList({ items }: { items: [string, string][] }) {
         ))}
       </ul>
     </>
-  );
-}
-
-function ShareCard() {
-  const [copied, setCopied] = useState(false);
-
-  const shareUrl = () => (typeof window !== "undefined" ? window.location.href : "https://vitrinweb.com.tr/isgale-hayir");
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      /* pano erişimi engellenmiş olabilir; sessizce yok say */
-    }
-  };
-
-  const open = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
-
-  return (
-    <div className="gp-card">
-      <Icon n="message" size={28} sw={1.4} />
-      <h3 className="h-3">Sesini duyur</h3>
-      <p className="isg-card-p">Bu sayfayı paylaşarak farkındalığı büyüt.</p>
-      <div className="isg-share">
-        <button
-          type="button"
-          className="isg-share-btn"
-          onClick={() => open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl())}&text=${encodeURIComponent("İşgale Hayır!")}`)}
-        >
-          <Icon n="x" size={15} sw={2.2} />X
-        </button>
-        <button
-          type="button"
-          className="isg-share-btn"
-          onClick={() => open(`https://wa.me/?text=${encodeURIComponent("İşgale Hayır! " + shareUrl())}`)}
-        >
-          <Icon n="message" size={15} sw={2.2} />
-          WhatsApp
-        </button>
-        <button
-          type="button"
-          className="isg-share-btn"
-          onClick={() => open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl())}`)}
-        >
-          <Icon n="linkedin" size={15} sw={2.2} />
-          LinkedIn
-        </button>
-        <button type="button" className="isg-share-btn" onClick={copyLink}>
-          <Icon n={copied ? "check" : "link"} size={15} sw={2.2} />
-          {copied ? "Kopyalandı" : "Linki kopyala"}
-        </button>
-      </div>
-    </div>
   );
 }
 
@@ -159,35 +116,13 @@ export function IsgaleHayirPage() {
         <div className="container-x">
           <SectionHead title="Siz ne yapabilirsiniz?" />
           <div className="gp-cards">
-            <div className="gp-card">
-              <Icon n="search" size={28} sw={1.4} />
-              <h3 className="h-3">Bilgilen</h3>
-              <ul>
-                {LEARN_LINKS.map((label, i) => (
-                  <li key={i}>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                      <Icon n="arrow" size={13} sw={2.2} />
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="gp-card">
-              <Icon n="shield" size={28} sw={1.4} />
-              <h3 className="h-3">Destek ol</h3>
-              <ul>
-                {DONATE_LINKS.map((label, i) => (
-                  <li key={i}>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                      <Icon n="arrow" size={13} sw={2.2} />
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <ShareCard />
+            {ACTION_CARDS.map((c) => (
+              <div className="gp-card" key={c.title}>
+                <Icon n={c.icon} size={28} sw={1.4} />
+                <h3 className="h-3">{c.title}</h3>
+                <p className="isg-card-p">{c.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </Reveal>

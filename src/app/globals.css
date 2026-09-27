@@ -613,12 +613,7 @@ textarea.input{min-height:120px;resize:vertical}
 .isg-src li a{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);font-size:.88rem;text-decoration:none;transition:color .15s}
 .isg-src li a:hover{color:var(--ink)}
 .isg-do{display:flex;flex-direction:column;gap:22px;align-items:flex-start}
-.gp-card li a{display:flex;gap:10px;align-items:flex-start;color:inherit;text-decoration:none;transition:color .15s}
-.gp-card li a:hover{color:var(--ink)}
 .isg-card-p{color:var(--ink-2);font-size:.94rem;line-height:1.5;margin:0}
-.isg-share{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-.isg-share-btn{display:inline-flex;align-items:center;gap:7px;padding:.5rem .85rem;border:1px solid var(--line);border-radius:999px;font:600 .82rem var(--sans);color:var(--ink);background:transparent;cursor:pointer;transition:border-color .15s,background .15s}
-.isg-share-btn:hover{border-color:var(--ink);background:#fff}
 .isg-closing{text-align:center;font:600 clamp(1.9rem,4vw,3.2rem)/1.25 var(--display);letter-spacing:-.03em;max-width:18ch;margin:0 auto}
 
 /* Tailwind v3: preflight + yalnızca kullanılan yerleşim yardımcıları (derlenmiş, CDN yok) */

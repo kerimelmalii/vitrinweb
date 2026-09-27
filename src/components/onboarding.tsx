@@ -4,104 +4,13 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { Field, Inp } from "@/components/checkout/fields";
+import { FileField } from "@/components/file-field";
 import { Stepper } from "@/components/checkout/stepper";
 import { Icon } from "@/components/icons";
 import { PROJECT_STATUSES } from "@/lib/types";
 import { useApp } from "@/lib/order-context";
 import { Backend, buildRecord } from "@/lib/backend";
 import { FILE_RULES, LIMITS, RX, clean } from "@/lib/security";
-
-interface FileFieldProps {
-  id: string;
-  label: string;
-  hint: string;
-  accept: string;
-  multiple: boolean;
-  files: File[];
-  onFiles: (files: File[]) => void;
-  types?: readonly string[];
-}
-
-/* Dosyalar türe, boyuta ve adede göre süzülür. Sunucu, imzalı yüklemede aynı kuralları ve içerik taramasını uygular. */
-function FileField({ id, label, hint, accept, multiple, files, onFiles, types }: FileFieldProps) {
-  const [over, setOver] = useState(false);
-  const [msg, setMsg] = useState("");
-  const add = (list: FileList | null) => {
-    const a = Array.from(list || []);
-    if (!a.length) return;
-    const okType = (f: File) => (types || FILE_RULES.image).includes(f.type);
-    const bad = a.filter((f) => !okType(f));
-    const big = a.filter((f) => okType(f) && f.size > FILE_RULES.maxSize);
-    const good = a.filter((f) => okType(f) && f.size <= FILE_RULES.maxSize);
-    let next = multiple ? [...files, ...good] : good.slice(0, 1);
-    const cut = next.length > FILE_RULES.maxFiles;
-    next = next.slice(0, FILE_RULES.maxFiles);
-    const m: string[] = [];
-    if (bad.length) m.push(bad.length + " dosya desteklenmeyen türde olduğu için eklenmedi.");
-    if (big.length) m.push(big.length + " dosya 10 MB'tan büyük olduğu için eklenmedi.");
-    if (cut) m.push("En fazla " + FILE_RULES.maxFiles + " dosya ekleyebilirsiniz.");
-    setMsg(m.join(" "));
-    if (good.length) onFiles(next);
-  };
-  const size = (b: number) => (b > 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB");
-  return (
-    <div className="fld">
-      <span className="label">{label}</span>
-      <label
-        className={"drop " + (over ? "over" : "")}
-        htmlFor={id}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setOver(true);
-        }}
-        onDragLeave={() => setOver(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setOver(false);
-          add(e.dataTransfer.files);
-        }}
-      >
-        <Icon n="upload" size={22} />
-        <span>
-          <b>Dosya seçin</b> veya buraya sürükleyin
-        </span>
-        <span className="fine">{hint}</span>
-        <input
-          id={id}
-          type="file"
-          accept={accept}
-          multiple={multiple}
-          onChange={(e) => {
-            add(e.target.files);
-            e.target.value = "";
-          }}
-        />
-      </label>
-      {msg && (
-        <p className="ferr" role="alert">
-          {msg}
-        </p>
-      )}
-      {files.length > 0 && (
-        <ul className="flist">
-          {files.map((f, i) => (
-            <li key={f.name + i}>
-              <span>
-                {f.name} <span className="mute">({size(f.size)})</span>
-              </span>
-              <button
-                aria-label={f.name + " dosyasını kaldır"}
-                onClick={() => onFiles(files.filter((_, j) => j !== i))}
-              >
-                <Icon n="x" size={16} />
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
 
 const STYLE_OPTS: [string, string][] = [
   ["Sade / Minimal", "Az öğe, bol boşluk"],

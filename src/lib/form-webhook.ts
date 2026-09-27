@@ -44,8 +44,17 @@ export interface StartupApplication {
   city: string;
   status: string;
   description: string;
+  fileName?: string;
+  fileType?: string;
+  fileBase64?: string;
 }
 
 export async function sendStartupApplication(app: StartupApplication): Promise<boolean> {
-  return postForm({ kind: "girisim", ...app });
+  return postForm({
+    kind: "girisim",
+    ...app,
+    fileName: app.fileName || "",
+    fileType: app.fileType || "",
+    fileBase64: app.fileBase64 || "",
+  });
 }

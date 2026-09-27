@@ -127,6 +127,9 @@ export function Header() {
         </nav>
         <div className="hdr-r">
           <InstaLink cls="iconbtn ig-h" />
+          <Link href="/girisim-programi" className="btn btn-line hdr-cta" onClick={() => setOpen(false)}>
+            Girişim Programı
+          </Link>
           <button
             className="btn btn-primary hdr-cta"
             onClick={() => {
@@ -153,6 +156,9 @@ export function Header() {
             <NavButton key={it.label} item={it} onNavigate={() => setOpen(false)} />
           ))}
           <InstaLink cls="navl mnav-ig" label="Instagram" />
+          <Link href="/girisim-programi" className="btn btn-line btn-block" onClick={() => setOpen(false)}>
+            Girişim Programı
+          </Link>
           <button
             className="btn btn-primary btn-block"
             onClick={() => {

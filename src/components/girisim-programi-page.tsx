@@ -2,11 +2,21 @@
 
 import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
+import { FileField } from "@/components/file-field";
 import { Icon } from "@/components/icons";
 import { Reveal } from "@/components/reveal";
 import { SectionHead } from "@/components/section-head";
 import { sendStartupApplication } from "@/lib/form-webhook";
-import { LIMITS, RX, clean, phoneOk } from "@/lib/security";
+import { FILE_RULES, LIMITS, RX, clean, phoneOk } from "@/lib/security";
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
 
 const VEST_STOPS: [string, string][] = [
   ["Teslim", "%0,5"],
@@ -83,7 +93,7 @@ const blank: FormState = {
   description: "",
 };
 
-function mailtoUrl(f: FormState): string {
+function mailtoUrl(f: FormState, hasFile: boolean): string {
   const body = [
     `Girişim/Şirket: ${f.companyName}`,
     `Kurucu: ${f.founderName}`,
@@ -93,6 +103,7 @@ function mailtoUrl(f: FormState): string {
     `Kuruluş durumu: ${f.status === "kurulu" ? "Kurulmuş şirket" : "Kurulma aşamasında"}`,
     "",
     f.description,
+    ...(hasFile ? ["", "Not: Seçtiğiniz dosyayı bu e-postaya elle eklemeniz gerekiyor (mailto bağlantıları dosya ekleyemez)."] : []),
   ].join("\n");
   const q = new URLSearchParams({ subject: `Girişim Destek Programı başvurusu — ${f.companyName}`, body });
   return `mailto:iletisim@vitrinweb.com.tr?${q.toString()}`;
@@ -101,6 +112,8 @@ function mailtoUrl(f: FormState): string {
 function ApplicationForm() {
   const [f, setF] = useState<FormState>(blank);
   const [err, setErr] = useState<Errors>({});
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileErr, setFileErr] = useState("");
   const [hp, setHp] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "mailto">("idle");
 
@@ -129,6 +142,17 @@ function ApplicationForm() {
       return;
     }
     setStatus("sending");
+    const file = files[0];
+    let fileData: { fileName?: string; fileType?: string; fileBase64?: string } = {};
+    if (file) {
+      try {
+        fileData = { fileName: file.name, fileType: file.type, fileBase64: await fileToBase64(file) };
+      } catch {
+        setFileErr("Dosya okunamadı, lütfen tekrar deneyin veya dosyayı kaldırıp devam edin.");
+        setStatus("idle");
+        return;
+      }
+    }
     const relayed = await sendStartupApplication({
       founderName: f.founderName,
       companyName: f.companyName,
@@ -137,11 +161,12 @@ function ApplicationForm() {
       city: f.city,
       status: f.status === "kurulu" ? "Kurulmuş şirket" : "Kurulma aşamasında",
       description: f.description,
+      ...fileData,
     });
     if (relayed) {
       setStatus("sent");
     } else {
-      window.location.href = mailtoUrl(f);
+      window.location.href = mailtoUrl(f, !!file);
       setStatus("mailto");
     }
   };
@@ -151,7 +176,8 @@ function ApplicationForm() {
       <div className="panel">
         <h2 className="h-3">Başvurunuz alındı.</h2>
         <p className="mute" style={{ marginTop: "8px" }}>
-          İnceleyip en kısa sürede size dönüş yapacağız.
+          {files[0] ? "Yüklediğiniz dosyayla birlikte başvurunuz iletildi. " : ""}İnceleyip en kısa sürede size dönüş
+          yapacağız.
         </p>
       </div>
     );
@@ -162,7 +188,8 @@ function ApplicationForm() {
         <h2 className="h-3">E-posta uygulamanız açıldı.</h2>
         <p className="mute" style={{ marginTop: "8px" }}>
           Başvurunuz konu ve içerikle birlikte hazırlandı — göndermek için e-posta uygulamanızda Gönder&apos;e
-          basmanız yeterli.
+          basmanız yeterli.{" "}
+          {files[0] && "Seçtiğiniz dosyayı e-postaya elle eklemeniz gerekiyor, mailto bağlantıları dosya ekleyemiyor."}
         </p>
       </div>
     );
@@ -254,12 +281,31 @@ function ApplicationForm() {
           aria-describedby={err.description ? "g-desc-e" : undefined}
         ></textarea>
       </Field>
+      <FileField
+        id="g-file"
+        label="Sunum veya doküman (opsiyonel)"
+        hint="PDF, PPT veya Word, en fazla 8 MB"
+        accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg"
+        types={FILE_RULES.pitch}
+        maxSize={FILE_RULES.pitchMaxSize}
+        multiple={false}
+        files={files}
+        onFiles={(fs) => {
+          setFileErr("");
+          setFiles(fs);
+        }}
+      />
+      {fileErr && (
+        <p className="ferr" role="alert">
+          {fileErr}
+        </p>
+      )}
       <div className="hp" aria-hidden="true">
         <label htmlFor="g-hp">Bu alanı boş bırakın</label>
         <input id="g-hp" name="company_website" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
       </div>
       <div className="form-foot">
-        <span className="fine">Her çeyrek yalnızca 3 girişim seçiliyor; başvurunuzu inceleyip size döneriz.</span>
+        <span className="fine">Başvurunuzu inceleyip size döneriz.</span>
         <button className="btn btn-primary btn-lg" onClick={submit} disabled={status === "sending"}>
           {status === "sending" ? "Gönderiliyor…" : "Başvuruyu Gönder"}
         </button>
@@ -273,9 +319,6 @@ export function GirisimProgramiPage() {
     <main id="main">
       <section className="sec" style={{ paddingBottom: "24px" }}>
         <div className="container-x">
-          <span className="gp-badge">
-            <i></i>Her çeyrek yalnızca 3 girişim seçiliyor
-          </span>
           <h1 className="h-1" style={{ maxWidth: "18ch" }}>
             Fikrinize yatırım yapıyoruz, sitenizi biz kuruyoruz.
           </h1>

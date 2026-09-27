@@ -568,8 +568,6 @@ textarea.input{min-height:120px;resize:vertical}
 /* ================= Girişim Destek Programı (/girisim-programi) ================= */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.on{opacity:1;transform:none}
-.gp-badge{display:inline-flex;align-items:center;gap:8px;padding:.5rem 1rem;border:1px solid var(--line);border-radius:999px;font:600 .84rem var(--sans);color:var(--ink-2);margin-bottom:22px}
-.gp-badge i{width:7px;height:7px;border-radius:50%;background:var(--logo)}
 .gp-cards{display:grid;gap:14px;margin-top:36px}
 @media(min-width:900px){.gp-cards{grid-template-columns:repeat(3,1fr)}}
 .gp-card{background:var(--surface-2);border-radius:30px;padding:clamp(26px,3vw,34px);display:flex;flex-direction:column;gap:16px}

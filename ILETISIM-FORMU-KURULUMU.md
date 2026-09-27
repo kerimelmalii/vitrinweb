@@ -36,6 +36,12 @@ function doPost(e) {
       const founderName = clip(data.founderName, 200);
       const companyName = clip(data.companyName, 200);
       const email = clip(data.email, 200);
+      const attachments = [];
+      if (data.fileBase64 && data.fileName) {
+        attachments.push(
+          Utilities.newBlob(Utilities.base64Decode(data.fileBase64), data.fileType || "application/octet-stream", clip(data.fileName, 200))
+        );
+      }
       MailApp.sendEmail({
         to: ALICI,
         replyTo: email,
@@ -48,6 +54,7 @@ function doPost(e) {
           "",
           clip(data.description, 5000),
         ].join("\n"),
+        attachments: attachments,
       });
     } else {
       const name = clip(data.name, 200);
@@ -94,11 +101,12 @@ Kaydettikten sonra `main`'e yapılacak bir sonraki push (veya Actions sekmesinde
 
 ## Nasıl çalışır?
 
-- **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim programı başvurusu), veri doğrudan bu tek Web app adresine POST edilir; Apps Script `kind` alanına bakıp uygun konuyla `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Ziyaretçiye başarı mesajı gösterilir.
-- **Kurulum henüz yapılmadıysa** (`CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz.
+- **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim programı başvurusu), veri doğrudan bu tek Web app adresine POST edilir; Apps Script `kind` alanına bakıp uygun konuyla `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Girişim programı başvurusunda bir dosya (sunum, PDF vb.) seçilmişse, tarayıcıda base64'e çevrilip aynı istekle gönderilir ve e-postaya ek olarak eklenir. Ziyaretçiye başarı mesajı gösterilir.
+- **Kurulum henüz yapılmadıysa** (`CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz — yalnızca seçilen dosya bu yolla otomatik eklenemez (mailto bağlantıları dosya ekleyemez), ziyaretçiye açılan e-postaya dosyayı elle eklemesi gerektiği söylenir.
 
 ## Sınırlamalar (bilerek kabul edilen)
 
 - `CONTACT_FORM_URL` ve `CONTACT_FORM_SECRET`, statik site olduğu için tarayıcıya gönderilen kodun içinde bulunur — bir "şifre" değil, yalnızca rastgele bot isteklerini eleyen bir filtredir. Sipariş bildirimindekiyle aynı tehdit modeli (bkz. SIPARIS-TAKIBI.md).
+- Girişim programı başvuru formundaki dosya eki tek dosya ve en fazla 8 MB ile sınırlıdır (PDF, PPT, Word veya görsel) — Gmail'in tek e-postadaki toplam ek boyutu sınırının altında kalmak için kasıtlı olarak düşük tutuldu.
 - Her iki form da gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa gönderim sessizce durur.
 - Spam/hız sınırlaması yoktur (istemci tarafı doğrulama dışında). Sorun çıkarsa Apps Script dağıtımını iptal edip yeniden kurmak (yeni bir `SHARED_SECRET` ile) sıfırlamanın en hızlı yoludur.

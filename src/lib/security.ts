@@ -23,6 +23,18 @@ export const FILE_RULES = {
   maxFiles: 20,
   logo: ["image/png", "image/jpeg", "image/webp", "image/svg+xml", "application/pdf"],
   image: ["image/png", "image/jpeg", "image/webp", "image/heic", "image/heif"],
+  pitch: [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.ms-powerpoint",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/png",
+    "image/jpeg",
+  ],
+  /* E-posta ekine dönüştüğü için genel maxSize'dan daha düşük: base64'e çevrilince ~%33 büyüyor,
+     alıcı kutusunun (Gmail ~25 MB) toplam e-posta boyutu sınırının altında kalmalı. */
+  pitchMaxSize: 8 * 1024 * 1024,
 } as const;
 
 /** Kontrol karakterlerini atar ve uzunluğu keser. React çıktıyı zaten kaçışlar (XSS'e karşı); bu, veriyi temiz tutmak içindir. */

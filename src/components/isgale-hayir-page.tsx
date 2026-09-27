@@ -64,7 +64,7 @@ export function IsgaleHayirPage() {
         <div className="container-x">
           <h1 className="h-1">İşgale Hayır!</h1>
           <p className="lead isg-hero-lead">
-            Bir ajans olarak her gün markaların sesini duyurmak için çalışıyoruz. Sesi bastırılan halklar için de
+            Vitrin olarak her gün markaların sesini duyurmak için çalışıyoruz. Sesi bastırılan halklar için de
             susmayacağız.
           </p>
         </div>

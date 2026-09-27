@@ -6,7 +6,7 @@ import { Icon } from "@/components/icons";
 import { BrowserFrame, MockPhone, MockSite } from "@/components/mock-site";
 import { OfferPanel } from "@/components/offer-panel";
 import { SectionHead } from "@/components/section-head";
-import { FAQS, HERO_DEMOS, PROCESS, REFERENCES, TRUST, WHY } from "@/data/content";
+import { FAQ_CATEGORIES, FAQS, HERO_DEMOS, PROCESS, REFERENCES, TRUST, WHY } from "@/data/content";
 import { BASE_PRICE, TL, VAT_NOTE, YEARLY, money } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
 import type { Reference } from "@/lib/types";
@@ -284,32 +284,55 @@ export function About() {
 }
 
 export function FAQ() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState<Set<number>>(new Set([0]));
+  const toggle = (i: number) =>
+    setOpen((s) => {
+      const next = new Set(s);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
+  let i = -1;
   return (
     <section id="sss" className="sec" style={{ paddingTop: "0" }}>
       <div className="container-x">
-        <SectionHead title="Sık sorulan sorular" />
-        <div className="faq">
-          {FAQS.map((f, i) => (
-            <div key={f.q} className={"faq-i " + (open === i ? "open" : "")}>
-              <button
-                className="faq-q"
-                aria-expanded={open === i}
-                aria-controls={"fa" + i}
-                id={"fq" + i}
-                onClick={() => setOpen(open === i ? -1 : i)}
-              >
-                <span>{f.q}</span>
-                <Icon n="chev" />
-              </button>
-              <div className="faq-a" id={"fa" + i} role="region" aria-labelledby={"fq" + i}>
-                <div>
-                  <p>{f.a}</p>
-                </div>
+        <SectionHead title="Sık sorulan sorular" sub="Kararınızı vermeden önce merak ettiğiniz her şey." />
+        <div className="faq-cats">
+          {FAQ_CATEGORIES.map((cat) => (
+            <div className="faq-cat" key={cat}>
+              <h3 className="faq-cat-t">{cat}</h3>
+              <div className="faq">
+                {FAQS.filter((f) => f.cat === cat).map((f) => {
+                  i++;
+                  const idx = i;
+                  return (
+                    <div key={f.q} className={"faq-i " + (open.has(idx) ? "open" : "")}>
+                      <button
+                        className="faq-q"
+                        aria-expanded={open.has(idx)}
+                        aria-controls={"fa" + idx}
+                        id={"fq" + idx}
+                        onClick={() => toggle(idx)}
+                      >
+                        <span>{f.q}</span>
+                        <Icon n="chev" />
+                      </button>
+                      <div className="faq-a" id={"fa" + idx} role="region" aria-labelledby={"fq" + idx}>
+                        <div>
+                          <p>{f.a}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
         </div>
+        <p className="faq-more">
+          Aradığınız cevap burada yoksa <Link href="/iletisim">bize yazın</Link>, elden geldiğince hızlı dönüş
+          yapalım.
+        </p>
       </div>
     </section>
   );

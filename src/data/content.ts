@@ -145,50 +145,88 @@ export const PROCESS: ProcessStep[] = [
   { n: "04", t: "Yayın", d: "Onayınızla sitenizi yayına alırız." },
 ];
 
+export const FAQ_CATEGORIES = ["Fiyat, Ödeme ve İptal", "Süreç ve İçerik", "Güven, Güvenlik ve SEO"] as const;
+
 export const FAQS: Faq[] = [
   {
+    cat: "Fiyat, Ödeme ve İptal",
     q: `${money(BASE_PRICE)} TL'ye neler dahil?`,
     a: "Modern ve mobil uyumlu tasarım, temel SEO altyapısı, WhatsApp entegrasyonu, Google Maps ve iletişim sayfası dahildir. Blog, randevu, çoklu dil gibi ihtiyaçlar ek özellik olarak eklenir.",
   },
   {
+    cat: "Fiyat, Ödeme ve İptal",
     q: "İlk yıl servis ve bakım gerçekten ücretsiz mi?",
     a: `Evet. İlk yıl servis ve bakım için ek ücret ödemezsiniz. 2. yıl servis ve bakım ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret enflasyon oranında güncellenir ve yenilemeden önce size bildirilir.`,
   },
   {
-    q: "Memnun kalmazsam servisi iptal edebilir miyim?",
-    a: "Evet, taahhüt yok. İlk yılın sonunda memnun kalmazsanız servisi yenilemezsiniz ve iptal için hiçbir ücret ödemezsiniz. Sonraki yıllarda da her yenilemeden önce aynı hakka sahipsiniz.",
-  },
-  {
+    cat: "Fiyat, Ödeme ve İptal",
     q: "Online Ödeme ve Yönetim Paneli nasıl fiyatlanıyor?",
     a: "Kapsamları işletmeye göre değiştiği için sabit fiyatları yok. Siparişte bu özellikler için teklif isteyebilirsiniz; sipariş tutarınıza eklenmezler. Size teklif ilettiğimizde onaylarsanız tutarı ödemeniz için güvenli ödeme sayfasına yönlendirilirsiniz, onaylamazsanız ek ödeme yapmazsınız. Listede olmayan bir ihtiyacınız varsa Özel İstek ile yazabilirsiniz.",
   },
   {
-    q: "Ek özellikleri sonradan da ekletebilir miyim?",
-    a: "Sipariş sırasında seçebilirsiniz. Sonradan ihtiyaç doğarsa bizimle iletişime geçin; kapsamına göre fiyatını net olarak bildiririz.",
-  },
-  {
-    q: "Sitem Google'da üst sıralarda çıkacak mı?",
-    a: "Her sitede temel SEO altyapısını kuruyoruz: sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri. Sıralamayı ise rekabet, içerik, yorumlar ve Google İşletme Profili gibi pek çok etken belirler; hiçbir hizmet belirli bir sırayı garanti edemez. Görünürlüğünüzü artırmanın yollarını blogumuzda anlatıyoruz.",
-  },
-  {
+    cat: "Fiyat, Ödeme ve İptal",
     q: "Fiyatlara KDV dahil mi?",
     a: VAT_INCLUDED ? "Evet. Sitede gördüğünüz tüm fiyatlara KDV dahildir." : "Hayır. Fiyatlara KDV ayrıca eklenir.",
   },
   {
+    cat: "Fiyat, Ödeme ve İptal",
     q: "Kart bilgilerim saklanıyor mu?",
     a: "Hayır. Ödeme, güvenli ödeme altyapısı üzerinden alınır ve kart bilgileriniz bizim sistemlerimizde saklanmaz.",
   },
   {
-    q: "Ödemeden sonra ne oluyor?",
-    a: "Sipariş numaranızı alır ve logo, metin, görsel gibi içerikleri göndereceğiniz proje formuna yönlendirilirsiniz. İçerikleriniz bize ulaştıktan sonra tasarım süreci başlar.",
-  },
-  {
+    cat: "Fiyat, Ödeme ve İptal",
     q: "Fatura kesiliyor mu?",
     a: "Evet. Ödeme sırasında girdiğiniz fatura bilgileriyle fatura düzenlenir.",
   },
   {
+    cat: "Fiyat, Ödeme ve İptal",
+    q: "Memnun kalmazsam servisi iptal edebilir miyim?",
+    a: "Evet, taahhüt yok. İlk yılın sonunda memnun kalmazsanız servisi yenilemezsiniz ve iptal için hiçbir ücret ödemezsiniz. Sonraki yıllarda da her yenilemeden önce aynı hakka sahipsiniz.",
+  },
+  {
+    cat: "Fiyat, Ödeme ve İptal",
+    q: "Sitemden ürün veya hizmet satabilir miyim?",
+    a: "Evet. Ürün / Hizmet Kataloğu ek özelliğiyle ürünlerinizi kategorilere ayırarak sergileyebilir, Online Ödeme ek özelliğiyle sitenizden doğrudan tahsilat alabilirsiniz. Büyük ölçekli, çok sayıda ürünlü bir e-ticaret altyapısı istiyorsanız kapsamı birlikte değerlendirip ayrıca teklif veririz.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "Ek özellikleri sonradan da ekletebilir miyim?",
+    a: "Sipariş sırasında seçebilirsiniz. Sonradan ihtiyaç doğarsa bizimle iletişime geçin; kapsamına göre fiyatını net olarak bildiririz.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "Ödemeden sonra ne oluyor?",
+    a: "Sipariş numaranızı alır ve logo, metin, görsel gibi içerikleri göndereceğiniz proje formuna yönlendirilirsiniz. İçerikleriniz bize ulaştıktan sonra tasarım süreci başlar.",
+  },
+  {
+    cat: "Süreç ve İçerik",
     q: "Sitem ne zaman hazır olur?",
     a: "Süre, içeriklerin hazır olma hızına ve seçtiğiniz ek özelliklere göre değişir. İçerikleriniz bize ulaştığında sürecin takvimini sizinle paylaşırız.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "Sitemin içeriğini kendim güncelleyebilir miyim?",
+    a: "Standart pakette içerik değişikliği taleplerinizi bize iletirsiniz, biz güncelleriz. Fiyat, metin veya görselleri kendiniz yönetmek isterseniz, Yönetim Paneli ek özelliğini (teklif üzerine) ekleyebilirsiniz.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "Sitemi birden fazla dilde yayınlayabilir miyim?",
+    a: "Evet, Çoklu Dil ek özelliğiyle sitenizi birden fazla dilde yayınlayabilirsiniz.",
+  },
+  {
+    cat: "Güven, Güvenlik ve SEO",
+    q: "Sitem Google'da üst sıralarda çıkacak mı?",
+    a: "Her sitede temel SEO altyapısını kuruyoruz: sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri. Sıralamayı ise rekabet, içerik, yorumlar ve Google İşletme Profili gibi pek çok etken belirler; hiçbir hizmet belirli bir sırayı garanti edemez. Görünürlüğünüzü artırmanın yollarını blogumuzda anlatıyoruz.",
+  },
+  {
+    cat: "Güven, Güvenlik ve SEO",
+    q: "Zaten Instagram/sosyal medya hesabım var, neden ayrıca web sitesine ihtiyacım var?",
+    a: "Sosyal medya hesabınız platformun kurallarına ve algoritmasına bağlıdır; erişiminiz bir gecede düşebilir veya hesabınıza erişim sorunu yaşayabilirsiniz. Web siteniz ve alan adınız ise yalnızca size aittir; Google aramalarında bulunmanızı sağlar ve reklam/bağlantılarınız için sağlam bir adres olur.",
+  },
+  {
+    cat: "Güven, Güvenlik ve SEO",
+    q: "Sitem güvenli mi (SSL/HTTPS)?",
+    a: "Evet, siteniz HTTPS (SSL) ile şifreli olarak yayınlanır; tarayıcılarda güvenlik uyarısı göstermez.",
   },
 ];
 

@@ -172,6 +172,7 @@ export interface ProcessStep {
 export interface Faq {
   q: string;
   a: string;
+  cat: string;
 }
 
 export interface MockData {

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
+import { COMPANY, INSTAGRAM_URL } from "@/data/company";
 import { BASE_PRICE, money } from "@/lib/config";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
@@ -63,12 +64,29 @@ export const viewport: Viewport = {
   themeColor: "#FFFFFF",
 };
 
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: COMPANY.brand,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  email: COMPANY.email,
+  sameAs: [INSTAGRAM_URL],
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: COMPANY.brand,
+  url: SITE_URL,
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Profesyonel web sitesi",
   description: "Modern, hızlı ve mobil uyumlu web sitesi. İlk yıl servis ve bakım ücretsiz.",
-  provider: { "@type": "Organization", name: "Vitrin", url: SITE_URL },
+  provider: { "@type": "Organization", name: COMPANY.brand, url: SITE_URL },
   areaServed: "TR",
   offers: { "@type": "Offer", price: String(BASE_PRICE), priceCurrency: "TRY", url: SITE_URL },
 };
@@ -78,6 +96,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="tr">
       <head>
         {process.env.NODE_ENV === "production" && <meta httpEquiv="Content-Security-Policy" content={CSP} />}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       </head>
       <body>

@@ -405,6 +405,10 @@ img,svg{max-width:100%}
 .pr p{margin:6px 0 0;color:var(--ink-2)}
 
 /* faq */
+.faq-cats{display:flex;flex-direction:column;gap:44px;max-width:860px}
+.faq-cat-t{font:700 .82rem var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:0 0 4px}
+.faq-more{margin-top:32px;color:var(--ink-2);font-size:.98rem}
+.faq-more a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .faq{border-bottom:1px solid var(--line);max-width:860px}
 .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;background:none;border:0;border-top:1px solid var(--line);text-align:left;font:600 1.15rem/1.4 var(--display);letter-spacing:-.015em;color:var(--ink);cursor:pointer}
 .faq-q .ic{transition:transform .25s;color:var(--mute)}

@@ -55,18 +55,6 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div className="ftr-co">
-            <h2 className="ftr-h">Satıcı bilgileri</h2>
-            <p>{COMPANY.title}</p>
-            <p>{COMPANY.address}</p>
-            <p>E-posta: {COMPANY.email}</p>
-            <p>Telefon: {COMPANY.phone}</p>
-            <p>MERSİS: {COMPANY.mersis}</p>
-            <p>KEP: {COMPANY.kep}</p>
-            <p>
-              {COMPANY.taxOffice}, {COMPANY.taxNo}
-            </p>
-          </div>
         </div>
         <div className="ftr-b">
           <p className="fine">© 2026 {COMPANY.brand}. Tüm hakları saklıdır.</p>

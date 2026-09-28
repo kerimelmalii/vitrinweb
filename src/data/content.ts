@@ -240,7 +240,7 @@ export const NAV: NavItem[] = [
   { label: "Süreç", sec: "surec" },
   { label: "Ücretlendirme", to: "/ucretlendirme" },
   { label: "Blog", to: "/blog" },
-  { label: "Hakkımızda", sec: "hakkimizda" },
+  { label: "Hakkımızda", to: "/hakkimizda" },
   { label: "SSS", sec: "sss" },
   { label: "İletişim", to: "/iletisim" },
 ];

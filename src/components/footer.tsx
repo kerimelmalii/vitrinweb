@@ -40,6 +40,9 @@ export function Footer() {
               <li>
                 <Link href="/girisim-programi">Girişim Destek Programı</Link>
               </li>
+              <li>
+                <Link href="/hakkimizda">Hakkımızda</Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -51,7 +54,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link href="/yasal/kvkk#sirket-bilgileri">Şirket Bilgileri</Link>
+                <Link href="/hakkimizda#sirket-bilgileri">Şirket Bilgileri</Link>
               </li>
             </ul>
           </div>

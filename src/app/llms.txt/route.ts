@@ -25,6 +25,7 @@ function build(): string {
     `- [İletişim](${SITE_URL}/iletisim): İletişim formu, e-posta ve Instagram.`,
     `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine %2 hisse karşılığında web sitesi, bakım ve SEO desteği.`,
     `- [İşgale Hayır!](${SITE_URL}/isgale-hayir): Filistin ve Doğu Türkistan için farkındalık sayfası.`,
+    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrin'in misyonu, vizyonu, değerleri ve şirket bilgileri.`,
     "",
     "## Blog yazıları",
     "",

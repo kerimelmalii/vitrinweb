@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { Modal } from "@/components/modal";
 import { LEGAL_UPDATED } from "@/data/company";
 import { LEGAL_DOCS, LEGAL_LINKS } from "@/data/legal";
@@ -69,7 +68,6 @@ export function LegalPage({ id }: { id: string }) {
           ))}
         </ul>
       </nav>
-      {id === "kvkk" && <LegalCompanyInfo />}
     </main>
   );
 }

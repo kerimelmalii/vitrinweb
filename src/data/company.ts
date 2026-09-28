@@ -18,12 +18,26 @@ export const COMPANY = {
 };
 
 /** Bir alanın hâlâ köşeli parantezli bir yer tutucu olup olmadığını (yani henüz
-    doldurulmadığını) söyler — "Yasal ve Şirket Bilgileri" bölümü, MERSİS/KEP gibi
-    henüz netleşmemiş alanları bu kontrolle gösterip göstermeyeceğine karar verir. */
+    doldurulmadığını) söyler — "Şirket Bilgileri" bölümü ve yasal metinler, MERSİS/KEP/
+    telefon gibi henüz netleşmemiş alanları bu kontrolle gösterip göstermeyeceğine karar verir. */
 export const isPlaceholder = (v: string): boolean => v.startsWith("[") && v.endsWith("]");
 
 export const INSTAGRAM_URL = "https://www.instagram.com/vitrinweb.com.tr/";
-export const LEGAL_UPDATED = "25 Eylül 2026";
+export const LEGAL_UPDATED = "28 Eylül 2026";
 
-export const companyLine = (): string =>
-  `${COMPANY.title}, ${COMPANY.address}. MERSİS: ${COMPANY.mersis}. E-posta: ${COMPANY.email}. Telefon: ${COMPANY.phone}. KEP: ${COMPANY.kep}.`;
+/* Yasal metinlerde satıcı kimliğini tek satırda özetler. Henüz doldurulmamış (köşeli
+   parantezli) alanlar satıra hiç eklenmez — böylece sözleşme metninde "[Telefon numarası]"
+   gibi çiğ bir yer tutucu görünmez; gerçek değer company.ts'e girilince satır otomatik
+   genişler. MERSİS henüz yoksa, kimliği belirsiz bırakmamak için ticaret sicil no kullanılır. */
+export const companyLine = (): string => {
+  const parts = [`${COMPANY.title}, ${COMPANY.address}.`];
+  parts.push(
+    isPlaceholder(COMPANY.mersis)
+      ? `Ticaret Sicil No: ${COMPANY.tradeRegistryNo} (${COMPANY.registryOffice}).`
+      : `MERSİS: ${COMPANY.mersis}.`
+  );
+  parts.push(`E-posta: ${COMPANY.email}.`);
+  if (!isPlaceholder(COMPANY.phone)) parts.push(`Telefon: ${COMPANY.phone}.`);
+  if (!isPlaceholder(COMPANY.kep)) parts.push(`KEP: ${COMPANY.kep}.`);
+  return parts.join(" ");
+};

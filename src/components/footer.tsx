@@ -54,7 +54,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link href="/hakkimizda#sirket-bilgileri">Şirket Bilgileri</Link>
+                <Link href="/hakkimizda">Şirket Bilgileri</Link>
               </li>
             </ul>
           </div>

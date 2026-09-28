@@ -621,6 +621,20 @@ textarea.input{min-height:120px;resize:vertical}
 .solidarity-stripe i:nth-child(3){background:#007A3D}
 .solidarity-stripe i:nth-child(4){background:#CE1126}
 
+/* /hakkimizda */
+.about-hero .logo{font-size:1.9rem}
+.about-mv{display:grid;gap:32px}
+@media(min-width:720px){.about-mv{grid-template-columns:1fr 1fr;gap:48px}}
+.about-mv h2{margin-bottom:10px}
+.about-mv p{color:var(--ink-2);max-width:52ch;margin:0}
+.about-sig{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:32px 0}
+.about-sig .logo{font-size:1.7rem}
+.about-sig p{color:var(--ink-2);margin:0}
+.about-sig a{color:var(--ink-2);font-size:.92rem;text-decoration:none}
+.about-sig a:hover{color:var(--ink);text-decoration:underline}
+.about-owner{border-top:1px solid var(--line);padding-top:32px}
+.about-owner p{color:var(--mute);font-size:.88rem;max-width:60ch;margin:0}
+
 .isg-hero{background:var(--ink);color:#fff;position:relative;overflow:hidden}
 .isg-hero-bg{position:absolute;inset:0;width:100%;height:100%;opacity:.08;pointer-events:none}
 .isg-hero .container-x{position:relative;z-index:1}

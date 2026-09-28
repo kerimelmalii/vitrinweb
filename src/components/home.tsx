@@ -330,8 +330,7 @@ export function FAQ() {
           ))}
         </div>
         <p className="faq-more">
-          Aradığınız cevap burada yoksa <Link href="/iletisim">bize yazın</Link>, elden geldiğince hızlı dönüş
-          yapalım.
+          Aradığınız cevap burada yoksa <Link href="/iletisim">bize yazın</Link>, hızlıca dönüş yapalım.
         </p>
       </div>
     </section>

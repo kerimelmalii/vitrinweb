@@ -5,9 +5,8 @@ import type { LegalDoc } from "@/lib/types";
 
 /* ================= YASAL METİNLER =================
    Blok biçimi: ["h", başlık] | ["p", paragraf] | ["ul", [maddeler]] | ["order"] (sipariş özeti).
-   Köşeli parantezli açık uç kalmadı; makul varsayılan koşullar (revizyon hakkı, teslim süresi,
-   fikri haklar/alan adı devri, iptal sonrası iade oranı) buraya yazıldı. Bunlar işletme sahibinin
-   onayladığı varsayılan koşullardır — gerçek niyetle farklıysa güncellenmelidir. Yayından önce
+   Köşeli parantezli açık uç kalmadı; revizyon hakkı, teslim süreci, alan adı (domain) desteğinin
+   kapsamı ve iptal/iade koşulları işletme sahibinin onayladığı şekilde yazıldı. Yayından önce
    yine de bir hukukçu tarafından gözden geçirilmelidir. */
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   kvkk: {
@@ -136,6 +135,10 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
           .map((f) => f.t.toLocaleLowerCase("tr"))
           .join(", ")} dahildir. Seçtiğiniz ek özellikler siparişinize eklenir.`,
       ],
+      [
+        "p",
+        "Ayrıca, yıllık bedeli 600 TL'yi aşmayan bir alan adının (domain) kaydı tarafımızca karşılanır. Seçtiğiniz alan adının bedeli 600 TL'yi aşarsa, 600 TL'lik destek bu tutardan düşülür ve kalan fark ayrıca sizden talep edilir.",
+      ],
       ["h", "3. Fiyat ve ödeme"],
       [
         "p",
@@ -150,7 +153,11 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "5. İfa (teslim)"],
       [
         "p",
-        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Teslim süresi, içeriklerin eksiksiz iletilmesine ve seçilen özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
+        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. İçerikleriniz eksiksiz ulaştıktan sonra en geç 30 gün içinde, verdiğiniz bilgilere göre hazırlanan site taslağı sizinle paylaşılır. Taslağın paylaşılmasından itibaren 1 ay içinde en fazla 2 kez revizyon talep edebilirsiniz; bu sürenin sonunda siteniz yayına hazır hâle getirilir.",
+      ],
+      [
+        "p",
+        "Çok sayıda ürünlü bir e-ticaret altyapısı gibi kapsamı genişleten talepler temel pakete dahil değildir; bu kapsamdaki istekler ayrıca değerlendirilip teklif verilir.",
       ],
       ["h", "6. Cayma hakkı"],
       [
@@ -191,7 +198,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Madde 4: Fikri haklar ve alan adı"],
       [
         "p",
-        "Tamamlanan web sitesinin tasarımı, kaynak dosyaları ve alan adı alıcıya aittir. Servis sona erdiğinde (yenilenmemesi veya iptal hâlinde), alıcının talebi üzerine site dosyaları ve alan adının devri en geç 30 gün içinde gerçekleştirilir.",
+        "Tamamlanan web sitesinin tasarımı, kaynak dosyaları ve alan adı alıcıya aittir. Alan adı kaydına ilişkin bedel, Ön Bilgilendirme Formu'nun 2. maddesinde belirtilen kapsamda karşılanır. Servis sona erdiğinde (yenilenmemesi veya iptal hâlinde), alıcının talebi üzerine site dosyaları ve alan adının devri en geç 30 gün içinde gerçekleştirilir.",
       ],
       ["h", "Madde 5: Yıllık servis, cayma hakkı ve iade"],
       ["p", "Yıllık servis ve cayma hakkına ilişkin koşullar, Ön Bilgilendirme Formu'nun 4. ve 6. maddelerinde ve İptal ve İade Politikası'nda belirtildiği gibidir."],
@@ -214,12 +221,12 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Çalışma başladıktan sonra"],
       [
         "p",
-        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
+        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkınız sona erer. Bu aşamadan sonra iptal talep etmeniz hâlinde ödemeniz iade edilmez.",
       ],
       ["h", "Yıllık servis ve bakım"],
       [
         "p",
-        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Ödemesi yapılmış bir servis yılı içinde iptal talep ederseniz, kalan aylara karşılık gelen tutar gün esasına göre orantılı olarak iade edilir.",
+        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Yenileme ödemesini yaptıktan sonra fikrinizi değiştirirseniz, ödeme tarihinden itibaren 14 gün içinde (cayma hakkı süresi içinde) iptal talep edebilirsiniz; bu süre içinde servis fiilen kullanılmaya başlandıysa geçen günlere karşılık gelen tutar düşülerek kalanı iade edilir. 14 günlük sürenin sonunda iptal talep ederseniz iade yapılmaz.",
       ],
       ["h", "Teklif ile fiyatlanan işler"],
       ["p", "Size ilettiğimiz teklifi onaylamadığınız sürece herhangi bir ücret alınmaz. Onayladığınız teklifler için de yukarıdaki cayma hakkı kuralları geçerlidir."],

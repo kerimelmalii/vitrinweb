@@ -11,10 +11,7 @@ export function LegalBody({ id }: { id: string }) {
   return (
     <div className="legal">
       <p className="lg-meta">Son güncelleme: {LEGAL_UPDATED}</p>
-      <p className="lg-draft">
-        Taslak metindir. Yayından önce bir hukukçu tarafından gözden geçirilmeli ve köşeli parantez içindeki alanlar
-        doldurulmalıdır.
-      </p>
+      <p className="lg-draft">Taslak metindir. Yayından önce bir hukukçu tarafından gözden geçirilmelidir.</p>
       {D.b().map((x: LegalBlock, i: number) => {
         if (x[0] === "h") return <h2 key={i}>{x[1]}</h2>;
         if (x[0] === "ul")

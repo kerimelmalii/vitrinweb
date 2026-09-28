@@ -1,92 +1,98 @@
-import { COMPANY, companyLine } from "@/data/company";
+import { COMPANY, companyLine, isPlaceholder } from "@/data/company";
 import { INCLUDED } from "@/data/content";
 import { TL, VAT_NOTE, YEARLY } from "@/lib/config";
 import type { LegalDoc } from "@/lib/types";
 
-/* ================= YASAL METİNLER (TASLAK) =================
+/* ================= YASAL METİNLER =================
    Blok biçimi: ["h", başlık] | ["p", paragraf] | ["ul", [maddeler]] | ["order"] (sipariş özeti).
-   Köşeli parantezli kısımlar işletme kararı gerektirir. Yayından önce bir hukukçu gözden geçirmelidir. */
+   Köşeli parantezli açık uç kalmadı; makul varsayılan koşullar (revizyon hakkı, teslim süresi,
+   fikri haklar/alan adı devri, iptal sonrası iade oranı) buraya yazıldı. Bunlar işletme sahibinin
+   onayladığı varsayılan koşullardır — gerçek niyetle farklıysa güncellenmelidir. Yayından önce
+   yine de bir hukukçu tarafından gözden geçirilmelidir. */
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   kvkk: {
     t: "KVKK Aydınlatma Metni",
-    b: () => [
-      [
-        "p",
-        `Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun ("KVKK") 10. maddesi ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca, veri sorumlusu sıfatıyla ${COMPANY.title} ("${COMPANY.brand}") tarafından hazırlanmıştır.`,
-      ],
-      ["h", "1. Veri sorumlusu"],
-      ["p", companyLine()],
-      ["h", "2. İşlenen kişisel veriler"],
-      [
-        "ul",
+    b: () => {
+      const kepClause = isPlaceholder(COMPANY.kep) ? "" : `${COMPANY.kep} KEP adresine veya `;
+      return [
         [
-          "Kimlik: ad, soyad; bireysel faturalar için T.C. kimlik numarası.",
-          "İletişim: telefon numarası, e-posta adresi, fatura adresi, WhatsApp numarası.",
-          "Müşteri işlem: sipariş içeriği, seçilen özellikler, teklif talepleri, proje formu ile gönderdiğiniz metin, logo ve görseller.",
-          "Finans: fatura bilgileri, ödeme tutarı ve ödeme işlem referansı. Kart bilgileriniz tarafımızca işlenmez ve saklanmaz; ödeme, lisanslı ödeme kuruluşu tarafından alınır.",
-          "İşlem güvenliği: IP adresi, işlem tarihi ve saati, sistem kayıtları.",
-          "Pazarlama: yalnızca ticari elektronik ileti onayı vermeniz hâlinde iletişim bilgileriniz.",
+          "p",
+          `Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun ("KVKK") 10. maddesi ve Aydınlatma Yükümlülüğünün Yerine Getirilmesinde Uyulacak Usul ve Esaslar Hakkında Tebliğ uyarınca, veri sorumlusu sıfatıyla ${COMPANY.title} ("${COMPANY.brand}") tarafından hazırlanmıştır.`,
         ],
-      ],
-      ["h", "3. İşleme amaçları"],
-      [
-        "ul",
+        ["h", "1. Veri sorumlusu"],
+        ["p", companyLine()],
+        ["h", "2. İşlenen kişisel veriler"],
         [
-          "Siparişinize ilişkin sözleşmenin kurulması ve ifası,",
-          "web sitenizin tasarlanması, geliştirilmesi, yayına alınması, servis ve bakımının yapılması,",
-          "faturalandırma ve muhasebe işlemleri,",
-          "sizinle iletişim kurulması ve talep ettiğiniz özellikler için teklif hazırlanması,",
-          "mevzuattan doğan yükümlülüklerin yerine getirilmesi ve yetkili kurumların taleplerinin karşılanması,",
-          "bilgi güvenliğinin sağlanması ve kötüye kullanımın önlenmesi,",
-          "onay vermeniz hâlinde kampanya ve duyuruların iletilmesi.",
+          "ul",
+          [
+            "Kimlik: ad, soyad; bireysel faturalar için T.C. kimlik numarası.",
+            "İletişim: telefon numarası, e-posta adresi, fatura adresi, WhatsApp numarası.",
+            "Müşteri işlem: sipariş içeriği, seçilen özellikler, teklif talepleri, proje formu ile gönderdiğiniz metin, logo ve görseller.",
+            "Finans: fatura bilgileri, ödeme tutarı ve ödeme işlem referansı. Kart bilgileriniz tarafımızca işlenmez ve saklanmaz; ödeme, lisanslı ödeme kuruluşu tarafından alınır.",
+            "İşlem güvenliği: IP adresi, işlem tarihi ve saati, sistem kayıtları.",
+            "Pazarlama: yalnızca ticari elektronik ileti onayı vermeniz hâlinde iletişim bilgileriniz.",
+          ],
         ],
-      ],
-      ["h", "4. Hukuki sebepler"],
-      [
-        "p",
-        "Kişisel verileriniz KVKK'nın 5. maddesinin 2. fıkrasında yer alan; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması (c), veri sorumlusunun hukuki yükümlülüğünü yerine getirmesi (ç), bir hakkın tesisi, kullanılması veya korunması (e) ve temel hak ve özgürlüklerinize zarar vermemek kaydıyla veri sorumlusunun meşru menfaati (f) hukuki sebeplerine dayanılarak işlenir. Ticari elektronik ileti gönderimi yalnızca açık onayınıza dayanır.",
-      ],
-      ["h", "5. Toplama yöntemi"],
-      [
-        "p",
-        "Kişisel verileriniz; bu sitedeki sipariş ve proje formları ile e-posta, telefon ve WhatsApp yazışmaları aracılığıyla, kısmen otomatik yollarla toplanır.",
-      ],
-      ["h", "6. Aktarım"],
-      [
-        "p",
-        "Kişisel verileriniz yukarıdaki amaçlarla sınırlı olarak; ödeme kuruluşuna, barındırma (hosting), e-posta ve bulut hizmeti sağlayıcılarına, muhasebe ve mali müşavirlik hizmeti alınan kişilere, hukuki danışmanlara ve talep hâlinde yetkili kamu kurum ve kuruluşlarına aktarılabilir.",
-      ],
-      [
-        "p",
-        "Kullanılan bazı hizmet sağlayıcıların sunucuları yurt dışında bulunabilir. Bu durumda aktarım, KVKK'nın 9. maddesine uygun olarak yeterlilik kararı, standart sözleşme gibi uygun güvenceler veya kanunda sayılan diğer hâller çerçevesinde yapılır. [Kullanılan hizmet sağlayıcılar ve bulundukları ülkeler burada listelenecektir.]",
-      ],
-      ["h", "7. Saklama süresi"],
-      [
-        "p",
-        "Sözleşme, fatura ve muhasebe kayıtları, başta Türk Ticaret Kanunu ve Vergi Usul Kanunu olmak üzere ilgili mevzuatta öngörülen süreler boyunca (10 yıla kadar) saklanır. Tamamlanmamış sipariş kayıtları [6 ay] sonra, pazarlama amaçlı veriler ise onayınızı geri almanızla silinir. Süresi dolan veriler silinir, yok edilir veya anonim hâle getirilir.",
-      ],
-      ["h", "8. Haklarınız"],
-      ["p", "KVKK'nın 11. maddesi uyarınca veri sorumlusuna başvurarak:"],
-      [
-        "ul",
+        ["h", "3. İşleme amaçları"],
         [
-          "kişisel verilerinizin işlenip işlenmediğini öğrenme,",
-          "işlenmişse buna ilişkin bilgi talep etme,",
-          "işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,",
-          "yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,",
-          "eksik veya yanlış işlenmişse düzeltilmesini isteme,",
-          "KVKK'nın 7. maddesindeki şartlar çerçevesinde silinmesini veya yok edilmesini isteme,",
-          "düzeltme, silme ve yok etme işlemlerinin verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,",
-          "münhasıran otomatik sistemlerle analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,",
-          "kanuna aykırı işleme sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.",
+          "ul",
+          [
+            "Siparişinize ilişkin sözleşmenin kurulması ve ifası,",
+            "web sitenizin tasarlanması, geliştirilmesi, yayına alınması, servis ve bakımının yapılması,",
+            "faturalandırma ve muhasebe işlemleri,",
+            "sizinle iletişim kurulması ve talep ettiğiniz özellikler için teklif hazırlanması,",
+            "mevzuattan doğan yükümlülüklerin yerine getirilmesi ve yetkili kurumların taleplerinin karşılanması,",
+            "bilgi güvenliğinin sağlanması ve kötüye kullanımın önlenmesi,",
+            "onay vermeniz hâlinde kampanya ve duyuruların iletilmesi.",
+          ],
         ],
-      ],
-      ["h", "9. Başvuru"],
-      [
-        "p",
-        `Başvurunuzu, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun olarak ve kimliğinizi tespit edici bilgilerle birlikte; yazılı olarak ${COMPANY.address} adresine, ${COMPANY.kep} KEP adresine veya sistemimizde kayıtlı e-posta adresinizden ${COMPANY.email} adresine iletebilirsiniz. Başvurunuz en geç 30 gün içinde ücretsiz olarak sonuçlandırılır. İşlemin ayrıca bir maliyet gerektirmesi hâlinde, Kişisel Verileri Koruma Kurulunca belirlenen tarifedeki ücret alınabilir.`,
-      ],
-    ],
+        ["h", "4. Hukuki sebepler"],
+        [
+          "p",
+          "Kişisel verileriniz KVKK'nın 5. maddesinin 2. fıkrasında yer alan; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması (c), veri sorumlusunun hukuki yükümlülüğünü yerine getirmesi (ç), bir hakkın tesisi, kullanılması veya korunması (e) ve temel hak ve özgürlüklerinize zarar vermemek kaydıyla veri sorumlusunun meşru menfaati (f) hukuki sebeplerine dayanılarak işlenir. Ticari elektronik ileti gönderimi yalnızca açık onayınıza dayanır.",
+        ],
+        ["h", "5. Toplama yöntemi"],
+        [
+          "p",
+          "Kişisel verileriniz; bu sitedeki sipariş ve proje formları ile e-posta, telefon ve WhatsApp yazışmaları aracılığıyla, kısmen otomatik yollarla toplanır.",
+        ],
+        ["h", "6. Aktarım"],
+        [
+          "p",
+          "Kişisel verileriniz yukarıdaki amaçlarla sınırlı olarak; ödeme kuruluşuna, barındırma (hosting), e-posta ve bulut hizmeti sağlayıcılarına, muhasebe ve mali müşavirlik hizmeti alınan kişilere, hukuki danışmanlara ve talep hâlinde yetkili kamu kurum ve kuruluşlarına aktarılabilir.",
+        ],
+        [
+          "p",
+          "Kullanılan bazı hizmet sağlayıcıların sunucuları yurt dışında bulunabilir. Bu durumda aktarım, KVKK'nın 9. maddesine uygun olarak yeterlilik kararı, standart sözleşme gibi uygun güvenceler veya kanunda sayılan diğer hâller çerçevesinde yapılır. Sitenin barındırılması için GitHub, Inc. (ABD) kullanılır; kurulmuşsa form ve sipariş bildirimleri Google LLC'nin (ABD) altyapısı üzerinden iletilir. Yeni bir hizmet sağlayıcı devreye alındığında bu liste güncellenir.",
+        ],
+        ["h", "7. Saklama süresi"],
+        [
+          "p",
+          "Sözleşme, fatura ve muhasebe kayıtları, başta Türk Ticaret Kanunu ve Vergi Usul Kanunu olmak üzere ilgili mevzuatta öngörülen süreler boyunca (10 yıla kadar) saklanır. Tamamlanmamış sipariş kayıtları 6 ay sonra, pazarlama amaçlı veriler ise onayınızı geri almanızla silinir. Süresi dolan veriler silinir, yok edilir veya anonim hâle getirilir.",
+        ],
+        ["h", "8. Haklarınız"],
+        ["p", "KVKK'nın 11. maddesi uyarınca veri sorumlusuna başvurarak:"],
+        [
+          "ul",
+          [
+            "kişisel verilerinizin işlenip işlenmediğini öğrenme,",
+            "işlenmişse buna ilişkin bilgi talep etme,",
+            "işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,",
+            "yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,",
+            "eksik veya yanlış işlenmişse düzeltilmesini isteme,",
+            "KVKK'nın 7. maddesindeki şartlar çerçevesinde silinmesini veya yok edilmesini isteme,",
+            "düzeltme, silme ve yok etme işlemlerinin verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,",
+            "münhasıran otomatik sistemlerle analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme,",
+            "kanuna aykırı işleme sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.",
+          ],
+        ],
+        ["h", "9. Başvuru"],
+        [
+          "p",
+          `Başvurunuzu, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun olarak ve kimliğinizi tespit edici bilgilerle birlikte; yazılı olarak ${COMPANY.address} adresine, ${kepClause}sistemimizde kayıtlı e-posta adresinizden ${COMPANY.email} adresine iletebilirsiniz. Başvurunuz en geç 30 gün içinde ücretsiz olarak sonuçlandırılır. İşlemin ayrıca bir maliyet gerektirmesi hâlinde, Kişisel Verileri Koruma Kurulunca belirlenen tarifedeki ücret alınabilir.`,
+        ],
+      ];
+    },
   },
 
   cerez: {
@@ -139,12 +145,12 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "4. Yıllık servis ve bakım"],
       [
         "p",
-        `İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, TÜİK'in açıkladığı yıllık TÜFE oranında güncellenir ve yeni ücret yenilemeden en az [30] gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
+        `İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, TÜİK'in açıkladığı yıllık TÜFE oranında güncellenir ve yeni ücret yenilemeden en az 30 gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
       ],
       ["h", "5. İfa (teslim)"],
       [
         "p",
-        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Teslim süresi, içeriklerin eksiksiz iletilmesine ve seçilen özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak paylaşılır. [Revizyon hakkı ve azami teslim süresi burada belirtilecektir.]",
+        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Teslim süresi, içeriklerin eksiksiz iletilmesine ve seçilen özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
       ],
       ["h", "6. Cayma hakkı"],
       [
@@ -163,7 +169,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "8. Bilgilerin düzeltilmesi ve sözleşmenin saklanması"],
       [
         "p",
-        "Ödeme öncesinde girdiğiniz bilgileri sipariş özetindeki bağlantılarla düzeltebilirsiniz. Sipariş onayınız ve bu sözleşmenin bir örneği e-posta adresinize gönderilir; sözleşme [10 yıl] süreyle saklanır ve talep etmeniz hâlinde size iletilir.",
+        "Ödeme öncesinde girdiğiniz bilgileri sipariş özetindeki bağlantılarla düzeltebilirsiniz. Sipariş onayınız ve bu sözleşmenin bir örneği e-posta adresinize gönderilir; sözleşme 10 yıl süreyle saklanır ve talep etmeniz hâlinde size iletilir.",
       ],
       ["h", "Mesafeli Satış Sözleşmesi"],
       ["h", "Madde 1: Taraflar"],
@@ -185,7 +191,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Madde 4: Fikri haklar ve alan adı"],
       [
         "p",
-        "[Tamamlanan web sitesinin tasarımı ve kaynak dosyaları ile alan adının mülkiyeti ve servisin sona ermesi hâlinde teslim koşulları burada belirtilecektir.]",
+        "Tamamlanan web sitesinin tasarımı, kaynak dosyaları ve alan adı alıcıya aittir. Servis sona erdiğinde (yenilenmemesi veya iptal hâlinde), alıcının talebi üzerine site dosyaları ve alan adının devri en geç 30 gün içinde gerçekleştirilir.",
       ],
       ["h", "Madde 5: Yıllık servis, cayma hakkı ve iade"],
       ["p", "Yıllık servis ve cayma hakkına ilişkin koşullar, Ön Bilgilendirme Formu'nun 4. ve 6. maddelerinde ve İptal ve İade Politikası'nda belirtildiği gibidir."],
@@ -206,11 +212,14 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         "Sipariş tarihinden itibaren 14 gün içinde, proje formunu göndererek tasarım çalışmasının başlamasını onaylamadıysanız siparişinizi gerekçe göstermeden iptal edebilirsiniz. Ödemenizin tamamı, bildiriminiz bize ulaştıktan sonra en geç 14 gün içinde ödeme yaptığınız araçla iade edilir.",
       ],
       ["h", "Çalışma başladıktan sonra"],
-      ["p", "Onayınızla tasarım çalışması başladıktan sonra cayma hakkı kullanılamaz. [Bu aşamadaki iptallerde uygulanacak koşullar burada belirtilecektir.]"],
+      [
+        "p",
+        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
+      ],
       ["h", "Yıllık servis ve bakım"],
       [
         "p",
-        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. [Ödemesi yapılmış bir servis yılına ilişkin iade koşulu burada belirtilecektir.]",
+        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Ödemesi yapılmış bir servis yılı içinde iptal talep ederseniz, kalan aylara karşılık gelen tutar gün esasına göre orantılı olarak iade edilir.",
       ],
       ["h", "Teklif ile fiyatlanan işler"],
       ["p", "Size ilettiğimiz teklifi onaylamadığınız sürece herhangi bir ücret alınmaz. Onayladığınız teklifler için de yukarıdaki cayma hakkı kuralları geçerlidir."],

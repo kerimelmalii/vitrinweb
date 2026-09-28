@@ -50,6 +50,9 @@ export function Footer() {
                   <Link href={`/yasal/${id}`}>{label}</Link>
                 </li>
               ))}
+              <li>
+                <Link href="/yasal/kvkk#sirket-bilgileri">Şirket Bilgileri</Link>
+              </li>
             </ul>
           </div>
           <div className="ftr-co">

@@ -153,11 +153,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "5. İfa (teslim)"],
       [
         "p",
-        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. İçerikleriniz eksiksiz ulaştıktan sonra en geç 30 gün içinde, verdiğiniz bilgilere göre hazırlanan site taslağı sizinle paylaşılır. Taslağın paylaşılmasından itibaren 1 ay içinde en fazla 2 kez revizyon talep edebilirsiniz; bu sürenin sonunda siteniz yayına hazır hâle getirilir.",
-      ],
-      [
-        "p",
-        "Çok sayıda ürünlü bir e-ticaret altyapısı gibi kapsamı genişleten talepler temel pakete dahil değildir; bu kapsamdaki istekler ayrıca değerlendirilip teklif verilir.",
+        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Teslim süresi, içeriklerin eksiksiz iletilmesine ve seçilen özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
       ],
       ["h", "6. Cayma hakkı"],
       [
@@ -221,12 +217,12 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Çalışma başladıktan sonra"],
       [
         "p",
-        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkınız sona erer. Bu aşamadan sonra iptal talep etmeniz hâlinde ödemeniz iade edilmez.",
+        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
       ],
       ["h", "Yıllık servis ve bakım"],
       [
         "p",
-        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Yenileme ödemesini yaptıktan sonra fikrinizi değiştirirseniz, ödeme tarihinden itibaren 14 gün içinde (cayma hakkı süresi içinde) iptal talep edebilirsiniz; bu süre içinde servis fiilen kullanılmaya başlandıysa geçen günlere karşılık gelen tutar düşülerek kalanı iade edilir. 14 günlük sürenin sonunda iptal talep ederseniz iade yapılmaz.",
+        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Ödemesi yapılmış bir servis yılı içinde iptal talep ederseniz, kalan aylara karşılık gelen tutar gün esasına göre orantılı olarak iade edilir.",
       ],
       ["h", "Teklif ile fiyatlanan işler"],
       ["p", "Size ilettiğimiz teklifi onaylamadığınız sürece herhangi bir ücret alınmaz. Onayladığınız teklifler için de yukarıdaki cayma hakkı kuralları geçerlidir."],

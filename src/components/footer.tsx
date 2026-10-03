@@ -1,9 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { InstaLink, Logo } from "@/components/header";
 import { COMPANY } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
 import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
+import { BASE_PATH } from "@/lib/site";
 import { SectionLink } from "@/components/section-link";
 
 export function Footer() {
@@ -64,6 +66,7 @@ export function Footer() {
           <p className="fine">
             <Icon n="lock" size={14} /> Ödemeler lisanslı ödeme kuruluşu üzerinden, güvenli bağlantıyla alınır.
           </p>
+          <Image className="pay-badge" src={`${BASE_PATH}/odeme-yontemleri.png`} alt="iyzico ile Öde — Mastercard, Visa, American Express, Troy" width={429} height={32} />
         </div>
       </div>
     </footer>

@@ -94,6 +94,72 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
     },
   },
 
+  gizlilik: {
+    t: "Gizlilik Sözleşmesi",
+    b: () => [
+      [
+        "p",
+        `${COMPANY.title} ("${COMPANY.brand}") olarak ziyaretçi ve müşterilerimizin gizliliğine önem veriyoruz. Bu Gizlilik Sözleşmesi, siteyi kullanırken hangi bilgilerinizi, hangi amaçla ve nasıl işlediğimizi genel hatlarıyla açıklar; kişisel verilerinizin 6698 sayılı KVKK kapsamındaki işlenmesine ilişkin ayrıntılı ve resmi bilgilendirme için KVKK Aydınlatma Metni'ne bakınız.`,
+      ],
+      ["h", "1. Topladığımız bilgiler"],
+      [
+        "ul",
+        [
+          "Kimlik bilgileri: ad, soyad; bireysel faturalarda T.C. kimlik numarası.",
+          "İletişim bilgileri: telefon numarası, e-posta adresi, fatura adresi.",
+          "Sipariş ve proje bilgileri: seçtiğiniz paket ve ek özellikler, proje formuyla gönderdiğiniz logo, metin ve görseller.",
+          "Ödeme bilgileri: fatura tutarı ve ödeme işlem referansı. Kart numaranız, son kullanma tarihiniz ve CVV'niz bizim sistemlerimize hiç ulaşmaz; ödeme doğrudan lisanslı ödeme kuruluşunun güvenli altyapısı üzerinden alınır.",
+          "Teknik bilgiler: IP adresi, tarayıcı bilgisi ve işlem güvenliği için sistem kayıtları.",
+        ],
+      ],
+      ["h", "2. Bilgileri nasıl topluyoruz"],
+      [
+        "p",
+        "Bilgileriniz; sipariş formu, proje başlangıç formu, iletişim formu ve e-posta/WhatsApp yazışmaları aracılığıyla doğrudan sizin tarafınızdan sağlanır. Sitenin çalışması için gerekli bazı teknik bilgiler otomatik olarak toplanır (bkz. Çerez Politikası).",
+      ],
+      ["h", "3. Bilgilerinizi hangi amaçla kullanıyoruz"],
+      [
+        "ul",
+        [
+          "siparişinizi almak, web sitenizi tasarlamak, geliştirmek ve yayına almak,",
+          "ödemenizi güvenli şekilde işlemek ve faturanızı düzenlemek,",
+          "sipariş süreci boyunca sizinle iletişim kurmak ve destek sağlamak,",
+          "yasal yükümlülüklerimizi yerine getirmek,",
+          "yalnızca açık onayınız varsa kampanya ve duyuru göndermek.",
+        ],
+      ],
+      ["h", "4. Çerezler ve yerel depolama"],
+      [
+        "p",
+        "Bu sitede reklam veya takip amaçlı çerez kullanılmaz; sipariş sürecinizi hatırlamak için yalnızca zorunlu teknik veriler tarayıcınızın yerel depolama alanında tutulur. Ayrıntılar için Çerez Politikası sayfasına bakabilirsiniz.",
+      ],
+      ["h", "5. Bilgi güvenliği"],
+      [
+        "p",
+        "Verileriniz, yetkisiz erişime, kayba veya kötüye kullanıma karşı makul teknik ve idari tedbirlerle korunur. Site HTTPS (SSL) üzerinden şifreli bağlantıyla sunulur; ödeme bilgileriniz lisanslı ödeme kuruluşunun güvenli altyapısında işlenir, bizim sunucularımıza hiç ulaşmaz.",
+      ],
+      ["h", "6. Üçüncü taraflarla paylaşım"],
+      [
+        "p",
+        "Bilgileriniz; ödemenizi işleyen lisanslı ödeme kuruluşuna, sitenin barındırıldığı GitHub, Inc.'e, kurulmuşsa form ve sipariş bildirimleri için Google LLC altyapısına, muhasebe hizmeti aldığımız mali müşavire ve yasal zorunluluk hâlinde yetkili kamu kurumlarına, yalnızca hizmetin ifası için gerekli ölçüde aktarılır. Bilgileriniz hiçbir şekilde pazarlama amacıyla üçüncü kişilere satılmaz veya kiralanmaz.",
+      ],
+      ["h", "7. Saklama süresi"],
+      [
+        "p",
+        "Sözleşme, fatura ve muhasebe kayıtları ilgili mevzuatta öngörülen süre boyunca (10 yıla kadar) saklanır. Ayrıntılı saklama süreleri için KVKK Aydınlatma Metni'ne bakınız.",
+      ],
+      ["h", "8. Haklarınız"],
+      [
+        "p",
+        "Kişisel verilerinize erişme, düzeltilmesini veya silinmesini isteme gibi KVKK kapsamındaki haklarınızı ve bu hakları nasıl kullanacağınızı KVKK Aydınlatma Metni'nde bulabilirsiniz.",
+      ],
+      ["h", "9. Değişiklikler"],
+      ["p", "Bu Gizlilik Sözleşmesi gerektiğinde güncellenebilir; güncel sürüm her zaman bu sayfada yer alır."],
+      ["h", "10. İletişim"],
+      ["p", `Gizlilikle ilgili sorularınız için ${COMPANY.email} adresinden bize ulaşabilirsiniz.`],
+    ],
+  },
+
   cerez: {
     t: "Çerez ve Yerel Depolama Politikası",
     b: () => [
@@ -205,6 +271,61 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
     ],
   },
 
+  teslimat: {
+    t: "Teslimat ve İade Şartları",
+    b: () => [
+      [
+        "p",
+        "Bu sayfa, satın aldığınız hizmetin nasıl ve ne zaman teslim edileceğini ve iptal/iade koşullarını özetler; ayrıntılı hükümler Mesafeli Satış Sözleşmesi'nde ve İptal ve İade Politikası'nda yer alır.",
+      ],
+      ["h", "1. Hizmetin niteliği"],
+      [
+        "p",
+        "Satın aldığınız hizmet fiziksel bir ürün değil, web sitesi tasarımı, geliştirme, yayına alma ve servis/bakım hizmetidir; bu nedenle kargo ile bir teslimat yapılmaz. Tamamlanan web siteniz internet üzerinden, kendi alan adınızda yayına alınarak teslim edilir.",
+      ],
+      ["h", "2. Teslimat süreci"],
+      [
+        "p",
+        "Ödemeniz onaylandıktan hemen sonra proje başlangıç formuna yönlendirilirsiniz; bu formla logo, metin ve görsellerinizi bize iletirsiniz. Tasarım çalışması, içerikleriniz bize ulaşması ve hizmetin başlamasını onaylamanızla başlar.",
+      ],
+      ["h", "3. Teslimat süresi"],
+      [
+        "p",
+        "Teslim süresi, içeriklerinizin eksiksiz iletilmesine ve seçtiğiniz ek özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak sizinle paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
+      ],
+      ["h", "4. Teslimat bildirimi"],
+      [
+        "p",
+        `Siteniz yayına alındığında, sipariş sırasında verdiğiniz e-posta adresine bildirim gönderilir. Teslimatla ilgili sorularınız için ${COMPANY.email} adresinden bize ulaşabilirsiniz.`,
+      ],
+      ["h", "5. Cayma hakkı — çalışma başlamadan önce"],
+      [
+        "p",
+        "Sipariş tarihinden itibaren 14 gün içinde, proje formunu göndererek tasarım çalışmasının başlamasını onaylamadıysanız siparişinizi gerekçe göstermeden iptal edebilirsiniz. Ödemenizin tamamı, bildiriminiz bize ulaştıktan sonra en geç 14 gün içinde ödeme yaptığınız araçla iade edilir.",
+      ],
+      ["h", "6. Cayma hakkı — çalışma başladıktan sonra"],
+      [
+        "p",
+        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
+      ],
+      ["h", "7. Yıllık servis ve bakımda iptal"],
+      [
+        "p",
+        "Taahhüt yoktur. İlk yılın sonunda veya sonraki her yenilemeden önce servisi yenilememeyi seçebilirsiniz; bunun için hiçbir ücret ödemezsiniz. Ödemesi yapılmış bir servis yılı içinde iptal talep ederseniz, kalan aylara karşılık gelen tutar gün esasına göre orantılı olarak iade edilir.",
+      ],
+      ["h", "8. İade yöntemi"],
+      [
+        "p",
+        "Tüm iadeler, ödemeyi yaptığınız karta veya hesaba yapılır; iade süresi ilgili bankanın işlem sürelerine bağlı olarak değişebilir.",
+      ],
+      ["h", "9. Başvuru"],
+      [
+        "p",
+        `İptal/iade talebinizi sipariş numaranızla birlikte ${COMPANY.email} adresine iletmeniz yeterlidir. Ayrıntılı hükümler için Mesafeli Satış Sözleşmesi ve İptal ve İade Politikası sayfalarına bakabilirsiniz.`,
+      ],
+    ],
+  },
+
   iade: {
     t: "İptal ve İade Politikası",
     b: () => [
@@ -275,8 +396,10 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
 
 export const LEGAL_LINKS: [string, string][] = [
   ["kvkk", "KVKK Aydınlatma Metni"],
+  ["gizlilik", "Gizlilik Sözleşmesi"],
   ["cerez", "Çerez Politikası"],
   ["mesafeli", "Mesafeli Satış Sözleşmesi"],
+  ["teslimat", "Teslimat ve İade Şartları"],
   ["iade", "İptal ve İade Politikası"],
   ["kosullar", "Kullanım Koşulları"],
   ["ileti", "Ticari Elektronik İleti Onayı"],

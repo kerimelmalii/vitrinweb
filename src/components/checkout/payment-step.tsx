@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Shell } from "@/components/checkout/stepper";
@@ -14,6 +15,7 @@ import { sendOrderToSupabase } from "@/lib/supabase-order";
 import { PaymentProvider } from "@/lib/payment";
 import { pricing } from "@/lib/pricing";
 import { LIMITS, token, validTCKN } from "@/lib/security";
+import { BASE_PATH } from "@/lib/site";
 import type { Invoice } from "@/lib/types";
 
 const fmtCard = (v: string) =>
@@ -422,6 +424,14 @@ export function PaymentStep() {
         <p className="fine" style={{ textAlign: "center", marginTop: "6px" }}>
           Ödeme bilgileriniz güvenli ödeme altyapısı üzerinden işlenir.
         </p>
+        <Image
+          className="pay-badge"
+          style={{ display: "block", margin: "10px auto 0" }}
+          src={`${BASE_PATH}/odeme-yontemleri.png`}
+          alt="iyzico ile Öde — Mastercard, Visa, American Express, Troy"
+          width={429}
+          height={32}
+        />
         <div className="trustrow" style={{ marginTop: "14px" }}>
           {["İlk yıl servis ücretsiz", "Şeffaf fiyatlandırma", "Mobil uyumlu"].map((t) => (
             <span key={t}>

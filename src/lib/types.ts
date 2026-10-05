@@ -18,6 +18,7 @@ export interface Invoice {
   taxId: string;
   taxOffice: string;
   address: string;
+  city: string;
 }
 
 export interface Consents {

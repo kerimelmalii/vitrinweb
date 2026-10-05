@@ -3,6 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import { getIyzicoClient, getIyzicoServerConfig } from "@/lib/iyzico";
+import { createPaymentResultToken } from "@/lib/payment-result-token";
 import { calculateServerPrice } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -181,13 +182,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.redirect(
-      new URL(
-        `/siparis/tamamlandi?orderId=${encodeURIComponent(order.id)}`,
-        request.url,
-      ),
-      303,
-    );
+    const resultToken = createPaymentResultToken(order.id);
+    const successUrl = new URL("/siparis/tamamlandi", request.url);
+    successUrl.searchParams.set("orderId", order.id);
+    successUrl.searchParams.set("resultToken", resultToken);
+
+    return NextResponse.redirect(successUrl, 303);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     console.error(

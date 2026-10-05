@@ -137,6 +137,12 @@ Başarılı callback sonrasında `payment_ref` alanının Checkout Form token'ı
 
 Doğrulanmış ödeme sonrasında `payment_ref` artık Checkout Form token'ı olarak korunur. Böylece aynı token ile gelen tekrar callback siparişi yeniden bulabilir; mevcut `payment_status != paid` koşulu sayesinde ödeme durumu ikinci kez yazılmaz. Ayrı bir iyzico `paymentId` saklanması gerekirse ileride bunun için ayrı bir veritabanı alanı eklenmelidir.
 
+### 17. Checkout Form retrieve imzasının resmî örnekle teyidi
+
+Checkout Form sonuç doğrulamasındaki imza parametre sırası iyzico'nun güncel resmî SDK örneğiyle yeniden kontrol edildi. Retrieve sonucu için HMAC-SHA256 girdisi şu sıradadır: `paymentStatus`, `paymentId`, `currency`, `basketId`, `conversationId`, `paidPrice`, `price`, `token`. Mevcut `verifyRetrieveSignature` uygulaması bu sırayla ve secret key ile HMAC-SHA256 ürettiği için algoritmada kod değişikliği gerekmedi.
+
+İmza kontrolüne ek olarak mevcut callback; token, conversationId, basketId, TRY para birimi, beklenen fiyat ve ödenen fiyatı da kayıtlı siparişle karşılaştırmaya devam eder. İmza tek başına ödeme durumunu `paid` yapmak için yeterli kabul edilmez.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -200,4 +206,4 @@ Doğrulanmış ödeme sonrasında `payment_ref` artık Checkout Form token'ı ol
 
 Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
 
-Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi. Bir sonraki geliştirme adımı iyzico retrieve response imza doğrulamasını güncel resmî dokümantasyon/SDK ile yeniden teyit etmek, ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.
+Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. Bir sonraki geliştirme adımı build/type/lint kontrolü ve Vercel Preview doğrulamasıdır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.

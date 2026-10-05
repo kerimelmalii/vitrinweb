@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Logo } from "@/components/header";
 import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
@@ -5,6 +6,7 @@ import { SectionHead } from "@/components/section-head";
 import { COMPANY } from "@/data/company";
 import { PROCESS } from "@/data/content";
 import { BASE_PRICE, TL } from "@/lib/config";
+import { BASE_PATH } from "@/lib/site";
 
 const WHY_VITRIN: { icon: "card" | "shield" | "trend" | "check"; title: string; body: string }[] = [
   {
@@ -130,7 +132,7 @@ export function AboutPage() {
       <section className="sec-s">
         <div className="container-x">
           <div className="about-sig">
-            <Logo />
+            <Image className="about-sig-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
             <p>İşletmenizin internetteki vitrini.</p>
             <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
           </div>

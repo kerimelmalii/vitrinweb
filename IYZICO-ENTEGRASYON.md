@@ -97,6 +97,12 @@ Başarılı iyzico callback'inden sonra sonuç ekranına çıplak `orderId` ile 
 
 Token veritabanında saklanmadığı için bu sürüm tek kullanımlı değil, kısa ömürlü ve imzalıdır. Gerçek tek kullanımlılık istenirse token nonce/hash'i için server-side kalıcı kayıt gerekir.
 
+### 12. Ana daldaki fatura şehri değişikliğinin senkronizasyonu
+
+Ana dalda daha sonra eklenen zorunlu `Invoice.city` alanı ödeme feature branch'ine taşındı. `Invoice` tipi, boş fatura modeli ve `LIMITS.city` artık ana dalla uyumlu. iyzico veri eşleme katmanındaki geçici type-cast kaldırıldı; şehir doğrudan tiplenmiş `invoice.city` alanından okunuyor ve eksikse ödeme fail-closed davranıyor.
+
+Bu senkronizasyon, ödeme arayüzü değiştirilirken ana daldaki şehir alanının yanlışlıkla kaybedilmesini önlemek için UI entegrasyonundan önce yapıldı.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -143,6 +149,10 @@ Token veritabanında saklanmadığı için bu sürüm tek kullanımlı değil, k
 - `a4eebd8d97247c24fe6a6df5d207244f3134a9a6` — callback başarı yönlendirmesine imzalı token eklenmesi
 - `31d53b84ecf8a74cd045cf80979914b3ebdd4e1a` — ödeme durum endpoint'inde imzalı token zorunluluğu
 - `8c451ce9bf1bdcaf1c3a8778d6debd7e2b6b4680` — sonuç ekranının imzalı token ile sorgulaması
+- `dd30498aa7b3b3dcd98ef7927a8eb63a9befc5de` — `Invoice.city` tipinin ana daldan senkronizasyonu
+- `c06cb90388c263997dcbc3dc459ce6c7bda11821` — boş fatura modeline şehir alanı
+- `da7a617a686649e8674eda71bfacc7d74290e2f5` — şehir input sınırının senkronizasyonu
+- `17d794b4ceac96a99d740ab161ca4eca066f3e9a` — iyzico eşlemesinde doğrudan tiplenmiş şehir kullanımı
 
 ## Sonraki adım
 

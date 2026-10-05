@@ -33,6 +33,9 @@ Aynı server-only modüle resmî `iyzipay` Node SDK istemcisi eklendi. İstemci 
 - eklenti listesini doğruluyor,
 - siparişin Supabase'te gerçekten var olduğunu server-side kontrol ediyor,
 - zaten ödenmiş sipariş için yeni ödeme başlatılmasını reddediyor,
+- müşteri, işletme, fatura ve zorunlu onay bilgilerini Supabase'teki kayıtlı siparişten okuyor,
+- eksik müşteri/fatura bilgisi veya tamamlanmamış zorunlu onay varsa Checkout Form hazırlığını reddediyor,
+- bu hassas alanları API cevabında tarayıcıya geri döndürmüyor,
 - tutarı server-side fiyatlandırmadan hesaplıyor.
 
 ### 4. Güvenilir fiyatlandırma — `src/lib/server-pricing.ts`
@@ -64,7 +67,7 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 ## Henüz yapılmayanlar
 
 - Gerçek Checkout Form initialize çağrısı.
-- Buyer, billing/shipping ve basket alanlarının güvenli şekilde oluşturulması.
+- Doğrulanmış Supabase sipariş alanlarının iyzico buyer, billing/shipping ve basket request nesnelerine dönüştürülmesi.
 - Callback endpoint'i.
 - Checkout Form sonucunun iyzico üzerinden retrieve edilip doğrulanması.
 - Doğrulanmış ödeme sonucunun Supabase'e idempotent biçimde yazılması.
@@ -86,7 +89,8 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 - `0c77af854a552f9688504464d8d97f32456a3caa` — iyzipay sürüm sabitleme
 - `ae388be94047fe3c504d2efc1d54083465d1e8e1` — npm lockfile senkronizasyonu
 - `fba5d36b46d48cbf1415052626aa6389d332223d` — server-only resmî iyzico SDK istemcisi
+- `324900b5e1e14420acb1f566be11e595b7e5d2ff` — Checkout Form öncesi güvenilir sipariş/fatura/onay doğrulaması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, Checkout Form initialize için gerekli sipariş, müşteri ve fatura alanlarını Supabase'ten güvenilir biçimde okuyup iyzico request modeline dönüştürmektir. Gerçek ödeme isteği ancak bu alanların sunucu tarafı doğrulaması tamamlandıktan sonra gönderilmelidir.
+Bir sonraki geliştirme adımı, doğrulanmış Supabase sipariş verisini iyzico Checkout Form'un buyer, billing/shipping ve basket request modeline dönüştüren server-only yardımcı katmanı oluşturmaktır. Bu katmanda iyzico'nun zorunlu alanları açıkça eşlenecek; tarayıcıdan buyer/adres/fiyat kabul edilmeyecektir.

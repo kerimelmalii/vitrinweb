@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Logo } from "@/components/header";
 import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { SectionHead } from "@/components/section-head";
@@ -50,8 +49,7 @@ export function AboutPage() {
     <main id="main">
       <section className="sec about-hero">
         <div className="container-x">
-          <Logo />
-          <h1 className="h-1" style={{ marginTop: "22px" }}>
+          <h1 className="h-1">
             Vitrin, işletmelerin dijital dünyadaki ilk adımı için var.
           </h1>
           <p className="lead" style={{ marginTop: "16px" }}>

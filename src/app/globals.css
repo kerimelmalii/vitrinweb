@@ -623,7 +623,7 @@ textarea.input{min-height:120px;resize:vertical}
 .solidarity-stripe i:nth-child(4){background:#CE1126}
 
 /* /hakkimizda */
-.about-hero .logo{font-size:1.9rem}
+.about-hero{padding-bottom:48px}
 .about-mv{display:grid;gap:32px}
 @media(min-width:720px){.about-mv{grid-template-columns:1fr 1fr;gap:48px}}
 .about-mv h2{margin-bottom:10px}

@@ -161,6 +161,12 @@ Bir sonraki Vercel Preview build'i derleme aşamasını geçti ancak yerel `iyzi
 
 `src/types/iyzipay.d.ts` gerçek kullanım yüzeyiyle eşleştirildi. `checkoutFormInitialize` ve `checkoutForm` ayrı resource alanları olarak tanımlandı; kullandığımız `create` ve `retrieve` callback metotları declaration'a eklendi. Çalışma zamanı ödeme kodu değiştirilmedi.
 
+### 21. Ödeme sonrası kanonik domain yönlendirmesi
+
+Sandbox uçtan uca ödeme testi başarıyla tamamlandı; ödeme iyzico tarafından onaylandı, callback doğrulandı ve sipariş başarı ekranına ulaştı. Test sırasında sonuç sayfasının bir Vercel deployment hostunda açıldığı görüldü.
+
+Callback route'unda başarı URL'si artık gelen callback isteğinin `request.url` hostundan türetilmiyor. Bunun yerine iyzico callback adresi için kullanılan güvenilir `IYZICO_CALLBACK_ORIGIN` kaynağının origin'i kullanılıyor. Böylece ödeme hangi Preview deployment üzerinden başlatılırsa başlatılsın başarılı ödeme sonrası sonuç sayfası kanonik Vitrin domaininde açılır. İstemci/proxy Host başlığı sonuç yönlendirmesinin kaynağı değildir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

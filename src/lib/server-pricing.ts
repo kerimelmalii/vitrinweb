@@ -19,6 +19,13 @@ export interface ServerPriceResult {
  */
 export function calculateServerPrice(addonIds: string[]): ServerPriceResult {
   const uniqueIds = [...new Set(addonIds)];
+  const knownIds = new Set(ADDONS.map((addon) => addon.id));
+  const unknownIds = uniqueIds.filter((id) => !knownIds.has(id));
+
+  if (unknownIds.length > 0) {
+    throw new Error("Geçersiz ek özellik seçimi.");
+  }
+
   const addons = ADDONS.filter((addon) => uniqueIds.includes(addon.id)).map(
     ({ id, name, price }) => ({ id, name, price }),
   );

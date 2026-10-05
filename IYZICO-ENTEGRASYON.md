@@ -193,6 +193,8 @@ Kullanıcı deneyimi kararıyla iyzico'nun ayrı `paymentPageUrl` sayfasına tam
 
 Bu değişiklik Vitrin'in kart verisini işlemesi anlamına gelmez. Kart alanları ve ödeme arayüzü iyzico Checkout Form içeriği tarafından oluşturulur; kart numarası, son kullanma tarihi ve CVV Vitrin React state'ine alınmaz, Vitrin API endpoint'lerine gönderilmez ve Supabase'e kaydedilmez. Mevcut server-side initialize, callback retrieve/doğrulama ve `paid` durumunun yalnızca güvenilir sunucu akışında yazılması korunur.
 
+İlk gömme denemesinde `dangerouslySetInnerHTML` ile eklenen Checkout Form içindeki script etiketlerinin tarayıcı tarafından çalıştırılmadığı görüldü; başlık görünürken kart alanı boş kalıyordu. Form içeriği artık bir DOM fragment olarak eklenir, böylece iyzico'nun kendi scriptleri çalışabilir. Initialize başarılı olduğunda `busy` durumu da kapatılır; butonun “Güvenli ödeme hazırlanıyor” durumunda takılı kalması engellenir. Bu DOM içeriğinin kaynağı kullanıcı girdisi değil, server-side iyzico initialize yanıtıdır.
+
 
 ## Güvenlik kararları
 

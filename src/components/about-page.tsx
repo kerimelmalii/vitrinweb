@@ -31,6 +31,13 @@ const WHY_VITRIN: { icon: "card" | "shield" | "trend" | "check"; title: string; 
   },
 ];
 
+const BRAND_COLORS: { varName: string; hex: string; label: string }[] = [
+  { varName: "--logo", hex: "#1F2F6B", label: "Logo rengi" },
+  { varName: "--ink", hex: "#111114", label: "Ana metin" },
+  { varName: "--ink-2", hex: "#46464D", label: "Gövde metni" },
+  { varName: "--line", hex: "#E4E4E9", label: "Çizgi" },
+];
+
 const VALUES: { icon: "layout" | "check" | "shield" | "globe"; title: string; body: string }[] = [
   { icon: "layout", title: "Sadelik", body: "Karmaşık değil, anlaşılır. Hem sitelerimizde hem süreçlerimizde." },
   { icon: "check", title: "Şeffaflık", body: "Fiyat, süreç ve sözleşme koşulları baştan nettir." },
@@ -60,6 +67,27 @@ export function AboutPage() {
             Vitrin, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
             sağlayan bir web tasarım hizmetidir.
           </p>
+        </div>
+      </section>
+
+      <section className="sec-s">
+        <div className="container-x">
+          <SectionHead title="Marka Kimliğimiz" sub="Her yerde aynı dil: sade, modern, güvenilir." />
+          <div className="about-brand">
+            <Image className="about-brand-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
+            <div className="about-brand-palette">
+              {BRAND_COLORS.map((c) => (
+                <div className="about-brand-swatch" key={c.hex}>
+                  <span style={{ background: `var(${c.varName})` }} aria-hidden="true"></span>
+                  <b>{c.hex}</b>
+                  <small>{c.label}</small>
+                </div>
+              ))}
+            </div>
+            <p className="about-brand-type">
+              <strong>Manrope</strong> — Sade. Modern. Güvenilir.
+            </p>
+          </div>
         </div>
       </section>
 

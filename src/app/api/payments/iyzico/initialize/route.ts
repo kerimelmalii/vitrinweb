@@ -8,7 +8,6 @@ import type { Consents, Invoice } from "@/lib/types";
 
 interface InitializeBody {
   orderId?: unknown;
-  addons?: unknown;
 }
 
 interface PaymentOrderRow {
@@ -18,15 +17,17 @@ interface PaymentOrderRow {
   business: { brand?: unknown } | null;
   invoice: Invoice | null;
   consents: Consents | null;
+  addons: unknown;
   payment_status: string | null;
 }
 
 /**
  * iyzico Checkout Form oturumu bu endpoint üzerinden başlatılacak.
  *
- * Ödeme oluşturulmadan önce sipariş kimliği ve ek özellikler doğrulanır. Müşteri,
+ * Ödeme oluşturulmadan önce sipariş kimliği doğrulanır. Ek özellikler, müşteri,
  * işletme, fatura ve onay bilgileri tarayıcıdan tekrar alınmaz; Supabase'teki
- * sipariş kaydı güvenilir kaynak olarak okunur. Tutar da yalnızca sunucudaki
+ * sipariş kaydı güvenilir kaynak olarak okunur. Tutar da kayıtlı ek özelliklere
+ * göre yalnızca sunucudaki
  * fiyat listesinden yeniden hesaplanır.
  */
 export async function POST(request: NextRequest) {
@@ -44,16 +45,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (
-      !Array.isArray(body.addons) ||
-      !body.addons.every((id): id is string => typeof id === "string")
-    ) {
-      return NextResponse.json(
-        { ok: false, error: "Ek özellik listesi geçersiz." },
-        { status: 400 },
-      );
-    }
-
     const supabase = getSupabaseAdmin();
     if (!supabase) {
       throw new Error("Supabase sunucu yapılandırması eksik.");
@@ -63,7 +54,7 @@ export async function POST(request: NextRequest) {
     const { data, error: orderError } = await supabase
       .from("orders")
       .select(
-        "id, order_no, customer, business, invoice, consents, payment_status",
+        "id, order_no, customer, business, invoice, consents, addons, payment_status",
       )
       .eq("id", orderId)
       .maybeSingle();
@@ -129,7 +120,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const price = calculateServerPrice(body.addons);
+    if (
+      !Array.isArray(order.addons) ||
+      !order.addons.every(
+        (addon) =>
+          typeof addon === "object" &&
+          addon !== null &&
+          "id" in addon &&
+          typeof addon.id === "string",
+      )
+    ) {
+      throw new Error("Siparişin kayıtlı ek özellikleri geçersiz.");
+    }
+
+    const price = calculateServerPrice(order.addons.map((addon) => addon.id));
 
     return NextResponse.json({
       ok: true,

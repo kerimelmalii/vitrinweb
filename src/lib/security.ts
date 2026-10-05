@@ -14,6 +14,7 @@ export const LIMITS = {
   invTitle: 150,
   taxOffice: 80,
   address: 300,
+  city: 60,
   text: 3000,
   short: 150,
 } as const;

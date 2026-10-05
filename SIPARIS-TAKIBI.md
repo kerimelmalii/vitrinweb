@@ -26,7 +26,7 @@ const HEADERS = [
   "Tarih", "Sipariş No", "Ad Soyad", "Telefon", "E-posta",
   "İşletme/Marka", "Sektör", "Paket", "Teklif İstenenler", "Toplam (TL)",
   "Fatura Türü", "Fatura Ünvanı/Ad", "Vergi/TC No", "Vergi Dairesi",
-  "Fatura Adresi", "Ödeme Durumu", "Ödeme Referansı",
+  "Fatura Şehri", "Fatura Adresi", "Ödeme Durumu", "Ödeme Referansı",
 ];
 
 function doPost(e) {
@@ -54,6 +54,7 @@ function doPost(e) {
       data.invoiceTitle || "",
       data.taxId || "",
       data.taxOffice || "",
+      data.invoiceCity || "",
       data.invoiceAddress || "",
       data.paymentStatus || "",
       data.paymentRef || "",
@@ -68,6 +69,8 @@ function doPost(e) {
 3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin Sipariş Bildirimi"** yap, sonra disket (kaydet) simgesine bas.
 
 > `SHARED_SECRET`'i mutlaka değiştir (yukarıdaki metni olduğu gibi bırakma) — önemli olan, aşağıdaki adım 4'te GitHub'a gireceğin `ORDER_WEBHOOK_SECRET` ile **birebir aynı** olması.
+
+> Bu kurulumu daha önce yaptıysan ve "Fatura Şehri" sütunu tabloda yoksa: Apps Script editöründeki kodu yukarıdaki güncel haliyle değiştirip tekrar kaydet ve **Dağıt → Dağıtımları yönet → düzenle → Yeni sürüm → Dağıt** ile yeniden yayınla; yeni siparişlerden itibaren şehir bilgisi de düşer.
 
 ## 3. Web uygulaması olarak yayınla
 

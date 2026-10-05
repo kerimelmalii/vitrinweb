@@ -55,12 +55,11 @@ function splitName(fullName: string): { name: string; surname: string } {
   };
 }
 
-function inferCity(address: string): string {
-  const parts = address
-    .split(/[\n,]/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-  return parts.at(-1) ?? "Türkiye";
+function getInvoiceCity(invoice: Invoice): string {
+  const city = (invoice as Invoice & { city?: unknown }).city;
+  if (typeof city === "string" && city.trim()) return city.trim();
+
+  throw new Error("Ödeme için fatura şehri eksik.");
 }
 
 function price(value: number): string {
@@ -73,9 +72,9 @@ function price(value: number): string {
  * Bu yardımcı tarayıcıdan buyer/adres/fiyat kabul etmez. Kimlik numarası yalnızca
  * bireysel faturada mevcutsa iyzico buyer alanına taşınır; loglanmamalıdır.
  *
- * Not: mevcut sipariş modelinde şehir ayrı tutulmadığı için geçici olarak fatura
- * adresinin son virgül/satır parçası şehir kabul edilir. Sipariş modeline ayrı
- * şehir alanı eklendiğinde bu çıkarım kaldırılmalıdır.
+ * Şehir ayrı bir fatura alanından okunur. Feature branch ana daldaki şehir
+ * değişikliğini henüz içermese bile geçiş sırasında tip güvenli biçimde okunur;
+ * alan yoksa adres metninden tahmin yapılmaz ve ödeme hazırlığı durur.
  */
 export function buildIyzicoCheckoutContext(
   order: TrustedCheckoutOrder,
@@ -84,7 +83,7 @@ export function buildIyzicoCheckoutContext(
 ): IyzicoCheckoutContext {
   const person = splitName(order.customer.name);
   const contactName = order.invoice.title.trim() || order.customer.name.trim();
-  const city = inferCity(order.invoice.address);
+  const city = getInvoiceCity(order.invoice);
 
   const basketItems: IyzicoCheckoutContext["basketItems"] = [
     {

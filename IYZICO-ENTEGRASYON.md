@@ -143,6 +143,12 @@ Checkout Form sonuç doğrulamasındaki imza parametre sırası iyzico'nun günc
 
 İmza kontrolüne ek olarak mevcut callback; token, conversationId, basketId, TRY para birimi, beklenen fiyat ve ödenen fiyatı da kayıtlı siparişle karşılaştırmaya devam eder. İmza tek başına ödeme durumunu `paid` yapmak için yeterli kabul edilmez.
 
+### 18. Vercel server build ve iyzipay external package ayarı
+
+İlk Vercel Preview build'inde `iyzipay` paketinin `lib/resources` dizinini dinamik `require` ile yüklemesi nedeniyle Next.js bundler `Module not found ... <dynamic>` hatası verdi. Ayrıca eski GitHub Pages mimarisinden kalan `output: "export"` ayarının yeni server-side API route'larıyla uyumsuz olduğu doğrulandı.
+
+`next.config.ts` Vercel/Next.js server mimarisine geçirildi: statik `output: "export"`, GitHub Pages `basePath` ve `assetPrefix` ayarları kaldırıldı. `iyzipay`, `serverExternalPackages: ["iyzipay"]` ile server bundle dışında bırakıldı; böylece SDK Node.js runtime'da kendi `node_modules` kaynaklarını doğrudan yükleyebilir. `NEXT_PUBLIC_BASE_PATH` boş tutulur.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -201,9 +207,10 @@ Checkout Form sonuç doğrulamasındaki imza parametre sırası iyzico'nun günc
 - `8b0256b8e070d33df1bb4572f381b6d97e5ec28a` — ilk sipariş kaydı için server-side oluşturma endpoint'i
 - `184773248bb72c8471ab7c2f0a75b6eecd6e6467` — paket adımının server-side sipariş oluşturma endpoint'ine bağlanması
 - `773e5090e174125f7b7c77d65d916c682cd1e00d` — callback tekrarlarında Checkout Form token'ının korunması
+- `2f24751e5b87e8f7d70f69fe845b7f84da60cdb2` — Vercel server mimarisi ve iyzipay external package ayarı
 
 ## Sonraki adım
 
 Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
 
-Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. Bir sonraki geliştirme adımı build/type/lint kontrolü ve Vercel Preview doğrulamasıdır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.
+Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. İlk Vercel build hatasına karşı Next.js server yapılandırması düzeltildi ve iyzipay external package olarak işaretlendi. Bir sonraki adım yeni Vercel Preview build sonucunu doğrulamaktır; build başarılı olmadan sandbox ödeme denemesi yapılmamalıdır.

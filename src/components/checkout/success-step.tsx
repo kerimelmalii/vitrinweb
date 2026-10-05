@@ -46,7 +46,7 @@ export function SuccessStep() {
         </ol>
         <Link
           className="btn btn-primary btn-lg"
-          href={order.accessToken ? "/baslangic/?t=" + order.accessToken : "/baslangic/"}
+          href={order.accessToken ? "/icerik-formu?t=" + order.accessToken : "/icerik-formu"}
         >
           İçerik Formuna Geçin
         </Link>

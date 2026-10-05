@@ -25,7 +25,7 @@ export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
   const supabase = getClient();
   if (!supabase) return;
   try {
-    await supabase.from("orders").insert({
+    await supabase.from("orders").upsert({
       id: rec.id,
       order_no: rec.orderNo,
       access_token: rec.accessToken,
@@ -45,7 +45,7 @@ export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
       project_status: rec.projectStatus,
       content_form: rec.contentForm,
       created_at: rec.createdAt,
-    });
+    }, { onConflict: "id" });
   } catch {
     /* Sipariş yerelde zaten kaydedildi; Supabase'e yazılamasa da akış etkilenmez. */
   }

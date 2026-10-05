@@ -22,7 +22,11 @@ Kullanılan ortam değişkenleri:
 
 Bu anahtarların hiçbiri `NEXT_PUBLIC_*` olarak tanımlanmamalıdır.
 
-### 2. Ödeme başlatma endpoint'i — `src/app/api/payments/iyzico/initialize/route.ts`
+### 2. Resmî iyzico SDK istemcisi — `src/lib/iyzico.ts`
+
+Aynı server-only modüle resmî `iyzipay` Node SDK istemcisi eklendi. İstemci `apiKey`, `secretKey` ve seçili ortamın base URL'ini yalnızca sunucudaki environment variable'lardan alıyor. SDK Node.js runtime gerektirdiği için bu istemci browser/Edge koduna taşınmamalıdır. Ortam değişirse önbellekteki istemci yeniden oluşturulur.
+
+### 3. Ödeme başlatma endpoint'i — `src/app/api/payments/iyzico/initialize/route.ts`
 
 `POST /api/payments/iyzico/initialize` endpoint'i oluşturuldu. Şu an gerçek Checkout Form isteğini henüz göndermiyor. Ön hazırlık olarak:
 - `orderId` biçimini doğruluyor,
@@ -31,18 +35,18 @@ Bu anahtarların hiçbiri `NEXT_PUBLIC_*` olarak tanımlanmamalıdır.
 - zaten ödenmiş sipariş için yeni ödeme başlatılmasını reddediyor,
 - tutarı server-side fiyatlandırmadan hesaplıyor.
 
-### 3. Güvenilir fiyatlandırma — `src/lib/server-pricing.ts`
+### 4. Güvenilir fiyatlandırma — `src/lib/server-pricing.ts`
 
 Ödeme tutarı için server-only fiyatlandırma katmanı eklendi. Frontend'in gönderdiği `total` değeri ödeme için kullanılmıyor. Temel fiyat ve eklenti fiyatları uygulamanın güvenilir sabitlerinden yeniden hesaplanıyor. Tanınmayan eklenti ID'leri sessizce yok sayılmak yerine hata ile reddediliyor.
 
-### 4. Supabase yönetici istemcisi — `src/lib/supabase-admin.ts`
+### 5. Supabase yönetici istemcisi — `src/lib/supabase-admin.ts`
 
 Ödeme sonucu gibi ayrıcalıklı veritabanı işlemleri için server-only Supabase istemcisi eklendi. `SUPABASE_SERVICE_ROLE_KEY` yalnızca sunucuda okunuyor; tarayıcıya açılmıyor.
 
 Vercel'de gerekli değişken:
 - `SUPABASE_SERVICE_ROLE_KEY`
 
-### 5. iyzico Node SDK ve npm lockfile
+### 6. iyzico Node SDK ve npm lockfile
 
 Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlendi. `package-lock.json` paketle ve çalışma zamanı bağımlılıklarıyla senkronize edildi. Böylece Vercel/`npm ci` sırasında `package.json` ile lockfile uyuşmazlığı oluşmaması hedefleniyor.
 
@@ -59,7 +63,6 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 
 ## Henüz yapılmayanlar
 
-- iyzico SDK için server-side client/wrapper.
 - Gerçek Checkout Form initialize çağrısı.
 - Buyer, billing/shipping ve basket alanlarının güvenli şekilde oluşturulması.
 - Callback endpoint'i.
@@ -82,7 +85,8 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 - `ad7cd6a738d2d6775772757f0e6d0ec53f2a5c89` — ödeme öncesi server-side sipariş kontrolü
 - `0c77af854a552f9688504464d8d97f32456a3caa` — iyzipay sürüm sabitleme
 - `ae388be94047fe3c504d2efc1d54083465d1e8e1` — npm lockfile senkronizasyonu
+- `fba5d36b46d48cbf1415052626aa6389d332223d` — server-only resmî iyzico SDK istemcisi
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, mevcut server-only iyzico yapılandırmasını kullanarak SDK istemcisini/wrapper'ını oluşturmak olmalıdır. Gerçek ödeme isteği ancak gerekli sipariş, müşteri ve fatura alanlarının sunucu tarafında güvenilir kaynaktan okunması tamamlandıktan sonra gönderilmelidir.
+Bir sonraki geliştirme adımı, Checkout Form initialize için gerekli sipariş, müşteri ve fatura alanlarını Supabase'ten güvenilir biçimde okuyup iyzico request modeline dönüştürmektir. Gerçek ödeme isteği ancak bu alanların sunucu tarafı doğrulaması tamamlandıktan sonra gönderilmelidir.

@@ -175,6 +175,12 @@ Vitrin'in kullanıcıya açık sayfalarında kısa, okunabilir, ASCII karakterli
 
 Sipariş başarı ekranındaki **“İçerik Formuna Geçin”** bağlantısı da yeni kanonik yola geçirildi: token varsa `/icerik-formu?t=...`, yoksa `/icerik-formu`. Böylece yeni oluşturulan kullanıcı bağlantıları artık eski `/baslangic` yolunu üretmez.
 
+### 23. Vercel runtime'da eksik iyzipay resource dosyalarının izlenmesi
+
+Preview ortamındaki gerçek ödeme başlatma testinde `POST /api/payments/iyzico/initialize` 503 döndü. Runtime logunda `Cannot find module '../IyzipayResource'` hatası ve `node_modules/iyzipay/lib/resources/ApiTest.js` kaynak zinciri görüldü. Bu, API anahtarlarından veya Supabase'ten değil; iyzipay SDK'nın çalışma anında dinamik `require` ile açtığı dosyaların Vercel function çıktısına eksik taşınmasından kaynaklandı.
+
+`next.config.ts` içindeki mevcut `serverExternalPackages: ["iyzipay"]` korunurken `outputFileTracingIncludes` eklendi. `/api/**/*` route'ları için `./node_modules/iyzipay/**/*` açıkça function çıktısına dahil ediliyor. Böylece SDK Node.js runtime'da external çalışmaya devam ederken dinamik resource dosyalarının Vercel paketinde bulunması sağlanır. Bu değişiklik ödeme doğrulama mantığını, anahtarları veya fiyatlandırmayı değiştirmez; yalnızca deployment/runtime paketlemesini düzeltir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

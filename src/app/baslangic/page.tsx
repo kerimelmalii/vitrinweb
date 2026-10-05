@@ -1,13 +1,19 @@
-import type { Metadata } from "next";
-import { Suspense } from "react";
-import { ProjectOnboarding } from "@/components/onboarding";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Proje başlangıç formu", robots: { index: false } };
+interface PageProps {
+  searchParams: Promise<{ t?: string | string[] }>;
+}
 
-export default function Page() {
-  return (
-    <Suspense fallback={<main id="main" className="container-x co"></main>}>
-      <ProjectOnboarding />
-    </Suspense>
-  );
+/**
+ * Eski /baslangic adresini kırmadan yeni, kullanıcı dostu /icerik-formu
+ * adresine taşır. Mevcut sipariş erişim token'ı korunur.
+ */
+export default async function Page({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const token = typeof params.t === "string" ? params.t : "";
+  const target = token
+    ? `/icerik-formu?t=${encodeURIComponent(token)}`
+    : "/icerik-formu";
+
+  redirect(target);
 }

@@ -4,18 +4,30 @@ import { getIyzicoServerConfig } from "@/lib/iyzico";
 import { RX } from "@/lib/security";
 import { calculateServerPrice } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import type { Consents, Invoice } from "@/lib/types";
 
 interface InitializeBody {
   orderId?: unknown;
   addons?: unknown;
 }
 
+interface PaymentOrderRow {
+  id: string;
+  order_no: string;
+  customer: { name?: unknown; email?: unknown; phone?: unknown } | null;
+  business: { brand?: unknown } | null;
+  invoice: Invoice | null;
+  consents: Consents | null;
+  payment_status: string | null;
+}
+
 /**
  * iyzico Checkout Form oturumu bu endpoint üzerinden başlatılacak.
  *
- * Ödeme oluşturulmadan önce sipariş kimliği ve ek özellikler doğrulanır, sipariş
- * Supabase'ten sunucu tarafında bulunur ve tutar yalnızca güvenilir fiyat
- * listesinden yeniden hesaplanır.
+ * Ödeme oluşturulmadan önce sipariş kimliği ve ek özellikler doğrulanır. Müşteri,
+ * işletme, fatura ve onay bilgileri tarayıcıdan tekrar alınmaz; Supabase'teki
+ * sipariş kaydı güvenilir kaynak olarak okunur. Tutar da yalnızca sunucudaki
+ * fiyat listesinden yeniden hesaplanır.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -48,15 +60,19 @@ export async function POST(request: NextRequest) {
     }
 
     const orderId = body.orderId.trim();
-    const { data: order, error: orderError } = await supabase
+    const { data, error: orderError } = await supabase
       .from("orders")
-      .select("id, payment_status")
+      .select(
+        "id, order_no, customer, business, invoice, consents, payment_status",
+      )
       .eq("id", orderId)
       .maybeSingle();
 
     if (orderError) {
       throw new Error("Sipariş veritabanından okunamadı.");
     }
+
+    const order = data as PaymentOrderRow | null;
 
     if (!order) {
       return NextResponse.json(
@@ -72,6 +88,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const customerName =
+      typeof order.customer?.name === "string" ? order.customer.name.trim() : "";
+    const customerEmail =
+      typeof order.customer?.email === "string" ? order.customer.email.trim() : "";
+    const customerPhone =
+      typeof order.customer?.phone === "string" ? order.customer.phone.trim() : "";
+    const businessName =
+      typeof order.business?.brand === "string" ? order.business.brand.trim() : "";
+
+    if (
+      !customerName ||
+      !RX.email.test(customerEmail) ||
+      !customerPhone ||
+      !businessName ||
+      !order.invoice?.title?.trim() ||
+      !order.invoice?.address?.trim()
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Ödeme için gerekli sipariş veya fatura bilgileri eksik.",
+        },
+        { status: 422 },
+      );
+    }
+
+    if (
+      !order.consents?.kvkk ||
+      !order.consents?.distance ||
+      !order.consents?.terms ||
+      !order.consents?.at
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Ödeme için gerekli zorunlu onaylar tamamlanmamış.",
+        },
+        { status: 422 },
+      );
+    }
+
     const price = calculateServerPrice(body.addons);
 
     return NextResponse.json({
@@ -83,6 +140,7 @@ export async function POST(request: NextRequest) {
       amount: price.total,
       currency: "TRY",
       addons: price.addons,
+      readyForCheckoutForm: true,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";

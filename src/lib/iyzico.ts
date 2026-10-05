@@ -1,5 +1,7 @@
 import "server-only";
 
+import Iyzipay from "iyzipay";
+
 const SANDBOX_BASE_URL = "https://sandbox-api.iyzipay.com";
 const PRODUCTION_BASE_URL = "https://api.iyzipay.com";
 
@@ -46,4 +48,28 @@ export function getIyzicoServerConfig(): IyzicoServerConfig {
       environment === "production" ? PRODUCTION_BASE_URL : SANDBOX_BASE_URL,
     environment,
   };
+}
+
+let iyzicoClient: Iyzipay | null = null;
+let iyzicoClientEnvironment: IyzicoEnvironment | null = null;
+
+/**
+ * Resmî iyzipay Node SDK istemcisini yalnızca sunucu tarafında oluşturur.
+ *
+ * Ortam değişirse (ör. testte sandbox -> production) eski istemci yeniden
+ * kullanılmaz. API anahtarları hiçbir zaman istemciye veya loglara gönderilmez.
+ */
+export function getIyzicoClient(): Iyzipay {
+  const config = getIyzicoServerConfig();
+
+  if (!iyzicoClient || iyzicoClientEnvironment !== config.environment) {
+    iyzicoClient = new Iyzipay({
+      apiKey: config.apiKey,
+      secretKey: config.secretKey,
+      uri: config.baseUrl,
+    });
+    iyzicoClientEnvironment = config.environment;
+  }
+
+  return iyzicoClient;
 }

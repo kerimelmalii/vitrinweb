@@ -187,6 +187,13 @@ Preview ortamındaki gerçek ödeme başlatma testinde `POST /api/payments/iyzic
 
 Bu nedenle tek tek hata çıktıkça paket eklemek yerine `package-lock.json` içindeki `iyzipay@2.0.69` çalışma zamanı bağımlılık ağının tamamı çıkarıldı. `next.config.ts` içindeki `outputFileTracingIncludes`, yalnızca bu bağımlılık ağındaki paket klasörlerini `/api/**/*` function çıktılarına dahil edecek şekilde genişletildi. Tüm `node_modules` körlemesine eklenmedi; kapsam iyzipay'ın gerçek dependency ağında tutuldu. `serverExternalPackages: ["iyzipay"]` korunur. Amaç SDK'nın dinamik require davranışını Vercel serverless paketlemesiyle uyumlu hale getirmektir; ödeme doğrulama, fiyatlandırma veya secret yönetimi değişmemiştir.
 
+### 25. Checkout Form'un Vitrin ödeme sayfasına gömülmesi
+
+Kullanıcı deneyimi kararıyla iyzico'nun ayrı `paymentPageUrl` sayfasına tam sayfa yönlendirme kaldırıldı. Initialize endpoint'inin zaten döndürdüğü `checkoutFormContent`, `payment-step.tsx` içinde Vitrin'in mevcut sipariş tasarımına gömülür. Böylece kullanıcı fatura ve sipariş akışından ayrılmadan kart ödeme alanını aynı Vitrin sayfasında görür.
+
+Bu değişiklik Vitrin'in kart verisini işlemesi anlamına gelmez. Kart alanları ve ödeme arayüzü iyzico Checkout Form içeriği tarafından oluşturulur; kart numarası, son kullanma tarihi ve CVV Vitrin React state'ine alınmaz, Vitrin API endpoint'lerine gönderilmez ve Supabase'e kaydedilmez. Mevcut server-side initialize, callback retrieve/doğrulama ve `paid` durumunun yalnızca güvenilir sunucu akışında yazılması korunur.
+
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

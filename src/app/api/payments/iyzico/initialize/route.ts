@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getIyzicoServerConfig } from "@/lib/iyzico";
+import { buildIyzicoCheckoutContext } from "@/lib/iyzico-checkout";
+import { getIyzicoClient, getIyzicoServerConfig } from "@/lib/iyzico";
+import {
+  getIyzicoCallbackUrl,
+  getPaymentClientIp,
+} from "@/lib/payment-request";
 import { RX } from "@/lib/security";
 import { calculateServerPrice } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { Consents, Invoice } from "@/lib/types";
+
+export const runtime = "nodejs";
 
 interface InitializeBody {
   orderId?: unknown;
@@ -21,14 +28,42 @@ interface PaymentOrderRow {
   payment_status: string | null;
 }
 
+interface IyzicoInitializeResult {
+  status?: string;
+  errorCode?: string;
+  errorMessage?: string;
+  conversationId?: string;
+  token?: string;
+  checkoutFormContent?: string;
+  paymentPageUrl?: string;
+  signature?: string;
+}
+
+function initializeCheckoutForm(
+  request: Record<string, unknown>,
+): Promise<IyzicoInitializeResult> {
+  const iyzico = getIyzicoClient();
+
+  return new Promise((resolve, reject) => {
+    iyzico.checkoutFormInitialize.create(
+      request,
+      (error: unknown, result: IyzicoInitializeResult) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(result);
+      },
+    );
+  });
+}
+
 /**
- * iyzico Checkout Form oturumu bu endpoint üzerinden başlatılacak.
+ * iyzico Checkout Form oturumunu başlatır.
  *
- * Ödeme oluşturulmadan önce sipariş kimliği doğrulanır. Ek özellikler, müşteri,
- * işletme, fatura ve onay bilgileri tarayıcıdan tekrar alınmaz; Supabase'teki
- * sipariş kaydı güvenilir kaynak olarak okunur. Tutar da kayıtlı ek özelliklere
- * göre yalnızca sunucudaki
- * fiyat listesinden yeniden hesaplanır.
+ * Tarayıcı yalnızca orderId gönderir. Müşteri, işletme, fatura, onaylar ve ek
+ * özellikler Supabase'teki kayıtlı siparişten okunur; fiyat sunucuda yeniden
+ * hesaplanır. Kart bilgileri bu endpoint'ten geçmez.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -133,28 +168,98 @@ export async function POST(request: NextRequest) {
       throw new Error("Siparişin kayıtlı ek özellikleri geçersiz.");
     }
 
-    const price = calculateServerPrice(order.addons.map((addon) => addon.id));
+    const pricing = calculateServerPrice(order.addons.map((addon) => addon.id));
+    const checkout = buildIyzicoCheckoutContext(
+      {
+        id: order.id,
+        orderNo: order.order_no,
+        customer: {
+          name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+        },
+        business: { brand: businessName },
+        invoice: order.invoice,
+        consents: order.consents,
+      },
+      pricing,
+      getPaymentClientIp(request),
+    );
+
+    const amount = pricing.total.toFixed(2);
+    const iyzicoResult = await initializeCheckoutForm({
+      locale: "tr",
+      conversationId: order.id,
+      price: amount,
+      paidPrice: amount,
+      currency: "TRY",
+      basketId: order.order_no,
+      paymentGroup: "PRODUCT",
+      callbackUrl: getIyzicoCallbackUrl(),
+      buyer: checkout.buyer,
+      shippingAddress: checkout.shippingAddress,
+      billingAddress: checkout.billingAddress,
+      basketItems: checkout.basketItems,
+    });
+
+    if (
+      iyzicoResult.status !== "success" ||
+      !iyzicoResult.token ||
+      (!iyzicoResult.checkoutFormContent && !iyzicoResult.paymentPageUrl)
+    ) {
+      console.error("iyzico Checkout Form başlatılamadı:", {
+        orderId,
+        environment: config.environment,
+        errorCode: iyzicoResult.errorCode,
+      });
+
+      return NextResponse.json(
+        {
+          ok: false,
+          provider: "iyzico",
+          error: "Güvenli ödeme ekranı başlatılamadı.",
+        },
+        { status: 502 },
+      );
+    }
+
+    const { error: updateError } = await supabase
+      .from("orders")
+      .update({
+        payment_status: "payment_started",
+        payment_ref: iyzicoResult.token,
+      })
+      .eq("id", orderId)
+      .neq("payment_status", "paid");
+
+    if (updateError) {
+      throw new Error("Ödeme oturumu siparişe kaydedilemedi.");
+    }
 
     return NextResponse.json({
       ok: true,
       provider: "iyzico",
       environment: config.environment,
       orderId,
-      pricingVersion: price.pricingVersion,
-      amount: price.total,
+      pricingVersion: pricing.pricingVersion,
+      amount: pricing.total,
       currency: "TRY",
-      addons: price.addons,
-      readyForCheckoutForm: true,
+      token: iyzicoResult.token,
+      checkoutFormContent: iyzicoResult.checkoutFormContent ?? null,
+      paymentPageUrl: iyzicoResult.paymentPageUrl ?? null,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
 
-    if (message === "Geçersiz ek özellik seçimi.") {
+    if (
+      message === "Geçersiz ek özellik seçimi." ||
+      message === "Ödeme için fatura şehri eksik."
+    ) {
       return NextResponse.json({ ok: false, error: message }, { status: 400 });
     }
 
     console.error(
-      "iyzico ödeme hazırlığı başarısız:",
+      "iyzico ödeme başlatma başarısız:",
       message || "Bilinmeyen hata",
     );
 

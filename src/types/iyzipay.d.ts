@@ -5,8 +5,8 @@ declare module "iyzipay" {
     uri: string;
   }
 
-  interface CheckoutFormApi {
-    initialize(
+  interface IyzicoResourceApi {
+    create(
       request: Record<string, unknown>,
       callback: (error: unknown, result: any) => void,
     ): void;
@@ -18,6 +18,7 @@ declare module "iyzipay" {
 
   export default class Iyzipay {
     constructor(options: IyzipayOptions);
-    checkoutForm: CheckoutFormApi;
+    checkoutFormInitialize: IyzicoResourceApi;
+    checkoutForm: IyzicoResourceApi;
   }
 }

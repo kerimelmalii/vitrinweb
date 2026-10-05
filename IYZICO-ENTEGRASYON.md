@@ -53,6 +53,12 @@ Vercel'de gerekli değişken:
 
 Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlendi. `package-lock.json` paketle ve çalışma zamanı bağımlılıklarıyla senkronize edildi. Böylece Vercel/`npm ci` sırasında `package.json` ile lockfile uyuşmazlığı oluşmaması hedefleniyor.
 
+### 7. Checkout Form veri eşleme katmanı — `src/lib/iyzico-checkout.ts`
+
+Supabase'ten okunup doğrulanmış sipariş verisini iyzico'nun `buyer`, `billingAddress`, `shippingAddress` ve `basketItems` modeline dönüştüren server-only yardımcı eklendi. Sepet fiyatları yine `ServerPriceResult` üzerinden gelir; browser fiyat belirleyemez. Temel web sitesi ve her ücretli ek özellik ayrı `VIRTUAL` sepet kalemi olarak oluşturulur.
+
+Mevcut sipariş modelinde şehir ayrı bir alan olmadığı için şehir, geçici olarak fatura adresinin son virgül/satır parçasından çıkarılıyor. Bu bilinçli bir geçiş çözümüdür; sipariş formuna ayrı şehir alanı eklendiğinde kaldırılmalıdır. Bireysel faturadaki kimlik numarası buyer alanına taşınabilir ancak loglanmamalıdır.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -67,7 +73,6 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 ## Henüz yapılmayanlar
 
 - Gerçek Checkout Form initialize çağrısı.
-- Doğrulanmış Supabase sipariş alanlarının iyzico buyer, billing/shipping ve basket request nesnelerine dönüştürülmesi.
 - Callback endpoint'i.
 - Checkout Form sonucunun iyzico üzerinden retrieve edilip doğrulanması.
 - Doğrulanmış ödeme sonucunun Supabase'e idempotent biçimde yazılması.
@@ -90,7 +95,8 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 - `ae388be94047fe3c504d2efc1d54083465d1e8e1` — npm lockfile senkronizasyonu
 - `fba5d36b46d48cbf1415052626aa6389d332223d` — server-only resmî iyzico SDK istemcisi
 - `324900b5e1e14420acb1f566be11e595b7e5d2ff` — Checkout Form öncesi güvenilir sipariş/fatura/onay doğrulaması
+- `5d07af0b50970e19e5b353a961116d88472e52ca` — iyzico buyer/adres/sepet veri eşleme katmanı
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, doğrulanmış Supabase sipariş verisini iyzico Checkout Form'un buyer, billing/shipping ve basket request modeline dönüştüren server-only yardımcı katmanı oluşturmaktır. Bu katmanda iyzico'nun zorunlu alanları açıkça eşlenecek; tarayıcıdan buyer/adres/fiyat kabul edilmeyecektir.
+Bir sonraki geliştirme adımı, mevcut initialize endpoint'ini bu veri eşleme katmanına bağlamak ve gerçek iyzico Checkout Form initialize çağrısını hazırlamaktır. Bu adımdan önce callback URL üretimi ve istemci IP'sinin güvenilir şekilde alınması netleştirilmelidir.

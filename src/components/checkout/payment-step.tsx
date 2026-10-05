@@ -8,8 +8,6 @@ import { Icon } from "@/components/icons";
 import { OrderSummary } from "@/components/order-summary";
 import { TL, VAT_NOTE } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
-import { buildRecord } from "@/lib/backend";
-import { sendOrderToSupabase } from "@/lib/supabase-order";
 import { pricing } from "@/lib/pricing";
 import { LIMITS, validTCKN } from "@/lib/security";
 import { BASE_PATH } from "@/lib/site";
@@ -67,7 +65,7 @@ export function PaymentStep() {
       return;
     }
 
-    if (!order.id) {
+    if (!order.id || !order.orderNo) {
       setPayErr("Sipariş kimliği bulunamadı. Lütfen önceki adıma dönüp tekrar deneyin.");
       return;
     }
@@ -83,19 +81,28 @@ export function PaymentStep() {
     };
 
     try {
-      const record = buildRecord({
-        ...order,
-        invoice: inv,
-        consents,
-        status: "pending",
+      const persistResponse = await fetch("/api/orders/checkout-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({
+          orderId: order.id,
+          orderNo: order.orderNo,
+          email: order.info.email,
+          invoice: inv,
+          consents,
+        }),
       });
+      const persistResult = (await persistResponse.json()) as {
+        ok?: boolean;
+        error?: string;
+      };
 
-      /*
-       * Checkout Form başlatılmadan önce siparişin güncel fatura ve onay bilgileri
-       * Supabase'e yazılır. Kart bilgileri Vitrin'e hiç girmez; iyzico sayfasında
-       * alınır. Browser ödeme durumunu "paid" yapamaz.
-       */
-      await sendOrderToSupabase(record);
+      if (!persistResponse.ok || !persistResult.ok) {
+        throw new Error(
+          persistResult.error || "Sipariş bilgileri güvenli şekilde kaydedilemedi.",
+        );
+      }
 
       const response = await fetch("/api/payments/iyzico/initialize", {
         method: "POST",

@@ -44,19 +44,40 @@ export function PaymentStep() {
   const [checkoutFormContent, setCheckoutFormContent] = useState("");
   const checkoutFormRef = useRef<HTMLDivElement>(null);
 
-  // React dangerouslySetInnerHTML ile eklenen <script> etiketlerini çalıştırmaz.
-  // iyzico Checkout Form içeriğini DOM fragment olarak ekleyip scriptleri yeniden
-  // oluşturarak tarayıcının iyzico formunu çalıştırmasını sağlarız. İçerik yalnızca
-  // server-side iyzico initialize yanıtından gelir; kullanıcı girdisi değildir.
+  // iyzico Checkout Form initialize cevabı çalıştırılması gereken bir <script>
+  // içerir. React ile sonradan eklenen HTML içindeki scriptler güvenilir biçimde
+  // execute edilmediği için script düğümlerini gerçek <script> elementleri olarak
+  // yeniden oluştururuz. Kaynak yalnızca Vitrin'in server-side iyzico initialize
+  // endpoint'idir; kart numarası, SKT veya CVV bu bileşenin state/API akışına girmez.
   useEffect(() => {
     const host = checkoutFormRef.current;
     if (!host || !checkoutFormContent) return;
 
     host.replaceChildren();
-    const range = document.createRange();
-    range.selectNode(host);
-    const fragment = range.createContextualFragment(checkoutFormContent);
-    host.appendChild(fragment);
+
+    const template = document.createElement("template");
+    template.innerHTML = checkoutFormContent;
+
+    const scripts = Array.from(template.content.querySelectorAll("script"));
+    scripts.forEach((script) => script.remove());
+    host.appendChild(template.content.cloneNode(true));
+
+    // iyzico'nun initialize scriptini gerçek bir script node'u olarak eklemek,
+    // bootstrap kodunun çalışmasını ve Checkout Form bundle'ını yüklemesini sağlar.
+    for (const sourceScript of scripts) {
+      const executableScript = document.createElement("script");
+
+      for (const attribute of Array.from(sourceScript.attributes)) {
+        executableScript.setAttribute(attribute.name, attribute.value);
+      }
+
+      executableScript.text = sourceScript.textContent ?? "";
+      host.appendChild(executableScript);
+    }
+
+    return () => {
+      host.replaceChildren();
+    };
   }, [checkoutFormContent]);
 
   const validate = (): Record<string, string | undefined> => {

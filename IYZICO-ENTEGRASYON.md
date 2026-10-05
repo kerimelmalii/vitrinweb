@@ -131,6 +131,12 @@ Bu nedenle `POST /api/orders/create` endpoint'i eklendi. Endpoint müşteri/işl
 
 `package-step.tsx` artık ödeme adımına geçmeden önce bu endpoint'i çağırır. Sipariş Supabase'e başarıyla yazılmadan step 3'e geçilmez. İstek sürerken butonlar devre dışı bırakılır; hata halinde kullanıcı ödeme ekranına geçirilmez. Eski `Backend.upsert(buildRecord(...))` localStorage kaydı bu geçişten kaldırıldı.
 
+### 16. Callback tekrarlarında ödeme referansının korunması
+
+Başarılı callback sonrasında `payment_ref` alanının Checkout Form token'ından `paymentId` değerine çevrilmesi kaldırıldı. Callback endpoint'i siparişi `payment_ref=token` ile bulduğu için bu değişim, iyzico aynı callback'i yeniden gönderdiğinde siparişin bulunamamasına yol açabiliyordu.
+
+Doğrulanmış ödeme sonrasında `payment_ref` artık Checkout Form token'ı olarak korunur. Böylece aynı token ile gelen tekrar callback siparişi yeniden bulabilir; mevcut `payment_status != paid` koşulu sayesinde ödeme durumu ikinci kez yazılmaz. Ayrı bir iyzico `paymentId` saklanması gerekirse ileride bunun için ayrı bir veritabanı alanı eklenmelidir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -188,9 +194,10 @@ Bu nedenle `POST /api/orders/create` endpoint'i eklendi. Endpoint müşteri/işl
 - `10c66ab4fc1da0bdb83394869e5260effff14997` — browser Supabase erişiminin yeniden insert-only tutulması
 - `8b0256b8e070d33df1bb4572f381b6d97e5ec28a` — ilk sipariş kaydı için server-side oluşturma endpoint'i
 - `184773248bb72c8471ab7c2f0a75b6eecd6e6467` — paket adımının server-side sipariş oluşturma endpoint'ine bağlanması
+- `773e5090e174125f7b7c77d65d916c682cd1e00d` — callback tekrarlarında Checkout Form token'ının korunması
 
 ## Sonraki adım
 
 Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
 
-Bir sonraki geliştirme adımı callback'in tekrar çağrılmasına karşı idempotency davranışını düzeltmek ve ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.
+Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi. Bir sonraki geliştirme adımı iyzico retrieve response imza doğrulamasını güncel resmî dokümantasyon/SDK ile yeniden teyit etmek, ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.

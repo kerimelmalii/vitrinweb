@@ -81,6 +81,14 @@ Retrieve response imzası iyzico Node SDK'nın kullandığı HMAC-SHA256 yöntem
 
 Başarılı doğrulamadan sonra kullanıcı `/siparis/tamamlandi?orderId=...` adresine yönlendirilir. Bu sayfanın mevcut uygulama akışıyla uyumu ayrıca kontrol edilmelidir.
 
+### 10. Server doğrulamalı ödeme sonuç ekranı
+
+`/siparis/tamamlandi` rotası ve `GET /api/orders/payment-status` endpoint'i eklendi. Başarı sayfası URL'deki `orderId` değerine güvenerek ödeme başarılı mesajı göstermez; Supabase'teki server-side ödeme durumunu kontrol eder. Yalnızca `payment_status=paid` ise onay ekranı gösterilir.
+
+Durum endpoint'i salt okunurdur, ödeme durumunu değiştiremez ve browser'a yalnızca minimum veri (`orderId`, `orderNo`, `paid`) döndürür. Müşteri, fatura, iletişim, token veya ödeme referansı dönmez. Yanıtlar `Cache-Control: no-store, private` ile cache dışı tutulur. Route arama motorlarına `noindex,nofollow` olarak işaretlenmiştir.
+
+Bu katman URL manipülasyonunun sahte başarı ekranı üretmesini engeller. Ancak `orderId` tek başına erişim sırrı olarak tasarlanmadığı için ileride sonuç ekranına erişimi ayrıca tek kullanımlık/kriptografik doğrulama token'ıyla bağlamak daha güçlü gizlilik sağlar.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -120,7 +128,10 @@ Başarılı doğrulamadan sonra kullanıcı `/siparis/tamamlandi?orderId=...` ad
 - `5c81a8f654371627669e7049fe9e01a661ffbc5f` — ödeme tutarını browser eklentileri yerine kayıtlı sipariş eklentilerinden hesaplama
 - `54c7810913337fa6653863a332bc7778de483e37` — gerçek iyzico Checkout Form initialize çağrısının server-side bağlanması
 - `3918bbfe60393ed9e355f8661bdc758fb4d2728b` — Checkout Form callback retrieve, imza ve ödeme doğrulaması
+- `94c5165a3831ee175e8652ad7c0ee7637cd5e281` — minimum verili server-side ödeme durum endpoint'i
+- `b30b8fa98781a794872b36d0b250b4a93822502a` — server doğrulamalı ödeme sonuç bileşeni
+- `282f6595589753b43d6ad2805f76668f2feec609` — `/siparis/tamamlandi` ödeme sonuç rotası
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Bundan önce callback başarı yönlendirmesindeki `/siparis/tamamlandi` rotasının mevcut sipariş UX'iyle uyumu kontrol edilmelidir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.
+Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Güvenlik seviyesi yükseltilirken sonuç sayfasındaki `orderId` erişimi de kriptografik/tek kullanımlık bir sonuç token'ıyla güçlendirilmelidir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.

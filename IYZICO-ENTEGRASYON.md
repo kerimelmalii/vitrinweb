@@ -155,6 +155,12 @@ Vercel Preview build'inde Next.js derlemesi başarıyla tamamlandı ancak TypeSc
 
 `src/types/iyzipay.d.ts` eklendi. Yerel bildirim yalnızca entegrasyonda kullandığımız constructor ile `checkoutForm.initialize` ve `checkoutForm.retrieve` yüzeyini tanımlar; API anahtarları veya çalışma zamanı davranışı değişmez. Amaç üçüncü taraf paketin eksik tip bilgisini proje içinde sınırlı biçimde tamamlamaktır.
 
+### 20. Checkout Form TypeScript yüzeyinin düzeltilmesi
+
+Bir sonraki Vercel Preview build'i derleme aşamasını geçti ancak yerel `iyzipay` declaration dosyasının SDK yüzeyini eksik tanımladığı görüldü: initialize route'u gerçekte `iyzico.checkoutFormInitialize.create(...)` kullanırken declaration yalnızca `checkoutForm` tanımlıyordu. Bu nedenle TypeScript `TS2339` verdi.
+
+`src/types/iyzipay.d.ts` gerçek kullanım yüzeyiyle eşleştirildi. `checkoutFormInitialize` ve `checkoutForm` ayrı resource alanları olarak tanımlandı; kullandığımız `create` ve `retrieve` callback metotları declaration'a eklendi. Çalışma zamanı ödeme kodu değiştirilmedi.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -215,9 +221,10 @@ Vercel Preview build'inde Next.js derlemesi başarıyla tamamlandı ancak TypeSc
 - `773e5090e174125f7b7c77d65d916c682cd1e00d` — callback tekrarlarında Checkout Form token'ının korunması
 - `2f24751e5b87e8f7d70f69fe845b7f84da60cdb2` — Vercel server mimarisi ve iyzipay external package ayarı
 - `42ab24803788d325635a6a5a76e56a1250d47d5e` — iyzipay için yerel TypeScript module declaration
+- `c91ff42ee535438f17e601bc5acd0270f6820d8f` — Checkout Form declaration yüzeyinin gerçek SDK kullanımına eşlenmesi
 
 ## Sonraki adım
 
 Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
 
-Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. İlk Vercel build hatasına karşı Next.js server yapılandırması düzeltildi ve iyzipay external package olarak işaretlendi. İlk yeni Vercel Preview derlemesi JavaScript/Next.js aşamasını geçti ancak iyzipay paketinin TypeScript declaration dosyası olmadığı için TS7016 ile durdu. Yerel declaration eklendi. Bir sonraki adım yeni Vercel Preview build sonucunu yeniden doğrulamaktır; build başarılı olmadan sandbox ödeme denemesi yapılmamalıdır.
+Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. İlk Vercel build hatasına karşı Next.js server yapılandırması düzeltildi ve iyzipay external package olarak işaretlendi. İlk yeni Vercel Preview derlemesi JavaScript/Next.js aşamasını geçti ancak iyzipay paketinin TypeScript declaration dosyası olmadığı için TS7016 ile durdu. Yerel declaration eklendi; ilk declaration'ın initialize resource adını eksik tanımlaması nedeniyle çıkan TS2339 da gerçek SDK kullanım yüzeyiyle eşleştirilerek düzeltildi. Bir sonraki adım yeni Vercel Preview build sonucunu yeniden doğrulamaktır; build başarılı olmadan sandbox ödeme denemesi yapılmamalıdır.

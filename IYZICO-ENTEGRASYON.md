@@ -57,7 +57,7 @@ Resmî `iyzipay` Node paketi projeye eklendi ve sürüm `2.0.69` olarak sabitlen
 
 Supabase'ten okunup doğrulanmış sipariş verisini iyzico'nun `buyer`, `billingAddress`, `shippingAddress` ve `basketItems` modeline dönüştüren server-only yardımcı eklendi. Sepet fiyatları yine `ServerPriceResult` üzerinden gelir; browser fiyat belirleyemez. Temel web sitesi ve her ücretli ek özellik ayrı `VIRTUAL` sepet kalemi olarak oluşturulur.
 
-Mevcut sipariş modelinde şehir ayrı bir alan olmadığı için şehir, geçici olarak fatura adresinin son virgül/satır parçasından çıkarılıyor. Bu bilinçli bir geçiş çözümüdür; sipariş formuna ayrı şehir alanı eklendiğinde kaldırılmalıdır. Bireysel faturadaki kimlik numarası buyer alanına taşınabilir ancak loglanmamalıdır.
+Ana dalda fatura formuna ayrı `city` alanı eklendi (commit `cf0b504a9eea022bc8431f5d458ea6a297332703`). iyzico eşleme katmanı artık adres metninden şehir tahmini yapmıyor; doğrudan bu alanı kullanıyor. Alan yoksa ödeme hazırlığı fail-closed davranarak duruyor. Bireysel faturadaki kimlik numarası buyer alanına taşınabilir ancak loglanmamalıdır.
 
 ### 8. Callback URL ve istemci IP yardımcıları — `src/lib/payment-request.ts`
 
@@ -106,6 +106,7 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - `324900b5e1e14420acb1f566be11e595b7e5d2ff` — Checkout Form öncesi güvenilir sipariş/fatura/onay doğrulaması
 - `5d07af0b50970e19e5b353a961116d88472e52ca` — iyzico buyer/adres/sepet veri eşleme katmanı
 - `0bd94bd68522716e9f1e8ace0518b055fdf99b68` — güvenilir callback URL ve istemci IP yardımcıları
+- `ba60734c721717139fe1a7191f8b6f953332db8c` — iyzico eşlemesinde ayrı fatura şehir alanına geçiş
 
 ## Sonraki adım
 

@@ -31,7 +31,7 @@ function retrieveCheckoutForm(
   const iyzico = getIyzicoClient();
 
   return new Promise((resolve, reject) => {
-    iyzico.checkoutForm.retrieve(
+    iyzico.checkoutForm.retrieve<RetrieveResult>(
       { locale: "tr", conversationId, token },
       (error: unknown, result: RetrieveResult) => {
         if (error) {
@@ -76,6 +76,18 @@ function verifyRetrieveSignature(result: RetrieveResult): boolean {
   return safeEqual(expected, result.signature);
 }
 
+// iyzico, kullanıcının tarayıcısını bu endpoint'e POST ile geri yönlendirir;
+// bu nedenle hata/red durumlarında da ham JSON değil, Vitrin'in sonuç sayfasına
+// yönlendirme döndürülür. Host, callback isteğinin kendi başlığından değil,
+// güvenilir callback origin'inden türetilir (bkz. getIyzicoCallbackUrl).
+function buildFailureUrl(orderId?: string): URL {
+  const callbackUrl = new URL(getIyzicoCallbackUrl());
+  const failureUrl = new URL("/siparis/tamamlandi", callbackUrl.origin);
+  if (orderId) failureUrl.searchParams.set("orderId", orderId);
+  failureUrl.searchParams.set("failed", "1");
+  return failureUrl;
+}
+
 async function readCallbackToken(request: NextRequest): Promise<string> {
   const contentType = request.headers.get("content-type") ?? "";
 
@@ -90,13 +102,12 @@ async function readCallbackToken(request: NextRequest): Promise<string> {
 }
 
 export async function POST(request: NextRequest) {
+  let knownOrderId: string | undefined;
   try {
     const token = await readCallbackToken(request);
     if (!token) {
-      return NextResponse.json(
-        { ok: false, error: "Ödeme token'ı eksik." },
-        { status: 400 },
-      );
+      console.error("iyzico callback token'ı eksik.");
+      return NextResponse.redirect(buildFailureUrl(), 303);
     }
 
     const supabase = getSupabaseAdmin();
@@ -115,11 +126,11 @@ export async function POST(request: NextRequest) {
     }
 
     if (!order) {
-      return NextResponse.json(
-        { ok: false, error: "Ödeme siparişi bulunamadı." },
-        { status: 404 },
-      );
+      console.error("iyzico callback: token ile eşleşen sipariş bulunamadı.");
+      return NextResponse.redirect(buildFailureUrl(), 303);
     }
+
+    knownOrderId = order.id;
 
     if (
       !Array.isArray(order.addons) ||
@@ -162,10 +173,7 @@ export async function POST(request: NextRequest) {
         errorCode: result.errorCode,
       });
 
-      return NextResponse.json(
-        { ok: false, error: "Ödeme doğrulanamadı." },
-        { status: 400 },
-      );
+      return NextResponse.redirect(buildFailureUrl(order.id), 303);
     }
 
     if (order.payment_status !== "paid") {
@@ -200,9 +208,6 @@ export async function POST(request: NextRequest) {
       message || "Bilinmeyen hata",
     );
 
-    return NextResponse.json(
-      { ok: false, error: "Ödeme sonucu işlenemedi." },
-      { status: 503 },
-    );
+    return NextResponse.redirect(buildFailureUrl(knownOrderId), 303);
   }
 }

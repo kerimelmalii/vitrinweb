@@ -7,19 +7,22 @@ type State =
   | { kind: "loading" }
   | { kind: "paid"; orderNo: string }
   | { kind: "pending" }
+  | { kind: "failed" }
   | { kind: "error" };
 
 export function PaymentSuccess() {
   const params = useSearchParams();
   const orderId = params.get("orderId") ?? "";
   const resultToken = params.get("resultToken") ?? "";
-  const [state, setState] = useState<State>({ kind: "loading" });
+  const failed = params.get("failed") === "1";
+  const [state, setState] = useState<State>(() => {
+    if (failed) return { kind: "failed" };
+    if (!orderId || !resultToken) return { kind: "error" };
+    return { kind: "loading" };
+  });
 
   useEffect(() => {
-    if (!orderId || !resultToken) {
-      setState({ kind: "error" });
-      return;
-    }
+    if (failed || !orderId || !resultToken) return;
 
     const controller = new AbortController();
 
@@ -54,7 +57,7 @@ export function PaymentSuccess() {
       });
 
     return () => controller.abort();
-  }, [orderId, resultToken]);
+  }, [failed, orderId, resultToken]);
 
   return (
     <main id="main" className="container-x co">
@@ -92,6 +95,19 @@ export function PaymentSuccess() {
               Bu sayfayı görmek ödeme yapıldığı anlamına gelmez. Ödeme sonucunuz
               sunucuda doğrulanamadı; siparişiniz ödenmiş olarak işaretlenmedi.
             </p>
+          </>
+        )}
+
+        {state.kind === "failed" && (
+          <>
+            <h1 className="h-1">Ödemeniz tamamlanamadı.</h1>
+            <p className="lead" style={{ marginTop: "12px" }}>
+              Kartınız onaylanmadı veya ödeme doğrulanamadı; sizden herhangi bir
+              ücret alınmadı. Lütfen aynı veya başka bir kartla tekrar deneyin.
+            </p>
+            <a className="btn btn-primary" style={{ marginTop: "20px" }} href="/siparis">
+              Tekrar dene
+            </a>
           </>
         )}
 

@@ -45,7 +45,7 @@ function initializeCheckoutForm(
   const iyzico = getIyzicoClient();
 
   return new Promise((resolve, reject) => {
-    iyzico.checkoutFormInitialize.create(
+    iyzico.checkoutFormInitialize.create<IyzicoInitializeResult>(
       request,
       (error: unknown, result: IyzicoInitializeResult) => {
         if (error) {

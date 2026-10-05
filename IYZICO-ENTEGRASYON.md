@@ -204,6 +204,24 @@ Kapsamlı kontrolde aynı response için iki ayrı CSP üretildiği tespit edild
 
 CSP'nin tek kaynağı `vercel.json` yapıldı ve `next.config.ts` içindeki ikinci CSP kaldırıldı. iyzico'nun güncel resmî Checkout Form örneğinde hem `cdnsandbox.iyzipay.com` hem `sandbox-static.iyzipay.com` script kaynakları, ayrıca sandbox API/gateway ve statik görsel kaynakları kullanıldığı için CSP yalnızca `*.iyzipay.com` kapsamındaki ödeme sağlayıcı kaynaklarına script/style/image/font/connect/frame/form izinleri verecek şekilde tamamlandı. Vercel Preview feedback scripti ödeme için gerekli olmadığından `vercel.live` allowlist'e eklenmedi.
 
+### 28. Gömülü Checkout Form'dan redirect akışına geri dönüş ve kapsamlı güvenlik taraması
+
+Ürün kararı: gömülü (sayfadan hiç çıkmayan) kart formu zorunlu değil, "olsa iyi olur" seviyesinde bir UX hedefiydi ve React/CSP/script-yükleme tarafında orantısız zaman harcatıyordu. 21. maddede uçtan uca doğrulanmış olan **redirect akışına** (iyzico'nun barındırdığı `paymentPageUrl`'e tam sayfa yönlendirme) geri dönüldü. Gömülü form mimarisi (27. maddeye kadarki değişiklikler) tamamen geri alındı; sunucu tarafındaki initialize/callback/doğrulama/fiyatlandırma/Supabase katmanlarının hiçbirine dokunulmadı — yalnızca `payment-step.tsx` son commit `8bae34c`'deki (gömme denemesinden hemen önceki, çalıştığı doğrulanmış) haline döndürüldü. Kart alanı, kart state'i veya kart doğrulaması Vitrin tarafında hiç yoktu, hâlâ yok.
+
+Bu geri dönüşle birlikte, kapsamlı bir "açık var mı" taraması yapıldı ve şu noktalar düzeltildi:
+
+**a) Artık gereksiz kalan iyzico CSP izinleri kaldırıldı (`vercel.json`).** Redirect akışı `window.location.assign()` ile tam sayfa yönlendirme yapar; tarayıcı iyzico'dan hiçbir script/iframe/kaynak yüklemez. `script-src`, `script-src-elem`, `style-src`, `img-src`, `font-src`, `connect-src`, `frame-src`, `form-action` içindeki `https://*.iyzipay.com` eklemelerinin tamamı kaldırıldı; CSP 26. maddeden önceki dar haline döndü. 26. maddede eklenen `frame-ancestors 'none'` sertleştirmesi (iyzico'yla ilgisiz, genel bir iyileştirme) korundu.
+
+**b) Gözden kaçan ikinci bir CSP kaynağı bulundu ve kaldırıldı (`src/app/layout.tsx`).** 26. madde "CSP'nin tek kaynağı `vercel.json` yapıldı" derken yalnızca `next.config.ts`'teki bir CSP üretimini kaldırmıştı. Ama `layout.tsx` içinde, GitHub Pages/statik dışa aktarım döneminden kalma, `NODE_ENV=production`'da hâlâ render edilen ayrı bir `<meta httpEquiv="Content-Security-Policy">` etiketi ve dar bir `script-src 'self' 'unsafe-inline'` politikası (iyzico izni olmadan) **değişmeden duruyordu**. Kodun kendi yorumu bile bunu öngörmüştü ("Gerçek bir sunucuya (Vercel vb.) geçilince bu politika... kaldırılabilir"), ama hiç kaldırılmamıştı. Pratikte bu, redirect akışını hiç etkilemedi (redirect CSP script-src'den bağımsızdır), ama gömülü form denemesi sırasında neden bu kadar uğraştırdığının bir parçası da muhtemelen buydu — iki değil, üç ayrı CSP kaynağı aynı anda vardı (`vercel.json`, eski `next.config.ts` üretimi [zaten kaldırılmış], ve bu `<meta>` etiketi). Artık proje tamamen Vercel/Next.js server mimarisinde olduğundan meta etiketi ve onu üreten `const CSP` bloğu tamamen kaldırıldı; tek CSP kaynağı gerçekten ve sadece `vercel.json`.
+
+**c) Callback'in red/hata yolları artık kullanıcıya ham JSON göstermiyor (`src/app/api/payments/iyzico/callback/route.ts`).** iyzico, kullanıcının tarayıcısını bu endpoint'e POST ile geri yönlendirir (sunucu-sunucu değil, tarayıcı-üzerinden bir akış). Önceki haliyle doğrulama başarısız olduğunda (kart reddi dahil), token eksikse, sipariş bulunamazsa veya işlem sırasında bir hata oluşursa endpoint ham `{"ok":false,"error":"..."}` JSON'ı döndürüyordu — müşterinin tarayıcısında Vitrin tasarımıyla hiç ilgisi olmayan çıplak bir metin görünürdü. Artık bu dört durumun tamamı `/siparis/tamamlandi?orderId=...&failed=1` adresine 303 yönlendirmesi yapıyor; host yine `getIyzicoCallbackUrl()`'den türetiliyor, istek başlığından değil. `payment-success.tsx`'e yeni bir `"failed"` durumu eklendi: "Ödemeniz tamamlanamadı... sizden herhangi bir ücret alınmadı" mesajı ve `/siparis`'e dönen bir "Tekrar dene" bağlantısı gösteriyor. Güvenlik mantığı değişmedi — bu yalnızca zaten reddedilen/doğrulanamayan durumların kullanıcıya nasıl gösterildiğiyle ilgili.
+
+**d) Build/lint/typecheck uçtan uca temizlendi.** `npm ci` + `npx eslint . --max-warnings=0` + `npx next build` bu PR'dan önce de başarısız oluyordu (benim değişikliklerimden bağımsız, önceden var olan hatalar): `src/types/iyzipay.d.ts`'teki iki `any` kullanımı lint'i, ve onları `unknown`'a çevirmenin kırdığı iki çağrı noktası typecheck'i. Çözüm: `IyzicoResourceApi.create`/`retrieve` generic hale getirildi (`<T = unknown>`), çağrı noktalarında (`callback/route.ts`, `initialize/route.ts`) açık tip argümanı verildi (`retrieve<RetrieveResult>`, `create<IyzicoInitializeResult>`). Çalışma zamanı davranışı değişmedi, yalnızca tip güvenliği `any` yerine gerçek tiplerle sağlanıyor. Ayrıca `payment-success.tsx`'teki yeni `"failed"` durumu eklenirken fark edilen, projenin kendi `react-hooks/set-state-in-effect` kuralına aykırı **önceden var olan** bir ihlal (`!orderId || !resultToken` durumunda effect içinde senkron `setState`) de giderildi: durum artık `useState`'in lazy initializer'ında hesaplanıyor, effect yalnızca gerçek asenkron fetch için kullanılıyor.
+
+**e) Ana dal (`main`) ile senkronizasyon.** Bu dal, ayrı bir commit'te `origin/main`'e merge edildi (bkz. commit mesajı). Tek gerçek çakışma `payment-step.tsx`'teydi ve tamamen kozmetikti (her iki tarafta da aynı `Invoice.city` alanı/doğrulaması vardı, yalnızca çok satırlı/tek satırlı biçim farkı); redirect sürümüne dönülürken bu alan zaten korunmuş oldu, hiçbir taraf kaybolmadı.
+
+**Dürüstçe belirtilmesi gereken sınır:** Bu oturumun bir Vercel/iyzico sandbox erişimi yok — yapabildiğim yalnızca kod seviyesinde doğrulama (statik analiz, build/lint/typecheck, mantığın satır satır okunması, güvenlik özelliklerinin doğrulanması). **Gerçek tarayıcıda uçtan uca sandbox ödeme denemesi** (Vercel Preview deploy'una kart bilgisiyle gidip "Tekrar dene" ve başarı ekranlarının her ikisini de görmek) hâlâ yapılmadı; bu adım mutlaka production'a geçmeden önce insan tarafından (veya Vercel'e erişimi olan bir oturum tarafından) yapılmalıdır.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -218,9 +236,10 @@ CSP'nin tek kaynağı `vercel.json` yapıldı ve `next.config.ts` içindeki ikin
 
 ## Henüz yapılmayanlar
 
-- Uçtan uca sandbox testi.
-- Canlı ortama geçiş.
+- **Redirect akışının gerçek tarayıcıda uçtan uca sandbox testi** (bu PR kod seviyesinde hazırladı: build/lint/typecheck temiz, mantık satır satır doğrulandı; ama gerçek bir Vercel Preview'da tıklanarak hem başarılı hem reddedilen kart denemesi henüz yapılmadı — mutlaka production'a geçmeden önce yapılmalı).
+- Canlı ortama geçiş (`IYZICO_ENVIRONMENT=production`, gerçek API anahtarları, `IYZICO_CALLBACK_ORIGIN`'in production domaininde doğrulanması).
 - Eski statik/GitHub Pages ve demo ödeme dokümantasyonunun temizlenmesi.
+- Gömülü (sayfadan çıkmayan) Checkout Form — zorunlu değil, ileride ayrı ve baskısız bir iyileştirme olarak ele alınacak (28. madde).
 
 ## İlgili commitler
 
@@ -286,3 +305,11 @@ Güvenlik modeli değişmedi. İçerik yalnızca Vitrin'in server-side `/api/pay
 CSP tek kaynak olarak `vercel.json` içinde kalmaya devam eder; bu değişiklik CSP'yi genişletmez ve `unsafe-eval` veya wildcard `*` gibi yeni gevşetmeler eklemez.
 
 Bu düzeltmenin deployment sonrası browser doğrulamasında iyzico Checkout Form kart alanlarının görünmesi ve Console/Network'te iyzico bootstrap kaynaklarının başarıyla yüklenmesi kontrol edilmelidir. Preview callback origin'inin production domain'e ayarlı olduğu unutulmamalıdır; form görünürlüğü doğrulandıktan sonra uçtan uca ödeme testi callback ortamı dikkate alınarak yapılmalıdır.
+
+## Sonraki adım (güncel — 28. madde sonrası)
+
+Yukarıdaki not artık geçerli değil: embedded Checkout Form yolu terk edildi, 28. maddede açıklandığı gibi redirect akışına dönüldü. Kod hazır (build/lint/typecheck temiz, CSP sadeleştirildi, callback hata yolları düzeltildi) ve bu dalda `origin/main` ile merge edildi. Sıradaki adım artık kart görünürlüğü değil:
+
+1. Bu dalı Vercel Preview'a deploy edip gerçek sandbox kartıyla uçtan uca redirect akışını (başarılı ve reddedilen kart, her ikisi) tarayıcıda test etmek.
+2. Başarı ekranının (`/siparis/tamamlandi`) imzalı token ile doğru çalıştığını, red ekranının (`failed=1`) doğru mesajı gösterip "Tekrar dene" ile `/siparis`'e döndüğünü doğrulamak.
+3. Bu doğrulandıktan sonra `main`'e merge için PR'ı gözden geçirmeye açmak (bu dal `main`'e otomatik merge edilmedi, bilerek).

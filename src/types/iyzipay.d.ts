@@ -6,13 +6,13 @@ declare module "iyzipay" {
   }
 
   interface IyzicoResourceApi {
-    create(
+    create<T = unknown>(
       request: Record<string, unknown>,
-      callback: (error: unknown, result: any) => void,
+      callback: (error: unknown, result: T) => void,
     ): void;
-    retrieve(
+    retrieve<T = unknown>(
       request: Record<string, unknown>,
-      callback: (error: unknown, result: any) => void,
+      callback: (error: unknown, result: T) => void,
     ): void;
   }
 

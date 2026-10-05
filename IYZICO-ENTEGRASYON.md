@@ -195,6 +195,8 @@ Bu değişiklik Vitrin'in kart verisini işlemesi anlamına gelmez. Kart alanlar
 
 İlk gömme denemesinde `dangerouslySetInnerHTML` ile eklenen Checkout Form içindeki script etiketlerinin tarayıcı tarafından çalıştırılmadığı görüldü; başlık görünürken kart alanı boş kalıyordu. Form içeriği artık bir DOM fragment olarak eklenir, böylece iyzico'nun kendi scriptleri çalışabilir. Initialize başarılı olduğunda `busy` durumu da kapatılır; butonun “Güvenli ödeme hazırlanıyor” durumunda takılı kalması engellenir. Bu DOM içeriğinin kaynağı kullanıcı girdisi değil, server-side iyzico initialize yanıtıdır.
 
+Tarayıcı Console kontrolünde ikinci engelin Vitrin'in Content Security Policy ayarı olduğu doğrulandı: `sandbox-static.iyzipay.com/checkoutform/v2/bundle.js` mevcut `script-src 'self' 'unsafe-inline'` politikası tarafından bloklanıyordu. `next.config.ts` header yapılandırmasında `script-src` ve `script-src-elem` için yalnızca iyzico Checkout Form'un gerekli sandbox/live statik alan adları allowlist'e eklendi. Vercel Preview feedback scriptinin bloklanması ödeme entegrasyonundan bağımsızdır ve ödeme için `vercel.live` CSP'ye eklenmemiştir.
+
 
 ## Güvenlik kararları
 

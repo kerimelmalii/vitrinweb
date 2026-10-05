@@ -73,6 +73,14 @@ Checkout Form callback adresi ve buyer IP'si için server-only yardımcılar ekl
 Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - `IYZICO_CALLBACK_ORIGIN=https://vitrinweb.com.tr`
 
+### 9. Callback ve ödeme doğrulaması — `src/app/api/payments/iyzico/callback/route.ts`
+
+iyzico Checkout Form callback endpoint'i eklendi. Callback'ten gelen token doğrudan başarı kabul edilmez. Sunucu token ile ilişkili siparişi bulur, Checkout Form sonucunu resmî SDK üzerinden iyzico'dan yeniden retrieve eder ve `status`, `paymentStatus`, token, conversationId, basketId, TRY para birimi, beklenen fiyat/ödenen fiyat ve response signature alanlarını doğrular.
+
+Retrieve response imzası iyzico Node SDK'nın kullandığı HMAC-SHA256 yöntemiyle doğrulanır ve karşılaştırma timing-safe yapılır. Doğrulama tamamlanmadan `paid` yazılmaz. Güncelleme `payment_status != paid` koşuluyla idempotent tutulur; tekrarlanan callback siparişi yeniden ödeme durumuna geçirmez.
+
+Başarılı doğrulamadan sonra kullanıcı `/siparis/tamamlandi?orderId=...` adresine yönlendirilir. Bu sayfanın mevcut uygulama akışıyla uyumu ayrıca kontrol edilmelidir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -87,9 +95,6 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 
 ## Henüz yapılmayanlar
 
-- Callback endpoint'i.
-- Checkout Form sonucunun iyzico üzerinden retrieve edilip doğrulanması.
-- Doğrulanmış ödeme sonucunun Supabase'e idempotent biçimde yazılması.
 - Demo kart formunun kaldırılması ve gerçek Checkout Form UX'ine geçilmesi.
 - Uçtan uca sandbox testi.
 - Canlı ortama geçiş.
@@ -114,7 +119,8 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - `ba60734c721717139fe1a7191f8b6f953332db8c` — iyzico eşlemesinde ayrı fatura şehir alanına geçiş
 - `5c81a8f654371627669e7049fe9e01a661ffbc5f` — ödeme tutarını browser eklentileri yerine kayıtlı sipariş eklentilerinden hesaplama
 - `54c7810913337fa6653863a332bc7778de483e37` — gerçek iyzico Checkout Form initialize çağrısının server-side bağlanması
+- `3918bbfe60393ed9e355f8661bdc758fb4d2728b` — Checkout Form callback retrieve, imza ve ödeme doğrulaması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı callback endpoint'ini oluşturmaktır. Callback, iyzico'nun gönderdiği token'ı alacak; token tek başına başarı sayılmayacak, Checkout Form sonucu iyzico üzerinden server-side retrieve edilip imza/durum/sipariş/tutar/para birimi doğrulandıktan sonra sipariş idempotent biçimde `paid` yapılacaktır. Callback endpoint'i tamamlanmadan uçtan uca ödeme testi yapılmamalıdır.
+Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Bundan önce callback başarı yönlendirmesindeki `/siparis/tamamlandi` rotasının mevcut sipariş UX'iyle uyumu kontrol edilmelidir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.

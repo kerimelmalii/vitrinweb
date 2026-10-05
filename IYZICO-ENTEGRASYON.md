@@ -103,6 +103,16 @@ Ana dalda daha sonra eklenen zorunlu `Invoice.city` alanı ödeme feature branch
 
 Bu senkronizasyon, ödeme arayüzü değiştirilirken ana daldaki şehir alanının yanlışlıkla kaybedilmesini önlemek için UI entegrasyonundan önce yapıldı.
 
+### 13. Demo kart formunun kaldırılması ve Checkout Form yönlendirmesi
+
+`src/components/checkout/payment-step.tsx` içindeki Vitrin'e ait demo kart alanları, sahte kart doğrulaması ve browser'ın kendi kendine `paid` yazdığı demo akışı kaldırıldı. Kullanıcı artık yalnızca fatura bilgilerini ve zorunlu onayları Vitrin'de tamamlar; ardından `POST /api/payments/iyzico/initialize` çağrılır ve başarılı cevapta iyzico'nun barındırdığı `paymentPageUrl` adresine yönlendirilir.
+
+Kart numarası, son kullanma tarihi ve CVV artık Vitrin bileşenlerinde state'e alınmaz. Browser yalnızca `orderId` ile initialize endpoint'ini çağırır ve hiçbir durumda siparişi `paid` yapmaz.
+
+Checkout öncesinde güncel fatura ve onay bilgilerinin server-side initialize tarafından okunabilmesi için Supabase sipariş yazımı insert yerine aynı `id` üzerinde upsert olarak güncellendi. Bu yazım başarısız olursa ödeme başlatılmaz; böylece iyzico'ya eski veya eksik sipariş verisiyle geçilmez.
+
+Not: mevcut Supabase RLS politikası daha önce yalnızca anon `insert` için tasarlanmıştı. Bu nedenle gerçek sandbox testinden önce anon upsert/update yetkisinin güvenli biçimde çözülmesi veya bu ödeme-öncesi kayıt işleminin server-side sipariş endpoint'ine taşınması gerekir. Browser'a genel update yetkisi açmak tercih edilmemelidir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -117,7 +127,7 @@ Bu senkronizasyon, ödeme arayüzü değiştirilirken ana daldaki şehir alanın
 
 ## Henüz yapılmayanlar
 
-- Demo kart formunun kaldırılması ve gerçek Checkout Form UX'ine geçilmesi.
+- Checkout öncesi sipariş güncellemesini browser anon upsert yerine güvenli server-side sipariş endpoint'ine taşıma / RLS çözümü.
 - Uçtan uca sandbox testi.
 - Canlı ortama geçiş.
 - Eski statik/GitHub Pages ve demo ödeme dokümantasyonunun temizlenmesi.
@@ -153,7 +163,10 @@ Bu senkronizasyon, ödeme arayüzü değiştirilirken ana daldaki şehir alanın
 - `c06cb90388c263997dcbc3dc459ce6c7bda11821` — boş fatura modeline şehir alanı
 - `da7a617a686649e8674eda71bfacc7d74290e2f5` — şehir input sınırının senkronizasyonu
 - `17d794b4ceac96a99d740ab161ca4eca066f3e9a` — iyzico eşlemesinde doğrudan tiplenmiş şehir kullanımı
+- `45fc7c15a30fb268615dc879e8e122d06f3993ab` — demo kart formunun kaldırılması ve iyzico hosted ödeme yönlendirmesi
+- `b14991c182e6f9db70f67d4e957bb4ab3f418678` — checkout öncesi sipariş verisini aynı kayıt üzerinde güncelleme
+- `a2e6a551e65adf5f67eef15c94a1f67b136da742` — sipariş kalıcılaştırma başarısızsa ödeme başlatmama
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.
+Bir sonraki geliştirme adımı, ödeme öncesinde fatura/onay değişikliklerini browser'ın anon Supabase istemcisiyle güncellemek yerine güvenli bir server-side sipariş endpoint'i üzerinden kalıcılaştırmaktır. Bu tamamlanmadan sandbox uçtan uca ödeme testi yapılmamalıdır.

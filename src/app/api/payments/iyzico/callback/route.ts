@@ -3,6 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import { getIyzicoClient, getIyzicoServerConfig } from "@/lib/iyzico";
+import { getIyzicoCallbackUrl } from "@/lib/payment-request";
 import { createPaymentResultToken } from "@/lib/payment-result-token";
 import { calculateServerPrice } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -183,7 +184,11 @@ export async function POST(request: NextRequest) {
     }
 
     const resultToken = createPaymentResultToken(order.id);
-    const successUrl = new URL("/siparis/tamamlandi", request.url);
+    // Başarılı ödeme sonrası dönüş hostunu callback isteğinin Host bilgisinden
+    // türetmeyiz. Aynı güvenilir origin, hem iyzico callback adresi hem de
+    // kullanıcı sonuç sayfası için kullanılır.
+    const callbackUrl = new URL(getIyzicoCallbackUrl());
+    const successUrl = new URL("/siparis/tamamlandi", callbackUrl.origin);
     successUrl.searchParams.set("orderId", order.id);
     successUrl.searchParams.set("resultToken", resultToken);
 

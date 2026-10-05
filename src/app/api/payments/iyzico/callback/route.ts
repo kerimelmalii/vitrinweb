@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
         .from("orders")
         .update({
           payment_status: "paid",
-          payment_ref: result.paymentId ?? token,
+          payment_ref: token,
         })
         .eq("id", order.id)
         .neq("payment_status", "paid");

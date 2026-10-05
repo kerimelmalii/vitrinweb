@@ -12,17 +12,19 @@ type State =
 export function PaymentSuccess() {
   const params = useSearchParams();
   const orderId = params.get("orderId") ?? "";
+  const resultToken = params.get("resultToken") ?? "";
   const [state, setState] = useState<State>({ kind: "loading" });
 
   useEffect(() => {
-    if (!orderId) {
+    if (!orderId || !resultToken) {
       setState({ kind: "error" });
       return;
     }
 
     const controller = new AbortController();
 
-    fetch(`/api/orders/payment-status?orderId=${encodeURIComponent(orderId)}`, {
+    const query = new URLSearchParams({ orderId, resultToken });
+    fetch(`/api/orders/payment-status?${query.toString()}`, {
       cache: "no-store",
       signal: controller.signal,
     })
@@ -52,7 +54,7 @@ export function PaymentSuccess() {
       });
 
     return () => controller.abort();
-  }, [orderId]);
+  }, [orderId, resultToken]);
 
   return (
     <main id="main" className="container-x co">

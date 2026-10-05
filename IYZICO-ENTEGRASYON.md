@@ -87,7 +87,15 @@ Başarılı doğrulamadan sonra kullanıcı `/siparis/tamamlandi?orderId=...` ad
 
 Durum endpoint'i salt okunurdur, ödeme durumunu değiştiremez ve browser'a yalnızca minimum veri (`orderId`, `orderNo`, `paid`) döndürür. Müşteri, fatura, iletişim, token veya ödeme referansı dönmez. Yanıtlar `Cache-Control: no-store, private` ile cache dışı tutulur. Route arama motorlarına `noindex,nofollow` olarak işaretlenmiştir.
 
-Bu katman URL manipülasyonunun sahte başarı ekranı üretmesini engeller. Ancak `orderId` tek başına erişim sırrı olarak tasarlanmadığı için ileride sonuç ekranına erişimi ayrıca tek kullanımlık/kriptografik doğrulama token'ıyla bağlamak daha güçlü gizlilik sağlar.
+Bu katman URL manipülasyonunun sahte başarı ekranı üretmesini engeller.
+
+### 11. İmzalı ve süreli ödeme sonuç token'ı
+
+Başarılı iyzico callback'inden sonra sonuç ekranına çıplak `orderId` ile erişim kaldırıldı. Sunucu, sipariş kimliğine bağlı HMAC-SHA256 imzalı bir `resultToken` üretir. Token 15 dakika geçerlidir ve iyzico secret key kullanılarak server-only oluşturulur; secret browser'a çıkmaz.
+
+`GET /api/orders/payment-status` artık hem `orderId` hem de geçerli `resultToken` ister. Token'ın imzası timing-safe karşılaştırılır, süresi dolmuş veya geleceğe taşınmış token reddedilir. Böylece yalnızca başka bir sipariş ID'sini bilmek ödeme durumunu sorgulamak için yeterli değildir.
+
+Token veritabanında saklanmadığı için bu sürüm tek kullanımlı değil, kısa ömürlü ve imzalıdır. Gerçek tek kullanımlılık istenirse token nonce/hash'i için server-side kalıcı kayıt gerekir.
 
 ## Güvenlik kararları
 
@@ -131,7 +139,11 @@ Bu katman URL manipülasyonunun sahte başarı ekranı üretmesini engeller. Anc
 - `94c5165a3831ee175e8652ad7c0ee7637cd5e281` — minimum verili server-side ödeme durum endpoint'i
 - `b30b8fa98781a794872b36d0b250b4a93822502a` — server doğrulamalı ödeme sonuç bileşeni
 - `282f6595589753b43d6ad2805f76668f2feec609` — `/siparis/tamamlandi` ödeme sonuç rotası
+- `56dba54103c4ebae7bb75c3da5d0860379080243` — HMAC imzalı ve 15 dakika süreli ödeme sonuç token'ı
+- `a4eebd8d97247c24fe6a6df5d207244f3134a9a6` — callback başarı yönlendirmesine imzalı token eklenmesi
+- `31d53b84ecf8a74cd045cf80979914b3ebdd4e1a` — ödeme durum endpoint'inde imzalı token zorunluluğu
+- `8c451ce9bf1bdcaf1c3a8778d6debd7e2b6b4680` — sonuç ekranının imzalı token ile sorgulaması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Güvenlik seviyesi yükseltilirken sonuç sayfasındaki `orderId` erişimi de kriptografik/tek kullanımlık bir sonuç token'ıyla güçlendirilmelidir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.
+Bir sonraki geliştirme adımı ödeme arayüzündeki demo kart formunu kaldırıp initialize endpoint'inden dönen iyzico Checkout Form'u kullanıcıya gösterecek akışa geçmektir. Sandbox uçtan uca test, UI bağlantısı ve callback origin environment variable'ı tamamlandıktan sonra yapılmalıdır.

@@ -1,23 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Checkout Form Vitrin sayfasına gömülürken iyzico'nun kendi tarayıcı
-  // scripti sandbox/live static alanından yüklenir. CSP'de yalnızca bu iyzico
-  // kaynaklarına izin verilir; kart verisi yine Vitrin sunucusundan geçmez.
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value:
-              "script-src 'self' 'unsafe-inline' https://sandbox-static.iyzipay.com https://static.iyzipay.com https://cdn.iyzipay.com https://cdn-cpp.iyzipay.com; script-src-elem 'self' 'unsafe-inline' https://sandbox-static.iyzipay.com https://static.iyzipay.com https://cdn.iyzipay.com https://cdn-cpp.iyzipay.com",
-          },
-        ],
-      },
-    ];
-  },
+  // HTTP güvenlik başlıkları tek kaynak olarak vercel.json içinde tutulur.
+  // Aynı CSP'yi burada da üretmek tarayıcıda iki ayrı politikanın birlikte
+  // uygulanmasına ve iyzico izinlerinin eski politika tarafından engellenmesine yol açar.
 
   // Vitrin artık Vercel üzerinde Next.js API route'ları kullandığı için
   // statik export kullanılmaz. /api/orders ve /api/payments sunucuda çalışır.

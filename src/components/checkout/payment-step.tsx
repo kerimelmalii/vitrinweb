@@ -118,7 +118,7 @@ export function PaymentStep() {
   const inv = order.invoice;
   const [err, setErr] = useState<Record<string, string | undefined>>({});
   const fix = (k: string) => setErr((e) => (e[k] ? { ...e, [k]: undefined } : e));
-  const errKey: Record<string, string> = { title: "ititle", taxId: "itax", taxOffice: "ioffice", address: "iaddr" };
+  const errKey: Record<string, string> = { title: "ititle", taxId: "itax", taxOffice: "ioffice", address: "iaddr", city: "icity" };
   const setInv = (k: keyof Invoice, v: string) => {
     patch((o) => ({ invoice: { ...o.invoice, [k]: v } }));
     if (errKey[k]) fix(errKey[k]);
@@ -148,6 +148,7 @@ export function PaymentStep() {
       if (inv.taxOffice.trim().length < 2) e.ioffice = "Vergi dairesini girin.";
     } else if (!validTCKN(t)) e.itax = "Geçerli bir 11 haneli T.C. kimlik numarası girin.";
     if (inv.address.trim().length < 8) e.iaddr = "Fatura adresinizi girin.";
+    if (inv.city.trim().length < 2) e.icity = "Şehrinizi girin.";
     if (!ok.kvkk || !ok.distance || !ok.terms) e.consent = "Devam etmek için zorunlu onay kutularını işaretleyin.";
     return e;
   };
@@ -327,6 +328,9 @@ export function PaymentStep() {
             />
           </Field>
         )}
+        <Field id="i-city" label="Şehir" error={err.icity}>
+          <Inp id="i-city" maxLength={LIMITS.city} value={inv.city} onValue={(v) => setInv("city", v)} error={err.icity} autoComplete="address-level2" />
+        </Field>
         <Field id="i-addr" label="Fatura adresi" error={err.iaddr}>
           <textarea
             className="input"

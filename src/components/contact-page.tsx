@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Icon } from "@/components/icons";
 import { INSTAGRAM_URL } from "@/data/company";
 import { sendContactMessage } from "@/lib/form-webhook";
 import { LIMITS, RX, clean } from "@/lib/security";
+import { BASE_PATH } from "@/lib/site";
 
 const CONTACT_EMAIL = "iletisim@vitrinweb.com.tr";
 
@@ -139,14 +141,21 @@ export function ContactPage() {
   return (
     <main id="main">
       <section className="sec" style={{ paddingBottom: "24px" }}>
+        <div className="container-x hero-grid">
+          <div className="hero-copy">
+            <h1 className="h-1" style={{ maxWidth: "16ch" }}>
+              Bir sorunuz mu var? Yazın.
+            </h1>
+            <p className="lead" style={{ marginTop: "16px" }}>
+              Siparişten önce veya sonra, aklınıza takılan her şey için formu doldurun ya da doğrudan aşağıdaki
+              kanallardan ulaşın.
+            </p>
+          </div>
+          <div className="contact-hero-visual" aria-hidden="true">
+            <Image src={`${BASE_PATH}/iletisim-illustrasyon.webp`} alt="" width={758} height={974} />
+          </div>
+        </div>
         <div className="container-x">
-          <h1 className="h-1" style={{ maxWidth: "16ch" }}>
-            Bir sorunuz mu var? Yazın.
-          </h1>
-          <p className="lead" style={{ marginTop: "16px" }}>
-            Siparişten önce veya sonra, aklınıza takılan her şey için formu doldurun ya da doğrudan aşağıdaki
-            kanallardan ulaşın.
-          </p>
           <div className="contact-layout" style={{ marginTop: "36px" }}>
             <ContactForm />
             <div className="contact-side">

@@ -32,6 +32,7 @@ interface OrderWebhookPayload {
   taxId: string;
   taxOffice: string;
   invoiceAddress: string;
+  invoiceCity: string;
   paymentStatus: string;
   paymentRef: string;
 }
@@ -56,6 +57,7 @@ export async function sendOrderToWebhook(rec: OrderRecord): Promise<void> {
     taxId: rec.invoice.taxId,
     taxOffice: rec.invoice.taxOffice,
     invoiceAddress: rec.invoice.address,
+    invoiceCity: rec.invoice.city,
     paymentStatus: rec.paymentStatus || "",
     paymentRef: rec.paymentRef || "",
   };

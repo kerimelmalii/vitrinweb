@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Shell } from "@/components/checkout/stepper";
 import { Icon } from "@/components/icons";
@@ -16,7 +16,6 @@ import type { Invoice } from "@/lib/types";
 interface InitializeResponse {
   ok?: boolean;
   error?: string;
-  checkoutFormContent?: string | null;
   paymentPageUrl?: string | null;
 }
 
@@ -41,44 +40,6 @@ export function PaymentStep() {
   const corp = inv.type === "kurumsal";
   const [busy, setBusy] = useState(false);
   const [payErr, setPayErr] = useState("");
-  const [checkoutFormContent, setCheckoutFormContent] = useState("");
-  const checkoutFormRef = useRef<HTMLDivElement>(null);
-
-  // iyzico Checkout Form initialize cevabı çalıştırılması gereken bir <script>
-  // içerir. React ile sonradan eklenen HTML içindeki scriptler güvenilir biçimde
-  // execute edilmediği için script düğümlerini gerçek <script> elementleri olarak
-  // yeniden oluştururuz. Kaynak yalnızca Vitrin'in server-side iyzico initialize
-  // endpoint'idir; kart numarası, SKT veya CVV bu bileşenin state/API akışına girmez.
-  useEffect(() => {
-    const host = checkoutFormRef.current;
-    if (!host || !checkoutFormContent) return;
-
-    host.replaceChildren();
-
-    const template = document.createElement("template");
-    template.innerHTML = checkoutFormContent;
-
-    const scripts = Array.from(template.content.querySelectorAll("script"));
-    scripts.forEach((script) => script.remove());
-    host.appendChild(template.content.cloneNode(true));
-
-    // iyzico'nun initialize scriptini gerçek bir script node'u olarak eklemek,
-    // bootstrap kodunun çalışmasını ve Checkout Form bundle'ını yüklemesini sağlar.
-    for (const sourceScript of scripts) {
-      const executableScript = document.createElement("script");
-
-      for (const attribute of Array.from(sourceScript.attributes)) {
-        executableScript.setAttribute(attribute.name, attribute.value);
-      }
-
-      executableScript.text = sourceScript.textContent ?? "";
-      host.appendChild(executableScript);
-    }
-
-    return () => {
-      host.replaceChildren();
-    };
-  }, [checkoutFormContent]);
 
   const validate = (): Record<string, string | undefined> => {
     const e: Record<string, string | undefined> = {};
@@ -151,16 +112,12 @@ export function PaymentStep() {
       });
       const result = (await response.json()) as InitializeResponse;
 
-      if (!response.ok || !result.ok || !result.checkoutFormContent) {
+      if (!response.ok || !result.ok || !result.paymentPageUrl) {
         throw new Error(result.error || "Güvenli ödeme ekranı başlatılamadı.");
       }
 
-      // iyzico Checkout Form HTML/JS içeriğini Vitrin sayfasının içine yerleştiririz.
-      // Kart alanları iyzico tarafından oluşturulur; kart numarası, SKT ve CVV
-      // React state'ine, Vitrin API'lerine veya Supabase'e gönderilmez.
       patch({ consents, status: "payment_started" });
-      setCheckoutFormContent(result.checkoutFormContent);
-      setBusy(false);
+      window.location.assign(result.paymentPageUrl);
       return;
     } catch (error) {
       setPayErr(
@@ -213,32 +170,19 @@ export function PaymentStep() {
       step={3}
       asideLeft
       title="Siparişinizi tamamlayın."
-      sub="Fatura bilgilerinizi girin. Güvenli kart ödeme alanı bu sayfada açılacaktır."
+      sub="Fatura bilgilerinizi girin. Ödeme için güvenli iyzico ekranına yönlendirileceksiniz."
       aside={summary}
-      hint="Kart bilgilerinizi bu sayfadaki iyzico güvenli ödeme alanına girersiniz. Ödeme sunucuda doğrulandıktan sonra siparişiniz tamamlanır."
+      hint="Sıradaki adım: iyzico ödeme ekranında kart bilgilerinizi girersiniz. Ödeme sunucuda doğrulandıktan sonra siparişiniz tamamlanır."
     >
       <div className="panel">
         <h2 className="h-3">Güvenli Ödeme</h2>
         <div className="demo-note">
           <Icon n="lock" size={18} />
           <span>
-            Kart bilgileriniz Vitrin tarafından alınmaz veya saklanmaz. Güvenli kart alanı iyzico tarafından bu sayfada sağlanır.
+            Kart bilgileriniz Vitrin tarafından alınmaz veya saklanmaz. Ödeme bilgilerinizi güvenli iyzico ödeme ekranında girersiniz.
           </span>
         </div>
       </div>
-      {checkoutFormContent ? (
-        <div className="panel">
-          <h2 className="h-3" style={{ marginBottom: "14px" }}>Kartla Ödeme</h2>
-          <div
-            ref={checkoutFormRef}
-            id="iyzipay-checkout-form"
-            className="responsive"
-          />
-          <p className="fine" style={{ textAlign: "center", marginTop: "10px" }}>
-            Kart alanı iyzico tarafından sağlanır. Kart bilgileriniz Vitrin sistemlerine girmez ve Vitrin tarafından saklanmaz.
-          </p>
-        </div>
-      ) : null}
       <div className="panel">
         <h2 className="h-3" style={{ marginBottom: "14px" }}>
           Fatura Bilgileri
@@ -402,7 +346,7 @@ export function PaymentStep() {
           )}
         </button>
         <p className="fine" style={{ textAlign: "center", marginTop: "8px" }}>
-          Tutar {VAT_NOTE}. Butona bastığınızda güvenli iyzico kart alanı bu sayfada açılır.
+          Tutar {VAT_NOTE}. Butona bastığınızda güvenli iyzico ödeme ekranına yönlendirilirsiniz.
         </p>
         {payErr && (
           <div className="payerr" role="alert">

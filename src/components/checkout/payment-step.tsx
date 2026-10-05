@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Shell } from "@/components/checkout/stepper";
 import { Icon } from "@/components/icons";
@@ -42,6 +42,22 @@ export function PaymentStep() {
   const [busy, setBusy] = useState(false);
   const [payErr, setPayErr] = useState("");
   const [checkoutFormContent, setCheckoutFormContent] = useState("");
+  const checkoutFormRef = useRef<HTMLDivElement>(null);
+
+  // React dangerouslySetInnerHTML ile eklenen <script> etiketlerini çalıştırmaz.
+  // iyzico Checkout Form içeriğini DOM fragment olarak ekleyip scriptleri yeniden
+  // oluşturarak tarayıcının iyzico formunu çalıştırmasını sağlarız. İçerik yalnızca
+  // server-side iyzico initialize yanıtından gelir; kullanıcı girdisi değildir.
+  useEffect(() => {
+    const host = checkoutFormRef.current;
+    if (!host || !checkoutFormContent) return;
+
+    host.replaceChildren();
+    const range = document.createRange();
+    range.selectNode(host);
+    const fragment = range.createContextualFragment(checkoutFormContent);
+    host.appendChild(fragment);
+  }, [checkoutFormContent]);
 
   const validate = (): Record<string, string | undefined> => {
     const e: Record<string, string | undefined> = {};
@@ -123,6 +139,7 @@ export function PaymentStep() {
       // React state'ine, Vitrin API'lerine veya Supabase'e gönderilmez.
       patch({ consents, status: "payment_started" });
       setCheckoutFormContent(result.checkoutFormContent);
+      setBusy(false);
       return;
     } catch (error) {
       setPayErr(
@@ -192,9 +209,9 @@ export function PaymentStep() {
         <div className="panel">
           <h2 className="h-3" style={{ marginBottom: "14px" }}>Kartla Ödeme</h2>
           <div
+            ref={checkoutFormRef}
             id="iyzipay-checkout-form"
             className="responsive"
-            dangerouslySetInnerHTML={{ __html: checkoutFormContent }}
           />
           <p className="fine" style={{ textAlign: "center", marginTop: "10px" }}>
             Kart alanı iyzico tarafından sağlanır. Kart bilgileriniz Vitrin sistemlerine girmez ve Vitrin tarafından saklanmaz.

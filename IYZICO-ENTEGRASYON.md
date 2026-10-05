@@ -236,10 +236,10 @@ Bu geri dönüşle birlikte, kapsamlı bir "açık var mı" taraması yapıldı 
 
 ## Henüz yapılmayanlar
 
-- **Redirect akışının gerçek tarayıcıda uçtan uca sandbox testi** (bu PR kod seviyesinde hazırladı: build/lint/typecheck temiz, mantık satır satır doğrulandı; ama gerçek bir Vercel Preview'da tıklanarak hem başarılı hem reddedilen kart denemesi henüz yapılmadı — mutlaka production'a geçmeden önce yapılmalı).
-- Canlı ortama geçiş (`IYZICO_ENVIRONMENT=production`, gerçek API anahtarları, `IYZICO_CALLBACK_ORIGIN`'in production domaininde doğrulanması).
+- Canlı ortama geçiş (`IYZICO_ENVIRONMENT=production`, gerçek API anahtarları). `IYZICO_CALLBACK_ORIGIN` Production kapsamında zaten tanımlı; cutover öncesi değerin gerçekten canlıda kullanılacak domain'le birebir eşleştiği son bir kez elle teyit edilmeli (bkz. 29. madde).
 - Eski statik/GitHub Pages ve demo ödeme dokümantasyonunun temizlenmesi.
 - Gömülü (sayfadan çıkmayan) Checkout Form — zorunlu değil, ileride ayrı ve baskısız bir iyileştirme olarak ele alınacak (28. madde).
+- (Düşük öncelik) Hiç tamamlanmayan/terk edilen checkout'larda sipariş `payment_started` durumunda kalıcı olarak kalıyor — güvenlik açığı değil (hiçbir ücret alınmıyor), ama ileride bir temizlik/expiry işi olarak ele alınabilir (bkz. 29. madde).
 
 ## İlgili commitler
 
@@ -310,6 +310,20 @@ Bu düzeltmenin deployment sonrası browser doğrulamasında iyzico Checkout For
 
 Yukarıdaki not artık geçerli değil: embedded Checkout Form yolu terk edildi, 28. maddede açıklandığı gibi redirect akışına dönüldü. Kod hazır (build/lint/typecheck temiz, CSP sadeleştirildi, callback hata yolları düzeltildi) ve bu dalda `origin/main` ile merge edildi. Sıradaki adım artık kart görünürlüğü değil:
 
-1. Bu dalı Vercel Preview'a deploy edip gerçek sandbox kartıyla uçtan uca redirect akışını (başarılı ve reddedilen kart, her ikisi) tarayıcıda test etmek.
-2. Başarı ekranının (`/siparis/tamamlandi`) imzalı token ile doğru çalıştığını, red ekranının (`failed=1`) doğru mesajı gösterip "Tekrar dene" ile `/siparis`'e döndüğünü doğrulamak.
+1. ~~Bu dalı Vercel Preview'a deploy edip gerçek sandbox kartıyla uçtan uca redirect akışını (başarılı ve reddedilen kart, her ikisi) tarayıcıda test etmek.~~ **Tamamlandı, bkz. 29. madde.**
+2. ~~Başarı ekranının (`/siparis/tamamlandi`) imzalı token ile doğru çalıştığını, red ekranının (`failed=1`) doğru mesajı gösterip "Tekrar dene" ile `/siparis`'e döndüğünü doğrulamak.~~ Başarı ekranı doğrulandı; red ekranı (`failed=1`) kod seviyesinde doğru ama henüz gerçek bir callback ile tetiklenerek görülmedi (bkz. 29. madde — nedeni iyzico'nun basit red/3DS-init hatalarını hiç callback'e göndermeden kendi sayfasında satır içi göstermesi).
+
+### 29. Gerçek Vercel Preview + iyzico sandbox üzerinde uçtan uca doğrulama
+
+Bu dal Vercel Preview'a deploy edildi (`vitrinweb-git-feat-iyzico-checkout-kerimelmali.vercel.app`) ve Playwright ile gerçek bir tarayıcıdan, gerçek iyzico sandbox sunucusuna karşı uçtan uca test edildi (sipariş oluşturma → fatura/onay → `/api/payments/iyzico/initialize` → iyzico'nun gerçek `sandbox-cpp.iyzipay.com` ödeme sayfası → kart girişi → `/api/payments/iyzico/callback` → Supabase).
+
+**Kritik bulgu ve düzeltme — yanlış yapılandırılmış `IYZICO_CALLBACK_ORIGIN` (Preview):** İlk testte iyzico'nun callback POST'u `https://www.vitrinweb.com.tr/api/payments/iyzico/callback`'e gitti — yani Preview ortamı, Production'da kullanılması gereken canlı domain'e yönlendirmişti. Sebebi: Vercel'de `IYZICO_CALLBACK_ORIGIN` üç ortam için de (Production/Preview/Development) ayrı ayrı tanımlanmıştı, ama Preview'a yanlışlıkla production domain'i (`www.vitrinweb.com.tr`) girilmişti. `www.vitrinweb.com.tr` şu an hâlâ eski statik GitHub Pages sitesini sunduğu için (bkz. CLAUDE.md) orada `/api/` rotası hiç yok — callback 404 ile düşüyordu ve ödeme hiçbir zaman tamamlanamıyordu. Bu kod hatası değil, saf ortam değişkeni yanlış değeriydi; **Preview** değeri bu branch'in kendi preview URL'ine (`https://vitrinweb-git-feat-iyzico-checkout-kerimelmali.vercel.app`) düzeltilip yeniden deploy edildi, ardından akış uçtan uca tamamlandı. **Production'a geçmeden önce o ortamın `IYZICO_CALLBACK_ORIGIN` değerinin gerçek canlı domain'le birebir eşleştiği ayrıca teyit edilmelidir** — bu PR'ın kapsamı dışında, ama atlanmaması gereken bir go-live kontrolü.
+
+**Başarılı ödeme — tam doğrulandı:** iyzico resmi sandbox test kartı `5528790000000008` (12/30, CVC 123) ile sipariş sonuna kadar tamamlandı: iyzico imzalı sonucu doğru callback'e POST etti, sunucu HMAC imzasını doğruladı, Supabase'de `payment_status` `paid` olarak güncellendi (doğrudan SQL sorgusuyla bağımsız olarak teyit edildi), imzalı sonuç token'ı üretildi, başarı ekranı gerçek sipariş numarasıyla (`#465601`) göründü.
+
+**Reddedilen ödeme — iyzico'nun kendi davranışı doğrulandı, kodda açık yok:** iyzico'nun resmi "yetersiz bakiye" (`4111111111111129`) ve "3DS initialize hatası" (`4151111111111112`) test kartlarıyla denendi. İkisinde de iyzico, hata mesajını **kendi barındırdığı ödeme sayfasında satır içi** gösteriyor ve müşterinin sayfadan hiç ayrılmadan farklı bir kartla tekrar denemesine izin veriyor — bu durumlarda iyzico Vitrin'in callback'ini hiç çağırmıyor. Bu iyzico Checkout Form'un standart tasarımı (çoğu hosted ödeme sayfası gibi), Vitrin tarafında bir eksiklik değil. Sonuç: `callback/route.ts`'teki `!verified` → `failed=1` yönlendirme kodu (iyzico'nun callback ile gerçekten başarısız sonuç bildirdiği, örn. tamamlanmış ama reddedilmiş bir 3D Secure zorlu doğrulama gibi daha ileri aşama senaryoları için) bu testte fiilen tetiklenmedi; kod iyzico'nun dokümante edilen callback sözleşmesine göre doğru ve güvenli taraflı (doğrulama eşleşmezse asla "ödendi" göstermiyor), ama bu özel alt yol gerçek bir callback ile henüz gözlemlenmedi.
+
+**Test sırasında fark edilen, ilgisiz konsol gürültüsü (kod hatası değil):** Preview deploy'larında Vercel'in kendi `vercel.live` canlı-geri bildirim script'i CSP tarafından engelleniyor (zararsız, yalnızca Vercel'in kendi preview-only aracı); iyzico'nun kendi `sandbox-cpp.iyzipay.com` sayfası `Sentry` adlı kendi hata izleme nesnesini tanımsız olarak çağırıyor (iyzico'nun kendi sayfası, Vitrin kodu değil).
+
+Test sırasında oluşan 9 adet sahte sipariş (`customer->>'email' like 'e2e-%@example.com'`) temizlik için işaretlendi; gerçek müşteri verisiyle karışmaz.
 3. Bu doğrulandıktan sonra `main`'e merge için PR'ı gözden geçirmeye açmak (bu dal `main`'e otomatik merge edilmedi, bilerek).

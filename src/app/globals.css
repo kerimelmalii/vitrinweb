@@ -340,6 +340,9 @@ img,svg{max-width:100%}
 .cancel-s .ic{color:var(--ok);flex:none;margin-top:3px}.cancel-s b{color:var(--ink)}
 .cancel{display:flex;gap:14px;align-items:flex-start;margin-top:14px;padding:22px 24px;border:1.5px solid var(--ink);border-radius:22px;background:var(--surface)}
 .cancel .ic{color:var(--ok);flex:none;margin-top:2px}.cancel p{margin:4px 0 0;color:var(--ink-2)}
+.contact-hero-visual{display:none}
+@media(min-width:1024px){.contact-hero-visual{display:block;max-width:360px;margin:0 auto}}
+.contact-hero-visual img{width:100%;height:auto}
 .contact-layout{display:grid;gap:32px}
 @media(min-width:960px){.contact-layout{grid-template-columns:1.4fr 1fr;align-items:start}}
 .contact-side{display:flex;flex-direction:column;gap:16px}

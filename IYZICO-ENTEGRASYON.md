@@ -123,6 +123,14 @@ Bu endpoint fiyat, eklentiler, `payment_status`, `payment_ref`, müşteri veya i
 
 `payment-step.tsx` bu endpoint'e geçirildi. Browser tarafındaki Supabase yardımcı fonksiyonu yeniden yalnızca `INSERT` davranışına döndürüldü; mevcut RLS modelindeki anon SELECT/UPDATE/DELETE yasağı korunuyor.
 
+### 15. İlk sipariş kaydının server-side oluşturulması
+
+Paket seçiminden ödeme adımına geçerken siparişin yalnızca eski browser/localStorage demo katmanına yazıldığı tespit edildi. Bu durumda `/api/orders/checkout-data` Supabase'te siparişi bulamayacağı için gerçek iyzico akışı ödeme başlamadan duruyordu.
+
+Bu nedenle `POST /api/orders/create` endpoint'i eklendi. Endpoint müşteri/işletme alanlarını, sektör, telefon/e-posta ve opsiyonel URL/Instagram/WhatsApp biçimlerini, eklenti ID'lerini ve teklif isteklerini sunucuda doğrular. Fiyat ve eklenti kayıtları browser'dan gelen toplam değerden alınmaz; `calculateServerPrice` ile sunucuda yeniden üretilir. Supabase INSERT işlemi service-role istemcisiyle server-side yapılır; ilk ödeme durumu yalnızca `pending` olabilir.
+
+`package-step.tsx` artık ödeme adımına geçmeden önce bu endpoint'i çağırır. Sipariş Supabase'e başarıyla yazılmadan step 3'e geçilmez. İstek sürerken butonlar devre dışı bırakılır; hata halinde kullanıcı ödeme ekranına geçirilmez. Eski `Backend.upsert(buildRecord(...))` localStorage kaydı bu geçişten kaldırıldı.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -178,7 +186,11 @@ Bu endpoint fiyat, eklentiler, `payment_status`, `payment_ref`, müşteri veya i
 - `ca41a6175490bb04a2e4b81cff481ce6fce22183` — dar kapsamlı server-side checkout veri güncelleme endpoint'i
 - `8bae34c7a0c7c68214e476f1de5d3112a37e1a1a` — ödeme ekranının server-side checkout endpoint'ine geçirilmesi
 - `10c66ab4fc1da0bdb83394869e5260effff14997` — browser Supabase erişiminin yeniden insert-only tutulması
+- `8b0256b8e070d33df1bb4572f381b6d97e5ec28a` — ilk sipariş kaydı için server-side oluşturma endpoint'i
+- `184773248bb72c8471ab7c2f0a75b6eecd6e6467` — paket adımının server-side sipariş oluşturma endpoint'ine bağlanması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı sandbox testinden önce callback origin/domain erişimini ve Vercel environment yapılandırmasını doğrulamak, ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.
+Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
+
+Bir sonraki geliştirme adımı callback'in tekrar çağrılmasına karşı idempotency davranışını düzeltmek ve ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.

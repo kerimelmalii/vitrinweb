@@ -113,6 +113,16 @@ Checkout öncesinde güncel fatura ve onay bilgilerinin server-side initialize t
 
 Not: mevcut Supabase RLS politikası daha önce yalnızca anon `insert` için tasarlanmıştı. Bu nedenle gerçek sandbox testinden önce anon upsert/update yetkisinin güvenli biçimde çözülmesi veya bu ödeme-öncesi kayıt işleminin server-side sipariş endpoint'ine taşınması gerekir. Browser'a genel update yetkisi açmak tercih edilmemelidir.
 
+### 14. Checkout verisinin server-side güncellenmesi
+
+`POST /api/orders/checkout-data` endpoint'i eklendi. Ödeme öncesindeki fatura ve onay değişiklikleri artık browser'ın Supabase anon istemcisiyle UPDATE/upsert edilmez. Endpoint server-side service-role istemcisini kullanır; ancak yalnızca mevcut siparişin `invoice` ve `consents` alanlarını güncelleyebilir.
+
+İstek `orderId + orderNo + kayıtlı müşteri e-postası` üçlüsüyle mevcut kayıtla eşleştirilir. Sunucu fatura türünü, alan uzunluklarını, bireysel TCKN algoritmasını / kurumsal 10 haneli vergi numarasını, şehir/adres zorunluluğunu ve zorunlu onayları yeniden doğrular. Onay zamanı yalnızca yakın geçmişteki makul bir pencere içinde kabul edilir. Ödenmiş sipariş değiştirilemez.
+
+Bu endpoint fiyat, eklentiler, `payment_status`, `payment_ref`, müşteri veya işletme verisini değiştiremez. Böylece browser'ın service-role yetkilerine dolaylı olarak geniş erişim kazanması engellenir.
+
+`payment-step.tsx` bu endpoint'e geçirildi. Browser tarafındaki Supabase yardımcı fonksiyonu yeniden yalnızca `INSERT` davranışına döndürüldü; mevcut RLS modelindeki anon SELECT/UPDATE/DELETE yasağı korunuyor.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -127,7 +137,6 @@ Not: mevcut Supabase RLS politikası daha önce yalnızca anon `insert` için ta
 
 ## Henüz yapılmayanlar
 
-- Checkout öncesi sipariş güncellemesini browser anon upsert yerine güvenli server-side sipariş endpoint'ine taşıma / RLS çözümü.
 - Uçtan uca sandbox testi.
 - Canlı ortama geçiş.
 - Eski statik/GitHub Pages ve demo ödeme dokümantasyonunun temizlenmesi.
@@ -166,7 +175,10 @@ Not: mevcut Supabase RLS politikası daha önce yalnızca anon `insert` için ta
 - `45fc7c15a30fb268615dc879e8e122d06f3993ab` — demo kart formunun kaldırılması ve iyzico hosted ödeme yönlendirmesi
 - `b14991c182e6f9db70f67d4e957bb4ab3f418678` — checkout öncesi sipariş verisini aynı kayıt üzerinde güncelleme
 - `a2e6a551e65adf5f67eef15c94a1f67b136da742` — sipariş kalıcılaştırma başarısızsa ödeme başlatmama
+- `ca41a6175490bb04a2e4b81cff481ce6fce22183` — dar kapsamlı server-side checkout veri güncelleme endpoint'i
+- `8bae34c7a0c7c68214e476f1de5d3112a37e1a1a` — ödeme ekranının server-side checkout endpoint'ine geçirilmesi
+- `10c66ab4fc1da0bdb83394869e5260effff14997` — browser Supabase erişiminin yeniden insert-only tutulması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, ödeme öncesinde fatura/onay değişikliklerini browser'ın anon Supabase istemcisiyle güncellemek yerine güvenli bir server-side sipariş endpoint'i üzerinden kalıcılaştırmaktır. Bu tamamlanmadan sandbox uçtan uca ödeme testi yapılmamalıdır.
+Bir sonraki geliştirme adımı sandbox testinden önce callback origin/domain erişimini ve Vercel environment yapılandırmasını doğrulamak, ardından build/type kontrolü yapmaktır. Bunlar tamamlanmadan gerçek sandbox ödeme denemesi yapılmamalıdır.

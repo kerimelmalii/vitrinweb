@@ -1,21 +1,19 @@
 import type { NextConfig } from "next";
 
-/* GitHub Pages, proje sitelerini "/<repo-adı>/" alt yolunda sunar (kullanıcı adı.github.io/vitrinwebsite).
-   Gerçek domain bağlandığında veya başka bir statik host kullanıldığında bu alt yol gerekmez;
-   bu yüzden yalnızca GitHub Actions içindeki (GITHUB_PAGES=true) derlemede etkinleştirilir. */
-const isGithubPages = process.env.GITHUB_PAGES === "true";
-const repoBasePath = "/vitrinwebsite";
-
 const nextConfig: NextConfig = {
-  output: "export",
-  trailingSlash: true,
+  // Vitrin artık Vercel üzerinde Next.js API route'ları kullandığı için
+  // statik export kullanılmaz. /api/orders ve /api/payments sunucuda çalışır.
   images: {
     unoptimized: true,
   },
-  basePath: isGithubPages ? repoBasePath : "",
-  assetPrefix: isGithubPages ? repoBasePath : undefined,
+
+  // iyzipay çalışma anında kendi resource dosyalarını dinamik require ile yükler.
+  // Next.js'in bu paketi server bundle'ına dahil etmesi resource çözümlemesini bozar;
+  // Node.js runtime'ında doğrudan node_modules üzerinden çalıştırılır.
+  serverExternalPackages: ["iyzipay"],
+
   env: {
-    NEXT_PUBLIC_BASE_PATH: isGithubPages ? repoBasePath : "",
+    NEXT_PUBLIC_BASE_PATH: "",
   },
 };
 

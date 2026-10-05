@@ -2,14 +2,12 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { OrderRecord } from "@/lib/types";
 
 /* ================= SUPABASE (sipariş verisi) =================
-   Site tamamen statiktir; bu istemci doğrudan tarayıcıdan anon anahtarla yalnızca
-   YENİ satır ekler (bkz. supabase/schema.sql — RLS insert-only). Siparişler Supabase
-   Dashboard'ın Table Editor'ünden görüntülenir. Ödeme (iyzico) ve erişim token'ıyla
-   güncelleme gibi sunucu mantığı henüz burada değil (bkz. DEVIR-BELGESI.md bölüm 8).
+   Checkout başlamadan önce siparişin güncel müşteri/fatura/onay verisini Supabase'e
+   yazar. Ödeme sonucu bu istemciden yazılmaz; yalnızca server-side iyzico callback
+   akışı payment_status=paid yapabilir.
 
    Kurulum: SUPABASE-KURULUM.md. URL ve anon anahtar ortam değişkeninden
-   (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY) okunur; tanımlı
-   değilse fonksiyon sessizce hiçbir şey yapmaz (order-webhook.ts ile aynı desen). */
+   (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY) okunur. */
 
 let client: SupabaseClient | null | undefined;
 
@@ -23,9 +21,9 @@ function getClient(): SupabaseClient | null {
 
 export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
   const supabase = getClient();
-  if (!supabase) return;
-  try {
-    await supabase.from("orders").upsert({
+  if (!supabase) throw new Error("Supabase istemci yapılandırması eksik.");
+
+  const { error } = await supabase.from("orders").upsert({
       id: rec.id,
       order_no: rec.orderNo,
       access_token: rec.accessToken,
@@ -46,7 +44,8 @@ export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
       content_form: rec.contentForm,
       created_at: rec.createdAt,
     }, { onConflict: "id" });
-  } catch {
-    /* Sipariş yerelde zaten kaydedildi; Supabase'e yazılamasa da akış etkilenmez. */
+
+  if (error) {
+    throw new Error("Sipariş ödeme öncesi kaydedilemedi.");
   }
 }

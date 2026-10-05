@@ -161,7 +161,7 @@ export function AboutPage() {
         <div className="container-x">
           <div className="about-sig">
             <Image className="about-sig-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
-            <p>İşletmenizin internetteki vitrini.</p>
+            <p>İşletmenizin dijital vitrini.</p>
             <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
           </div>
         </div>

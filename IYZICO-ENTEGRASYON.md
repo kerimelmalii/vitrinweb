@@ -28,7 +28,7 @@ Aynı server-only modüle resmî `iyzipay` Node SDK istemcisi eklendi. İstemci 
 
 ### 3. Ödeme başlatma endpoint'i — `src/app/api/payments/iyzico/initialize/route.ts`
 
-`POST /api/payments/iyzico/initialize` endpoint'i oluşturuldu. Şu an gerçek Checkout Form isteğini henüz göndermiyor. Ön hazırlık olarak:
+`POST /api/payments/iyzico/initialize` endpoint'i artık gerçek iyzico Checkout Form initialize isteğini sunucu tarafından oluşturup gönderiyor. Akış:
 - `orderId` biçimini doğruluyor,
 - ek özellik listesini browser'dan kabul etmiyor; Supabase'teki kayıtlı siparişten okuyor,
 - siparişin Supabase'te gerçekten var olduğunu server-side kontrol ediyor,
@@ -36,7 +36,12 @@ Aynı server-only modüle resmî `iyzipay` Node SDK istemcisi eklendi. İstemci 
 - müşteri, işletme, fatura ve zorunlu onay bilgilerini Supabase'teki kayıtlı siparişten okuyor,
 - eksik müşteri/fatura bilgisi veya tamamlanmamış zorunlu onay varsa Checkout Form hazırlığını reddediyor,
 - bu hassas alanları API cevabında tarayıcıya geri döndürmüyor,
-- tutarı server-side fiyatlandırmadan hesaplıyor.
+- tutarı server-side fiyatlandırmadan hesaplıyor,
+- buyer/adres/sepet verisini server-only eşleme katmanından oluşturuyor,
+- callback URL ve istemci IP'sini güvenilir server-side yardımcılarla ekliyor,
+- resmî `iyzipay` SDK ile Checkout Form initialize çağrısını yapıyor,
+- başarılı yanıttaki token ile siparişi `payment_started` durumuna geçiriyor,
+- browser'a yalnızca Checkout Form'u göstermek için gereken token/içerik veya ödeme sayfası URL'sini döndürüyor; API anahtarları ve secret hiçbir zaman dönmüyor.
 
 ### 4. Güvenilir fiyatlandırma — `src/lib/server-pricing.ts`
 
@@ -82,7 +87,6 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 
 ## Henüz yapılmayanlar
 
-- Gerçek Checkout Form initialize çağrısı.
 - Callback endpoint'i.
 - Checkout Form sonucunun iyzico üzerinden retrieve edilip doğrulanması.
 - Doğrulanmış ödeme sonucunun Supabase'e idempotent biçimde yazılması.
@@ -109,7 +113,8 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - `0bd94bd68522716e9f1e8ace0518b055fdf99b68` — güvenilir callback URL ve istemci IP yardımcıları
 - `ba60734c721717139fe1a7191f8b6f953332db8c` — iyzico eşlemesinde ayrı fatura şehir alanına geçiş
 - `5c81a8f654371627669e7049fe9e01a661ffbc5f` — ödeme tutarını browser eklentileri yerine kayıtlı sipariş eklentilerinden hesaplama
+- `54c7810913337fa6653863a332bc7778de483e37` — gerçek iyzico Checkout Form initialize çağrısının server-side bağlanması
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, initialize endpoint'ini veri eşleme, callback URL ve istemci IP yardımcılarına bağlayarak gerçek iyzico Checkout Form initialize isteğini oluşturmaktır. Sandbox çağrısı yapılmadan önce Vercel'de callback origin değişkeni tanımlanmalı ve callback endpoint'i mevcut olmalıdır.
+Bir sonraki geliştirme adımı callback endpoint'ini oluşturmaktır. Callback, iyzico'nun gönderdiği token'ı alacak; token tek başına başarı sayılmayacak, Checkout Form sonucu iyzico üzerinden server-side retrieve edilip imza/durum/sipariş/tutar/para birimi doğrulandıktan sonra sipariş idempotent biçimde `paid` yapılacaktır. Callback endpoint'i tamamlanmadan uçtan uca ödeme testi yapılmamalıdır.

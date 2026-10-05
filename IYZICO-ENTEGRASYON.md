@@ -30,7 +30,7 @@ Aynı server-only modüle resmî `iyzipay` Node SDK istemcisi eklendi. İstemci 
 
 `POST /api/payments/iyzico/initialize` endpoint'i oluşturuldu. Şu an gerçek Checkout Form isteğini henüz göndermiyor. Ön hazırlık olarak:
 - `orderId` biçimini doğruluyor,
-- eklenti listesini doğruluyor,
+- ek özellik listesini browser'dan kabul etmiyor; Supabase'teki kayıtlı siparişten okuyor,
 - siparişin Supabase'te gerçekten var olduğunu server-side kontrol ediyor,
 - zaten ödenmiş sipariş için yeni ödeme başlatılmasını reddediyor,
 - müşteri, işletme, fatura ve zorunlu onay bilgilerini Supabase'teki kayıtlı siparişten okuyor,
@@ -74,6 +74,7 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - Sandbox geliştirme sırasında varsayılandır.
 - Kart bilgileri Vitrin backend'ine veya Supabase'e kaydedilmez.
 - Frontend toplam tutarı belirleyemez.
+- Frontend ödeme sırasında ek özellik listesini değiştirerek daha düşük tutar üretemez; fiyat hesabı Supabase'te kayıtlı `addons` üzerinden yapılır.
 - Rastgele veya veritabanında bulunmayan sipariş için ödeme başlatılmaz.
 - Ödenmiş sipariş için tekrar ödeme başlatılmaz.
 - Callback/redirect tek başına ödeme kanıtı sayılmaz; iyzico sonucu server-side retrieve/doğrulama ile kontrol edilmelidir.
@@ -107,6 +108,7 @@ Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
 - `5d07af0b50970e19e5b353a961116d88472e52ca` — iyzico buyer/adres/sepet veri eşleme katmanı
 - `0bd94bd68522716e9f1e8ace0518b055fdf99b68` — güvenilir callback URL ve istemci IP yardımcıları
 - `ba60734c721717139fe1a7191f8b6f953332db8c` — iyzico eşlemesinde ayrı fatura şehir alanına geçiş
+- `5c81a8f654371627669e7049fe9e01a661ffbc5f` — ödeme tutarını browser eklentileri yerine kayıtlı sipariş eklentilerinden hesaplama
 
 ## Sonraki adım
 

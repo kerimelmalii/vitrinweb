@@ -198,6 +198,12 @@ Bu değişiklik Vitrin'in kart verisini işlemesi anlamına gelmez. Kart alanlar
 Tarayıcı Console kontrolünde ikinci engelin Vitrin'in Content Security Policy ayarı olduğu doğrulandı: `sandbox-static.iyzipay.com/checkoutform/v2/bundle.js` mevcut `script-src 'self' 'unsafe-inline'` politikası tarafından bloklanıyordu. `next.config.ts` header yapılandırmasında `script-src` ve `script-src-elem` için yalnızca iyzico Checkout Form'un gerekli sandbox/live statik alan adları allowlist'e eklendi. Vercel Preview feedback scriptinin bloklanması ödeme entegrasyonundan bağımsızdır ve ödeme için `vercel.live` CSP'ye eklenmemiştir.
 
 
+### 26. CSP çakışmasının giderilmesi ve Checkout Form kaynaklarının tamamlanması
+
+Kapsamlı kontrolde aynı response için iki ayrı CSP üretildiği tespit edildi: `next.config.ts` yeni iyzico izinli politikayı, `vercel.json` ise eski `script-src 'self' 'unsafe-inline'` politikasını gönderiyordu. Birden fazla CSP gevşetici biçimde birleşmez; tarayıcı her politikayı ayrı ayrı uygular. Bu nedenle yeni politika iyzico'ya izin verse bile eski politika Checkout Form scriptini engellemeye devam ediyordu.
+
+CSP'nin tek kaynağı `vercel.json` yapıldı ve `next.config.ts` içindeki ikinci CSP kaldırıldı. iyzico'nun güncel resmî Checkout Form örneğinde hem `cdnsandbox.iyzipay.com` hem `sandbox-static.iyzipay.com` script kaynakları, ayrıca sandbox API/gateway ve statik görsel kaynakları kullanıldığı için CSP yalnızca `*.iyzipay.com` kapsamındaki ödeme sağlayıcı kaynaklarına script/style/image/font/connect/frame/form izinleri verecek şekilde tamamlandı. Vercel Preview feedback scripti ödeme için gerekli olmadığından `vercel.live` allowlist'e eklenmedi.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

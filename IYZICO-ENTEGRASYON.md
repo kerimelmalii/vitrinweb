@@ -181,6 +181,12 @@ Preview ortamındaki gerçek ödeme başlatma testinde `POST /api/payments/iyzic
 
 `next.config.ts` içindeki mevcut `serverExternalPackages: ["iyzipay"]` korunurken `outputFileTracingIncludes` eklendi. `/api/**/*` route'ları için `./node_modules/iyzipay/**/*` açıkça function çıktısına dahil ediliyor. Böylece SDK Node.js runtime'da external çalışmaya devam ederken dinamik resource dosyalarının Vercel paketinde bulunması sağlanır. Bu değişiklik ödeme doğrulama mantığını, anahtarları veya fiyatlandırmayı değiştirmez; yalnızca deployment/runtime paketlemesini düzeltir.
 
+### 24. iyzipay transitif runtime bağımlılıklarının Vercel çıktısına dahil edilmesi
+
+23. adımdaki ilk tracing düzeltmesinden sonra hata ilerledi ve `IyzipayResource` artık bulundu; yeni runtime hatası `Cannot find module 'postman-request'` oldu. Bu sonuç, SDK dosyalarının function çıktısına girdiğini ancak external çalışan `iyzipay` paketinin transitif npm bağımlılıklarının Vercel tarafından otomatik izlenmediğini doğruladı.
+
+Bu nedenle tek tek hata çıktıkça paket eklemek yerine `package-lock.json` içindeki `iyzipay@2.0.69` çalışma zamanı bağımlılık ağının tamamı çıkarıldı. `next.config.ts` içindeki `outputFileTracingIncludes`, yalnızca bu bağımlılık ağındaki paket klasörlerini `/api/**/*` function çıktılarına dahil edecek şekilde genişletildi. Tüm `node_modules` körlemesine eklenmedi; kapsam iyzipay'ın gerçek dependency ağında tutuldu. `serverExternalPackages: ["iyzipay"]` korunur. Amaç SDK'nın dinamik require davranışını Vercel serverless paketlemesiyle uyumlu hale getirmektir; ödeme doğrulama, fiyatlandırma veya secret yönetimi değişmemiştir.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

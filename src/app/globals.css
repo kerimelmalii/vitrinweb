@@ -628,8 +628,8 @@ textarea.input{min-height:120px;resize:vertical}
 @media(min-width:720px){.about-mv{grid-template-columns:1fr 1fr;gap:48px}}
 .about-mv h2{margin-bottom:10px}
 .about-mv p{color:var(--ink-2);max-width:52ch;margin:0}
-.about-sig{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:32px 0}
-.about-sig .logo{font-size:1.7rem}
+.about-sig{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:32px 0}
+.about-sig-logo{width:100%;max-width:220px;height:auto}
 .about-sig p{color:var(--ink-2);margin:0}
 .about-sig a{color:var(--ink-2);font-size:.92rem;text-decoration:none}
 .about-sig a:hover{color:var(--ink);text-decoration:underline}

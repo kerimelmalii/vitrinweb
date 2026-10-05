@@ -14,6 +14,26 @@ export interface ServerPriceResult {
 }
 
 /**
+ * Supabase'teki `orders.addons` sütununun şeklini doğrular ve id listesini döndürür.
+ * initialize ve callback route'ları aynı doğrulamayı tekrarlamak yerine bunu paylaşır.
+ */
+export function parseStoredAddonIds(addons: unknown): string[] {
+  if (
+    !Array.isArray(addons) ||
+    !addons.every(
+      (addon) =>
+        typeof addon === "object" &&
+        addon !== null &&
+        "id" in addon &&
+        typeof (addon as { id: unknown }).id === "string",
+    )
+  ) {
+    throw new Error("Siparişin kayıtlı ek özellikleri geçersiz.");
+  }
+  return (addons as Array<{ id: string }>).map((addon) => addon.id);
+}
+
+/**
  * Ödeme tutarının tek güvenilir kaynağı sunucudur.
  * Tarayıcıdan gelen fiyat/total değerleri hiçbir zaman ödeme için kullanılmaz.
  */

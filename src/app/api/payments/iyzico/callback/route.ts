@@ -5,7 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getIyzicoClient, getIyzicoServerConfig } from "@/lib/iyzico";
 import { getIyzicoCallbackUrl } from "@/lib/payment-request";
 import { createPaymentResultToken } from "@/lib/payment-result-token";
-import { calculateServerPrice } from "@/lib/server-pricing";
+import { token as randomToken } from "@/lib/security";
+import { calculateServerPrice, parseStoredAddonIds } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -132,22 +133,8 @@ export async function POST(request: NextRequest) {
 
     knownOrderId = order.id;
 
-    if (
-      !Array.isArray(order.addons) ||
-      !order.addons.every(
-        (addon: unknown) =>
-          typeof addon === "object" &&
-          addon !== null &&
-          "id" in addon &&
-          typeof addon.id === "string",
-      )
-    ) {
-      throw new Error("Siparişin kayıtlı ek özellikleri geçersiz.");
-    }
-
-    const pricing = calculateServerPrice(
-      order.addons.map((addon: { id: string }) => addon.id),
-    );
+    const addonIds = parseStoredAddonIds(order.addons);
+    const pricing = calculateServerPrice(addonIds);
     const result = await retrieveCheckoutForm(token, order.id);
 
     const expectedAmount = pricing.total.toFixed(2);
@@ -177,11 +164,15 @@ export async function POST(request: NextRequest) {
     }
 
     if (order.payment_status !== "paid") {
+      // İçerik formuna erişim için kalıcı bir token: yalnızca ödeme ilk kez
+      // doğrulandığında üretilir, tekrar eden callback'lerde değişmez.
+      const accessToken = randomToken(24);
       const { error: updateError } = await supabase
         .from("orders")
         .update({
           payment_status: "paid",
           payment_ref: token,
+          access_token: accessToken,
         })
         .eq("id", order.id)
         .neq("payment_status", "paid");

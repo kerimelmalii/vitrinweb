@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await supabase
     .from("orders")
-    .select("id, order_no, payment_status")
+    .select("id, order_no, payment_status, access_token")
     .eq("id", orderId)
     .maybeSingle();
 
@@ -52,10 +52,13 @@ export async function GET(request: NextRequest) {
     return noStoreJson({ ok: false, error: "Sipariş bulunamadı." }, 404);
   }
 
+  const paid = data.payment_status === "paid";
+
   return noStoreJson({
     ok: true,
     orderId: data.id,
     orderNo: data.order_no,
-    paid: data.payment_status === "paid",
+    paid,
+    accessToken: paid ? data.access_token : null,
   });
 }

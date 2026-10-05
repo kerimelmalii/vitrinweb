@@ -7,7 +7,7 @@ import {
   getPaymentClientIp,
 } from "@/lib/payment-request";
 import { RX } from "@/lib/security";
-import { calculateServerPrice } from "@/lib/server-pricing";
+import { calculateServerPrice, parseStoredAddonIds } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { Consents, Invoice } from "@/lib/types";
 
@@ -155,20 +155,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (
-      !Array.isArray(order.addons) ||
-      !order.addons.every(
-        (addon) =>
-          typeof addon === "object" &&
-          addon !== null &&
-          "id" in addon &&
-          typeof addon.id === "string",
-      )
-    ) {
-      throw new Error("Siparişin kayıtlı ek özellikleri geçersiz.");
-    }
-
-    const pricing = calculateServerPrice(order.addons.map((addon) => addon.id));
+    const addonIds = parseStoredAddonIds(order.addons);
+    const pricing = calculateServerPrice(addonIds);
     const checkout = buildIyzicoCheckoutContext(
       {
         id: order.id,

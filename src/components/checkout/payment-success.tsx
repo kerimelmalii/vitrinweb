@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useApp } from "@/lib/order-context";
 
 type State =
   | { kind: "loading" }
-  | { kind: "paid"; orderNo: string }
+  | { kind: "paid"; orderNo: string; accessToken: string | null }
   | { kind: "pending" }
   | { kind: "failed" }
   | { kind: "error" };
 
 export function PaymentSuccess() {
   const params = useSearchParams();
+  const { patch } = useApp();
   const orderId = params.get("orderId") ?? "";
   const resultToken = params.get("resultToken") ?? "";
   const failed = params.get("failed") === "1";
@@ -37,6 +40,7 @@ export function PaymentSuccess() {
           ok: boolean;
           paid: boolean;
           orderNo?: string;
+          accessToken?: string | null;
         }>;
       })
       .then((result) => {
@@ -48,7 +52,18 @@ export function PaymentSuccess() {
           setState({ kind: "pending" });
           return;
         }
-        setState({ kind: "paid", orderNo: result.orderNo });
+        const accessToken = result.accessToken ?? null;
+        // Ödeme iyzico'nun kendi sayfasında tamamlandığı için yerel sipariş
+        // durumu bu ana kadar "payment_started" kalır; içerik formunun
+        // açılabilmesi için sunucudan doğrulanmış sonucu burada yazıyoruz.
+        patch({
+          id: orderId,
+          orderNo: result.orderNo,
+          status: "paid",
+          step: 4,
+          accessToken,
+        });
+        setState({ kind: "paid", orderNo: result.orderNo, accessToken });
       })
       .catch((error: unknown) => {
         if ((error as { name?: string })?.name !== "AbortError") {
@@ -57,6 +72,7 @@ export function PaymentSuccess() {
       });
 
     return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- patch kimliği stabil, sonsuz döngüye neden olmaz
   }, [failed, orderId, resultToken]);
 
   return (
@@ -85,6 +101,13 @@ export function PaymentSuccess() {
             <div className="ordno">
               Sipariş No: <b>#{state.orderNo}</b>
             </div>
+            <Link
+              className="btn btn-primary btn-lg"
+              style={{ marginTop: "20px" }}
+              href={state.accessToken ? "/icerik-formu?t=" + state.accessToken : "/icerik-formu"}
+            >
+              İçerik Formuna Geçin
+            </Link>
           </>
         )}
 

@@ -173,6 +173,8 @@ Vitrin'in kullanıcıya açık sayfalarında kısa, okunabilir, ASCII karakterli
 
 İlk uygulama olarak proje başlangıç/içerik toplama sayfasının kanonik yolu `/icerik-formu` oldu. Eski `/baslangic` yolu geriye dönük uyumluluk için tutuldu ve varsa mevcut `t` erişim token'ını koruyarak `/icerik-formu?t=...` adresine yönlendiriyor. Token güvenlik akışının parçası olduğu için yalnızca estetik amaçla kaldırılmadı.
 
+Sipariş başarı ekranındaki **“İçerik Formuna Geçin”** bağlantısı da yeni kanonik yola geçirildi: token varsa `/icerik-formu?t=...`, yoksa `/icerik-formu`. Böylece yeni oluşturulan kullanıcı bağlantıları artık eski `/baslangic` yolunu üretmez.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { verifyPaymentResultToken } from "@/lib/payment-result-token";
 import { RX } from "@/lib/security";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -20,9 +21,15 @@ function noStoreJson(body: object, status = 200) {
  */
 export async function GET(request: NextRequest) {
   const orderId = request.nextUrl.searchParams.get("orderId")?.trim() ?? "";
+  const resultToken =
+    request.nextUrl.searchParams.get("resultToken")?.trim() ?? "";
 
   if (!RX.orderId.test(orderId)) {
     return noStoreJson({ ok: false, error: "Geçersiz sipariş." }, 400);
+  }
+
+  if (!verifyPaymentResultToken(orderId, resultToken)) {
+    return noStoreJson({ ok: false, error: "Geçersiz veya süresi dolmuş ödeme sonucu." }, 403);
   }
 
   const supabase = getSupabaseAdmin();

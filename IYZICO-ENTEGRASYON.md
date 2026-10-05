@@ -167,6 +167,12 @@ Sandbox uçtan uca ödeme testi başarıyla tamamlandı; ödeme iyzico tarafınd
 
 Callback route'unda başarı URL'si artık gelen callback isteğinin `request.url` hostundan türetilmiyor. Bunun yerine iyzico callback adresi için kullanılan güvenilir `IYZICO_CALLBACK_ORIGIN` kaynağının origin'i kullanılıyor. Böylece ödeme hangi Preview deployment üzerinden başlatılırsa başlatılsın başarılı ödeme sonrası sonuç sayfası kanonik Vitrin domaininde açılır. İstemci/proxy Host başlığı sonuç yönlendirmesinin kaynağı değildir.
 
+### 22. Kullanıcıya açık URL standardı ve içerik formu
+
+Vitrin'in kullanıcıya açık sayfalarında kısa, okunabilir, ASCII karakterli ve tire ile ayrılmış URL'ler kullanılmasına karar verildi. Teknik/geliştirme isimleri kullanıcıya gösterilmeyecek; eski adresler mümkün olduğunda yönlendirmeyle korunacak.
+
+İlk uygulama olarak proje başlangıç/içerik toplama sayfasının kanonik yolu `/icerik-formu` oldu. Eski `/baslangic` yolu geriye dönük uyumluluk için tutuldu ve varsa mevcut `t` erişim token'ını koruyarak `/icerik-formu?t=...` adresine yönlendiriyor. Token güvenlik akışının parçası olduğu için yalnızca estetik amaçla kaldırılmadı.
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.

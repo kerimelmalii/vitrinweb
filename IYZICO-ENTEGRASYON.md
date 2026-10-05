@@ -59,6 +59,15 @@ Supabase'ten okunup doğrulanmış sipariş verisini iyzico'nun `buyer`, `billin
 
 Mevcut sipariş modelinde şehir ayrı bir alan olmadığı için şehir, geçici olarak fatura adresinin son virgül/satır parçasından çıkarılıyor. Bu bilinçli bir geçiş çözümüdür; sipariş formuna ayrı şehir alanı eklendiğinde kaldırılmalıdır. Bireysel faturadaki kimlik numarası buyer alanına taşınabilir ancak loglanmamalıdır.
 
+### 8. Callback URL ve istemci IP yardımcıları — `src/lib/payment-request.ts`
+
+Checkout Form callback adresi ve buyer IP'si için server-only yardımcılar eklendi. Callback URL, request'in `Host` / `X-Forwarded-Host` başlıklarından üretilmez; böylece istemcinin callback hedefini etkilemesi önlenir. Tercih edilen kaynak `IYZICO_CALLBACK_ORIGIN` environment variable'ıdır; tanımlı değilse kanonik `https://vitrinweb.com.tr` origin'i kullanılır. HTTPS zorunludur (localhost geliştirme istisnası).
+
+İstemci IP'si Vercel/proxy zincirinde `x-forwarded-for` başlığının ilk değerinden, yoksa `x-real-ip` üzerinden alınır. IP bulunamazsa ödeme hazırlığı fail-closed davranır. IP loglanmamalı ve yalnızca iyzico buyer isteği için kullanılmalıdır.
+
+Vercel'e canlı/sandbox testinden önce eklenmesi önerilen değişken:
+- `IYZICO_CALLBACK_ORIGIN=https://vitrinweb.com.tr`
+
 ## Güvenlik kararları
 
 - Canlı ve sandbox anahtarları kod deposuna yazılmaz.
@@ -96,7 +105,8 @@ Mevcut sipariş modelinde şehir ayrı bir alan olmadığı için şehir, geçic
 - `fba5d36b46d48cbf1415052626aa6389d332223d` — server-only resmî iyzico SDK istemcisi
 - `324900b5e1e14420acb1f566be11e595b7e5d2ff` — Checkout Form öncesi güvenilir sipariş/fatura/onay doğrulaması
 - `5d07af0b50970e19e5b353a961116d88472e52ca` — iyzico buyer/adres/sepet veri eşleme katmanı
+- `0bd94bd68522716e9f1e8ace0518b055fdf99b68` — güvenilir callback URL ve istemci IP yardımcıları
 
 ## Sonraki adım
 
-Bir sonraki geliştirme adımı, mevcut initialize endpoint'ini bu veri eşleme katmanına bağlamak ve gerçek iyzico Checkout Form initialize çağrısını hazırlamaktır. Bu adımdan önce callback URL üretimi ve istemci IP'sinin güvenilir şekilde alınması netleştirilmelidir.
+Bir sonraki geliştirme adımı, initialize endpoint'ini veri eşleme, callback URL ve istemci IP yardımcılarına bağlayarak gerçek iyzico Checkout Form initialize isteğini oluşturmaktır. Sandbox çağrısı yapılmadan önce Vercel'de callback origin değişkeni tanımlanmalı ve callback endpoint'i mevcut olmalıdır.

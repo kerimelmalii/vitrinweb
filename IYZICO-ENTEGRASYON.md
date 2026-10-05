@@ -271,3 +271,18 @@ CSP'nin tek kaynağı `vercel.json` yapıldı ve `next.config.ts` içindeki ikin
 Callback domain bağlantısı Vercel'de doğrulandı ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` environment variable'ı eklendi. İlk sipariş kaydı da artık server-side Supabase'e oluşturuluyor.
 
 Callback'in tekrar çağrılmasına karşı idempotency sorunu düzeltildi ve Checkout Form retrieve imza algoritması güncel resmî iyzico SDK örneğiyle teyit edildi. İlk Vercel build hatasına karşı Next.js server yapılandırması düzeltildi ve iyzipay external package olarak işaretlendi. İlk yeni Vercel Preview derlemesi JavaScript/Next.js aşamasını geçti ancak iyzipay paketinin TypeScript declaration dosyası olmadığı için TS7016 ile durdu. Yerel declaration eklendi; ilk declaration'ın initialize resource adını eksik tanımlaması nedeniyle çıkan TS2339 da gerçek SDK kullanım yüzeyiyle eşleştirilerek düzeltildi. Bir sonraki adım yeni Vercel Preview build sonucunu yeniden doğrulamaktır; build başarılı olmadan sandbox ödeme denemesi yapılmamalıdır.
+
+
+### 27. Embedded Checkout Form bootstrap scriptinin gerçek script node'u olarak çalıştırılması
+
+Embedded ödeme paneli görünmesine rağmen iyzico kart alanlarının oluşmamasının tarayıcı tarafındaki temel nedeni incelendi. iyzico Checkout Form initialize cevabındaki `checkoutFormContent`, yalnızca statik HTML değil, Checkout Form kaynaklarını yükleyen çalıştırılabilir bir `<script>` içerir. iyzico'nun Checkout Form dokümantasyonu da dönen `checkoutFormContent` scriptinin formun gösterileceği sayfada kullanılmasını ve `<div id="iyzipay-checkout-form" class="responsive"></div>` container'ının bulunmasını ister.
+
+Önceki `payment-step.tsx` uygulaması `Range.createContextualFragment()` ile içeriği DOM'a ekliyordu; yorumda scriptlerin yeniden oluşturulduğu yazmasına rağmen kod gerçek bir yeni `HTMLScriptElement` üretmiyordu. Dinamik olarak parse edilip DOM'a taşınan script düğümünün çalışmasına güvenmek React/DOM lifecycle içinde güvenilir değildir ve iyzico bootstrap kodu çalışmadığında Checkout Form bundle'ı ile kart alanları hiç oluşmaz.
+
+`src/components/checkout/payment-step.tsx` bu nedenle minimal olarak değiştirildi: `checkoutFormContent` bir `template` içinde parse edilir, script düğümleri içerikten ayrılır, script dışındaki içerik container'a eklenir ve her iyzico scripti attribute'ları ile metni korunarak `document.createElement("script")` üzerinden gerçek executable script node'u olarak yeniden oluşturulup container'a eklenir. Effect cleanup sırasında container temizlenir.
+
+Güvenlik modeli değişmedi. İçerik yalnızca Vitrin'in server-side `/api/payments/iyzico/initialize` cevabından gelir. API/secret anahtarları browser'a açılmaz; kart numarası, son kullanma tarihi ve CVV React state'ine, Vitrin API route'larına veya Supabase'e alınmaz. Ödeme yine callback sonrasında server-side iyzico retrieve/doğrulaması tamamlanmadan `paid` kabul edilmez.
+
+CSP tek kaynak olarak `vercel.json` içinde kalmaya devam eder; bu değişiklik CSP'yi genişletmez ve `unsafe-eval` veya wildcard `*` gibi yeni gevşetmeler eklemez.
+
+Bu düzeltmenin deployment sonrası browser doğrulamasında iyzico Checkout Form kart alanlarının görünmesi ve Console/Network'te iyzico bootstrap kaynaklarının başarıyla yüklenmesi kontrol edilmelidir. Preview callback origin'inin production domain'e ayarlı olduğu unutulmamalıdır; form görünürlüğü doğrulandıktan sonra uçtan uca ödeme testi callback ortamı dikkate alınarak yapılmalıdır.

@@ -8,108 +8,15 @@ import { Icon } from "@/components/icons";
 import { OrderSummary } from "@/components/order-summary";
 import { TL, VAT_NOTE } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
-import { Backend, buildRecord } from "@/lib/backend";
-import { LS } from "@/lib/storage";
-import { sendOrderToWebhook } from "@/lib/order-webhook";
-import { sendOrderToSupabase } from "@/lib/supabase-order";
-import { PaymentProvider } from "@/lib/payment";
 import { pricing } from "@/lib/pricing";
-import { LIMITS, token, validTCKN } from "@/lib/security";
+import { LIMITS, validTCKN } from "@/lib/security";
 import { BASE_PATH } from "@/lib/site";
 import type { Invoice } from "@/lib/types";
 
-const fmtCard = (v: string) =>
-  v
-    .replace(/\D/g, "")
-    .slice(0, 16)
-    .replace(/(.{4})/g, "$1 ")
-    .trim();
-const fmtExp = (v: string) => {
-  const d = v.replace(/\D/g, "").slice(0, 4);
-  return d.length > 2 ? d.slice(0, 2) + "/" + d.slice(2) : d;
-};
-
-interface Card {
-  name: string;
-  number: string;
-  exp: string;
-  cvv: string;
-}
-
-/* Üretimde bu bileşen sağlayıcının barındırılan ödeme formuyla (iframe / yönlendirme) değişir. */
-function DemoCardForm({
-  card,
-  setCard,
-  err,
-  fix,
-}: {
-  card: Card;
-  setCard: (c: Card) => void;
-  err: Record<string, string | undefined>;
-  fix: (k: string) => void;
-}) {
-  return (
-    <>
-      <Field id="c-name" label="Kart üzerindeki isim" error={err.cname}>
-        <Inp
-          id="c-name"
-          value={card.name}
-          maxLength={60}
-          onValue={(v) => {
-            setCard({ ...card, name: v });
-            fix("cname");
-          }}
-          error={err.cname}
-          autoComplete="cc-name"
-        />
-      </Field>
-      <Field id="c-num" label="Kart numarası" error={err.cnum}>
-        <Inp
-          id="c-num"
-          inputMode="numeric"
-          value={card.number}
-          onValue={(v) => {
-            setCard({ ...card, number: fmtCard(v) });
-            fix("cnum");
-          }}
-          error={err.cnum}
-          autoComplete="cc-number"
-          placeholder="0000 0000 0000 0000"
-        />
-      </Field>
-      <div className="grid grid-cols-2 gap-4">
-        <Field id="c-exp" label="Son kullanma tarihi" error={err.cexp}>
-          <Inp
-            id="c-exp"
-            inputMode="numeric"
-            value={card.exp}
-            onValue={(v) => {
-              setCard({ ...card, exp: fmtExp(v) });
-              fix("cexp");
-            }}
-            error={err.cexp}
-            autoComplete="cc-exp"
-            placeholder="AA/YY"
-          />
-        </Field>
-        <Field id="c-cvv" label="CVV" error={err.ccvv}>
-          <Inp
-            id="c-cvv"
-            inputMode="numeric"
-            value={card.cvv}
-            type="password"
-            onValue={(v) => {
-              setCard({ ...card, cvv: v.replace(/\D/g, "").slice(0, 4) });
-              fix("ccvv");
-            }}
-            error={err.ccvv}
-            autoComplete="cc-csc"
-            placeholder="123"
-          />
-        </Field>
-      </div>
-    </>
-  );
+interface InitializeResponse {
+  ok?: boolean;
+  error?: string;
+  paymentPageUrl?: string | null;
 }
 
 export function PaymentStep() {
@@ -118,15 +25,17 @@ export function PaymentStep() {
   const inv = order.invoice;
   const [err, setErr] = useState<Record<string, string | undefined>>({});
   const fix = (k: string) => setErr((e) => (e[k] ? { ...e, [k]: undefined } : e));
-  const errKey: Record<string, string> = { title: "ititle", taxId: "itax", taxOffice: "ioffice", address: "iaddr", city: "icity" };
+  const errKey: Record<string, string> = {
+    title: "ititle",
+    taxId: "itax",
+    taxOffice: "ioffice",
+    address: "iaddr",
+    city: "icity",
+  };
   const setInv = (k: keyof Invoice, v: string) => {
     patch((o) => ({ invoice: { ...o.invoice, [k]: v } }));
     if (errKey[k]) fix(errKey[k]);
   };
-  /* Ardışık reddedilen denemelerden sonra kısa bekleme (sunucu tarafında da hız sınırı uygulanır). */
-  const [fails, setFails] = useState(0);
-  const [lock, setLock] = useState(0);
-  const [card, setCard] = useState<Card>({ name: "", number: "", exp: "", cvv: "" });
   const [ok, setOk] = useState({ kvkk: false, distance: false, terms: false, marketing: false });
   const corp = inv.type === "kurumsal";
   const [busy, setBusy] = useState(false);
@@ -134,27 +43,20 @@ export function PaymentStep() {
 
   const validate = (): Record<string, string | undefined> => {
     const e: Record<string, string | undefined> = {};
-    if (card.name.trim().length < 3) e.cname = "Kart üzerindeki ismi girin.";
-    if (card.number.replace(/\s/g, "").length !== 16) e.cnum = "16 haneli kart numarasını girin.";
-    const m = /^(\d{2})\/(\d{2})$/.exec(card.exp);
-    const now = new Date();
-    if (!m || +m[1] < 1 || +m[1] > 12 || (2000 + +m[2]) * 12 + +m[1] < now.getFullYear() * 12 + now.getMonth() + 1)
-      e.cexp = "Geçerli bir tarih girin.";
-    if (card.cvv.length < 3) e.ccvv = "CVV 3 veya 4 haneli olmalı.";
     if (inv.title.trim().length < 2) e.ititle = corp ? "Şirket ünvanını girin." : "Fatura için ad soyad girin.";
     const t = inv.taxId.replace(/\D/g, "");
     if (corp) {
       if (t.length !== 10) e.itax = "10 haneli vergi numarasını girin.";
       if (inv.taxOffice.trim().length < 2) e.ioffice = "Vergi dairesini girin.";
     } else if (!validTCKN(t)) e.itax = "Geçerli bir 11 haneli T.C. kimlik numarası girin.";
-    if (inv.address.trim().length < 8) e.iaddr = "Fatura adresinizi girin.";
     if (inv.city.trim().length < 2) e.icity = "Şehrinizi girin.";
+    if (inv.address.trim().length < 8) e.iaddr = "Fatura adresinizi girin.";
     if (!ok.kvkk || !ok.distance || !ok.terms) e.consent = "Devam etmek için zorunlu onay kutularını işaretleyin.";
     return e;
   };
 
   const pay = async () => {
-    if (busy || lock) return;
+    if (busy) return;
     const e = validate();
     setErr(e);
     if (Object.keys(e).length) {
@@ -162,45 +64,70 @@ export function PaymentStep() {
       if (f && f.focus) f.focus();
       return;
     }
+
+    if (!order.id || !order.orderNo) {
+      setPayErr("Sipariş kimliği bulunamadı. Lütfen önceki adıma dönüp tekrar deneyin.");
+      return;
+    }
+
     setBusy(true);
     setPayErr("");
-    const consents = { kvkk: true, distance: true, terms: true, marketing: !!ok.marketing, at: new Date().toISOString() };
+    const consents = {
+      kvkk: true,
+      distance: true,
+      terms: true,
+      marketing: !!ok.marketing,
+      at: new Date().toISOString(),
+    };
+
     try {
-      await Backend.upsert(buildRecord({ ...order, consents, status: "payment_started" }));
-      patch({ status: "payment_started" });
-      const session = await PaymentProvider.createSession({ id: order.id, amount: p.total });
-      const res = await PaymentProvider.confirm(session, card);
-      if (!res.ok) {
-        await Backend.upsert(buildRecord({ ...order, consents, status: "pending" }));
-        const n = fails + 1;
-        setFails(n);
-        patch({ status: "pending" });
-        setBusy(false);
-        if (n >= 3) {
-          setLock(1);
-          setPayErr("Üst üste 3 deneme reddedildi. Güvenliğiniz için 30 saniye sonra tekrar deneyin.");
-          setTimeout(() => {
-            setLock(0);
-            setFails(0);
-          }, 30000);
-        } else setPayErr(res.reason);
-        return;
+      const persistResponse = await fetch("/api/orders/checkout-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({
+          orderId: order.id,
+          orderNo: order.orderNo,
+          email: order.info.email,
+          invoice: inv,
+          consents,
+        }),
+      });
+      const persistResult = (await persistResponse.json()) as {
+        ok?: boolean;
+        error?: string;
+      };
+
+      if (!persistResponse.ok || !persistResult.ok) {
+        throw new Error(
+          persistResult.error || "Sipariş bilgileri güvenli şekilde kaydedilemedi.",
+        );
       }
-      /* Proje formuna erişim anahtarı. Üretimde sunucu üretir, özetini saklar ve e-postayla gönderir. */
-      const accessToken = token(24);
-      const paid = { ...order, consents, accessToken, status: "paid" as const, project: "Bilgiler Bekleniyor" as const, paymentRef: res.ref };
-      const record = buildRecord(paid);
-      await Backend.upsert(record);
-      LS.del("vitrin:draft");
-      sendOrderToWebhook(record);
-      sendOrderToSupabase(record);
-      patch({ consents, accessToken, status: "paid", project: "Bilgiler Bekleniyor", paymentRef: res.ref, step: 4 });
-      setCard({ name: "", number: "", exp: "", cvv: "" });
-      window.scrollTo({ top: 0 });
-    } catch {
-      setPayErr("Bir sorun oluştu. Ödeme alınmadı, lütfen tekrar deneyin.");
+
+      const response = await fetch("/api/payments/iyzico/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ orderId: order.id }),
+      });
+      const result = (await response.json()) as InitializeResponse;
+
+      if (!response.ok || !result.ok || !result.paymentPageUrl) {
+        throw new Error(result.error || "Güvenli ödeme ekranı başlatılamadı.");
+      }
+
+      patch({ consents, status: "payment_started" });
+      window.location.assign(result.paymentPageUrl);
+      return;
+    } catch (error) {
+      setPayErr(
+        error instanceof Error && error.message
+          ? error.message
+          : "Bir sorun oluştu. Ödeme alınmadı, lütfen tekrar deneyin.",
+      );
       patch({ status: "pending" });
     }
+
     setBusy(false);
   };
 
@@ -243,21 +170,18 @@ export function PaymentStep() {
       step={3}
       asideLeft
       title="Siparişinizi tamamlayın."
-      sub="Ödeme bilgilerinizi ve fatura bilgilerinizi girin. Ödemeden hemen sonra proje başlangıç formuna geçersiniz."
+      sub="Fatura bilgilerinizi girin. Ödeme için güvenli iyzico ekranına yönlendirileceksiniz."
       aside={summary}
-      hint="Sıradaki adım: ödeme onaylandığında sipariş numaranızı alır ve içeriklerinizi göndereceğiniz forma geçersiniz."
+      hint="Sıradaki adım: iyzico ödeme ekranında kart bilgilerinizi girersiniz. Ödeme sunucuda doğrulandıktan sonra siparişiniz tamamlanır."
     >
       <div className="panel">
-        <h2 className="h-3">Ödeme Bilgileri</h2>
+        <h2 className="h-3">Güvenli Ödeme</h2>
         <div className="demo-note">
-          <Icon n="info" size={18} />
+          <Icon n="lock" size={18} />
           <span>
-            <b>Demo ortamı:</b> Gerçek ödeme alınmaz ve kart bilgileri hiçbir yere gönderilmez. Herhangi bir geçerli
-            formatlı kart çalışır; 0002 ile biten kart reddedilir. Bireysel fatura için test T.C. kimlik no:
-            10000000146.
+            Kart bilgileriniz Vitrin tarafından alınmaz veya saklanmaz. Ödeme bilgilerinizi güvenli iyzico ödeme ekranında girersiniz.
           </span>
         </div>
-        <DemoCardForm card={card} setCard={setCard} err={err} fix={fix} />
       </div>
       <div className="panel">
         <h2 className="h-3" style={{ marginBottom: "14px" }}>
@@ -329,7 +253,14 @@ export function PaymentStep() {
           </Field>
         )}
         <Field id="i-city" label="Şehir" error={err.icity}>
-          <Inp id="i-city" maxLength={LIMITS.city} value={inv.city} onValue={(v) => setInv("city", v)} error={err.icity} autoComplete="address-level2" />
+          <Inp
+            id="i-city"
+            maxLength={LIMITS.city}
+            value={inv.city}
+            onValue={(v) => setInv("city", v)}
+            error={err.icity}
+            autoComplete="address-level2"
+          />
         </Field>
         <Field id="i-addr" label="Fatura adresi" error={err.iaddr}>
           <textarea
@@ -405,17 +336,17 @@ export function PaymentStep() {
             {err.consent}
           </p>
         )}
-        <button className="btn btn-primary btn-lg btn-block" style={{ marginTop: "18px" }} disabled={busy || !!lock} onClick={pay}>
+        <button className="btn btn-primary btn-lg btn-block" style={{ marginTop: "18px" }} disabled={busy} onClick={pay}>
           {busy ? (
             <>
-              <span className="spin"></span>İşleniyor
+              <span className="spin"></span>Güvenli ödeme hazırlanıyor
             </>
           ) : (
-            TL(p.total) + " Öde"
+            TL(p.total) + " Ödemeye Geç"
           )}
         </button>
         <p className="fine" style={{ textAlign: "center", marginTop: "8px" }}>
-          Tutar {VAT_NOTE}. Butona bastığınızda ödeme yükümlülüğü doğar.
+          Tutar {VAT_NOTE}. Butona bastığınızda güvenli iyzico ödeme ekranına yönlendirilirsiniz.
         </p>
         {payErr && (
           <div className="payerr" role="alert">
@@ -423,10 +354,10 @@ export function PaymentStep() {
           </div>
         )}
         <div className="secure">
-          <Icon n="lock" size={16} /> Güvenli ödeme
+          <Icon n="lock" size={16} /> iyzico güvenli ödeme
         </div>
         <p className="fine" style={{ textAlign: "center", marginTop: "6px" }}>
-          Ödeme bilgileriniz güvenli ödeme altyapısı üzerinden işlenir.
+          Kart bilgileriniz Vitrin sistemlerine girmez ve Vitrin tarafından saklanmaz.
         </p>
         <Image
           className="pay-badge"

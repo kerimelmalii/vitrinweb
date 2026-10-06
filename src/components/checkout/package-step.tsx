@@ -9,7 +9,7 @@ import { OrderSummary } from "@/components/order-summary";
 import { INCLUDED } from "@/data/content";
 import { BASE_PRICE, TL } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
-import { Backend, buildRecord } from "@/lib/backend";
+import { Backend } from "@/lib/backend";
 import { pricing } from "@/lib/pricing";
 import { token } from "@/lib/security";
 
@@ -17,6 +17,7 @@ export function PackageStep() {
   const { order, patch } = useApp();
   const p = pricing(order.addons);
   const [qErr, setQErr] = useState("");
+  const [saving, setSaving] = useState(false);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- kullanıcı düzenlemeye başlayınca hatayı temizler
     if (qErr) setQErr("");
@@ -36,10 +37,34 @@ export function PackageStep() {
     const id = order.id || "ord_" + token(16);
     const orderNo = order.orderNo || Backend.newOrderNo();
     const createdAt = order.createdAt || new Date().toISOString();
-    const o = { ...order, id, orderNo, createdAt, status: "pending" as const };
-    await Backend.upsert(buildRecord(o));
-    patch({ id, orderNo, createdAt, status: "pending", step: 3 });
-    window.scrollTo({ top: 0 });
+    setSaving(true);
+    try {
+      const response = await fetch("/api/orders/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: id,
+          orderNo,
+          createdAt,
+          info: order.info,
+          addons: order.addons,
+          quotes: order.quotes,
+          customRequest: order.customRequest,
+        }),
+      });
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+      if (!response.ok || !result.ok) {
+        setQErr(result.error || "Sipariş şu anda oluşturulamıyor. Lütfen tekrar deneyin.");
+        return;
+      }
+
+      patch({ id, orderNo, createdAt, status: "pending", step: 3 });
+      window.scrollTo({ top: 0 });
+    } catch {
+      setQErr("Sipariş şu anda oluşturulamıyor. Lütfen tekrar deneyin.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const back = (
@@ -64,8 +89,8 @@ export function PackageStep() {
           sticky
           cta={
             <>
-              <button className="btn btn-tag btn-lg btn-block" onClick={next}>
-                Ödemeye Geç
+              <button className="btn btn-tag btn-lg btn-block" onClick={next} disabled={saving}>
+                {saving ? "Sipariş Oluşturuluyor…" : "Ödemeye Geç"}
               </button>
               {back}
             </>
@@ -101,8 +126,8 @@ export function PackageStep() {
             <AnimatedNumber value={p.total} /> TL
           </b>
         </div>
-        <button className="btn btn-primary" onClick={next}>
-          Ödemeye Geç
+        <button className="btn btn-primary" onClick={next} disabled={saving}>
+          {saving ? "Sipariş Oluşturuluyor…" : "Ödemeye Geç"}
         </button>
       </div>
       <div style={{ height: "70px" }} className="lg:hidden"></div>

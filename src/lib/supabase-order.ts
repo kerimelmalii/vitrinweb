@@ -2,14 +2,12 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { OrderRecord } from "@/lib/types";
 
 /* ================= SUPABASE (sipariş verisi) =================
-   Site tamamen statiktir; bu istemci doğrudan tarayıcıdan anon anahtarla yalnızca
-   YENİ satır ekler (bkz. supabase/schema.sql — RLS insert-only). Siparişler Supabase
-   Dashboard'ın Table Editor'ünden görüntülenir. Ödeme (iyzico) ve erişim token'ıyla
-   güncelleme gibi sunucu mantığı henüz burada değil (bkz. DEVIR-BELGESI.md bölüm 8).
+   Tarayıcıdaki anon istemci yalnızca ilk sipariş kaydını eklemek için kullanılır.
+   Mevcut sipariş güncellemeleri ve ödeme durumu değişiklikleri server-side
+   endpoint'lerden yapılır. RLS anon UPDATE/SELECT/DELETE izni vermemelidir.
 
    Kurulum: SUPABASE-KURULUM.md. URL ve anon anahtar ortam değişkeninden
-   (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY) okunur; tanımlı
-   değilse fonksiyon sessizce hiçbir şey yapmaz (order-webhook.ts ile aynı desen). */
+   (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY) okunur. */
 
 let client: SupabaseClient | null | undefined;
 
@@ -23,9 +21,9 @@ function getClient(): SupabaseClient | null {
 
 export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
   const supabase = getClient();
-  if (!supabase) return;
-  try {
-    await supabase.from("orders").insert({
+  if (!supabase) throw new Error("Supabase istemci yapılandırması eksik.");
+
+  const { error } = await supabase.from("orders").insert({
       id: rec.id,
       order_no: rec.orderNo,
       access_token: rec.accessToken,
@@ -46,7 +44,8 @@ export async function sendOrderToSupabase(rec: OrderRecord): Promise<void> {
       content_form: rec.contentForm,
       created_at: rec.createdAt,
     });
-  } catch {
-    /* Sipariş yerelde zaten kaydedildi; Supabase'e yazılamasa da akış etkilenmez. */
+
+  if (error) {
+    throw new Error("Sipariş kaydedilemedi.");
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { BrowserFrame, MockPhone, MockSite } from "@/components/mock-site";
@@ -9,6 +10,7 @@ import { SectionHead } from "@/components/section-head";
 import { FAQ_CATEGORIES, FAQS, HERO_DEMOS, PROCESS, REFERENCES, TRUST, WHY } from "@/data/content";
 import { BASE_PRICE, TL, VAT_NOTE, YEARLY, money } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
+import { BASE_PATH } from "@/lib/site";
 import type { Reference } from "@/lib/types";
 
 /* ================= ANA SAYFA ================= */
@@ -47,6 +49,47 @@ export function PackageSection() {
             </>
           }
         />
+      </div>
+    </section>
+  );
+}
+
+export function PaymentTrust() {
+  const POINTS: ["shield" | "check" | "card", string][] = [
+    ["shield", "Kart bilgisi bize ulaşmaz"],
+    ["check", "BDDK lisanslı kuruluş"],
+    ["card", "3D Secure doğrulama"],
+  ];
+  return (
+    <section id="odeme-guvenligi" className="sec-s">
+      <div className="container-x">
+        <div className="pay-trust">
+          <div className="pay-trust-h">
+            <Icon n="lock" size={26} sw={1.6} />
+            <div>
+              <h2 className="h-3">İyzico ile güvenli ödeme</h2>
+              <p>
+                Kart bilgileriniz Vitrin&apos;e hiç ulaşmaz; ödeme, BDDK lisanslı bir ödeme kuruluşu olan{" "}
+                <b>iyzico</b>&apos;nun kendi güvenli sayfasında, 3D Secure doğrulamasıyla alınır.
+              </p>
+            </div>
+          </div>
+          <div className="pay-trust-pts">
+            {POINTS.map(([icon, t]) => (
+              <span key={t}>
+                <Icon n={icon} size={16} sw={2.2} />
+                {t}
+              </span>
+            ))}
+          </div>
+          <Image
+            className="pay-badge-lg"
+            src={`${BASE_PATH}/odeme-yontemleri.png`}
+            alt="iyzico ile Öde — Mastercard, Visa, American Express, Troy"
+            width={429}
+            height={32}
+          />
+        </div>
       </div>
     </section>
   );
@@ -422,6 +465,7 @@ export function Home() {
       <Hero />
       <WhyWebsite />
       <PackageSection />
+      <PaymentTrust />
       <Process />
       <AnnualService />
       <About />

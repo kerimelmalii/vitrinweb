@@ -476,6 +476,16 @@ img,svg{max-width:100%}
 .ftr-b{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:40px;padding-top:22px;border-top:1px solid var(--line)}
 .ftr-b .fine{display:inline-flex;align-items:center;gap:6px}
 .pay-badge{height:24px;width:auto;display:block}
+.pay-trust{border:1.5px solid var(--line);border-radius:28px;padding:clamp(26px,4vw,38px);display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;background:var(--surface)}
+.pay-trust-h{display:flex;gap:16px;align-items:flex-start;flex:1 1 360px}
+.pay-trust-h .ic{flex:none;color:var(--logo);margin-top:2px}
+.pay-trust-h h2{margin:0 0 6px}
+.pay-trust-h p{margin:0;color:var(--ink-2);max-width:60ch}
+.pay-trust-pts{display:flex;flex-direction:column;gap:10px;flex:none}
+.pay-trust-pts span{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;white-space:nowrap}
+.pay-trust-pts .ic{color:var(--ok);flex:none}
+.pay-badge-lg{height:34px;width:auto;display:block;flex:none;margin-left:auto}
+@media(max-width:620px){.pay-badge-lg{margin-left:0}}
 .ftr-in{display:flex;flex-wrap:wrap;gap:32px 72px;justify-content:space-between}
 .ftr ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .ftr .linkb{background:none;border:0;padding:0;color:var(--ink-2);font:500 .95rem var(--sans);cursor:pointer;text-align:left}

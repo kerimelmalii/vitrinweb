@@ -618,10 +618,11 @@ textarea.input{min-height:120px;resize:vertical}
 .gp-out .ic{flex:none;color:var(--ink-2);margin-top:2px}
 
 /* Dayanışma rozeti (anasayfa, final CTA altında) + /isgale-hayir sayfası */
-.solidarity-strip{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:16px 22px;margin-top:56px;background:var(--surface-2);color:var(--ink-2);text-decoration:none;font:600 .9rem var(--sans);transition:background .2s,color .2s,gap .2s}
+.solidarity-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;gap:12px;width:100%;padding:16px 22px;margin-top:56px;background:var(--surface-2);color:var(--ink-2);text-decoration:none;font:600 .9rem var(--sans);transition:background .2s,color .2s,gap .2s}
 .solidarity-strip:hover{background:var(--tint);color:var(--ink);gap:16px}
-.solidarity-strip .ic{color:var(--mute);transition:transform .2s,color .2s}
+.solidarity-strip .ic{color:var(--mute);transition:transform .2s,color .2s;flex:none}
 .solidarity-strip:hover .ic{transform:translateX(3px);color:var(--ink-2)}
+.venture-strip+.solidarity-strip{margin-top:1px}
 .solidarity-stripe{display:flex;flex-direction:column;width:22px;height:14px;border-radius:3px;overflow:hidden;flex:none;box-shadow:0 0 0 1.5px #0F9BE0}
 .solidarity-stripe i{flex:1;display:block;font-style:normal}
 .solidarity-stripe i:nth-child(1){background:#0A0A0A}

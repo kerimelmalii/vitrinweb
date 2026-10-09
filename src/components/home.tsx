@@ -361,6 +361,11 @@ export function FinalCTA() {
           </div>
         </div>
       </div>
+      <Link href="/girisim-programi" className="solidarity-strip venture-strip" aria-label="Girişim Destek Programı">
+        <Icon n="trend" size={18} sw={2.2} />
+        Girişiminiz mi var? Web sitenizi biz kuralım, karşılığında %2 hisse.
+        <Icon n="arrow" size={15} sw={2.2} />
+      </Link>
       <Link
         href="/isgale-hayir"
         className="solidarity-strip"

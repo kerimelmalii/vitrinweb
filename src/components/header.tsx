@@ -151,9 +151,6 @@ export function Header() {
           >
             Web Sitesi Edinin
           </button>
-          <Link href="/girisim-programi" className="btn btn-line hdr-cta" onClick={() => setOpen(false)}>
-            Girişim Programı
-          </Link>
           <WhatsAppLink cls="iconbtn ig-h" />
           <InstaLink cls="iconbtn ig-h" />
           <button
@@ -183,9 +180,6 @@ export function Header() {
           >
             Web Sitesi Edinin
           </button>
-          <Link href="/girisim-programi" className="btn btn-line btn-block" onClick={() => setOpen(false)}>
-            Girişim Programı
-          </Link>
         </div>
       )}
     </header>

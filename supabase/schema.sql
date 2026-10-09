@@ -1,11 +1,11 @@
 -- Vitrin: Supabase şeması ve RLS
--- Kurulum adımları: SUPABASE-KURULUM.md. Bu dosyayı Supabase Dashboard'da
--- SQL Editor'e yapıştırıp çalıştırın.
+-- Bu dosyayı Supabase Dashboard'da SQL Editor'e yapıştırıp çalıştırın.
 --
--- Bu tablo yalnızca sipariş VERİSİ tutar; ödeme (iyzico) ve erişim token'ı ile
--- güncelleme gibi sunucu mantığı gerektiren işler henüz burada değil
--- (bkz. DEVIR-BELGESI.md bölüm 8). RLS, anon anahtarla yalnızca satır EKLENMESİNE
--- izin verir; hiçbir satır anon anahtarla okunamaz/güncellenemez/silinemez.
+-- Sipariş oluşturma, ödeme (iyzico) doğrulama ve erişim token'ı üretme dahil tüm
+-- yazma işlemleri yalnızca sunucudaki Next.js API route'larından (src/app/api/),
+-- service-role anahtarla yapılır (bkz. IYZICO-ENTEGRASYON.md). Service-role RLS'yi
+-- atlar, bu yüzden tabloda tarayıcıya (anon/authenticated) hiçbir yazma veya okuma
+-- politikası YOKTUR — browser'ın bu tabloya doğrudan erişimi olmamalıdır.
 -- Siparişleri görüntülemek için Supabase Dashboard'daki Table Editor'ü kullanın
 -- (proje sahibi olarak giriş yaptığınızda RLS'yi atlar).
 

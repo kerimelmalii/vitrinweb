@@ -2,6 +2,12 @@
 
 Bu belge, projeyi başka bir yapay zekâ veya geliştiriciyle sürdürmek için hazırlandı. Proje artık tek bir `index.html` değil, `src/` altında TypeScript ile yazılmış bir Next.js (App Router) projesidir; ayrıntılar için [README.md](README.md).
 
+**v7 notu (güncel mimari):** Site artık statik export değil — gerçek bir Next.js server (Vercel),
+ödeme gerçek iyzico entegrasyonu. Bölüm 8 bunu yansıtacak şekilde güncellendi; bölüm 2'deki
+"simüle edilen" listesi de düzeltildi. Aşağıdaki bölümlerin geri kalanı (rota/dosya listeleri,
+bileşen envanteri) hâlâ büyük ölçüde v6 anlık görüntüsüdür ve satır satır yeniden doğrulanmadı —
+güncel, kesin referans için `README.md`, `CLAUDE.md` ve `IYZICO-ENTEGRASYON.md`'ye bakın.
+
 **v6 notu:** Proje, önceki sürümde React 18 + htm ile yazılmış tek dosyalık bir prototipti (derleme adımı yok, doğrudan tarayıcıda açılıyordu). v6'da bu, TypeScript ile yazılmış bir Next.js 16 (App Router) projesine dönüştürüldü: statik dışa aktarım (`output: "export"`) kullanıldığı için sonuç yine sunucu gerektirmeyen saf HTML/CSS/JS'tir, ama artık her sayfa gerçek bir adrese sahiptir (`#/blog/slug` yerine `/blog/slug`) ve derleme zamanında (SSG) üretilir. Bu, bölüm 7d'de belirtilen hash-routing/SEO sorununu çözer. İşlevsellik, tasarım, veriler ve güvenlik önlemleri birebir korundu; hiçbir metin veya davranış kasıtlı olarak değiştirilmedi.
 
 ## 1. Ne yapılıyor
@@ -34,12 +40,16 @@ Sayfalar (gerçek adresler, Next.js App Router):
 
 Blog ve yasal sayfalar `generateStaticParams` ile derleme zamanında (SSG) üretilir; her biri gerçek, ayrı bir HTML dosyasıdır. `src/app/sitemap.ts` ve `src/app/robots.ts` site haritası ve `robots.txt`'i otomatik üretir (`/siparis` ve `/baslangic` dizinden hariç tutulur).
 
-**Simüle edilen (gerçek değil):**
-- **Ödeme (`PaymentProvider`):** 0002 ile biten kart reddedilir, diğerleri geçer. Bireysel fatura için test T.C. no: `10000000146`.
-- **Backend (`Backend`):** Kayıtlar `localStorage["vitrin:orders"]` içinde. Açık sipariş kimliği `vitrin:active`, ödeme öncesi taslak `vitrin:draft` içinde tutulur. Taslak 7 gün ömürlüdür ve ödeme sonrası silinir.
-- **Erişim token'ı:** İstemcide üretilir ve kayıtta düz durur. Üretimde sunucu üretmeli, yalnızca özetini saklamalı, e-postayla göndermeli.
-- **Dosya yükleme:** Yalnızca ad ve boyut kaydedilir.
-- **Teklif süreci:** Teklif hazırlama, onay ve ödeme bağlantısı yok. Arayüzde yalnızca talep ve açıklama var; akışın kendisi backend işi (bölüm 8).
+**v7'de gerçek (bölüm 8):** ödeme (iyzico Checkout Form, sunucu doğrulamalı), sipariş kaydı
+(Supabase, yalnızca sunucudan yazılır), erişim token'ı (sunucuda üretilir, `access_token`
+sütununda düz metin — hashlenmemiş, bkz. bölüm 8'deki not). `localStorage` artık yalnızca o
+tarayıcı için önbellek; tek güvenilir kaynak Supabase'tir.
+
+**Hâlâ simüle edilen / eksik:**
+- **Dosya yükleme:** Yalnızca ad ve boyut kaydedilir, dosyanın kendisi hiçbir yere yüklenmez
+  (proje formunda bu açıkça belirtilir).
+- **Teklif süreci:** Teklif hazırlama, onay ve ayrı ödeme bağlantısı yok. Arayüzde yalnızca talep
+  ve açıklama var; akışın kendisi backend işi (bölüm 8).
 - **Yasal metinler:** Taslak yer tutucu (`LEGAL` sabiti). Her birinde bulunması gerekenler listeli.
 
 ## 3. Kod yapısı (`src/` altında)
@@ -209,24 +219,43 @@ Gerçek bir backend'e (sunucu tarafı render veya route handler) geçilince `scr
   - Bağımlılıklar düzenli taranır (npm audit/Dependabot).
 
 ## 8. Gerçek backend planı
-Karar verildi (bkz. bölüm 9): veri katmanı **Supabase** (PostgreSQL + Auth + Storage +
-Edge Functions), ödeme sağlayıcısı **iyzico**. Site statik dışa aktarım (`output: "export"`)
-olarak kalır — Next.js API route'ları/sunucusu yok; sunucu mantığı gerektiren her şey
-(iyzico secret key ile ödeme oturumu açma, webhook imza doğrulama, fiyat yeniden hesaplama,
-erişim token'ı üretme) **Supabase Edge Functions** (Deno) üzerinde çalışır, tarayıcı bunlara
-doğrudan `fetch` ile ulaşır (Vercel/Next.js sunucusuna gerek yok).
 
-**Uygulanan (v7):** `orders` tablosu ve INSERT-only RLS politikası (`supabase/schema.sql`),
-tarayıcıdan sipariş tamamlanınca yazan istemci (`src/lib/supabase-order.ts`, kurulum:
-`SUPABASE-KURULUM.md`). Bu, aşağıdaki Prisma modelinin veri şeklini birebir taşır ama yalnızca
-INSERT yapar; okuma Supabase Dashboard'dan (Table Editor, RLS'yi atlayan proje sahibi girişiyle).
+**v7'de fiilen uygulanan mimari, aşağıdaki planda tarif edilenden farklı — bu bölüm güncellendi,
+geri kalanı (Prisma şeması) hâlâ veri modeli referansı olarak geçerli.** Karar: veri katmanı
+**Supabase** (yalnızca Postgres — Auth/Storage/Edge Functions kullanılmıyor), ödeme sağlayıcısı
+**iyzico**. Sunucu mantığı Supabase Edge Functions yerine **Next.js'in kendi API route'larında**
+(`src/app/api/`, Vercel'de Node.js runtime) çalışıyor — tek bir platformda (Vercel) hem önyüz hem
+sunucu barınıyor, ayrı bir Deno/Edge Functions dağıtımı yönetilmiyor. Site artık statik export
+değil, gerçek bir Next.js server.
 
-**Henüz yok (aşağıdaki Edge Functions ile eklenecek):** ödeme oturumu, webhook, teklif akışı,
-yıllık servis yenilemesi, erişim token'ı ile sorgulama/güncelleme, admin paneli.
+**Uygulanan (v7):** `orders` tablosu (`supabase/schema.sql`), yalnızca sunucudan service-role
+anahtarla yazılır (`src/lib/supabase-admin.ts`) — tarayıcının doğrudan Supabase erişimi yok,
+eski INSERT-only anon-key istemcisi (`supabase-order.ts`) kaldırıldı. Gerçek uç noktalar:
+
+| Route | Ne yapar |
+|---|---|
+| `POST /api/orders/create` | Sipariş + müşteri + ek özellik seçimini oluşturur |
+| `POST /api/orders/checkout-data` | Ödeme öncesi fatura/onay bilgilerini günceller |
+| `POST /api/payments/iyzico/initialize` | Fiyatı sunucuda yeniden hesaplar, iyzico Checkout Form oturumu açar (secret key burada) |
+| `POST /api/payments/iyzico/callback` | iyzico'nun POST ile geri yönlendirdiği sonucu HMAC imzasıyla doğrular; yalnızca burada `paid` yazılır, erişim token'ı üretilir, Google E-Tablo bildirimi tetiklenir |
+| `GET /api/orders/payment-status` | İmzalı, 15 dakika geçerli bir sonuç token'ıyla ödeme durumunu döner (sonuç ekranı için) |
+| `GET /api/orders/by-token` | Erişim bağlantısıyla (`?t=`) farklı bir cihaz/tarayıcıdan dönen müşteri için ödenmiş siparişi sunucudan yeniden kurar |
+| `POST /api/orders/content-form` | Erişim token'ı doğrulanmış, ödenmiş sipariş için proje başlangıç formunu kaydeder |
+
+Ayrıntılı güvenlik kararları ve geliştirme geçmişi: `IYZICO-ENTEGRASYON.md`.
+
+**Bilinen tasarım sapması:** aşağıdaki Prisma taslağı `accessTokenHash` öngörüyordu (yalnızca
+özeti saklanır); gerçek uygulamada `access_token` düz metin olarak saklanıyor (`orders.access_token`),
+tıpkı iyzico'nun kendi `payment_ref` token'ı gibi. Bu, ödeme/fiyat güvenliğini etkilemez (token
+yalnızca proje formu erişimi içindir) ama bir veritabanı sızıntısında token'ların doğrudan
+kullanılabilir olması anlamına gelir — ileride hashlenmesi değerlendirilebilir.
+
+**Henüz yok:** teklif akışı (online ödeme/yönetim paneli/özel istek onayı), yıllık servis
+yenileme hatırlatması ve ödemesi, admin paneli, sipariş onayı/sözleşme e-postası (bkz. bölüm 7c).
 
 Prisma şeması aşağıda hâlâ veri modelinin referansı olarak kullanılıyor (alan adları
-`supabase/schema.sql`'de `snake_case`'e çevrilmiş durumda); gerçek depolama artık Prisma
-değil, doğrudan Supabase Postgres + SQL migration'lardır.
+`supabase/schema.sql`'de `snake_case`'e çevrilmiş durumda); gerçek depolama Prisma değil,
+doğrudan Supabase Postgres + SQL migration'lardır.
 
 ```prisma
 model Order {
@@ -277,10 +306,9 @@ enum ProjectStatus { YeniSiparis BilgilerBekleniyor Tasarim Gelistirme Revizyon 
 enum QuoteStatus { requested sent accepted paid declined expired }
 ```
 
-Uç noktalar (Supabase Edge Functions, Next.js API route değil — bkz. yukarısı):
-- **Sipariş:** İstemci `orders` tablosuna doğrudan INSERT eder (anon key + RLS, uygulandı — bkz. yukarısı); sunucu tarafı fiyat doğrulaması olmadığından fiyat hâlâ istemciden geliyor, `pricingVersion` kontrolü Edge Function'a taşınana kadar tam güvenilir değildir.
-- **Ödeme:** `POST /functions/v1/create-payment-session` (iyzico oturumu açar, secret key burada), `POST /functions/v1/payment-webhook` (iyzico imzasını doğrular, `paid` durumuna yalnızca burada geçilir).
-- **Erişim bağlantısı:** `POST /functions/v1/order-by-token` (token'ın SHA-256 özetini karşılaştırır, sabit zamanlı), `POST /functions/v1/order-content` (proje formu güncellemesi).
+Sipariş, ödeme ve erişim bağlantısı uç noktaları artık yukarıdaki tabloda — uygulandı. Henüz
+yapılmayan iki akış:
+
 - **Teklif akışı** (sitedeki metin bu akışı vaat ediyor):
   1. Yönetici panelinde teklif tutarı girilir, `Quote.status=sent` olur.
   2. Müşteriye tek kullanımlık bağlantıyla e-posta gider.

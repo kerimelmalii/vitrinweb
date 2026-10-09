@@ -5,7 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { Backend, recordToOrder } from "@/lib/backend";
 import { LS, blankOrder, initOrder } from "@/lib/storage";
 import { RX } from "@/lib/security";
-import type { Order } from "@/lib/types";
+import type { Order, OrderRecord } from "@/lib/types";
 
 type PatchArg = Partial<Order> | ((o: Order) => Partial<Order>);
 
@@ -45,7 +45,30 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     const t = new URLSearchParams(window.location.search).get("t");
     if (t && RX.token.test(t) && t !== initial.accessToken) {
       const rec = Backend.findByToken(t);
-      if (rec) initial = recordToOrder(rec);
+      if (rec) {
+        initial = recordToOrder(rec);
+      } else {
+        /* Yerel depoda yok (farklı cihaz/tarayıcı ya da temizlenmiş depolama):
+           sunucudaki ödenmiş siparişten tekrar kurmayı dene. */
+        const controller = new AbortController();
+        const fallback = initial;
+        fetch(`/api/orders/by-token?t=${encodeURIComponent(t)}`, {
+          cache: "no-store",
+          signal: controller.signal,
+        })
+          .then((r) => (r.ok ? (r.json() as Promise<{ ok?: boolean; record?: OrderRecord }>) : null))
+          .then((result) => {
+            setOrder(result?.ok && result.record ? recordToOrder(result.record) : fallback);
+            setReady(true);
+          })
+          .catch((error: unknown) => {
+            if ((error as { name?: string })?.name !== "AbortError") {
+              setOrder(fallback);
+              setReady(true);
+            }
+          });
+        return () => controller.abort();
+      }
     }
     setOrder(initial);
     setReady(true);

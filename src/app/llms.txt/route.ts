@@ -12,7 +12,7 @@ export const dynamic = "force-static";
    böylece yeni bir blog yazısı veya yasal sayfa eklenince otomatik güncel kalır. */
 function build(): string {
   const lines: string[] = [
-    "# Vitrin",
+    "# Vitrinweb",
     "",
     `> Türkiye'deki işletmeler için ${money(BASE_PRICE)} TL'ye profesyonel, mobil uyumlu web sitesi kuran bir ajans. İlk yıl servis ve bakım ücretsiz, taahhüt yok.`,
     "",
@@ -25,7 +25,7 @@ function build(): string {
     `- [İletişim](${SITE_URL}/iletisim): İletişim formu, e-posta ve Instagram.`,
     `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine %2 hisse karşılığında web sitesi, bakım ve SEO desteği.`,
     `- [İşgale Hayır!](${SITE_URL}/isgale-hayir): Filistin ve Doğu Türkistan için farkındalık sayfası.`,
-    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrin'in misyonu, vizyonu, değerleri ve şirket bilgileri.`,
+    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in misyonu, vizyonu, değerleri ve şirket bilgileri.`,
     "",
     "## Blog yazıları",
     "",

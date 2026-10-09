@@ -2,7 +2,7 @@
    6563 sayılı Kanun gereği sitede kolayca ulaşılabilir olmalıdır.
    Köşeli parantezli alanları yayından önce gerçek bilgilerle doldurun. */
 export const COMPANY = {
-  brand: "Vitrin",
+  brand: "Vitrinweb",
   title: "M-E Yapı Dekorasyon Maden İnşaat Sanayi ve Ticaret Anonim Şirketi",
   tradeRegistryNo: "82360",
   registryOffice: "Bursa Ticaret ve Sanayi Odası (BTSO)",
@@ -27,7 +27,7 @@ export const isPlaceholder = (v: string): boolean => v.startsWith("[") && v.ends
 export const PHONE_DIGITS = isPlaceholder(COMPANY.phone) ? "" : "90" + COMPANY.phone.replace(/\D/g, "");
 
 export const WHATSAPP_URL = PHONE_DIGITS
-  ? `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent("Merhaba, Vitrin hakkında bilgi almak istiyorum.")}`
+  ? `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent("Merhaba, Vitrinweb hakkında bilgi almak istiyorum.")}`
   : "";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/vitrinweb.com.tr/";

@@ -179,7 +179,7 @@ export function PaymentStep() {
         <div className="demo-note">
           <Icon n="lock" size={18} />
           <span>
-            Kart bilgileriniz Vitrin tarafından alınmaz veya saklanmaz. Ödeme bilgilerinizi güvenli iyzico ödeme ekranında girersiniz.
+            Kart bilgileriniz Vitrinweb tarafından alınmaz veya saklanmaz. Ödeme bilgilerinizi güvenli iyzico ödeme ekranında girersiniz.
           </span>
         </div>
       </div>
@@ -357,7 +357,7 @@ export function PaymentStep() {
           <Icon n="lock" size={16} /> iyzico güvenli ödeme
         </div>
         <p className="fine" style={{ textAlign: "center", marginTop: "6px" }}>
-          Kart bilgileriniz Vitrin sistemlerine girmez ve Vitrin tarafından saklanmaz.
+          Kart bilgileriniz Vitrinweb sistemlerine girmez ve Vitrinweb tarafından saklanmaz.
         </p>
         <Image
           className="pay-badge"

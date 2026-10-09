@@ -1,6 +1,6 @@
 "use client";
 
-import { AnnualService, FAQ, FinalCTA } from "@/components/home";
+import { AnnualService, FAQ, FinalCTA, PaymentTrust } from "@/components/home";
 import { OfferPanel } from "@/components/offer-panel";
 import { SectionHead } from "@/components/section-head";
 import { ADDONS, QUOTE_ADDONS } from "@/data/content";
@@ -56,6 +56,7 @@ export function PricingPage() {
           </div>
         </div>
       </section>
+      <PaymentTrust />
       <section className="sec" style={{ paddingTop: "50px" }}>
         <div className="container-x">
           <SectionHead

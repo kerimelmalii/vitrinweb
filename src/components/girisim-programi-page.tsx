@@ -67,7 +67,7 @@ const CRITERIA = [
 ];
 
 const EXTRA_EXPECTATIONS = [
-  "Sitenizin alt bilgisinde küçük bir Vitrin bağlantısı",
+  "Sitenizin alt bilgisinde küçük bir Vitrinweb bağlantısı",
   "Vaka çalışması olarak paylaşım ve referans izni",
   "Zamanında içerik ve geri bildirim",
 ];

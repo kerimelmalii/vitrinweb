@@ -69,7 +69,7 @@ export function PaymentTrust() {
             <div>
               <h2 className="h-3">İyzico ile güvenli ödeme</h2>
               <p>
-                Kart bilgileriniz Vitrin&apos;e hiç ulaşmaz; ödeme, BDDK lisanslı bir ödeme kuruluşu olan{" "}
+                Kart bilgileriniz Vitrinweb&apos;e hiç ulaşmaz; ödeme, BDDK lisanslı bir ödeme kuruluşu olan{" "}
                 <b>iyzico</b>&apos;nun kendi güvenli sayfasında, 3D Secure doğrulamasıyla alınır.
               </p>
             </div>

@@ -1,11 +1,18 @@
-import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { SectionHead } from "@/components/section-head";
 import { COMPANY } from "@/data/company";
 import { PROCESS } from "@/data/content";
 import { BASE_PRICE, TL } from "@/lib/config";
-import { BASE_PATH } from "@/lib/site";
+
+function Wordmark({ className }: { className: string }) {
+  return (
+    <div className={"wordmark " + className}>
+      vitrin<span className="logo-web">web</span>
+      <i></i>
+    </div>
+  );
+}
 
 const WHY_VITRIN: { icon: "card" | "shield" | "trend" | "check"; title: string; body: string }[] = [
   {
@@ -50,7 +57,7 @@ export function AboutPage() {
       <section className="sec about-hero">
         <div className="container-x">
           <h1 className="h-1">
-            Vitrin, işletmelerin dijital dünyadaki ilk adımı için var.
+            Vitrinweb, işletmelerin dijital dünyadaki ilk adımı için var.
           </h1>
           <p className="lead" style={{ marginTop: "16px" }}>
             Karmaşık olmayan, dürüst fiyatlandıran ve gerçekten kullanılan web siteleri tasarlıyoruz.
@@ -60,9 +67,9 @@ export function AboutPage() {
 
       <section className="sec-s">
         <div className="container-x">
-          <SectionHead title="Vitrin nedir?" />
+          <SectionHead title="Vitrinweb nedir?" />
           <p className="lead" style={{ maxWidth: "68ch" }}>
-            Vitrin, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
+            Vitrinweb, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
             sağlayan bir web tasarım hizmetidir.
           </p>
         </div>
@@ -72,7 +79,7 @@ export function AboutPage() {
         <div className="container-x">
           <SectionHead title="Marka Kimliğimiz" sub="Her yerde aynı dil: sade, modern, güvenilir." />
           <div className="about-brand">
-            <Image className="about-brand-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
+            <Wordmark className="about-brand-logo" />
             <div className="about-brand-palette">
               {BRAND_COLORS.map((c) => (
                 <div className="about-brand-swatch" key={c.hex}>
@@ -91,7 +98,7 @@ export function AboutPage() {
 
       <section className="sec-s">
         <div className="container-x">
-          <SectionHead title="Neden Vitrin?" />
+          <SectionHead title="Neden Vitrinweb?" />
           <div className="gp-cards">
             {WHY_VITRIN.map((w) => (
               <div className="gp-card" key={w.title}>
@@ -158,7 +165,7 @@ export function AboutPage() {
       <section className="sec-s">
         <div className="container-x">
           <div className="about-sig">
-            <Image className="about-sig-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
+            <Wordmark className="about-sig-logo" />
             <p>İşletmenizin dijital vitrini.</p>
             <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
           </div>
@@ -169,7 +176,7 @@ export function AboutPage() {
         <div className="container-x">
           <div className="about-owner">
             <p>
-              Vitrin, {COMPANY.title} tarafından işletmelerin dijital dünyadaki ihtiyaçlarına yönelik sunulan bir
+              {COMPANY.brand}, {COMPANY.title} tarafından işletmelerin dijital dünyadaki ihtiyaçlarına yönelik sunulan bir
               hizmettir.
             </p>
           </div>

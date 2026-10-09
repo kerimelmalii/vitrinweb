@@ -657,7 +657,9 @@ textarea.input{min-height:120px;resize:vertical}
 .about-mv h2{margin-bottom:10px}
 .about-mv p{color:var(--ink-2);max-width:52ch;margin:0}
 .about-brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;margin-top:8px}
-.about-brand-logo{width:100%;max-width:260px;height:auto}
+.wordmark{font:800 1em/1 var(--display);letter-spacing:-.04em;color:var(--ink);margin:0}
+.wordmark i{font-style:normal;display:inline-block;width:.22em;height:.22em;margin-left:.05em;background:var(--ink);border-radius:50%}
+.about-brand-logo{font-size:clamp(2.6rem,6vw,3.6rem)}
 .about-brand-palette{display:flex;flex-wrap:wrap;justify-content:center;gap:22px}
 .about-brand-swatch{display:flex;flex-direction:column;align-items:center;gap:6px;width:92px}
 .about-brand-swatch span{width:44px;height:44px;border-radius:50%;border:1px solid var(--line)}
@@ -667,7 +669,7 @@ textarea.input{min-height:120px;resize:vertical}
 .about-brand-type strong{color:var(--ink);font-weight:700}
 
 .about-sig{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:32px 0}
-.about-sig-logo{width:100%;max-width:220px;height:auto}
+.about-sig-logo{font-size:clamp(2.2rem,5vw,3rem)}
 .about-sig p{color:var(--ink-2);margin:0}
 .about-sig a{color:var(--ink-2);font-size:.92rem;text-decoration:none}
 .about-sig a:hover{color:var(--ink);text-decoration:underline}

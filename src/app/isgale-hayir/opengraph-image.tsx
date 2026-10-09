@@ -25,7 +25,7 @@ export default async function Image() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", fontSize: 40, fontWeight: 800, color: OG_COLORS.mute }}>
-          vitrin
+          vitrin<span style={{ color: OG_COLORS.accent }}>web</span>
           <span
             style={{
               display: "flex",
@@ -34,7 +34,7 @@ export default async function Image() {
               marginLeft: 5,
               marginTop: 26,
               borderRadius: 999,
-              background: OG_COLORS.accent,
+              background: OG_COLORS.mute,
             }}
           />
         </div>

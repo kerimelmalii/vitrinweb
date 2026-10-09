@@ -57,7 +57,7 @@ export function AboutPage() {
       <section className="sec about-hero">
         <div className="container-x">
           <h1 className="h-1">
-            Vitrin, işletmelerin dijital dünyadaki ilk adımı için var.
+            Vitrinweb, işletmelerin dijital dünyadaki ilk adımı için var.
           </h1>
           <p className="lead" style={{ marginTop: "16px" }}>
             Karmaşık olmayan, dürüst fiyatlandıran ve gerçekten kullanılan web siteleri tasarlıyoruz.
@@ -67,9 +67,9 @@ export function AboutPage() {
 
       <section className="sec-s">
         <div className="container-x">
-          <SectionHead title="Vitrin nedir?" />
+          <SectionHead title="Vitrinweb nedir?" />
           <p className="lead" style={{ maxWidth: "68ch" }}>
-            Vitrin, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
+            Vitrinweb, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
             sağlayan bir web tasarım hizmetidir.
           </p>
         </div>
@@ -98,7 +98,7 @@ export function AboutPage() {
 
       <section className="sec-s">
         <div className="container-x">
-          <SectionHead title="Neden Vitrin?" />
+          <SectionHead title="Neden Vitrinweb?" />
           <div className="gp-cards">
             {WHY_VITRIN.map((w) => (
               <div className="gp-card" key={w.title}>
@@ -176,7 +176,7 @@ export function AboutPage() {
         <div className="container-x">
           <div className="about-owner">
             <p>
-              Vitrin, {COMPANY.title} tarafından işletmelerin dijital dünyadaki ihtiyaçlarına yönelik sunulan bir
+              {COMPANY.brand}, {COMPANY.title} tarafından işletmelerin dijital dünyadaki ihtiyaçlarına yönelik sunulan bir
               hizmettir.
             </p>
           </div>

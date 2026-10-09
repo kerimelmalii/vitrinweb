@@ -17,7 +17,7 @@ function normalizeOrigin(value: string): string {
  * iyzico callback adresi için tek güvenilir kaynak.
  *
  * Canlıda IYZICO_CALLBACK_ORIGIN tanımlanması tercih edilir. Değişken yoksa
- * Vitrin'in kanonik domain'i kullanılır. Host/X-Forwarded-Host gibi istemci
+ * Vitrinweb'in kanonik domain'i kullanılır. Host/X-Forwarded-Host gibi istemci
  * tarafından etkilenebilen başlıklardan callback URL üretilmez.
  */
 export function getIyzicoCallbackUrl(): string {

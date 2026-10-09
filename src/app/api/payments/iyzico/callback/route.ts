@@ -80,7 +80,7 @@ function verifyRetrieveSignature(result: RetrieveResult): boolean {
 }
 
 // iyzico, kullanıcının tarayıcısını bu endpoint'e POST ile geri yönlendirir;
-// bu nedenle hata/red durumlarında da ham JSON değil, Vitrin'in sonuç sayfasına
+// bu nedenle hata/red durumlarında da ham JSON değil, Vitrinweb'in sonuç sayfasına
 // yönlendirme döndürülür. Host, callback isteğinin kendi başlığından değil,
 // güvenilir callback origin'inden türetilir (bkz. getIyzicoCallbackUrl).
 function buildFailureUrl(orderId?: string): URL {

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { BLOG } from "@/data/blog";
 import { OG_COLORS, OG_SIZE, loadOgFonts } from "@/lib/og-image";
 
-export const alt = "Vitrin blog";
+export const alt = "Vitrinweb blog";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 export const dynamic = "force-static";
@@ -48,7 +48,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             Blog
           </div>
           <div style={{ display: "flex", fontSize: 54, fontWeight: 800, color: OG_COLORS.ink, lineHeight: 1.2 }}>
-            {post?.title ?? "Vitrin"}
+            {post?.title ?? "Vitrinweb"}
           </div>
         </div>
       </div>

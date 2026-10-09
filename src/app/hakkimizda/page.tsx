@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Hakkımızda";
 const DESCRIPTION =
-  "Vitrin'in misyonu, vizyonu ve değerleri: işletmelere sade, şeffaf ve uygun fiyatlı web sitesi hizmeti sunuyoruz.";
+  "Vitrinweb'in misyonu, vizyonu ve değerleri: işletmelere sade, şeffaf ve uygun fiyatlı web sitesi hizmeti sunuyoruz.";
 
 export const metadata: Metadata = {
   title: TITLE,

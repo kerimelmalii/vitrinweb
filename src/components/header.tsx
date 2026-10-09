@@ -15,7 +15,7 @@ export function Logo() {
     <Link
       className="logo"
       href="/"
-      aria-label="Vitrin, ana sayfa"
+      aria-label="Vitrinweb, ana sayfa"
       onClick={(e) => {
         /* Zaten ana sayfadaysa Link'in kendisi gezinme yapmaz (URL aynı), bu yüzden
            kaydırma konumu sıfırlanmaz; bunu elle yapıyoruz. */

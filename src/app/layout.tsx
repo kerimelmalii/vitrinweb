@@ -15,17 +15,17 @@ const SITE_DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  /* Marka ("Vitrin") henüz aranan bir isim değil; asıl teklifin (fiyat + "profesyonel web
+  /* Marka ("Vitrinweb") henüz aranan bir isim değil; asıl teklifin (fiyat + "profesyonel web
      sitesi") başlıkta önce gelmesi, tıklama ve alaka skorunu markanın önde olmasından daha
      çok artırır. Diğer tüm sayfalarda zaten bu sırada (bkz. template). */
-  title: { default: `${SITE_TITLE} | Vitrin`, template: "%s | Vitrin" },
+  title: { default: `${SITE_TITLE} | Vitrinweb`, template: "%s | Vitrinweb" },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
     title: SITE_TITLE,
     description: "Modern, hızlı ve mobil uyumlu web siteniz. İlk yıl servis ve bakım ücreti yok.",
     type: "website",
-    siteName: "Vitrin",
+    siteName: "Vitrinweb",
     locale: "tr_TR",
   },
   twitter: {

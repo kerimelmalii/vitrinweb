@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "İşgale Hayır!";
 const DESCRIPTION =
-  "Vitrin olarak Filistin ve Doğu Türkistan halklarının özgürlük ve onurlu yaşam hakkının yanındayız; insani yardım için çalışan dernek ve kuruluşlara ücretsiz web sitesi ve dijital destek sunuyoruz.";
+  "Vitrinweb olarak Filistin ve Doğu Türkistan halklarının özgürlük ve onurlu yaşam hakkının yanındayız; insani yardım için çalışan dernek ve kuruluşlara ücretsiz web sitesi ve dijital destek sunuyoruz.";
 
 export const metadata: Metadata = {
   title: TITLE,

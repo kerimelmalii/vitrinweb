@@ -160,7 +160,7 @@ export const BLOG: BlogPost[] = [
         "p",
         "Google'ın ücretsiz PageSpeed Insights aracına sitenizin adresini yazmanız yeterli; hem mobil hem masaüstü için bir puan ve nelerin yavaşlattığına dair somut öneriler alırsınız.",
       ],
-      ["h2", "Vitrin sitelerinde hız nasıl sağlanıyor?"],
+      ["h2", "Vitrinweb sitelerinde hız nasıl sağlanıyor?"],
       [
         "p",
         "Her site, dış bir görsel indirmeden, gereksiz eklenti taşımadan, önceden üretilmiş sayfalar olarak yayınlanır; yazı tipleri kendi sunucumuzdan, yalnızca ihtiyaç duyulan karakterlerle yüklenir. Hız, sonradan eklenen bir özellik değil, baştan itibaren tasarımın bir parçasıdır.",
@@ -503,7 +503,7 @@ export const BLOG: BlogPost[] = [
       ],
       [
         "p",
-        "Vitrin sitelerinde bu sorulara net bir cevabımız var: sabit ve tek bir temel fiyat, ilk yıl servis ve bakım ücretsiz, istediğiniz ek özellik için ayrı ve açık fiyat, taahhüt yok.",
+        "Vitrinweb sitelerinde bu sorulara net bir cevabımız var: sabit ve tek bir temel fiyat, ilk yıl servis ve bakım ücretsiz, istediğiniz ek özellik için ayrı ve açık fiyat, taahhüt yok.",
       ],
     ],
   },
@@ -645,7 +645,7 @@ export const BLOG: BlogPost[] = [
       ["p", "Ücretsiz olan bu araç, sitenizin hangi aramalarda göründüğünü ve teknik bir sorun olup olmadığını gösterir. Site haritanızı da buradan gönderebilirsiniz."],
       ["h2", "7. Sabırlı olun, düzenli güncelleyin"],
       ["p", "SEO çalışmalarının etkisi genellikle birkaç hafta ile birkaç ay arasında görülür. Düzenli güncellenen ve doğru bilgi veren siteler zamanla daha iyi sonuç alır."],
-      ["h2", "Vitrin sitelerinde neler hazır gelir?"],
+      ["h2", "Vitrinweb sitelerinde neler hazır gelir?"],
       ["p", "Her sitede sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri başlangıçta kurulur. İçeriklerinizi güncel tutmak ise sizin elinizdeki en güçlü SEO aracıdır."],
     ],
   },

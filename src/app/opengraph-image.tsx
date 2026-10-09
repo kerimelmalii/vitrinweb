@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { BASE_PRICE, money } from "@/lib/config";
 import { OG_COLORS, OG_SIZE, loadOgFonts } from "@/lib/og-image";
 
-export const alt = "Vitrin";
+export const alt = "Vitrinweb";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 export const dynamic = "force-static";

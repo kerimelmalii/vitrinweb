@@ -4,9 +4,11 @@
 
 :root{
   --bg:#FFFFFF;--surface:#FFFFFF;--surface-2:#F5F5F7;--ink:#111114;--ink-2:#46464D;--mute:#6B6B73;--soft:#8E8E96;--line:#E4E4E9;
-  /* --logo, logo noktasının dışında artık 5 yerde de kullanılıyor (hero alt başlık, fiyat
-     kartı, /neden istatistik rakamları, yıllık servis rakamları, alt CTA fiyatı) — her
-     birinin yanında "eskisi:" notuyla önceki değer yazılı, beğenilmezse kolayca geri alınır. */
+  /* --logo, logo noktasının dışında artık 6 yerde de kullanılıyor (hero alt başlık, fiyat
+     kartı, /neden istatistik rakamları, yıllık servis rakamları, alt CTA fiyatı, girişim
+     panosu başlığı) — her birinin yanında "eskisi:" notuyla önceki değer yazılı, beğenilmezse
+     kolayca geri alınır. Girişim panosunda fiyat (.fprice b) yerine başlık (h2) lacivert —
+     bkz. .venture-panel kuralları. */
   --logo:#1F2F6B;--brand:#111114;--brand-2:#2b2b31;--brand-ink:#FFFFFF;--tint:#F1F1F4;
   --dark:#F5F5F7;--on-dark:#111114;--on-dark-2:#46464D;--dark-line:#E0E0E6;
   --ok:#0F8A5F;--danger:#C8321E;--frame:#111114;
@@ -451,6 +453,8 @@ img,svg{max-width:100%}
 .final .box{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 .venture-panel{background:var(--surface);border:1.5px solid var(--line)}
 .venture-panel .trust{margin-top:22px;color:var(--ink-2)}
+.venture-panel h2{color:var(--logo)}
+.venture-panel .fprice b{color:var(--ink)}
 .fprice{display:flex;flex-direction:column}
 .fprice small{color:var(--mute);font-weight:500}
 .fprice b{font:600 clamp(3.6rem,7vw,5.4rem)/1 var(--display);letter-spacing:-.06em;white-space:nowrap;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */

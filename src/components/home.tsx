@@ -361,11 +361,43 @@ export function FinalCTA() {
           </div>
         </div>
       </div>
-      <Link href="/girisim-programi" className="solidarity-strip venture-strip" aria-label="Girişim Destek Programı">
-        <Icon n="trend" size={18} sw={2.2} />
-        Girişiminiz mi var? Web sitenizi biz kuralım, karşılığında %2 hisse.
-        <Icon n="arrow" size={15} sw={2.2} />
-      </Link>
+      <div className="container-x" style={{ marginTop: "24px" }}>
+        <div className="final venture-panel">
+          <div>
+            <h2 className="h-1" style={{ maxWidth: "18ch" }}>
+              Girişiminiz mi var? Web sitenizi biz kuralım.
+            </h2>
+            <p className="lead" style={{ marginTop: "16px" }}>
+              Profesyonel bir web sitesi, 12 ay bakım ve SEO desteği alın — karşılığında nakit değil,{" "}
+              <b>%2 hisse</b>.
+            </p>
+            <ul className="trust">
+              {[
+                "5-6 sayfalık özel tasarım web sitesi",
+                "12 ay bakım ve güvenlik güncellemeleri",
+                "Aylık SEO desteği ve raporlama",
+              ].map((t) => (
+                <li key={t}>
+                  <Icon n="check" size={16} sw={2.5} />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="box">
+            <div className="fprice">
+              <small>Nakit ödeme yok</small>
+              <b>
+                %2<span>hisse</span>
+              </b>
+            </div>
+            <Link href="/girisim-programi" className="btn btn-primary btn-lg">
+              Girişim Programını İnceleyin
+            </Link>
+            <p className="fine">Başvuru formunu doldurun, kısa sürede dönüş yapalım.</p>
+          </div>
+        </div>
+      </div>
       <Link
         href="/isgale-hayir"
         className="solidarity-strip"

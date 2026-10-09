@@ -449,6 +449,8 @@ img,svg{max-width:100%}
 @media(min-width:900px){.final{grid-template-columns:1.15fr .85fr;align-items:center}}
 .final .h-1{max-width:16ch}
 .final .box{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.venture-panel{background:var(--surface);border:1.5px solid var(--line)}
+.venture-panel .trust{margin-top:22px;color:var(--ink-2)}
 .fprice{display:flex;flex-direction:column}
 .fprice small{color:var(--mute);font-weight:500}
 .fprice b{font:600 clamp(3.6rem,7vw,5.4rem)/1 var(--display);letter-spacing:-.06em;white-space:nowrap;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */
@@ -625,7 +627,6 @@ textarea.input{min-height:120px;resize:vertical}
 .solidarity-strip:hover{background:var(--tint);color:var(--ink);gap:16px}
 .solidarity-strip .ic{color:var(--mute);transition:transform .2s,color .2s;flex:none}
 .solidarity-strip:hover .ic{transform:translateX(3px);color:var(--ink-2)}
-.venture-strip+.solidarity-strip{margin-top:1px}
 .solidarity-stripe{display:flex;flex-direction:column;width:22px;height:14px;border-radius:3px;overflow:hidden;flex:none;box-shadow:0 0 0 1.5px #0F9BE0}
 .solidarity-stripe i{flex:1;display:block;font-style:normal}
 .solidarity-stripe i:nth-child(1){background:#0A0A0A}

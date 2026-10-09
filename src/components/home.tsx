@@ -365,7 +365,7 @@ export function FinalCTA() {
         <div className="final venture-panel">
           <div>
             <h2 className="h-1" style={{ maxWidth: "18ch" }}>
-              Girişiminiz mi var? Web sitenizi biz kuralım.
+              <span className="accent">Girişiminiz mi var?</span> Web sitenizi biz kuralım.
             </h2>
             <p className="lead" style={{ marginTop: "16px" }}>
               Profesyonel bir web sitesi, 12 ay bakım ve SEO desteği alın — karşılığında nakit değil,{" "}

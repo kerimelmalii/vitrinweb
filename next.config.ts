@@ -7,9 +7,10 @@ const nextConfig: NextConfig = {
 
   // Vitrin artık Vercel üzerinde Next.js API route'ları kullandığı için
   // statik export kullanılmaz. /api/orders ve /api/payments sunucuda çalışır.
-  images: {
-    unoptimized: true,
-  },
+  // next/image optimizasyonu (otomatik boyutlandırma + WebP/AVIF) artık devrede:
+  // "unoptimized: true" statik export/GitHub Pages döneminden kalma bir kısıtlamaydı
+  // (o dönem optimizasyon için sunucu yoktu), Vercel'de buna gerek yok ve ek kurulum
+  // istemiyor — Vercel'in kendi altyapısı /_next/image üzerinden aynı origin'den sunuyor.
 
   // iyzipay çalışma anında kendi resource dosyalarını dinamik require ile yükler.
   // Next.js'in bu paketi server bundle'ına dahil etmesi resource çözümlemesini bozar;

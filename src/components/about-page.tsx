@@ -1,11 +1,18 @@
-import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { SectionHead } from "@/components/section-head";
 import { COMPANY } from "@/data/company";
 import { PROCESS } from "@/data/content";
 import { BASE_PRICE, TL } from "@/lib/config";
-import { BASE_PATH } from "@/lib/site";
+
+function Wordmark({ className }: { className: string }) {
+  return (
+    <div className={"wordmark " + className}>
+      vitrin<span className="logo-web">web</span>
+      <i></i>
+    </div>
+  );
+}
 
 const WHY_VITRIN: { icon: "card" | "shield" | "trend" | "check"; title: string; body: string }[] = [
   {
@@ -72,7 +79,7 @@ export function AboutPage() {
         <div className="container-x">
           <SectionHead title="Marka Kimliğimiz" sub="Her yerde aynı dil: sade, modern, güvenilir." />
           <div className="about-brand">
-            <Image className="about-brand-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
+            <Wordmark className="about-brand-logo" />
             <div className="about-brand-palette">
               {BRAND_COLORS.map((c) => (
                 <div className="about-brand-swatch" key={c.hex}>
@@ -158,7 +165,7 @@ export function AboutPage() {
       <section className="sec-s">
         <div className="container-x">
           <div className="about-sig">
-            <Image className="about-sig-logo" src={`${BASE_PATH}/vitrin-wordmark.png`} alt="Vitrin" width={1225} height={357} />
+            <Wordmark className="about-sig-logo" />
             <p>İşletmenizin dijital vitrini.</p>
             <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
           </div>

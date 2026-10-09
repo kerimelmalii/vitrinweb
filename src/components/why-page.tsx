@@ -42,6 +42,14 @@ const WHY_MAP: [string, string][] = [
 const WHY_SOURCES: { t: string; u?: string }[] = [
   { t: "TÜİK, Hanehalkı Bilişim Teknolojileri (BT) Kullanım Araştırması, 2025 ve 2026 (16-74 yaş).", u: "https://data.tuik.gov.tr" },
   {
+    t: "Cushman & Wakefield | TR International, 12. İstanbul Alışveriş Caddeleri Raporu, 2025 (İstiklal Caddesi ziyaretçi sayısı).",
+    u: "https://www.nefes.com.tr/alisveris-caddelerinde-buyuk-ayrisma-istiklal-caddesi-zirvede-114589",
+  },
+  {
+    t: "DataReportal, Digital 2025: Turkey, Ocak 2025 (internet kullanıcı sayısı).",
+    u: "https://datareportal.com/reports/digital-2025-turkey",
+  },
+  {
     t: "Google, Mobile Search Trends: Consumers to Stores, 2016 (ABD, akıllı telefon kullanıcıları).",
     u: "https://www.thinkwithgoogle.com/_qs/documents/620/mobile-search-trends-consumers-to-stores.pdf",
   },
@@ -109,6 +117,38 @@ export function WhyPage() {
               <p className="src">TÜİK, 2026</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="sec-s" aria-labelledby="w1b">
+        <div className="container-x">
+          <div className="why-h">
+            <h2 className="h-2" id="w1b" style={{ maxWidth: "26ch" }}>
+              İstiklal&apos;in en kalabalık gününden bile daha çok insan, her gün internette.
+            </h2>
+          </div>
+          <div className="stat-grid two">
+            <div className="stat">
+              <div className="stat-n">240 bin</div>
+              <p>
+                İstiklal Caddesi&apos;nden (Taksim) hafta içi bir günde geçen tahmini ziyaretçi sayısı — Türkiye&apos;nin en
+                çok ziyaret edilen caddesi.
+              </p>
+              <p className="src">Cushman &amp; Wakefield, 2025</p>
+            </div>
+            <div className="stat">
+              <div className="stat-n">77,3 milyon</div>
+              <p>Türkiye&apos;de internet kullanan kişi sayısı — nüfusun %88,3&apos;ü.</p>
+              <p className="src">DataReportal, 2025</p>
+            </div>
+          </div>
+          <p className="fine" style={{ marginTop: "14px", maxWidth: "70ch" }}>
+            Yani İstiklal&apos;in en kalabalık hafta içi gününün 300&apos;den fazla katı insan, her gün internette.
+            Dükkânınız Türkiye&apos;nin en işlek caddesinde olsa bile günde yüz binlerce kişiye görünür; bir web sitesi
+            aynı anda milyonlarca kişiye, 7/24 açık kalır. (Cadde rakamı ziyaret sayısıdır, aynı kişi günde birden
+            fazla kez geçebilir; internet kullanıcı sayısı ise kişi tahminidir — yöntemleri farklıdır, karşılaştırma
+            büyüklüğü hissettirmek içindir.)
+          </p>
         </div>
       </section>
 

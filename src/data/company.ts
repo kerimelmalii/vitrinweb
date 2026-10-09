@@ -13,7 +13,7 @@ export const COMPANY = {
   /* Gerçek ve izlenen bir kutu; cayma/KVKK başvurularının gidebileceği tek gerçek
      alan bu olduğu için (aşağıdaki diğer alanların aksine) yer tutucu bırakılmadı. */
   email: "iletisim@vitrinweb.com.tr",
-  phone: "[Telefon numarası]",
+  phone: "0538 629 94 90",
   kep: "[KEP adresi]",
 };
 
@@ -21,6 +21,14 @@ export const COMPANY = {
     doldurulmadığını) söyler — "Şirket Bilgileri" bölümü ve yasal metinler, MERSİS/KEP/
     telefon gibi henüz netleşmemiş alanları bu kontrolle gösterip göstermeyeceğine karar verir. */
 export const isPlaceholder = (v: string): boolean => v.startsWith("[") && v.endsWith("]");
+
+/** `COMPANY.phone`'un yalnızca rakamlardan oluşan, ülke koduyla (90) başlayan hâli —
+    `tel:`/`wa.me` bağlantıları için. */
+export const PHONE_DIGITS = isPlaceholder(COMPANY.phone) ? "" : "90" + COMPANY.phone.replace(/\D/g, "");
+
+export const WHATSAPP_URL = PHONE_DIGITS
+  ? `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent("Merhaba, Vitrin hakkında bilgi almak istiyorum.")}`
+  : "";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/vitrinweb.com.tr/";
 export const LEGAL_UPDATED = "28 Eylül 2026";

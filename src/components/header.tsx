@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 import { NAV } from "@/data/content";
-import { INSTAGRAM_URL } from "@/data/company";
+import { INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
 import { useApp } from "@/lib/order-context";
 import type { NavItem } from "@/lib/types";
 
@@ -41,6 +41,22 @@ export function InstaLink({ cls, label }: { cls: string; label?: string }) {
       aria-label={label ? undefined : "Instagram hesabımız (yeni sekmede açılır)"}
     >
       <Icon n="instagram" size={20} />
+      {label && <span>{label}</span>}
+    </a>
+  );
+}
+
+export function WhatsAppLink({ cls, label }: { cls: string; label?: string }) {
+  if (!PHONE_DIGITS) return null;
+  return (
+    <a
+      className={cls}
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label ? undefined : "WhatsApp'tan bize yazın (yeni sekmede açılır)"}
+    >
+      <Icon n="whatsapp" size={20} />
       {label && <span>{label}</span>}
     </a>
   );
@@ -138,6 +154,7 @@ export function Header() {
           <Link href="/girisim-programi" className="btn btn-line hdr-cta" onClick={() => setOpen(false)}>
             Girişim Programı
           </Link>
+          <WhatsAppLink cls="iconbtn ig-h" />
           <InstaLink cls="iconbtn ig-h" />
           <button
             className="iconbtn burger"
@@ -155,6 +172,7 @@ export function Header() {
           {NAV.map((it) => (
             <NavButton key={it.label} item={it} onNavigate={() => setOpen(false)} />
           ))}
+          <WhatsAppLink cls="navl mnav-ig" label="WhatsApp" />
           <InstaLink cls="navl mnav-ig" label="Instagram" />
           <button
             className="btn btn-primary btn-block"

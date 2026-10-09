@@ -65,6 +65,8 @@ export function ProjectOnboarding() {
   const [refErr, setRefErr] = useState("");
   const [startOk, setStartOk] = useState(false);
   const [startErr, setStartErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [submitErr, setSubmitErr] = useState("");
   const set = <K extends keyof FormState>(k: K, v: FormState[K]) => setF((x) => ({ ...x, [k]: v }));
   const setFl = (k: keyof typeof files) => (v: File[]) => setFiles((x) => ({ ...x, [k]: v }));
 
@@ -103,6 +105,7 @@ export function ProjectOnboarding() {
   }
 
   const submit = async () => {
+    if (busy) return;
     if (f.brand.trim().length < 2) {
       setErr("Marka adını girin.");
       const el = document.getElementById("o-brand");
@@ -125,6 +128,10 @@ export function ProjectOnboarding() {
       return;
     }
     setRefErr("");
+    if (!order.id || !order.accessToken) {
+      setSubmitErr("Sipariş bilgisi bulunamadı. Lütfen ödeme sonucu sayfasındaki bağlantıyla tekrar açın.");
+      return;
+    }
     const txt: Record<string, unknown> = {};
     (Object.keys(f) as (keyof FormState)[]).forEach((k) => {
       txt[k] = k === "colors" ? f.colors.filter((c) => /^#[0-9a-f]{6}$/i.test(c)).slice(0, 4) : clean(f[k] as string, LIMITS.text).trim();
@@ -134,10 +141,31 @@ export function ProjectOnboarding() {
       style: STYLE_OPTS.some((o) => o[0] === f.style) ? f.style : "",
       files: { logo: names("logo"), business: names("biz"), product: names("prod"), team: names("team") },
     } as import("@/lib/types").ContentForm;
-    await Backend.upsert(buildRecord({ ...order, project: "Tasarım", content }));
+
+    setBusy(true);
+    setSubmitErr("");
+    try {
+      const response = await fetch("/api/orders/content-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ orderId: order.id, accessToken: order.accessToken, content }),
+      });
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Form şu anda kaydedilemiyor.");
+      }
+    } catch (error) {
+      setSubmitErr(error instanceof Error && error.message ? error.message : "Form şu anda kaydedilemiyor. Lütfen tekrar deneyin.");
+      setBusy(false);
+      return;
+    }
+
     content.serviceStartConsentAt = new Date().toISOString();
+    await Backend.upsert(buildRecord({ ...order, project: "Tasarım", content }));
     patch({ project: "Tasarım", content });
     window.scrollTo({ top: 0 });
+    setBusy(false);
   };
 
   if (done) {
@@ -357,10 +385,15 @@ export function ProjectOnboarding() {
         </div>
         <div className="form-foot">
           <span className="fine">Bu önizlemede dosyalar yalnızca tarayıcınızda listelenir, gönderilmez.</span>
-          <button className="btn btn-primary btn-lg" onClick={submit}>
-            İçeriklerimi Gönder
+          <button className="btn btn-primary btn-lg" onClick={submit} disabled={busy}>
+            {busy ? "Gönderiliyor…" : "İçeriklerimi Gönder"}
           </button>
         </div>
+        {submitErr && (
+          <p className="err" role="alert" style={{ textAlign: "right" }}>
+            {submitErr}
+          </p>
+        )}
       </div>
     </main>
   );

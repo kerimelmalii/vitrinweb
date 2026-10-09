@@ -3,11 +3,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import { getIyzicoClient, getIyzicoServerConfig } from "@/lib/iyzico";
+import { sendOrderToWebhook } from "@/lib/order-webhook";
 import { getIyzicoCallbackUrl } from "@/lib/payment-request";
 import { createPaymentResultToken } from "@/lib/payment-result-token";
 import { token as randomToken } from "@/lib/security";
 import { calculateServerPrice, parseStoredAddonIds } from "@/lib/server-pricing";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import type { OrderRecord } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -118,7 +120,9 @@ export async function POST(request: NextRequest) {
 
     const { data: order, error: orderError } = await supabase
       .from("orders")
-      .select("id, order_no, addons, payment_status, payment_ref")
+      .select(
+        "id, order_no, addons, quote_requests, customer, business, invoice, pricing_version, payment_status, payment_ref, created_at",
+      )
       .eq("payment_ref", token)
       .maybeSingle();
 
@@ -180,6 +184,32 @@ export async function POST(request: NextRequest) {
       if (updateError) {
         throw new Error("Doğrulanmış ödeme siparişe yazılamadı.");
       }
+
+      // Sipariş sahibinin görebileceği harici bildirim (Google E-Tablo, bkz.
+      // SIPARIS-TAKIBI.md). Ortam değişkeni tanımlı değilse sessizce atlanır;
+      // başarısız olsa da ödeme akışı etkilenmez.
+      const record: OrderRecord = {
+        id: order.id,
+        orderNo: order.order_no,
+        accessToken,
+        pricingVersion: order.pricing_version,
+        customer: order.customer,
+        business: order.business,
+        package: "temel",
+        addons: pricing.addons,
+        quoteRequests: Array.isArray(order.quote_requests) ? order.quote_requests : [],
+        total: pricing.total,
+        firstYearService: pricing.firstYearService,
+        yearlyService: pricing.yearlyService,
+        invoice: order.invoice,
+        consents: null,
+        paymentStatus: "paid",
+        paymentRef: token,
+        projectStatus: null,
+        createdAt: order.created_at,
+        contentForm: null,
+      };
+      await sendOrderToWebhook(record);
     }
 
     const resultToken = createPaymentResultToken(order.id);

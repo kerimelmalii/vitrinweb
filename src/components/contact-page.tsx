@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Icon } from "@/components/icons";
-import { INSTAGRAM_URL } from "@/data/company";
+import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
 import { sendContactMessage } from "@/lib/form-webhook";
 import { LIMITS, RX, clean } from "@/lib/security";
 import { BASE_PATH } from "@/lib/site";
@@ -159,6 +159,24 @@ export function ContactPage() {
           <div className="contact-layout" style={{ marginTop: "36px" }}>
             <ContactForm />
             <div className="contact-side">
+              {PHONE_DIGITS && (
+                <>
+                  <a className="contact-card" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                    <Icon n="whatsapp" size={26} />
+                    <div>
+                      <span className="contact-label">WhatsApp</span>
+                      <span className="contact-email">{COMPANY.phone}</span>
+                    </div>
+                  </a>
+                  <a className="contact-card" href={`tel:+${PHONE_DIGITS}`}>
+                    <Icon n="phone" size={26} />
+                    <div>
+                      <span className="contact-label">Telefon</span>
+                      <span className="contact-email">{COMPANY.phone}</span>
+                    </div>
+                  </a>
+                </>
+              )}
               <a className="contact-card" href={`mailto:${CONTACT_EMAIL}`}>
                 <Icon n="mail" size={26} />
                 <div>

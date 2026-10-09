@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { InstaLink, Logo } from "@/components/header";
-import { COMPANY } from "@/data/company";
+import { COMPANY, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
 import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
 import { BASE_PATH } from "@/lib/site";
@@ -20,6 +20,18 @@ export function Footer() {
               ücretsiz, taahhüt yok.
             </p>
             <InstaLink cls="ftr-ig" label="Instagram'da bizi takip edin" />
+            {PHONE_DIGITS && (
+              <div className="ftr-contacts">
+                <a className="ftr-ig" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                  <Icon n="whatsapp" size={18} />
+                  <span>WhatsApp</span>
+                </a>
+                <a className="ftr-ig" href={`tel:+${PHONE_DIGITS}`}>
+                  <Icon n="phone" size={18} />
+                  <span>{COMPANY.phone}</span>
+                </a>
+              </div>
+            )}
           </div>
           <div>
             <h2 className="ftr-h">Sayfalar</h2>

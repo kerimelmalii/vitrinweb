@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
-import { COMPANY, INSTAGRAM_URL } from "@/data/company";
+import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { BASE_PRICE, money } from "@/lib/config";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
@@ -52,6 +52,7 @@ const organizationLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   email: COMPANY.email,
+  ...(PHONE_DIGITS && { telephone: `+${PHONE_DIGITS}` }),
   sameAs: [INSTAGRAM_URL],
 };
 

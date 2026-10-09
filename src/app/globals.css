@@ -248,6 +248,9 @@ img,svg{max-width:100%}
 .checks li small{color:var(--mute);font-size:.9rem;line-height:1.5}
 .plink{font-size:.92rem;font-weight:600;color:var(--brand);text-decoration:underline;text-underline-offset:3px}
 /* mobil başlatma çubuğu */
+.wa-float{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:44;display:grid;place-items:center;width:56px;height:56px;border-radius:999px;background:#25d366;color:#fff;box-shadow:var(--shadow);transition:transform .15s}
+.wa-float:hover{transform:scale(1.06)}
+@media(max-width:767px){.wa-float{right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease;visibility:hidden}
 .sticky-cta.on{transform:none;visibility:visible}
 .sticky-cta b{display:block;font:600 1.25rem/1.1 var(--display);letter-spacing:-.03em}
@@ -458,6 +461,7 @@ img,svg{max-width:100%}
 .ftr a{color:var(--ink-2);text-decoration:none;font-weight:500;font-size:.95rem}
 .ftr a:hover{color:var(--ink);text-decoration:underline}
 .ftr-ig{display:inline-flex!important;align-items:center;gap:8px}
+.ftr-contacts{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:10px}
 .ftr-b{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:40px;padding-top:22px;border-top:1px solid var(--line)}
 .ftr-b .fine{display:inline-flex;align-items:center;gap:6px}
 .pay-badge{height:24px;width:auto;display:block}
@@ -614,10 +618,11 @@ textarea.input{min-height:120px;resize:vertical}
 .gp-out .ic{flex:none;color:var(--ink-2);margin-top:2px}
 
 /* Dayanışma rozeti (anasayfa, final CTA altında) + /isgale-hayir sayfası */
-.solidarity-strip{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:16px 22px;margin-top:56px;background:var(--surface-2);color:var(--ink-2);text-decoration:none;font:600 .9rem var(--sans);transition:background .2s,color .2s,gap .2s}
+.solidarity-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;gap:12px;width:100%;padding:16px 22px;margin-top:56px;background:var(--surface-2);color:var(--ink-2);text-decoration:none;font:600 .9rem var(--sans);transition:background .2s,color .2s,gap .2s}
 .solidarity-strip:hover{background:var(--tint);color:var(--ink);gap:16px}
-.solidarity-strip .ic{color:var(--mute);transition:transform .2s,color .2s}
+.solidarity-strip .ic{color:var(--mute);transition:transform .2s,color .2s;flex:none}
 .solidarity-strip:hover .ic{transform:translateX(3px);color:var(--ink-2)}
+.venture-strip+.solidarity-strip{margin-top:1px}
 .solidarity-stripe{display:flex;flex-direction:column;width:22px;height:14px;border-radius:3px;overflow:hidden;flex:none;box-shadow:0 0 0 1.5px #0F9BE0}
 .solidarity-stripe i{flex:1;display:block;font-style:normal}
 .solidarity-stripe i:nth-child(1){background:#0A0A0A}

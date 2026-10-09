@@ -4,11 +4,12 @@
 
 :root{
   --bg:#FFFFFF;--surface:#FFFFFF;--surface-2:#F5F5F7;--ink:#111114;--ink-2:#46464D;--mute:#6B6B73;--soft:#8E8E96;--line:#E4E4E9;
-  /* --logo, logo noktasının dışında artık 6 yerde de kullanılıyor (hero alt başlık, fiyat
-     kartı, /neden istatistik rakamları, yıllık servis rakamları, alt CTA fiyatı, girişim
-     panosu başlığı) — her birinin yanında "eskisi:" notuyla önceki değer yazılı, beğenilmezse
-     kolayca geri alınır. Girişim panosunda fiyat (.fprice b) yerine başlık (h2) lacivert —
-     bkz. .venture-panel kuralları. */
+  /* --logo artık 6 yerde kullanılıyor (hero alt başlık, fiyat kartı, /neden istatistik
+     rakamları, yıllık servis rakamları, alt CTA fiyatı, girişim panosu başlığı) — her birinin
+     yanında "eskisi:" notuyla önceki değer yazılı, beğenilmezse kolayca geri alınır. Girişim
+     panosunda fiyat (.fprice b) yerine başlık (h2) lacivert — bkz. .venture-panel kuralları.
+     Logo yazısında ise tam tersi: "web" artık lacivert (.logo-web), nokta (.logo i) lacivertten
+     siyaha döndü — bkz. "eskisi:" notu orada. */
   --logo:#1F2F6B;--brand:#111114;--brand-2:#2b2b31;--brand-ink:#FFFFFF;--tint:#F1F1F4;
   --dark:#F5F5F7;--on-dark:#111114;--on-dark-2:#46464D;--dark-line:#E0E0E6;
   --ok:#0F8A5F;--danger:#C8321E;--frame:#111114;
@@ -64,7 +65,8 @@ body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip}
 .hdr.s{border-bottom-color:var(--line)}
 .hdr-in{display:flex;align-items:center;justify-content:space-between;height:72px}
 .logo{font:800 1.45rem/1 var(--display);letter-spacing:-.05em;background:none;border:0;padding:0;color:var(--ink);cursor:pointer}
-.logo i{font-style:normal;display:inline-block;width:.24em;height:.24em;margin-left:.05em;background:var(--logo);border-radius:50%}
+.logo-web{color:var(--logo)}
+.logo i{font-style:normal;display:inline-block;width:.24em;height:.24em;margin-left:.05em;background:var(--ink);border-radius:50%} /* eskisi: background:var(--logo) (lacivert nokta) */
 .nav-desk{display:none;gap:2px}
 @media(min-width:1024px){.nav-desk{display:flex}.burger{display:none!important}}
 .navl{background:none;border:0;padding:.55rem .8rem;border-radius:999px;font:500 .92rem var(--sans);color:var(--ink-2);cursor:pointer;transition:color .15s,background .15s}

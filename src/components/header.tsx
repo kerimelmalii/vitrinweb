@@ -25,7 +25,7 @@ export function Logo() {
         }
       }}
     >
-      vitrin
+      vitrin<span className="logo-web">web</span>
       <i></i>
     </Link>
   );

@@ -30,7 +30,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         }}
       >
         <div style={{ display: "flex", alignItems: "center", fontSize: 42, fontWeight: 800, color: OG_COLORS.ink }}>
-          vitrin
+          vitrin<span style={{ color: OG_COLORS.accent }}>web</span>
           <span
             style={{
               display: "flex",
@@ -39,7 +39,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               marginLeft: 5,
               marginTop: 28,
               borderRadius: 999,
-              background: OG_COLORS.accent,
+              background: OG_COLORS.ink,
             }}
           />
         </div>

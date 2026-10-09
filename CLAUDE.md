@@ -19,14 +19,18 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   /api/orders/by-token` sunucudan siparişi yeniden kurar.
 - **Yasal metinler taslak**, köşeli parantezli alanlar dolduruluncaya ve bir hukukçu onaylayana kadar
   gerçek müşteriden veri toplamak için kullanılmamalı.
-- **Geçiş dönemi — DNS henüz Vercel'e çevrilmedi:** Gerçek domain (`https://vitrinweb.com.tr`)
-  hâlâ GitHub Pages'ten, eski statik sürümle yayında; `.github/workflows/deploy-pages.yml`
-  kaldırıldığı için `main` artık o siteyi hiç güncellemiyor (bilerek — GitHub Pages son başarılı
-  deploy'u donuk biçimde yayınlamaya devam ediyor, kesinti yok). Vercel Production zaten `main`'i
-  takip ediyor ve gerçek kodu çalıştırıyor, ama custom domain + DNS cutover tamamlanana kadar
-  müşteriler ona ulaşmıyor. Cutover öncesi mutlaka: Vercel Production ortam değişkenlerini
-  doğrula (gerçek — sandbox değil — iyzico anahtarları, `IYZICO_CALLBACK_ORIGIN=https://vitrinweb.com.tr`),
-  domain'i Vercel'e ekle, DNS'i çevir.
+- **DNS cutover tamamlandı (doğrulandı 2026-10-09):** `https://vitrinweb.com.tr` artık Vercel'e
+  (apex, `www.vitrinweb.com.tr`'ye 308 yönlendiriyor — canonical `www`'lı hâli) işaret ediyor ve
+  gerçek Next.js server kodu çalışıyor; GitHub Pages dönemi bitti. Bu geçiş sırasında
+  `NEXT_PUBLIC_SITE_URL` Vercel Production'da hiç ayarlanmamış olduğu ortaya çıktı — sitemap.xml,
+  robots.txt, canonical link ve JSON-LD (Organization `logo` alanı dahil) yayında yer tutucu
+  `https://example.com` üretiyordu; bu yüzden Google marka logosunu gösteremiyordu. `src/lib/site.ts`
+  içindeki varsayılan artık gerçek domain'e düzeltildi (env var hâlâ ayarlanmamışsa bile doğru
+  adres üretilir), ama en doğrusu `NEXT_PUBLIC_SITE_URL`'i yine de Vercel Production ortam
+  değişkeni olarak ayarlamak. **Henüz benim tarafımdan doğrulanmamış, mutlaka kontrol edilmeli:**
+  Vercel Production'daki iyzico anahtarları gerçek mi yoksa hâlâ sandbox mı
+  (`IYZICO_ENVIRONMENT`), ve `IYZICO_CALLBACK_ORIGIN=https://www.vitrinweb.com.tr` doğru ayarlı mı
+  — DNS zaten canlı olduğu için bu yanlışsa gerçek müşteri trafiği şu an etkileniyor olabilir.
 - Tamamlanan siparişler isteğe bağlı olarak bir Google E-Tablo'ya (`src/lib/order-webhook.ts`,
   kurulum: `SIPARIS-TAKIBI.md`) bildirilir — iyzico callback'i (`src/app/api/payments/iyzico/callback`)
   ödeme doğrulandığında çağırır; ortam değişkeni tanımlı değilse sessizce atlanır.

@@ -4,6 +4,9 @@
 
 :root{
   --bg:#FFFFFF;--surface:#FFFFFF;--surface-2:#F5F5F7;--ink:#111114;--ink-2:#46464D;--mute:#6B6B73;--soft:#8E8E96;--line:#E4E4E9;
+  /* --logo, logo noktasının dışında artık 5 yerde de kullanılıyor (hero alt başlık, fiyat
+     kartı, /neden istatistik rakamları, yıllık servis rakamları, alt CTA fiyatı) — her
+     birinin yanında "eskisi:" notuyla önceki değer yazılı, beğenilmezse kolayca geri alınır. */
   --logo:#1F2F6B;--brand:#111114;--brand-2:#2b2b31;--brand-ink:#FFFFFF;--tint:#F1F1F4;
   --dark:#F5F5F7;--on-dark:#111114;--on-dark-2:#46464D;--dark-line:#E0E0E6;
   --ok:#0F8A5F;--danger:#C8321E;--frame:#111114;
@@ -31,7 +34,7 @@ body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip}
 
 /* type */
 .h-display{font:600 clamp(2.3rem,5.6vw,4.8rem)/1.06 var(--display);letter-spacing:-.04em;margin:0}
-.h-display .soft{color:var(--soft)}
+.h-display .soft{color:var(--logo)} /* eskisi: var(--soft) */
 .h-1{font:600 clamp(2rem,4.2vw,3.4rem)/1.08 var(--display);letter-spacing:-.035em;margin:0}
 .h-2{font:600 clamp(1.8rem,3.5vw,2.8rem)/1.1 var(--display);letter-spacing:-.033em;margin:0}
 .h-3{font:600 1.2rem/1.3 var(--display);letter-spacing:-.015em;margin:0}
@@ -99,7 +102,7 @@ body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip}
 @media(min-width:900px){.offer{grid-template-columns:1fr 1fr}}
 .offer-l{padding:clamp(30px,5vw,60px);container-type:inline-size}
 .offer-l .h-3{color:var(--ink-2);font-weight:600}
-.price-num{font:600 clamp(4.6rem,12.5vw,9rem)/.95 var(--display);letter-spacing:-.06em;margin:20px 0 28px;white-space:nowrap}
+.price-num{font:600 clamp(4.6rem,12.5vw,9rem)/.95 var(--display);letter-spacing:-.06em;margin:20px 0 28px;white-space:nowrap;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */
 .price-num{font-size:clamp(4.4rem,28cqw,9rem)}
 .price-num span{font-size:.32em;letter-spacing:-.02em;margin-left:.12em;color:var(--mute);font-weight:600}
 .ledger{margin:0;padding:0;list-style:none;border-top:1px solid var(--dark-line)}
@@ -368,7 +371,7 @@ img,svg{max-width:100%}
 .stat-grid{display:grid;gap:14px}
 @media(min-width:900px){.stat-grid{grid-template-columns:repeat(3,1fr)}.stat-grid.two{grid-template-columns:repeat(2,1fr)}}
 .stat{background:var(--surface-2);border-radius:30px;padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;gap:12px}
-.stat-n{font:600 clamp(3.2rem,6vw,4.6rem)/1 var(--display);letter-spacing:-.05em;white-space:nowrap;color:var(--logo)}
+.stat-n{font:600 clamp(3.2rem,6vw,4.6rem)/1 var(--display);letter-spacing:-.05em;white-space:nowrap;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */
 .stat-n small{font-size:.42em;letter-spacing:-.02em;margin-left:.1em;color:var(--mute)}
 .stat>p{margin:0;color:var(--ink-2)}
 .stat .src{margin-top:auto;padding-top:6px;font-size:.8rem;color:var(--mute)}
@@ -413,7 +416,7 @@ img,svg{max-width:100%}
 .yr{display:grid;gap:14px}
 @media(min-width:760px){.yr{grid-template-columns:1fr 1fr}}
 .yr>div{padding:clamp(28px,4vw,46px);border-radius:32px;background:var(--surface);border:1px solid var(--line)}
-.yr .big{font:600 clamp(3rem,6vw,4.6rem)/1 var(--display);letter-spacing:-.055em;margin:18px 0 12px}
+.yr .big{font:600 clamp(3rem,6vw,4.6rem)/1 var(--display);letter-spacing:-.055em;margin:18px 0 12px;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */
 .yr .big small{font-size:.32em;letter-spacing:-.01em;color:var(--mute)}
 .yr .free{background:var(--surface-2);border-color:var(--surface-2)}
 .yr-note{display:flex;flex-wrap:wrap;gap:12px 40px;margin-top:26px;color:var(--ink-2)}
@@ -448,7 +451,7 @@ img,svg{max-width:100%}
 .final .box{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 .fprice{display:flex;flex-direction:column}
 .fprice small{color:var(--mute);font-weight:500}
-.fprice b{font:600 clamp(3.6rem,7vw,5.4rem)/1 var(--display);letter-spacing:-.06em;white-space:nowrap}
+.fprice b{font:600 clamp(3.6rem,7vw,5.4rem)/1 var(--display);letter-spacing:-.06em;white-space:nowrap;color:var(--logo)} /* eskisi: renksiz (var(--ink) miras) */
 .fprice b span{font-size:.28em;letter-spacing:0;margin-left:.16em;color:var(--mute)}
 
 /* footer */

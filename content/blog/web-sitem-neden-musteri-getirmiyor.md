@@ -142,7 +142,7 @@ Gelebilir. Google'da organik görünürlük ve Google İşletme Profili reklam b
 
 ### Sitemi yeniletmeli miyim, yoksa düzeltmek yeter mi?
 
-Önce bu yazıdaki kontrolleri yapın. Sorunlar başlık, içerik, iletişim butonları ve Google İşletme Profili gibi düzeltilebilir konulardaysa, yenilemeye gerek kalmayabilir. Site telefonda düzgün çalışmıyorsa, çok yavaşsa ya da güncellenemiyorsa yenilemek daha verimli olabilir. Yenileme tekliflerini karşılaştırırken [web sitesi fiyatları rehberimizden](/blog/web-sitesi-fiyati-neye-bagli) yararlanabilirsiniz.
+Önce bu yazıdaki kontrolleri yapın. Eksikler yalnızca Google İşletme Profili ya da birkaç başlık gibi küçük konulardaysa bunları düzeltmek yetebilir. Ama site telefonda düzgün çalışmıyorsa, çok yavaşsa, güncellenemiyorsa ya da kontrol listesindeki maddelerin birçoğuna "hayır" diyorsanız, eskisini yamamak yerine yenisini kurmak genellikle daha verimlidir. Vitrinweb olarak eski siteleri onarmıyoruz; yeni siteleri bu listedeki ölçütleri baştan karşılayacak şekilde kuruyoruz. Yenileme tekliflerini karşılaştırırken [web sitesi fiyatları rehberimizden](/blog/web-sitesi-fiyati-neye-bagli) yararlanabilirsiniz.
 
 ## Sonuç
 

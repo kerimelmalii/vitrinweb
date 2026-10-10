@@ -100,7 +100,7 @@ PageSpeed Insights mobil testi, ortalama bir telefonu ve daha yavaş bir bağlan
 
 ### Hız için sitemi baştan mı yaptırmalıyım?
 
-Çoğu zaman gerekmez. Görselleri küçültmek, gereksiz eklentileri kaldırmak ve ana görselin yükleme ayarını düzeltmek ciddi iyileşme sağlar. Site çok eski bir altyapı üzerindeyse ve bu adımlar yetmiyorsa yenilemeyi düşünebilirsiniz.
+Her zaman gerekmez. Görselleri küçültmek, gereksiz eklentileri kaldırmak ve ana görselin yükleme ayarını düzeltmek ciddi iyileşme sağlayabilir. Ama site eski bir altyapı üzerindeyse, telefonda da düzgün görünmüyorsa ya da bu adımlara rağmen yavaş kalıyorsa, yenisini kurmak genellikle daha verimlidir. Hangi durumda yenisinin gerektiğini [web sitesi neden gerekli](/blog/web-sitesi-olmayan-isletme-ne-kaybeder) yazımızda ayrıca anlattık.
 
 ### Hızı ne sıklıkla ölçmeliyim?
 

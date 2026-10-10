@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { BLOG, dateToISO } from "@/data/blog";
+import { BLOG } from "@/data/blog";
 import { LEGAL_LINKS } from "@/data/legal";
 import { SITE_URL } from "@/lib/site";
 
@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 const buildDate = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["/", "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/isgale-hayir", "/hakkimizda"].map((path) => ({
+  const staticRoutes = ["/", "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/isgale-hayir", "/hakkimizda", "/icerik-politikasi"].map((path) => ({
     url: SITE_URL + path,
     lastModified: buildDate,
     changeFrequency: "monthly" as const,
@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   const blogRoutes = BLOG.map((p) => ({
     url: `${SITE_URL}/blog/${p.slug}`,
-    lastModified: dateToISO(p.date) ?? buildDate,
+    lastModified: p.updated ?? p.date,
     changeFrequency: "yearly" as const,
     priority: 0.5,
   }));

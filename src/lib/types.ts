@@ -227,21 +227,6 @@ export interface LegalDoc {
   b: () => LegalBlock[];
 }
 
-export type BlogBlock =
-  | ["p", string]
-  | ["h2", string]
-  | ["ul", string[]]
-  | ["ol", string[]];
-
-export interface BlogPost {
-  slug: string;
-  cover: "browser" | "map" | "search";
-  date: string;
-  title: string;
-  excerpt: string;
-  body: BlogBlock[];
-}
-
 export interface NavItem {
   label: string;
   to?: string;

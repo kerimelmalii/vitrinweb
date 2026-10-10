@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { SectionHead } from "@/components/section-head";
@@ -159,6 +160,17 @@ export function AboutPage() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section className="sec-s" id="icerik-ekibi">
+        <div className="container-x">
+          <SectionHead title="İçerik ekibimiz" />
+          <p className="lead about-content-team">
+            Blog yazılarımız Vitrinweb İçerik Ekibi imzasıyla yayınlanır. Yazılarda web siteleri, Google görünürlüğü ve dijital müşteri
+            kazanımı üzerine kendi çalışmalarımızdan edindiğimiz deneyimi güvenilir kaynaklarla birleştiriyoruz; yayından önce her
+            bilgiyi kontrol ediyoruz. <Link href="/icerik-politikasi">İçeriklerimizi nasıl hazırladığımızı okuyun</Link>.
+          </p>
         </div>
       </section>
 

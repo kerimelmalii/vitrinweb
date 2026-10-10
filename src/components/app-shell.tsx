@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { CheckoutHeader, Header } from "@/components/header";
+import { CookieConsent } from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { LegalModal } from "@/components/legal";
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {!isCheckout && <Footer />}
       {!isCheckout && <FloatingWhatsApp />}
       {legal && <LegalModal kind={legal} onClose={() => openLegal(null)} />}
+      <CookieConsent />
     </>
   );
 }

@@ -1,6 +1,6 @@
 # Form bildirimlerini e-postaya bağlama (kurulum)
 
-`/iletisim` ve `/girisim-programi` sayfalarındaki formlar, doldurulup gönderildiğinde site tamamen statik olduğu için **kendi başına hiçbir yere e-posta gönderemez**. Bu belge, her iki formun da gönderildiğinde otomatik olarak **iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır — SIPARIS-TAKIBI.md'deki sipariş bildirimiyle birebir aynı yöntem (Google Apps Script), farklı olarak bu sefer bir tabloya satır eklemek yerine doğrudan e-posta gönderiyor. **Tek bir Apps Script dağıtımı ve tek bir secret çifti iki formu da kapsar** — her form gönderdiği veriye bir `kind` alanı ekler (`iletisim` veya `girisim`), betik buna göre farklı bir e-posta konusu/gövdesi oluşturur.
+`/iletisim` ve `/girisim-programi` sayfalarındaki formlar, bu kurulum yapılmadan **kendi başına hiçbir yere e-posta gönderemez**. Bu belge, her iki formun da gönderildiğinde otomatik olarak **iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır — SIPARIS-TAKIBI.md'deki sipariş bildirimiyle birebir aynı yöntem (Google Apps Script), farklı olarak bu sefer bir tabloya satır eklemek yerine doğrudan e-posta gönderiyor. **Tek bir Apps Script dağıtımı ve tek bir secret çifti iki formu da kapsar** — her form gönderdiği veriye bir `kind` alanı ekler (`iletisim` veya `girisim`), betik buna göre farklı bir e-posta konusu/gövdesi oluşturur.
 
 Bu kurulum yapılmadan da formlar **çalışır**: ziyaretçinin "Gönder" tuşuna basması, mesajı hazır şekilde kendi e-posta uygulamasında açar (ziyaretçi oradan Gönder'e basar). Aşağıdaki kurulum, bu ekstra adımı ortadan kaldırıp gönderimi tamamen otomatik hale getirir.
 
@@ -75,7 +75,7 @@ function doPost(e) {
 
 3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin Form Bildirimi"** yap, disket (kaydet) simgesine bas.
 
-> `SHARED_SECRET`'i mutlaka değiştirin — aşağıdaki adım 4'te GitHub'a gireceğiniz `CONTACT_FORM_SECRET` ile **birebir aynı** olmalı. Sipariş bildirimindeki `SHARED_SECRET` ile aynı değeri kullanmayın; ayrı bir değer üretin.
+> `SHARED_SECRET`'i mutlaka değiştirin — aşağıdaki adım 4'te Vercel'e gireceğiniz `NEXT_PUBLIC_CONTACT_FORM_SECRET` ile **birebir aynı** olmalı. Sipariş bildirimindeki `SHARED_SECRET` ile aynı değeri kullanmayın; ayrı bir değer üretin.
 
 ## 3. Web uygulaması olarak yayınla
 
@@ -88,25 +88,25 @@ function doPost(e) {
 
 > İlk çalıştırmada Google, betiğe **e-posta gönderme** izni isteyecek — bu normal, `MailApp.sendEmail` için gerekli. Kendi Gmail/Workspace hesabınız adına gönderim yapar; ayrı bir e-posta sunucusu kurmanız gerekmez.
 
-## 4. GitHub'a bağla
+## 4. Vercel'e bağla
 
-Repo sayfasında **Settings → Secrets and variables → Actions → "New repository secret"** ile iki gizli değer ekleyin:
+Vercel projenizde **Settings → Environment Variables** ile iki değer ekleyin (Production ortamı için):
 
 | Ad | Değer |
 |---|---|
-| `CONTACT_FORM_URL` | 3. adımda kopyaladığınız Web app URL |
-| `CONTACT_FORM_SECRET` | 2. adımdaki `SHARED_SECRET` ile birebir aynı metin |
+| `NEXT_PUBLIC_CONTACT_FORM_URL` | 3. adımda kopyaladığınız Web app URL |
+| `NEXT_PUBLIC_CONTACT_FORM_SECRET` | 2. adımdaki `SHARED_SECRET` ile birebir aynı metin |
 
-Kaydettikten sonra `main`'e yapılacak bir sonraki push (veya Actions sekmesinden `deploy-pages` iş akışını elle çalıştırmanız) siteyi bu bilgilerle yeniden derler.
+`NEXT_PUBLIC_` ile başlayan ortam değişkenleri derleme anında tarayıcı koduna gömülür; bu yüzden kaydettikten sonra Vercel'de yeni bir deploy tetiklenmesi gerekir (bir sonraki `main` push'u otomatik yapar, aksi hâlde Vercel panelinden **Deployments → ⋯ → Redeploy** ile elle tetikleyebilirsiniz).
 
 ## Nasıl çalışır?
 
 - **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim programı başvurusu), veri doğrudan bu tek Web app adresine POST edilir; Apps Script `kind` alanına bakıp uygun konuyla `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Girişim programı başvurusunda bir dosya (sunum, PDF vb.) seçilmişse, tarayıcıda base64'e çevrilip aynı istekle gönderilir ve e-postaya ek olarak eklenir. Ziyaretçiye başarı mesajı gösterilir.
-- **Kurulum henüz yapılmadıysa** (`CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz — yalnızca seçilen dosya bu yolla otomatik eklenemez (mailto bağlantıları dosya ekleyemez), ziyaretçiye açılan e-postaya dosyayı elle eklemesi gerektiği söylenir.
+- **Kurulum henüz yapılmadıysa** (`NEXT_PUBLIC_CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz — yalnızca seçilen dosya bu yolla otomatik eklenemez (mailto bağlantıları dosya ekleyemez), ziyaretçiye açılan e-postaya dosyayı elle eklemesi gerektiği söylenir.
 
 ## Sınırlamalar (bilerek kabul edilen)
 
-- `CONTACT_FORM_URL` ve `CONTACT_FORM_SECRET`, statik site olduğu için tarayıcıya gönderilen kodun içinde bulunur — bir "şifre" değil, yalnızca rastgele bot isteklerini eleyen bir filtredir. Sipariş bildirimindekiyle aynı tehdit modeli (bkz. SIPARIS-TAKIBI.md).
+- `NEXT_PUBLIC_CONTACT_FORM_URL` ve `NEXT_PUBLIC_CONTACT_FORM_SECRET`, `NEXT_PUBLIC_` önekiyle tarayıcıya gönderilen kodun içinde bulunur — bir "şifre" değil, yalnızca rastgele bot isteklerini eleyen bir filtredir. Sipariş bildirimindekiyle aynı tehdit modeli (bkz. SIPARIS-TAKIBI.md).
 - Girişim programı başvuru formundaki dosya eki tek dosya ve en fazla 8 MB ile sınırlıdır (PDF, PPT, Word veya görsel) — Gmail'in tek e-postadaki toplam ek boyutu sınırının altında kalmak için kasıtlı olarak düşük tutuldu.
 - Her iki form da gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa gönderim sessizce durur.
 - Spam/hız sınırlaması yoktur (istemci tarafı doğrulama dışında). Sorun çıkarsa Apps Script dağıtımını iptal edip yeniden kurmak (yeni bir `SHARED_SECRET` ile) sıfırlamanın en hızlı yoludur.

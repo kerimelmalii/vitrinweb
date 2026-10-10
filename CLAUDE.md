@@ -38,6 +38,11 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   dağıtımını paylaşır: `src/lib/form-webhook.ts` (`kind` alanıyla ayrışır), kurulum
   `ILETISIM-FORMU-KURULUMU.md`. Fark: ortam değişkeni tanımlı değilse sessizce atlamak yerine
   ziyaretçinin kendi e-posta uygulamasını (`mailto:`) prefilled açar — mesaj hiç kaybolmaz.
+- **Google Analytics isteğe bağlı ve onaya bağlıdır** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, kurulum:
+  `ANALYTICS-KURULUMU.md`). Ortam değişkeni tanımlı değilse çerez onay şeridi (`cookie-consent.tsx`)
+  hiç görünmez. Tanımlıysa şerit görünür; yalnızca "Kabul Et" diyen ziyaretçide GA4 betiği yüklenir
+  (tercih `localStorage`'da `vitrin:cookie-consent` anahtarıyla tutulur). CSP'ye bunun için
+  `googletagmanager.com`/`google-analytics.com` eklendi (`vercel.json`) — Meta Pixel henüz yok.
 
 ## Kod yapısı
 

@@ -1,6 +1,6 @@
 # Siparişleri Google E-Tablo'da görme (kurulum)
 
-Site tamamen statik olduğu için (sunucu yok), siparişler normalde yalnızca **müşterinin kendi tarayıcısında** kalır — hiçbir yerde toplanmaz. Bu belge, bir sipariş tamamlandığında bilgilerin otomatik olarak **senin kendi Google hesabındaki özel bir tabloya** bir satır olarak düşmesini sağlayan kurulumu anlatır. Tablo yalnızca senin Google hesabından görülebilir; kimseyle paylaşmadığın sürece başka kimse erişemez.
+Siparişlerin tek güvenilir kaydı artık Supabase'tedir (bkz. CLAUDE.md) — bu kurulum olmadan da hiçbir sipariş kaybolmaz. Bu belge, bir sipariş tamamlandığında bilgilerin EK olarak otomatik şekilde **senin kendi Google hesabındaki özel bir tabloya** bir satır olarak düşmesini sağlayan isteğe bağlı kurulumu anlatır — Supabase panelini açmadan hızlıca göz atmak isteyenler için pratik bir ikinci görünüm. Tablo yalnızca senin Google hesabından görülebilir; kimseyle paylaşmadığın sürece başka kimse erişemez.
 
 Bu, ücretsiz ve ~10 dakikalık bir kurulumdur. İlk birkaç siparişten sonra gerçek bir arka uç (veritabanı + admin panel) kurmak istersen, bu adım kolayca değiştirilebilir.
 
@@ -68,7 +68,7 @@ function doPost(e) {
 
 3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin Sipariş Bildirimi"** yap, sonra disket (kaydet) simgesine bas.
 
-> `SHARED_SECRET`'i mutlaka değiştir (yukarıdaki metni olduğu gibi bırakma) — önemli olan, aşağıdaki adım 4'te GitHub'a gireceğin `ORDER_WEBHOOK_SECRET` ile **birebir aynı** olması.
+> `SHARED_SECRET`'i mutlaka değiştir (yukarıdaki metni olduğu gibi bırakma) — önemli olan, aşağıdaki adım 4'te Vercel'e gireceğin `NEXT_PUBLIC_ORDER_WEBHOOK_SECRET` ile **birebir aynı** olması.
 
 > Bu kurulumu daha önce yaptıysan ve "Fatura Şehri" sütunu tabloda yoksa: Apps Script editöründeki kodu yukarıdaki güncel haliyle değiştirip tekrar kaydet ve **Dağıt → Dağıtımları yönet → düzenle → Yeni sürüm → Dağıt** ile yeniden yayınla; yeni siparişlerden itibaren şehir bilgisi de düşer.
 
@@ -81,16 +81,16 @@ function doPost(e) {
 5. **Dağıt (Deploy)** de. Google seni yetkilendirme isteyebilir: hesabını seç, "Bu uygulama doğrulanmadı" uyarısı çıkarsa **Gelişmiş (Advanced) → (güvenli değil) [proje adı]'a git** ile devam et (kendi yazdığın betik olduğu için güvenlidir).
 6. Karşına çıkan **"Web app URL"** değerini kopyala (`https://script.google.com/macros/s/.../exec` biçiminde olur).
 
-## 4. GitHub'a bağla
+## 4. Vercel'e bağla
 
-Repo sayfasında **Settings → Secrets and variables → Actions → "New repository secret"** ile iki gizli değer ekle:
+Vercel projende **Settings → Environment Variables** ile iki değer ekle (Production ortamı için):
 
 | Ad | Değer |
 |---|---|
-| `ORDER_WEBHOOK_URL` | 3. adımda kopyaladığın Web app URL |
-| `ORDER_WEBHOOK_SECRET` | 2. adımdaki `SHARED_SECRET` ile birebir aynı metin |
+| `NEXT_PUBLIC_ORDER_WEBHOOK_URL` | 3. adımda kopyaladığın Web app URL |
+| `NEXT_PUBLIC_ORDER_WEBHOOK_SECRET` | 2. adımdaki `SHARED_SECRET` ile birebir aynı metin |
 
-Kaydettikten sonra `main`'e yapılacak bir sonraki push (veya Actions sekmesinden `deploy-pages` iş akışını elle çalıştırman) sitenin bu bilgilerle yeniden derlenmesini sağlar.
+`NEXT_PUBLIC_` ile başlayan ortam değişkenleri derleme anında tarayıcı koduna gömülür; bu yüzden kaydettikten sonra Vercel'de yeni bir deploy tetiklenmesi gerekir (bir sonraki `main` push'u otomatik yapar, aksi hâlde Vercel panelinden **Deployments → ⋯ → Redeploy** ile elle tetikleyebilirsin).
 
 ## Nasıl çalışır, ne zaman satır düşer?
 
@@ -98,6 +98,6 @@ Bir müşteri ödemeyi tamamladığı anda (adım 3'ün sonu), sipariş özeti b
 
 ## Sınırlamalar (bilerek kabul edilen)
 
-- Bu statik bir site olduğundan, `ORDER_WEBHOOK_URL` ve `ORDER_WEBHOOK_SECRET` tarayıcıya gönderilen kodun içinde bulunur — isteyen biri geliştirici araçlarından görebilir. Bu yüzden secret bir "şifre" değil, yalnızca rastgele bot/tarama isteklerini eleyen bir filtredir. Gerçek güvenlik, tablonun kendisinin paylaşılmamasından ve uç noktanın veri **döndürmemesinden** (yalnızca yazmasından) gelir.
+- `NEXT_PUBLIC_` önekiyle tanımlandıkları için `NEXT_PUBLIC_ORDER_WEBHOOK_URL` ve `NEXT_PUBLIC_ORDER_WEBHOOK_SECRET` tarayıcıya gönderilen kodun içinde bulunur — isteyen biri geliştirici araçlarından görebilir. Bu yüzden secret bir "şifre" değil, yalnızca rastgele bot/tarama isteklerini eleyen bir filtredir. Gerçek güvenlik, tablonun kendisinin paylaşılmamasından ve uç noktanın veri **döndürmemesinden** (yalnızca yazmasından) gelir.
 - Bu geçici bir çözümdür. Gerçek bir admin paneli (şifreyle korunan, durum güncellemeye izin veren) istediğinde, DEVIR-BELGESI.md bölüm 8'deki backend planına geçilmesi önerilir.
 - Bu belgenin ilk sürümünde örnek olarak sabit bir `SHARED_SECRET` değeri verilmişti; o değer artık genel (public) depo geçmişinde göründüğü için **kesinlikle kullanılmamalı**. Apps Script'i kurarken mutlaka kendi rastgele değerinizi üretip kullanın.

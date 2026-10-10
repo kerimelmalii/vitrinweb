@@ -260,6 +260,15 @@ img,svg{max-width:100%}
 @media(max-width:767px){.wa-float{right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease;visibility:hidden}
 .sticky-cta.on{transform:none;visibility:visible}
+.cookie-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px 24px;padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);box-shadow:0 -4px 24px rgba(17,17,20,.06)}
+.cookie-bar p{margin:0;max-width:62ch;font-size:.92rem;color:var(--ink-2)}
+.cookie-bar p a{color:var(--ink);text-decoration:underline}
+.cookie-bar-btns{display:flex;gap:10px;flex:none}
+/* İkisi de ekranın altına sabitlenir; çerez şeridi açıkken satın alma CTA'sının ve
+   WhatsApp balonunun altında gizli kalıp tıklanamaz olmasınlar diye şerit
+   gösterilirken geçici olarak gizlenirler. */
+body:has(.cookie-bar) .sticky-cta,
+body:has(.cookie-bar) .wa-float{display:none}
 .sticky-cta b{display:block;font:600 1.25rem/1.1 var(--display);letter-spacing:-.03em}
 .sticky-cta small{display:block;font-size:.75rem;color:var(--mute)}
 .sticky-cta .btn{padding:.8rem 1.2rem;font-size:.92rem}

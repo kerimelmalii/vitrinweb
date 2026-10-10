@@ -131,7 +131,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "4. Çerezler ve yerel depolama"],
       [
         "p",
-        "Bu sitede reklam veya takip amaçlı çerez kullanılmaz; sipariş sürecinizi hatırlamak için yalnızca zorunlu teknik veriler tarayıcınızın yerel depolama alanında tutulur. Ayrıntılar için Çerez Politikası sayfasına bakabilirsiniz.",
+        "Sipariş sürecinizi hatırlamak için zorunlu teknik veriler tarayıcınızın yerel depolama alanında tutulur; bunun için izin istenmez. Reklam amaçlı çerez hiç kullanılmaz. Sitenin nasıl kullanıldığını anlamamıza yardımcı olan analiz çerezleri (Google Analytics) ise yalnızca açık onayınızla çalışır; onay vermezseniz hiçbir analiz çerezi çalışmaz ve tercihinizi dilediğiniz zaman değiştirebilirsiniz. Ayrıntılar için Çerez Politikası sayfasına bakabilirsiniz.",
       ],
       ["h", "5. Bilgi güvenliği"],
       [
@@ -141,7 +141,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "6. Üçüncü taraflarla paylaşım"],
       [
         "p",
-        "Bilgileriniz; ödemenizi işleyen lisanslı ödeme kuruluşuna, sitenin barındırıldığı GitHub, Inc.'e, kurulmuşsa form ve sipariş bildirimleri için Google LLC altyapısına, muhasebe hizmeti aldığımız mali müşavire ve yasal zorunluluk hâlinde yetkili kamu kurumlarına, yalnızca hizmetin ifası için gerekli ölçüde aktarılır. Bilgileriniz hiçbir şekilde pazarlama amacıyla üçüncü kişilere satılmaz veya kiralanmaz.",
+        "Bilgileriniz; ödemenizi işleyen lisanslı ödeme kuruluşuna, sitenin barındırıldığı Vercel Inc.'e, kurulmuşsa form ve sipariş bildirimleri için Google LLC altyapısına, analiz çerezlerine onay verdiyseniz Google Analytics kapsamında Google LLC'ye, muhasebe hizmeti aldığımız mali müşavire ve yasal zorunluluk hâlinde yetkili kamu kurumlarına, yalnızca hizmetin ifası için gerekli ölçüde aktarılır. Bilgileriniz hiçbir şekilde pazarlama amacıyla üçüncü kişilere satılmaz veya kiralanmaz.",
       ],
       ["h", "7. Saklama süresi"],
       [
@@ -163,7 +163,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
   cerez: {
     t: "Çerez ve Yerel Depolama Politikası",
     b: () => [
-      ["p", "Bu sitede reklam, analiz veya takip amaçlı çerez kullanılmaz."],
+      ["p", "Bu sitede reklam veya pazarlama amaçlı çerez kullanılmaz. Analiz çerezleri ise yalnızca açık onayınızla çalışır (bkz. aşağıda)."],
       ["h", "Kullanılan zorunlu depolama"],
       [
         "p",
@@ -174,7 +174,13 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         [
           "Sipariş taslağı: formu yarıda bırakırsanız kaldığınız yerden devam edebilmeniz içindir. En fazla 7 gün saklanır ve ödeme tamamlandığında silinir.",
           "Açık sipariş kimliği: sayfayı yenilediğinizde siparişinize dönebilmeniz içindir. Kişisel veri içermez.",
+          "Çerez onayı tercihiniz: \"Kabul Et\" veya \"Reddet\" seçiminizi hatırlamak içindir.",
         ],
+      ],
+      ["h", "Onaya bağlı analiz çerezleri"],
+      [
+        "p",
+        "Sitenin alt kısmındaki şeritte \"Kabul Et\"i seçerseniz, ziyaretçi sayısı ve hangi sayfaların ilgi gördüğü gibi anonimleştirilmiş kullanım istatistiklerini ölçmek için Google Analytics çalışır. Bu araç IP adresinizi anonimleştirir, sizi kişisel olarak tanımlamaz ve verileriniz reklam amacıyla kullanılmaz. \"Reddet\"i seçerseniz veya hiçbir seçim yapmazsanız Google Analytics hiç çalışmaz. Google'ın kendi gizlilik uygulamaları için Google Gizlilik Politikası'na bakabilirsiniz.",
       ],
       ["h", "Üçüncü taraf kaynaklar"],
       [
@@ -182,8 +188,10 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         "Sitenin çalışması için gerekli bazı yazılım dosyaları bir içerik dağıtım ağı (CDN) üzerinden yüklenebilir. Bu sırada IP adresiniz, teknik bir zorunluluk olarak ilgili sağlayıcıya iletilir. Yazı tipleri sitenin kendi dosyalarından yüklenir.",
       ],
       ["h", "Tercihlerinizi yönetme"],
-      ["p", "Yerel depolamayı tarayıcınızın ayarlarından dilediğiniz zaman silebilirsiniz. Bu durumda tamamlanmamış sipariş taslağınız da silinir."],
-      ["p", "Sitede analiz veya pazarlama amaçlı bir araç kullanılmaya başlanırsa, bu araçlar yalnızca açık izninizle çalıştırılacak ve bu politika güncellenecektir."],
+      [
+        "p",
+        "Yerel depolamayı tarayıcınızın ayarlarından dilediğiniz zaman silebilirsiniz; bu durumda hem tamamlanmamış sipariş taslağınız hem de çerez onayı tercihiniz silinir ve şerit tekrar görünür. Analiz çerezlerini reddetmek, sitenin diğer özelliklerini kullanmanızı hiçbir şekilde etkilemez.",
+      ],
     ],
   },
 

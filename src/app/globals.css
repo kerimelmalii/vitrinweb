@@ -753,3 +753,6 @@ textarea.input{min-height:120px;resize:vertical}
 .post-related .bbody{padding:16px 18px 20px;gap:8px}
 .post-related .bbody p{display:none}
 .post-related .bbody .bmeta{font-size:.8rem}
+.post a.btn{text-decoration:none;font-weight:600}
+.post a.btn-primary{color:#fff}
+.post a.btn-primary:hover{color:#fff}

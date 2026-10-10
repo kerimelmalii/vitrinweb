@@ -80,7 +80,7 @@ export interface ContentBrief {
   priceDisplay: string;
   credentials: string;
   references: string;
-  reviews: string;
+  showReviews: boolean;
   logoChoice: string;
   photoChoice: string;
   dislikes: string;

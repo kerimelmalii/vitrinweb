@@ -77,7 +77,7 @@ function parseBrief(value: unknown): ContentBrief {
     priceDisplay: str(raw.priceDisplay, LIMITS.short),
     credentials: str(raw.credentials, LIMITS.wishes),
     references: str(raw.references, LIMITS.wishes),
-    reviews: str(raw.reviews, LIMITS.text),
+    showReviews: raw.showReviews === true,
     logoChoice: str(raw.logoChoice, LIMITS.short),
     photoChoice: str(raw.photoChoice, LIMITS.short),
     dislikes: str(raw.dislikes, LIMITS.wishes),

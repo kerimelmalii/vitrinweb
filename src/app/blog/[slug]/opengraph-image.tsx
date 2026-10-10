@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
-import { BLOG } from "@/data/blog";
+import { BLOG, getPost } from "@/data/blog";
 import { OG_COLORS, OG_SIZE, loadOgFonts } from "@/lib/og-image";
 
 export const alt = "Vitrinweb blog";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 export const dynamic = "force-static";
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return BLOG.map((p) => ({ slug: p.slug }));
@@ -13,7 +14,7 @@ export function generateStaticParams() {
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = BLOG.find((p) => p.slug === slug);
+  const post = getPost(slug);
   const fonts = await loadOgFonts();
   return new ImageResponse(
     (

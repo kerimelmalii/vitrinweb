@@ -56,7 +56,14 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 - `src/lib/` — yapılandırma, güvenlik/doğrulama (`security.ts`), sipariş durumu (`order-context.tsx`,
   React Context + `localStorage` önbellek), yerel sahte depo (`backend.ts`, yalnızca aynı tarayıcı
   için), iyzico istemcisi (`iyzico.ts`), server-side fiyatlandırma (`server-pricing.ts`).
-- `src/data/` — statik içerik (fiyatlar, SSS, yasal metinler, blog yazıları, satıcı bilgisi).
+- `src/data/` — statik içerik (fiyatlar, SSS, yasal metinler, satıcı bilgisi).
+- **Blog:** her yazı `content/blog/<slug>.md` (ön bilgi + Markdown alt kümesi, ayrıntı `src/lib/markdown.ts`
+  başındaki yorumda). `src/data/blog.ts` derlemede okur ve doğrular: kırık iç bağlantı, eksik kapak,
+  bugünden ileri tarih, `utm_` parametreli dış bağlantı derlemeyi durdurur. Kapaklar
+  `node scripts/blog-kapaklari.mjs <slug>` ile `public/blog/<slug>/` altına üretilir (yeni yazıya yeni
+  kapak tanımı eklenmeli; marka: monokrom çizgi, lacivert yok). Yazım kuralları: SEO Makale Standardı
+  (yazar imzası "Vitrinweb İçerik Ekibi", ana CTA "Bilgi Al"/WhatsApp). İçerik Politikası sayfası
+  `content/sayfalar/icerik-politikasi.md`.
 
 ## Kurallar
 

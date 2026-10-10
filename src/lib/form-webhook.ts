@@ -14,12 +14,16 @@ async function postForm(payload: Record<string, string>): Promise<boolean> {
   const url = process.env.NEXT_PUBLIC_CONTACT_FORM_URL;
   if (!url) return false;
   try {
-    await fetch(url, {
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ secret: process.env.NEXT_PUBLIC_CONTACT_FORM_SECRET || "", ...payload }),
     });
-    return true;
+    /* Apps Script, yanlış secret veya kendi içindeki bir hatada da HTTP 200 döner
+       (ContentService özel bir durum kodu veremez) — gövde "ok" değilse fetch()
+       başarıyla çözülse bile mesaj gerçekte işlenmemiş demektir; bu durumda sessizce
+       "gönderildi" göstermek yerine mailto yedeğine düşülmeli (bkz. çağıran taraf). */
+    return res.ok && (await res.text()).trim() === "ok";
   } catch {
     return false;
   }

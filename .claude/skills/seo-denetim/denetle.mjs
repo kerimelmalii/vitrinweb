@@ -168,6 +168,7 @@ for (const p of pages) {
   // Yapısal veri
   const ld = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   const types = [];
+  const crumbs = [];
   for (const m of ld) {
     try {
       const j = JSON.parse(m[1]);
@@ -175,6 +176,7 @@ for (const p of pages) {
         if (Array.isArray(o)) o.forEach(collect);
         else if (o && typeof o === "object") {
           if (o["@type"]) types.push(...[].concat(o["@type"]));
+          if ([].concat(o["@type"]).includes("BreadcrumbList")) crumbs.push(o);
           if (o["@graph"]) collect(o["@graph"]);
         }
       };
@@ -186,6 +188,14 @@ for (const p of pages) {
   if (route.startsWith("/blog/") && !types.some((t) => /Article|BlogPosting|NewsArticle/.test(t)))
     add("K13", "onemli", route, "Blog yazısında Article/BlogPosting yapısal verisi yok");
   if (route !== "/" && !noindex && !types.includes("BreadcrumbList")) add("K13", "iyilestirme", route, "BreadcrumbList yapısal verisi yok");
+  for (const c of crumbs) {
+    const items = [].concat(c.itemListElement || []);
+    if (items.length < 2) add("K13", "onemli", route, `BreadcrumbList en az iki ListItem içermeli (${items.length} var)`);
+    const bad = items.filter((it, i) => !Number.isInteger(it?.position) || (!it?.name && !it?.item?.name) || (!it?.item && i < items.length - 1));
+    if (bad.length) add("K13", "onemli", route, `BreadcrumbList'te ${bad.length} öğede position/name/item eksik`);
+  }
+  if (types.includes("FAQPage"))
+    add("K13", "bilgi", route, "FAQPage işaretlemesi var: geçerli ama FAQ zengin sonuçları 7 Mayıs 2026'dan beri Google'da gösterilmiyor");
   if (route === "/" && !types.includes("Organization") && !types.some((t) => /Business|Store|Restaurant|Salon/.test(t)))
     add("K14", "onemli", route, "Ana sayfada Organization/LocalBusiness yapısal verisi yok");
   if (route === "/" && !types.includes("WebSite")) add("K14", "iyilestirme", route, "Ana sayfada WebSite yapısal verisi yok (site adı için)");

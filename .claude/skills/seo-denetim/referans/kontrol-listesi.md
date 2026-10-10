@@ -17,7 +17,7 @@ Kaynak tarihleri, sayfanın Google'daki "son güncelleme" tarihidir (10 Ekim 202
 | K10 | Kırık iç bağlantı yok | Evet | [Bağlantı en iyi uygulamaları](https://developers.google.com/search/docs/crawling-indexing/links-crawlable) (2025-12-10) |
 | K11 | Bağlantı metinleri açıklayıcı; metinsiz bağlantı yok | Evet | Aynı |
 | K12 | Dış bağlantılar https, utm parametresiz | Evet | Aynı + SEO Makale Standardı 8.2 |
-| K13 | Geçerli JSON-LD; blog yazılarında BlogPosting/Article; alt sayfalarda BreadcrumbList | Evet | [Article](https://developers.google.com/search/docs/appearance/structured-data/article) (2026-09-08) |
+| K13 | Geçerli JSON-LD; blog yazılarında BlogPosting/Article; alt sayfalarda BreadcrumbList (en az 2 öğe, position/name/item); FAQPage varsa bilgi notu | Evet | [Article](https://developers.google.com/search/docs/appearance/structured-data/article) (2026-09-08), [Breadcrumb](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb) (2026-09-08), [Yapısal veri genel kuralları](https://developers.google.com/search/docs/appearance/structured-data/sd-policies) (2026-07-10) |
 | K14 | Ana sayfada Organization/LocalBusiness, WebSite (site adı) ve favicon | Evet | [Organization](https://developers.google.com/search/docs/appearance/structured-data/organization) (2026-09-08), [Site adları](https://developers.google.com/search/docs/appearance/site-names) (2025-12-10), [Favicon](https://developers.google.com/search/docs/appearance/favicon-in-search) (2026-08-28) |
 | K15 | Open Graph (og:title, og:description, og:image) | Evet | Sosyal paylaşım görünümü (Google kuralı değil) |
 | K16 | Az metinli dizinlenebilir sayfalar gözden geçirildi | Evet (bilgi) | [Faydalı içerik](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) (2026-10-05) |
@@ -35,3 +35,7 @@ Kaynak tarihleri, sayfanın Google'daki "son güncelleme" tarihidir (10 Ekim 202
 | C04 | PageSpeed Insights mobil: LCP ≤ 2,5 sn, INP ≤ 200 ms, CLS ≤ 0,1 | pagespeed.web.dev |
 | C05 | Google İşletme Profili: ad/adres/telefon/saatler sitedekiyle aynı | Profil ile sitenin iletişim sayfası karşılaştırılır |
 | C06 | İçerik kalitesi: ilk paragrafta cevap, özgün katkı, kaynaklar (yalnızca blog) | SEO Makale Standardı Bölüm 14 |
+| C07 | Olmayan bir adres gerçek 404 dönüyor (soft 404 yok) | WebFetch ile `/seo-denetim-404-testi` açılır; 404 hatası beklenir, 200 + içerik gelirse bulgu. Dayanak: [HTTP durum kodları](https://developers.google.com/search/docs/crawling-indexing/http-network-errors) (2026-02-04) |
+| C08 | Site taşıma (yalnızca eski sitesi olan müşteri): eski adreslerin her biri en yakın yeni sayfaya 301/308, zincir ≤ 3 adım, eşleme tablosu teslim belgesinde | [URL değişiklikli site taşıma](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) (2026-08-20) |
+
+Her kontrolün ayrıntılı kuralı ve Vitrinweb'e etkisi: `google-kurallari.md`.

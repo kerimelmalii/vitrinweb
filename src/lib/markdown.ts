@@ -225,3 +225,30 @@ export function collectLinks(blocks: Block[]): string[] {
     }
   });
 }
+
+/** Koşulu sağlayan bağlantıları düz metne çevirir (ör. henüz yayınlanmamış bir yazıya giden bağlantılar). */
+export function unlinkBlocks(blocks: Block[], drop: (href: string) => boolean): Block[] {
+  const fix = (c: Inline[]): Inline[] =>
+    c.flatMap((x): Inline[] => {
+      if (x.t === "link") return drop(x.href) ? fix(x.c) : [{ ...x, c: fix(x.c) }];
+      if (x.t === "strong") return [{ ...x, c: fix(x.c) }];
+      return [x];
+    });
+  return blocks.map((b): Block => {
+    switch (b.t) {
+      case "h2":
+      case "h3":
+      case "p":
+        return { ...b, c: fix(b.c) };
+      case "ul":
+      case "ol":
+        return { ...b, items: b.items.map(fix) };
+      case "table":
+        return { ...b, head: b.head.map(fix), rows: b.rows.map((r) => r.map(fix)) };
+      case "callout":
+        return { ...b, blocks: unlinkBlocks(b.blocks, drop) };
+      default:
+        return b;
+    }
+  });
+}

@@ -1,8 +1,9 @@
 ---
+yayin: 2026-10-14
 title: Web tasarım firması nasıl seçilir? Teklif almadan önce bilmeniz gereken 7 ölçüt
 seoTitle: Web Tasarım Firması Nasıl Seçilir? 7 Ölçüt
 description: Web tasarım firması seçerken nelere bakmalısınız? Portföy, fiyat şeffaflığı, alan adı sahipliği, süreç, bakım ve SEO vaatlerinde dikkat edilecek 7 ölçütü anlatıyoruz.
-date: 2026-10-10
+date: 2026-10-14
 category: Fiyat ve Seçim
 coverAlt: Yan yana duran üç web sitesi taslağından ortadakinin onay işaretiyle seçildiği çizim
 related: web-sitesi-fiyati-neye-bagli, kucuk-isletmeler-icin-temel-seo, web-sitem-neden-musteri-getirmiyor

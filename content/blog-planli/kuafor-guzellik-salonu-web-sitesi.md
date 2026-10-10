@@ -1,8 +1,9 @@
 ---
+yayin: 2026-10-18
 title: Kuaför ve güzellik salonu web sitesi nasıl olmalı? Olmazsa olmaz 9 bölüm
 seoTitle: Kuaför ve Güzellik Salonu Web Sitesi Nasıl Olmalı?
 description: Kuaför, berber ve güzellik salonları için web sitesinde bulunması gereken bölümleri; randevu, fiyat listesi, galeri ve Google İşletme Profili ipuçlarıyla anlatıyoruz.
-date: 2026-10-10
+date: 2026-10-18
 category: Sektör Rehberleri
 coverAlt: Ekranında randevu takvimi açık bir telefon, yanında makas ve tarak
 related: yerel-seo-rehberi, google-isletme-profili-rehberi, restoran-kafe-web-sitesi

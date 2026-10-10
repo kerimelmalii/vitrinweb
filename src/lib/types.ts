@@ -55,7 +55,49 @@ export interface ContentForm {
   style: string;
   ref: string;
   files: ContentFormFiles;
+  /** Müşteri bilgi standardındaki (brief) ek alanlar; eski kayıtlarda yoktur. */
+  brief?: ContentBrief;
+  consents?: ContentConsents;
+  /** Sunucu saatine göre, "çalışma başlasın" onayının verildiği an (cayma hakkı istisnası). */
   serviceStartConsentAt?: string;
+}
+
+export interface ContentBrief {
+  legalName: string;
+  sector: string;
+  area: string;
+  since: string;
+  whatsapp: string;
+  hideAddress: boolean;
+  mapsUrl: string;
+  social: string;
+  mainAction: string;
+  audience: string;
+  topServices: string;
+  difference: string;
+  faqs: string;
+  competitors: string;
+  priceDisplay: string;
+  credentials: string;
+  references: string;
+  reviews: string;
+  logoChoice: string;
+  photoChoice: string;
+  dislikes: string;
+  domainChoices: string;
+  hasDomain: string;
+  domainInfo: string;
+  domainEmail: string;
+  currentSite: string;
+  addonInfo: Record<string, string>;
+}
+
+export interface ContentConsents {
+  serviceStart: boolean;
+  contentRights: boolean;
+  peoplePhotos: boolean;
+  portfolio: boolean;
+  experienceData: boolean;
 }
 
 export type PaymentStatus =

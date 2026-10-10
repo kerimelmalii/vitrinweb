@@ -64,6 +64,11 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   kapak tanımı eklenmeli; marka: monokrom çizgi, lacivert yok). Yazım kuralları: SEO Makale Standardı
   (yazar imzası "Vitrinweb İçerik Ekibi", ana CTA "Bilgi Al"/WhatsApp). İçerik Politikası sayfası
   `content/sayfalar/icerik-politikasi.md`.
+- **Zamanlanmış blog yayını:** `content/blog-planli/<slug>.md` (ön bilgide `yayin: YYYY-AA-GG`) sitede görünmez.
+  `.github/workflows/blog-yayin.yml` her gün 09:00 (TR) `scripts/blog-yayinla.mjs`'i çalıştırır, günü gelen yazıyı
+  `content/blog/`a taşır (yeni yazıda `date`, yeniden yazımda `updated` = o gün), derler ve main'e gönderir.
+  Henüz yayında olmayan yazıya verilen bağlantılar o güne kadar düz metin gösterilir. Tarihleri elle geriye
+  çekmek yok: tarih her zaman gerçek yayın/güncelleme günüdür.
 
 ## Kurallar
 

@@ -1,11 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
-import { blocksText, collectLinks, parseBlocks, parseFrontMatter, type Block } from "@/lib/markdown";
+import { blocksText, collectLinks, parseBlocks, parseFrontMatter, unlinkBlocks, type Block } from "@/lib/markdown";
 
 /* ================= BLOG =================
    Her yazı content/blog/<slug>.md dosyasıdır; yazım kuralları için SEO Makale Standardı'na bakın.
    Kapak görselleri public/blog/<slug>/kapak.webp (+ kapak-4x3.webp, kapak-1x1.webp) olarak
-   scripts/blog-kapaklari.mjs ile üretilir. Bu dosya yalnızca sunucuda/derlemede çalışır (fs). */
+   scripts/blog-kapaklari.mjs ile üretilir. Bu dosya yalnızca sunucuda/derlemede çalışır (fs).
+
+   Zamanlanmış yayın: content/blog-planli/<slug>.md dosyaları "yayin: YYYY-AA-GG" taşır ve sitede
+   görünmez. .github/workflows/blog-yayin.yml her sabah scripts/blog-yayinla.mjs'i çalıştırır; günü gelen
+   yazı content/blog'a taşınır (yeni yazıda date, yeniden yazımda updated o günün tarihi olur). Yayında
+   olmayan bir yazıya verilen bağlantılar o gün gelene kadar düz metin olarak gösterilir. */
 
 export interface BlogPost {
   slug: string;
@@ -26,6 +31,7 @@ export interface BlogPost {
 }
 
 const DIR = path.join(process.cwd(), "content/blog");
+const PLANNED_DIR = path.join(process.cwd(), "content/blog-planli");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -94,12 +100,37 @@ function validate(posts: BlogPost[]) {
   }
 }
 
+/** Planlanmış yazıların ön bilgisini denetler: yayın akışı günü geldiğinde derlemeyi bozmasın. */
+function plannedSlugs(): Set<string> {
+  if (!fs.existsSync(PLANNED_DIR)) return new Set();
+  const slugs = new Set<string>();
+  for (const file of fs.readdirSync(PLANNED_DIR).filter((f) => f.endsWith(".md"))) {
+    const slug = file.replace(/\.md$/, "");
+    const where = `content/blog-planli/${file}`;
+    const { data } = parseFrontMatter(fs.readFileSync(path.join(PLANNED_DIR, file), "utf8"));
+    if (!SLUG_RE.test(slug)) throw new Error(`${where}: dosya adı geçersiz`);
+    if (!ISO_RE.test(data.yayin ?? "")) throw new Error(`${where}: "yayin: YYYY-AA-GG" alanı zorunlu`);
+    if (!fs.existsSync(path.join(PUBLIC_DIR, "blog", slug, "kapak.webp"))) throw new Error(`${where}: kapak görseli yok`);
+    slugs.add(slug);
+  }
+  return slugs;
+}
+
 export const BLOG: BlogPost[] = (() => {
-  const posts = fs
+  const loaded = fs
     .readdirSync(DIR)
     .filter((f) => f.endsWith(".md"))
     .map(load)
     .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title, "tr"));
+  const published = new Set(loaded.map((p) => p.slug));
+  const pending = new Set([...plannedSlugs()].filter((s) => !published.has(s)));
+  const isPending = (href: string) => href.startsWith("/blog/") && pending.has(href.slice(6).split("#")[0]);
+  const posts = loaded.map((p) => ({
+    ...p,
+    body: unlinkBlocks(p.body, isPending),
+    sources: unlinkBlocks(p.sources, isPending),
+    related: p.related.filter((r) => !pending.has(r)),
+  }));
   validate(posts);
   return posts;
 })();

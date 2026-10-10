@@ -1,0 +1,41 @@
+# Zamanlanmış blog yayını: her sabah 09:00'da (Türkiye) günü gelen yazıyı yayına alır.
+# Ayrıntı: src/data/blog.ts başındaki not ve scripts/blog-yayinla.mjs.
+name: Blog yayın takvimi
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-yayin
+  cancel-in-progress: false
+
+jobs:
+  yayinla:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Günü gelen yazıları taşı
+        id: yayin
+        run: |
+          node scripts/blog-yayinla.mjs
+          if git status --porcelain content | grep -q .; then echo "degisti=1" >> "$GITHUB_OUTPUT"; fi
+      - name: Derlemeyi doğrula
+        if: steps.yayin.outputs.degisti == '1'
+        run: npm ci && npm run build
+      - name: Yayına al
+        if: steps.yayin.outputs.degisti == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content
+          git commit -m "Blog: zamanlanmış yazı yayınlandı ($(TZ=Europe/Istanbul date +%F))"
+          git push

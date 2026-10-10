@@ -6,7 +6,7 @@ import { Md } from "@/components/markdown";
 import { coverSrc, formatDate, readMin, relatedPosts, type BlogPost as Post } from "@/data/blog";
 
 export const AUTHOR = { name: "Vitrinweb İçerik Ekibi", href: "/hakkimizda" };
-const TOC_MIN_WORDS = 1500;
+const TOC_MIN_WORDS = 1000;
 
 export function BlogPost({ p }: { p: Post }) {
   const others = relatedPosts(p);

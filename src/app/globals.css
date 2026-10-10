@@ -187,7 +187,7 @@ body{margin:0;background:var(--bg);color:var(--ink);overflow-x:clip}
 @media(min-width:600px) and (max-width:899px){.why{grid-template-columns:1fr 1fr}.why-t.wide{grid-column:span 2}}
 .why-t{background:var(--surface-2);border-radius:30px;padding:clamp(26px,3vw,38px);min-height:260px;display:flex;flex-direction:column;gap:10px}
 .why-t.tint{background:var(--tint)}
-.why-t .ic{margin-bottom:auto;color:var(--ink)}
+.why-t .ic{color:var(--ink)}
 .why-t .h-3{font-size:1.35rem}
 .why-t p{margin:0;color:var(--ink-2);max-width:42ch}
 

@@ -1,5 +1,5 @@
 import { COMPANY, companyLine, isPlaceholder } from "@/data/company";
-import { INCLUDED, NOT_INCLUDED } from "@/data/content";
+import { EXTRA_PRICES, INCLUDED, NOT_INCLUDED } from "@/data/content";
 import { TL, VAT_NOTE, YEARLY } from "@/lib/config";
 import type { LegalDoc } from "@/lib/types";
 
@@ -225,7 +225,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "4. Yıllık servis ve bakım"],
       [
         "p",
-        `İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, TÜİK'in açıkladığı yıllık TÜFE oranında güncellenir ve yeni ücret yenilemeden en az 30 gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
+        `İlk servis yılı, sitenin yayına alındığı tarihte başlar. İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, TÜİK'in açıkladığı yıllık TÜFE oranında güncellenir ve yeni ücret yenilemeden en az 30 gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
       ],
       ["h", "5. İfa (teslim)"],
       [
@@ -265,7 +265,8 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         [
           "Sağlayıcı, hizmeti ön bilgilendirmede belirtilen kapsam ve niteliklerde, özenle sunar.",
           "Alıcı, web sitesinde kullanılacak içerikleri zamanında iletir ve bu içeriklerin üçüncü kişilerin fikri mülkiyet ve kişilik haklarını ihlal etmediğini taahhüt eder.",
-          "İçeriklerin iletilmesindeki gecikmeler, teslim takvimini aynı ölçüde uzatır.",
+          "İçeriklerin iletilmesindeki gecikmeler, teslim takvimini aynı ölçüde uzatır. Proje formu gönderildikten sonra eksik kalan bilgiler 48 saat içinde iletilmezse, Sağlayıcı bu bilgileri makul varsayımlarla (kendi yazdığı metinler, kullanım hakkı uygun görseller) tamamlayarak çalışmaya başlayabilir; alıcı önizlemede değişiklikleri revizyon hakkı kapsamında talep edebilir.",
+          `Paket dışı talepler (KDV dahil): ek sayfa ${TL(EXTRA_PRICES.page)}, iki revizyon turundan sonraki her tur ${TL(EXTRA_PRICES.revision)}, ayda 2 küçük güncellemeyi aşan her güncelleme ${TL(EXTRA_PRICES.update)}; ek özellikler sitede ilan edilen fiyatlarıyla; diğer değişiklikler teklifle. Ücretli işe, fiyat alıcı tarafından yazılı olarak onaylanmadan ve ödeme alınmadan başlanmaz.`,
         ],
       ],
       ["h", "Madde 4: Fikri haklar ve alan adı"],

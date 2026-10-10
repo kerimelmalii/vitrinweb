@@ -1,35 +1,38 @@
-# SEO denetim botu — devir notu (10 Ekim 2026)
+# SEO denetim botu — devir notu (güncelleme: 10 Ekim 2026, v0.2)
 
-Bu çalışma ana yapılacaklar sohbetinde başladı (madde 1.5). Kullanıcının isteğiyle ayrı bir sohbette sürdürülecek. Bu not, yeni sohbetin kaldığı yerden devam etmesi için yazıldı.
+Ana yapılacaklar sohbetinde başladı (madde 1.5), ayrı bir SEO sohbetinde sürüyor. Bu sohbet kendi kaydını claude.ai projesinde `claude/seo-calisma-kaydi.md`'ye yazar; `claude/vitrin-kayit.md` yalnızca ana sohbetten güncellenir.
 
 ## Kullanıcının kararları
 - Kullanım alanı: **ikisi birden** — Vitrinweb'in kendi sitesi + müşteri sitelerinin teslim öncesi denetimi. İyi sonuç verirse ileride **ücretli hizmet** olabilir.
 - Çalışma: **ayda bir otomatik rapor** + istendiğinde elle.
-- Konumlandırma: Vitrinweb eski siteleri onarmaz; sitesi olmayana site kurar, olana daha iyisini yapar. Müşteri adayının mevcut sitesinin denetimi, yenilemeye yönlendiren bir araç olarak kullanılabilir ("Ücretsiz Site Analizi" CTA'sıyla ilişkili).
+- Konumlandırma: Vitrinweb eski siteleri onarmaz; sitesi olmayana site kurar, olana daha iyisini yapar. Müşteri adayının mevcut sitesinin denetimi, yenilemeye yönlendiren bir araç olarak kullanılır ("Ücretsiz Site Analizi", şablon B2).
 
 ## Tamamlananlar
-1. `denetle.mjs`: Derlenmiş HTML'yi bağımlılıksız denetleyen betik, K01–K19 arası 19 kontrol (başlık, açıklama, canonical, noindex, dil, viewport, H1/başlık düzeni, alt metin, görsel boyutları, kırık iç bağlantı, bağlantı metni, http/utm, JSON-LD, Organization/WebSite/favicon, Open Graph, az metin, riskli vaat, robots.txt, site haritası).
-2. Bilinçli hatalar içeren test sayfasında tüm kritik kontrollerin çalıştığı doğrulandı.
-3. Vitrinweb sitesinde ilk denetim: **0 kritik, 0 önemli, 16 iyileştirme, 3 bilgi** (aşağıda).
-4. `referans/kontrol-listesi.md`: her kontrolün Google kaynağı ve kaynak sayfanın son güncelleme tarihi.
-5. `SKILL.md`: kullanım adımları.
+**v0.1 (PR #60):** `denetle.mjs` (K01–K19), `kontrol-listesi.md`, `SKILL.md`, ilk Vitrinweb denetimi (0 kritik, 0 önemli, 16 iyileştirme, 3 bilgi).
 
-## İlk denetimin öne çıkan bulguları (Vitrinweb, 10 Ekim 2026)
-- **Ana sayfa ve 8 yasal sayfa aynı meta açıklamayı kullanıyor.** Yasal sayfalara kendi açıklamaları yazılmalı (gerçek bulgu, düzeltilmedi).
-- Bazı eski blog yazılarında başlık ve açıklama uzun. Fiyat ve yerel SEO yazıları takvimde yeniden yazılınca düzeliyor; diğer eski yazılar yükseltilirken düzeltilecek.
-- /icerik-politikasi sayfasında BreadcrumbList yok, /hakkimizda sayfasında og:image yok (küçük düzeltmeler).
-- /iletisim açıklaması kısa (65 karakter), /isgale-hayir açıklaması uzun (199 karakter).
+**v0.2 (10 Ekim 2026):**
+1. Kalan Search Central sayfaları doğrulandı: yapısal veri genel kuralları (2026-07-10), breadcrumb (2026-09-08), sayfa deneyimi (2026-09-22), HTTP durum kodları/soft 404 (2026-02-04), yönlendirmeler (2026-04-14), site taşıma (2026-08-20), Search Console'a başlangıç (2025-12-10), Core Web Vitals (2025-12-10), üçüncü taraf SEO araçları (2026-06-05), "Bir SEO'ya ihtiyacınız var mı?" (2026-06-05).
+2. `referans/google-kurallari.md`: kural + kaynak + tarih + Vitrinweb'e etkisi; "Google kuralı" ile "iyi uygulama" ayrı.
+3. `referans/guncelleme-gunlugu.md`: Nisan–Ekim 2026 kayıtları, son kontrol 10 Ekim (en yeni kayıt 8 Ekim).
+4. `referans/rapor-sablonu.md`: A iç rapor, B1 müşteri teslim özeti (madde 2.8 SEO özeti), B2 müşteri adayı ön analizi.
+5. Betik: K13'e BreadcrumbList öğe sayısı/zorunlu alan kontrolü ve FAQPage bilgi notu eklendi. Kontrol listesine C07 (soft 404) ve C08 (site taşıma) eklendi.
+6. **Aylık zamanlanmış görev** "Vitrinweb aylık SEO denetimi": her ayın 1'i 08:52 (TR), bulutta, onaysız (auto), telefon bildirimi açık. İlk çalışma 1 Kasım 2026. Adımlar `SKILL.md` → "Aylık otomatik denetim".
 
-## Yapılacaklar (sırayla)
-1. **Kalan Search Central sayfalarını doğrula** (10 Ekim'de WebFetch kotası doldu): yapısal veri genel kuralları (sd-policies), breadcrumb, sayfa deneyimi, HTTP durum kodları ve soft 404, yönlendirmeler, site taşıma, Search Console'a başlangıç. Ardından `referans/google-kurallari.md` bilgi tabanını yaz (kural + kaynak + tarih + Vitrinweb'e etkisi).
-2. **Güncelleme günlüğü:** `referans/guncelleme-gunlugu.md` dosyasını oluştur. Search Central "güncellemeler" sayfasında son kontrol edilen tarih ve bizi etkileyen değişiklikler burada tutulacak. 10 Ekim itibarıyla son kayıtlar: 8 Eki UGC Fresh Data, 1 Eki üretken yapay zekâ rehberi güncellemesi, 28 Ağu favicon biçimleri ve site itibarı politikası, 24 Tem review snippet sahte/teşvikli yorum kuralı. Daha önce: FAQ zengin sonuçları 7 Mayıs 2026'da kaldırıldı, İşletme Profili soru-cevap özelliği kaldırıldı.
-3. `referans/rapor-sablonu.md`: Vitrinweb iç raporu ve müşteriye verilecek rapor için iki şablon. Müşteri raporu, madde 2.8'deki "SEO özeti" teslim belgesiyle birleştirilebilir.
-4. **Aylık otomatik görev:** Her ayın 1'inde 08:52 (TR). Yapacakları: (a) repoyu ekle ve derle, (b) denetle.mjs, (c) canlı kontroller C01–C02, (d) Search Central güncellemelerini günlükle karşılaştır, (e) raporu projeye yaz ve bildirim gönder. Search Console verisi için bir bağlayıcı araştırılacak (C03).
-5. **Müşteri siteleri için akış:** Müşteri repolarının nerede tutulacağı madde 3'te karar bekliyor. Karar sonrası "teslim öncesi denetim" adımı teslim sürecine (madde 2.5) eklenecek.
-6. **İsteğe bağlı:** Denetimi Vitrinweb sitesinin derleme sürecine uyarı olarak eklemek. Kritik bulguda yayını durdurmak da bir seçenek.
+## Açık bulgular (Vitrinweb sitesi, düzeltilmedi)
+- Ana sayfa + 8 yasal sayfa aynı meta açıklamayı kullanıyor → yasal sayfalara özel açıklama.
+- Uzun blog başlık/açıklamaları (takvimdeki yeniden yazımlarla kısmen düzeliyor).
+- /icerik-politikasi'nda BreadcrumbList, /hakkimizda'da og:image yok; /iletisim açıklaması kısa, /isgale-hayir uzun; /siparis'te H1 → H3.
+- Ana sayfada FAQPage işaretlemesi: geçerli ama FAQ zengin sonuçları 7 Mayıs 2026'dan beri yok. Kaldırmak zorunlu değil.
+
+## Yapılacaklar
+1. **Search Console verisi (C03):** claude.ai bağlayıcı kayıtlarında resmi Google Search Console bağlayıcısı yok (10 Ekim 2026; yalnızca Semrush, Ahrefs, OpenSEO gibi üçüncü taraf araçlar var, bunlar Google verisi vermiyor). Şimdilik aylık rapor kullanıcıdan 3 rapora bakmasını istiyor. Seçenek: Search Console API + hizmet hesabıyla bir GitHub Actions işi verileri repoya JSON olarak yazar (kurulum kullanıcıda: Google Cloud projesi, hizmet hesabını Search Console'a kullanıcı olarak ekleme).
+2. **Müşteri siteleri için akış:** Müşteri repolarının nerede tutulacağı madde 3'te karar bekliyor. Karar sonrası "teslim öncesi denetim" adımı teslim sürecine (madde 2.5) eklenecek; B1 şablonu madde 2.8 teslim belgelerine bağlanacak.
+3. **İsteğe bağlı:** Denetimi Vitrinweb derleme sürecine uyarı olarak eklemek (ör. GitHub Actions'ta derleme sonrası `denetle.mjs`; kritik bulguda yayını durdurmak da bir seçenek).
+4. **Ücretli hizmet olursa:** B2 şablonu "Ücretsiz Site Analizi" CTA'sıyla birlikte tasarlanacak (madde 2.4 / 5.x).
 
 ## Bilinen sınırlar
 - Betik HTML'yi düzenli ifadelerle okur. Next.js ve statik site çıktılarında çalışır, ama çok sıra dışı HTML'de yanılabilir.
 - Görünen başlık uzunluğu için karakter sayısı kullanılıyor; Google piksel genişliğine göre keser.
 - Canlı hız (Core Web Vitals) ve Search Console verisi betiğin kapsamı dışında.
-- Bu ortamın kabuğu canlı sitelere erişemiyor; canlı kontroller WebFetch ile yapılmalı.
+- Kabuk canlı sitelere erişemiyor; canlı kontroller WebFetch ile. **WebFetch bir siteyi yalnızca adresi kullanıcı mesajında geçiyorsa izinsiz açar** — aylık görevin metninde adresler bu yüzden birebir yazılı. Müşteri sitesi denetiminde adresi kullanıcının mesajına yazması istenir.
+- Search Central güncellemeler sayfası çok uzun; WebFetch ilk 100.000 karakteri okur (Nisan 2026'ya kadarki kayıtlar). Aylık kontrolde yalnızca yeni kayıtlar gerektiği için yeterli.

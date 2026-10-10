@@ -76,9 +76,20 @@ export function NotFound() {
       <p className="lead" style={{ margin: "14px 0 26px" }}>
         Bağlantı değişmiş veya kaldırılmış olabilir.
       </p>
-      <Link className="btn btn-primary" href="/">
-        Ana Sayfaya Dönün
-      </Link>
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <Link className="btn btn-primary" href="/">
+          Ana Sayfaya Dönün
+        </Link>
+        <Link className="btn btn-line" href="/ucretlendirme">
+          Ücretlendirme
+        </Link>
+        <Link className="btn btn-line" href="/blog">
+          Blog
+        </Link>
+        <Link className="btn btn-line" href="/iletisim">
+          İletişim
+        </Link>
+      </div>
     </main>
   );
 }

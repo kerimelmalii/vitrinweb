@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { FILE_RULES, LIMITS, RX, clean } from "@/lib/security";
+import { FILE_RULES, LIMITS, RX, clean, phoneOk } from "@/lib/security";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import type { ContentForm, ContentFormFiles } from "@/lib/types";
+import { ADDONS } from "@/data/content";
+import type { ContentBrief, ContentConsents, ContentForm, ContentFormFiles } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -44,6 +45,62 @@ function parseFiles(value: unknown): ContentFormFiles {
   };
 }
 
+const ADDON_IDS = new Set(ADDONS.map((a) => a.id));
+const str = (v: unknown, max: number) => clean(v, max).trim();
+
+function parseBrief(value: unknown): ContentBrief {
+  const raw = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  const addonRaw = (raw.addonInfo && typeof raw.addonInfo === "object" ? raw.addonInfo : {}) as Record<string, unknown>;
+  const addonInfo: Record<string, string> = {};
+  for (const [k, v] of Object.entries(addonRaw)) {
+    if (ADDON_IDS.has(k)) addonInfo[k] = str(v, LIMITS.text);
+  }
+  const url = (v: unknown) => {
+    const u = str(v, LIMITS.url);
+    return u && RX.url.test(u) ? u : "";
+  };
+  return {
+    legalName: str(raw.legalName, LIMITS.invTitle),
+    sector: str(raw.sector, LIMITS.short),
+    area: str(raw.area, LIMITS.short),
+    since: str(raw.since, LIMITS.short),
+    whatsapp: str(raw.whatsapp, LIMITS.phone),
+    hideAddress: raw.hideAddress === true,
+    mapsUrl: url(raw.mapsUrl),
+    social: str(raw.social, LIMITS.address),
+    mainAction: str(raw.mainAction, LIMITS.short),
+    audience: str(raw.audience, LIMITS.wishes),
+    topServices: str(raw.topServices, LIMITS.wishes),
+    difference: str(raw.difference, LIMITS.wishes),
+    faqs: str(raw.faqs, LIMITS.text),
+    competitors: str(raw.competitors, LIMITS.wishes),
+    priceDisplay: str(raw.priceDisplay, LIMITS.short),
+    credentials: str(raw.credentials, LIMITS.wishes),
+    references: str(raw.references, LIMITS.wishes),
+    reviews: str(raw.reviews, LIMITS.text),
+    logoChoice: str(raw.logoChoice, LIMITS.short),
+    photoChoice: str(raw.photoChoice, LIMITS.short),
+    dislikes: str(raw.dislikes, LIMITS.wishes),
+    domainChoices: str(raw.domainChoices, LIMITS.address),
+    hasDomain: str(raw.hasDomain, LIMITS.short),
+    domainInfo: str(raw.domainInfo, LIMITS.address),
+    domainEmail: str(raw.domainEmail, LIMITS.short),
+    currentSite: url(raw.currentSite),
+    addonInfo,
+  };
+}
+
+function parseConsents(value: unknown): ContentConsents {
+  const raw = (value && typeof value === "object" ? value : {}) as Record<string, unknown>;
+  return {
+    serviceStart: raw.serviceStart === true,
+    contentRights: raw.contentRights === true,
+    peoplePhotos: raw.peoplePhotos === true,
+    portfolio: raw.portfolio === true,
+    experienceData: raw.experienceData === true,
+  };
+}
+
 function parseContent(value: unknown): ContentForm | null {
   if (!value || typeof value !== "object") return null;
   const raw = value as Record<string, unknown>;
@@ -66,9 +123,16 @@ function parseContent(value: unknown): ContentForm | null {
     style: clean(raw.style, LIMITS.short).trim(),
     ref: clean(raw.ref, LIMITS.url).trim(),
     files: parseFiles(raw.files),
+    brief: parseBrief(raw.brief),
+    consents: parseConsents(raw.consents),
   };
 
   if (content.brand.length < 2) return null;
+  // Cayma hakkı istisnası ve içerik hakları beyanı olmadan çalışma başlatılamaz.
+  if (!content.consents?.serviceStart || !content.consents.contentRights) return null;
+  if (!content.brief?.legalName) return null;
+  if (!RX.email.test(content.email) || !phoneOk(content.phone)) return null;
+  content.serviceStartConsentAt = new Date().toISOString();
   if (content.ref && !RX.url.test(content.ref)) return null;
 
   return content;
@@ -132,7 +196,7 @@ export async function POST(request: NextRequest) {
     if (updateError) throw new Error("Proje formu kaydedilemedi.");
 
     return NextResponse.json(
-      { ok: true },
+      { ok: true, serviceStartConsentAt: content.serviceStartConsentAt },
       { headers: { "Cache-Control": "no-store, private" } },
     );
   } catch (error) {

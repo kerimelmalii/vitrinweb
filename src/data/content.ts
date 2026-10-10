@@ -40,6 +40,9 @@ export const INCLUDED: IncludedFeature[] = [
   { icon: "shield", t: "İlk yıl servis ücretsiz", d: "Güvenlik güncellemeleri, yedekleme ve ayda 2 küçük içerik güncellemesi için ilk yıl ek ücret ödemezsiniz." },
 ];
 
+/** Paket dışı taleplerin fiyatları (KDV dahil). Büyük değişiklikler teklifle (24 saat içinde) fiyatlanır. */
+export const EXTRA_PRICES = { page: 1000, revision: 500, update: 250 };
+
 /** Temel pakete dahil olmayanlar: SSS'de ve sözleşmede açıkça yazılır. */
 export const NOT_INCLUDED = [
   "logo tasarımı",
@@ -220,6 +223,16 @@ export const FAQS: Faq[] = [
     cat: "Süreç ve İçerik",
     q: "Sitem ne zaman hazır olur?",
     a: "İçerikleriniz eksiksiz ulaştıktan sonra 5 iş günü içinde siteniz yayına hazır olur. Revizyon ve onay sırasında sizden yanıt beklediğimiz süre bu 5 güne dahil değildir. Ek özellik veya teklifle eklenen bir özellik seçtiyseniz süreyi, içerikleriniz ulaştığında yazılı olarak bildiririz.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "İçeriklerimi geç gönderirsem ne olur?",
+    a: "Formu gönderdiğiniz hâlde eksik kalan bilgiler için 24 ve 48 saat sonra size yazarız. 48 saat içinde ulaşmayan bilgileri kendimiz tamamlarız (metinleri biz yazarız, fotoğraf yerine kullanım hakkı uygun görseller koyarız) ve 5 iş günlük süre başlar; önizlemede dilediğiniz değişikliği revizyon olarak isteyebilirsiniz. Uzun süre dönüş olmazsa proje beklemeye alınır, döndüğünüzde ek ücret olmadan kaldığımız yerden devam ederiz.",
+  },
+  {
+    cat: "Süreç ve İçerik",
+    q: "Ek sayfa veya ek revizyon istersem ücreti nedir?",
+    a: `Ek sayfa (metni dahil) ${TL(EXTRA_PRICES.page)}, iki revizyon turundan sonraki her tur ${TL(EXTRA_PRICES.revision)}, servis süresince ayda 2 küçük güncellemeyi aşan her güncelleme ${TL(EXTRA_PRICES.update)}'dir. Yayından sonra eklenen ek özellikler listedeki fiyatlarıyla eklenir; yeni bölüm veya yeniden tasarım gibi büyük değişiklikler için 24 saat içinde teklif veririz. Ücretli hiçbir işe, fiyatı yazılı olarak onaylamadan başlamayız.`,
   },
   {
     cat: "Süreç ve İçerik",

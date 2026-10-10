@@ -24,7 +24,7 @@ export const isPlaceholder = (v: string): boolean => v.startsWith("[") && v.ends
 
 /** `COMPANY.phone`'un yalnızca rakamlardan oluşan, ülke koduyla (90) başlayan hâli —
     `tel:`/`wa.me` bağlantıları için. */
-export const PHONE_DIGITS = isPlaceholder(COMPANY.phone) ? "" : "90" + COMPANY.phone.replace(/\D/g, "");
+export const PHONE_DIGITS = isPlaceholder(COMPANY.phone) ? "" : "90" + COMPANY.phone.replace(/\D/g, "").replace(/^0/, "");
 
 export const WHATSAPP_URL = PHONE_DIGITS
   ? `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent("Merhaba, Vitrinweb hakkında bilgi almak istiyorum.")}`

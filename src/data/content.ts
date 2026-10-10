@@ -29,13 +29,26 @@ export const SECTORS = [
 ];
 
 export const INCLUDED: IncludedFeature[] = [
-  { icon: "layout", t: "Modern tasarım", d: "Sektörünüze ve markanıza göre şekillenen, sade ve şık bir tasarım." },
+  { icon: "layout", t: "5 sayfalık modern tasarım", d: "Ana sayfa, hakkımızda, hizmetler, galeri ve iletişim; sektörünüze ve markanıza göre sade bir tasarım, 2 revizyon hakkıyla." },
   { icon: "phone", t: "Mobil uyumlu", d: "Telefon, tablet ve bilgisayarda düzgün görünür ve rahat kullanılır." },
-  { icon: "search", t: "Temel SEO altyapısı", d: "Sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri." },
-  { icon: "message", t: "WhatsApp entegrasyonu", d: "Ziyaretçileriniz tek dokunuşla size yazabilir." },
-  { icon: "pin", t: "Google Maps", d: "Konumunuz sitenizde harita olarak yer alır." },
-  { icon: "file", t: "İletişim sayfası", d: "Telefon, e-posta, adres ve çalışma saatleri tek sayfada." },
-  { icon: "shield", t: "İlk yıl servis ücretsiz", d: "İlk yıl servis ve bakım için ek ücret ödemezsiniz." },
+  { icon: "file", t: "Metin yazımı", d: "Verdiğiniz bilgilerden sayfa metinlerinizi biz yazarız; hazır metniniz olmasa da olur." },
+  { icon: "search", t: "SEO uyumlu altyapı", d: "Her sayfaya özel başlık ve açıklama, site haritası, işletme bilgileri için yapısal veri ve hızlı açılan görseller." },
+  { icon: "message", t: "WhatsApp ve tıkla-ara", d: "Ziyaretçileriniz tek dokunuşla size yazabilir veya sizi arayabilir." },
+  { icon: "pin", t: "Google Maps ve iletişim formu", d: "Konumunuz harita olarak; iletişim formu, adres ve çalışma saatleri tek sayfada." },
+  { icon: "star", t: "Google yorumlarınız", d: "Google'daki yorumlarınızdan seçtiklerinizi sitenize ekleriz; istediğinizde güncelleriz." },
+  { icon: "globe", t: "Alan adı, barındırma ve SSL", d: "İlk yıl dahildir. Alan adınız sizin adınıza kaydedilir, yönetimini biz yaparız." },
+  { icon: "shield", t: "İlk yıl servis ücretsiz", d: "Güvenlik güncellemeleri, yedekleme ve ayda 2 küçük içerik güncellemesi için ilk yıl ek ücret ödemezsiniz." },
+];
+
+/** Temel pakete dahil olmayanlar: SSS'de ve sözleşmede açıkça yazılır. */
+export const NOT_INCLUDED = [
+  "logo tasarımı",
+  "profesyonel fotoğraf çekimi",
+  "kurumsal e-posta hesabı",
+  "5 sayfanın üzerindeki ek sayfalar",
+  "ek özellikler (blog, online randevu, katalog, çoklu dil, online ödeme, yönetim paneli)",
+  "reklam ve sosyal medya yönetimi",
+  "başka bir firmanın yaptığı mevcut sitenin onarımı",
 ];
 
 export const ADDONS: Addon[] = [
@@ -142,7 +155,7 @@ export const PROCESS: ProcessStep[] = [
   { n: "01", t: "Bilgi", d: "İşletmenizi tanıyoruz. Bilgilerinizi girer, siparişinizi tamamlarsınız." },
   { n: "02", t: "Tasarım", d: "Logo, metin ve görsellerinizi alır, tercihlerinize göre tasarımı hazırlarız." },
   { n: "03", t: "Geliştirme", d: "Tasarım çalışan bir web sitesine dönüşür. Geri bildirimlerinizle şekillenir." },
-  { n: "04", t: "Yayın", d: "Onayınızla sitenizi yayına alırız." },
+  { n: "04", t: "Yayın", d: "İçerikleriniz tamamlandıktan sonra 5 iş günü içinde, onayınızla sitenizi yayına alırız." },
 ];
 
 export const FAQ_CATEGORIES = ["Fiyat, Ödeme ve İptal", "Süreç ve İçerik", "Güven, Güvenlik ve SEO"] as const;
@@ -151,7 +164,12 @@ export const FAQS: Faq[] = [
   {
     cat: "Fiyat, Ödeme ve İptal",
     q: `${money(BASE_PRICE)} TL'ye neler dahil?`,
-    a: "Modern ve mobil uyumlu tasarım, temel SEO altyapısı, WhatsApp entegrasyonu, Google Maps ve iletişim sayfası dahildir. Blog, randevu, çoklu dil gibi ihtiyaçlar ek özellik olarak eklenir.",
+    a: "5 sayfalık (ana sayfa, hakkımızda, hizmetler, galeri, iletişim) mobil uyumlu tasarım, metin yazımı, SEO uyumlu altyapı, WhatsApp ve tıkla-ara, Google Maps, iletişim formu, seçtiğiniz Google yorumlarınız, ilk yıl alan adı, barındırma ve SSL ile ilk yıl servis ve bakım dahildir. Blog, randevu, çoklu dil gibi ihtiyaçlar ek özellik olarak eklenir.",
+  },
+  {
+    cat: "Fiyat, Ödeme ve İptal",
+    q: "Pakete neler dahil değil?",
+    a: `${NOT_INCLUDED.map((x, i) => (i === 0 ? x.charAt(0).toLocaleUpperCase("tr") + x.slice(1) : x)).join(", ")} temel pakete dahil değildir. Logonuz yoksa marka adınızla sade bir yazı logosu hazırlarız; fotoğrafınız yoksa kullanım hakkı uygun görseller kullanırız.`,
   },
   {
     cat: "Fiyat, Ödeme ve İptal",
@@ -201,12 +219,12 @@ export const FAQS: Faq[] = [
   {
     cat: "Süreç ve İçerik",
     q: "Sitem ne zaman hazır olur?",
-    a: "Süre, içeriklerin hazır olma hızına ve seçtiğiniz ek özelliklere göre değişir. İçerikleriniz bize ulaştığında sürecin takvimini sizinle paylaşırız.",
+    a: "İçerikleriniz eksiksiz ulaştıktan sonra 5 iş günü içinde siteniz yayına hazır olur. Revizyon ve onay sırasında sizden yanıt beklediğimiz süre bu 5 güne dahil değildir. Ek özellik veya teklifle eklenen bir özellik seçtiyseniz süreyi, içerikleriniz ulaştığında yazılı olarak bildiririz.",
   },
   {
     cat: "Süreç ve İçerik",
     q: "Sitemin içeriğini kendim güncelleyebilir miyim?",
-    a: "Standart pakette içerik değişikliği taleplerinizi bize iletirsiniz, biz güncelleriz. Fiyat, metin veya görselleri kendiniz yönetmek isterseniz, Yönetim Paneli ek özelliğini (teklif üzerine) ekleyebilirsiniz.",
+    a: "Standart pakette içerik değişikliği taleplerinizi bize iletirsiniz, biz güncelleriz: servis süresince ayda 2 küçük güncelleme (metin, fotoğraf, fiyat, çalışma saatleri, Google yorumlarının yenilenmesi) 2 iş günü içinde yapılır. Fiyat, metin veya görselleri kendiniz yönetmek isterseniz, Yönetim Paneli ek özelliğini (teklif üzerine) ekleyebilirsiniz.",
   },
   {
     cat: "Süreç ve İçerik",

@@ -1,5 +1,5 @@
 import { COMPANY, companyLine, isPlaceholder } from "@/data/company";
-import { INCLUDED } from "@/data/content";
+import { INCLUDED, NOT_INCLUDED } from "@/data/content";
 import { TL, VAT_NOTE, YEARLY } from "@/lib/config";
 import type { LegalDoc } from "@/lib/types";
 
@@ -205,13 +205,16 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "2. Hizmetin temel nitelikleri"],
       [
         "p",
-        `Sipariş edilen hizmet; işletmeniz için web sitesi tasarımı ve geliştirilmesi, yayına alınması ve ilk yıl servis ve bakımıdır. Temel pakete ${INCLUDED.filter((f) => f.icon !== "shield")
-          .map((f) => f.t.toLocaleLowerCase("tr"))
-          .join(", ")} dahildir. Seçtiğiniz ek özellikler siparişinize eklenir.`,
+        "Sipariş edilen hizmet; işletmeniz için web sitesi tasarımı ve geliştirilmesi, yayına alınması ve ilk yıl servis ve bakımıdır. Temel pakete şunlar dahildir:",
+      ],
+      ["ul", INCLUDED.map((f) => `${f.t}: ${f.d}`)],
+      [
+        "p",
+        `Temel pakete dahil olmayanlar: ${NOT_INCLUDED.join(", ")}. Seçtiğiniz ek özellikler siparişinize eklenir. "Küçük içerik güncellemesi"; mevcut bir sayfadaki metin, fotoğraf, fiyat veya çalışma saatlerinin değiştirilmesi ve sitedeki Google yorumlarının yenilenmesidir; yeni sayfa veya yeni bölüm eklenmesi bu kapsamda değildir.`,
       ],
       [
         "p",
-        "Ayrıca, yıllık bedeli 600 TL'yi aşmayan bir alan adının (domain) kaydı tarafımızca karşılanır. Seçtiğiniz alan adının bedeli 600 TL'yi aşarsa, 600 TL'lik destek bu tutardan düşülür ve kalan fark ayrıca sizden talep edilir.",
+        "Ayrıca, yıllık bedeli 600 TL'yi aşmayan bir alan adının (domain) kaydı tarafımızca karşılanır. Alan adı, hak sahibi siz olacak şekilde tarafımızca kaydedilir ve yönetilir; yıllık servis devam ettiği sürece yenileme bedeli de aynı sınır içinde servis ücretine dahildir. Seçtiğiniz alan adının bedeli 600 TL'yi aşarsa, 600 TL'lik destek bu tutardan düşülür ve kalan fark ayrıca sizden talep edilir.",
       ],
       ["h", "3. Fiyat ve ödeme"],
       [
@@ -227,7 +230,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "5. İfa (teslim)"],
       [
         "p",
-        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Teslim süresi, içeriklerin eksiksiz iletilmesine ve seçilen özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
+        "Tasarım çalışması, proje başlangıç formu ile içeriklerinizin (logo, metin ve görseller) bize ulaşması ve hizmetin başlamasını onaylamanızla başlar. Tasarım aşamasında 2 revizyon hakkınız bulunur. İçerikleriniz eksiksiz ulaştıktan sonra siteniz 5 iş günü içinde yayına hazır hâle getirilir; revizyon ve onay için sizden yanıt beklenen süre bu süreye dahil değildir. Ek özellik veya teklifle eklenen bir özellik içeren siparişlerde teslim süresi, içerikleriniz ulaştığında yazılı olarak bildirilir.",
       ],
       ["h", "6. Cayma hakkı"],
       [
@@ -299,7 +302,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "3. Teslimat süresi"],
       [
         "p",
-        "Teslim süresi, içeriklerinizin eksiksiz iletilmesine ve seçtiğiniz ek özelliklere bağlıdır; takvim, içerikleriniz ulaştığında yazılı olarak sizinle paylaşılır. Tasarım aşamasında 2 revizyon hakkınız bulunur; içerikleriniz eksiksiz ulaştıktan sonra siteniz en geç 30 gün içinde yayına hazır hâle getirilir.",
+        "Tasarım aşamasında 2 revizyon hakkınız bulunur. İçerikleriniz eksiksiz ulaştıktan sonra siteniz 5 iş günü içinde yayına hazır hâle getirilir; revizyon ve onay için sizden yanıt beklenen süre bu süreye dahil değildir. Ek özellik veya teklifle eklenen bir özellik içeren siparişlerde teslim süresi, içerikleriniz ulaştığında yazılı olarak bildirilir.",
       ],
       ["h", "4. Teslimat bildirimi"],
       [

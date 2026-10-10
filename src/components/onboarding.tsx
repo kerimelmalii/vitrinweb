@@ -92,7 +92,7 @@ interface FormState {
   priceDisplay: string;
   credentials: string;
   references: string;
-  reviews: string;
+  showReviews: boolean;
   logoChoice: string;
   photoChoice: string;
   style: string;
@@ -204,7 +204,7 @@ export function ProjectOnboarding() {
     priceDisplay: "",
     credentials: "",
     references: "",
-    reviews: "",
+    showReviews: false,
     logoChoice: "",
     photoChoice: "",
     style: "",
@@ -344,7 +344,7 @@ export function ProjectOnboarding() {
         priceDisplay: pick("priceDisplay", PRICE_OPTS),
         credentials: txt("credentials"),
         references: txt("references"),
-        reviews: txt("reviews"),
+        showReviews: f.showReviews,
         logoChoice: pick("logoChoice", LOGO_OPTS),
         photoChoice: pick("photoChoice", PHOTO_OPTS),
         dislikes: txt("dislikes"),
@@ -536,10 +536,15 @@ export function ProjectOnboarding() {
             hint: "Yalnızca adını kullanma izniniz olanları yazın",
             max: LIMITS.wishes,
           })}
-          {area("reviews", "Sitede gösterilecek Google yorumları", {
-            optional: true,
-            hint: "Yorum sahibinin adını veya yorumun ilk cümlesini yazın. Boş bırakırsanız en yeni olumlu yorumlardan biz seçip onayınıza sunarız.",
-          })}
+          <Check id="o-showReviews" checked={f.showReviews} onValue={(v) => set("showReviews", v)}>
+            Google yorumlarım sitemde gözüksün.
+          </Check>
+          {f.showReviews && (
+            <p className="fine">
+              Google&apos;daki yorumlarınızdan uygun olanları seçip onayınıza sunarız. Yukarıdaki Google Haritalar
+              bağlantınızı eklemeyi unutmayın.
+            </p>
+          )}
         </div>
 
         <div className="panel">

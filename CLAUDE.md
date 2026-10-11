@@ -34,9 +34,11 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 - Tamamlanan siparişler isteğe bağlı olarak bir Google E-Tablo'ya (`src/lib/order-webhook.ts`,
   kurulum: `SIPARIS-TAKIBI.md`) bildirilir — iyzico callback'i (`src/app/api/payments/iyzico/callback`)
   ödeme doğrulandığında çağırır; ortam değişkeni tanımlı değilse sessizce atlanır.
-- `/iletisim` ve `/girisim-programi` sayfalarındaki formlar aynı desende, TEK bir Apps Script
-  dağıtımını paylaşır: `src/lib/form-webhook.ts` (`kind` alanıyla ayrışır), kurulum
-  `ILETISIM-FORMU-KURULUMU.md`. Fark: ortam değişkeni tanımlı değilse sessizce atlamak yerine
+- `/iletisim` ve `/girisim-programi` sayfalarındaki formlar `src/app/api/contact`'a POST eder
+  (`src/lib/form-webhook.ts`, `kind` alanıyla ayrışır); uç nokta `iletisim@vitrinweb.com.tr`
+  kutusunun kendi SMTP sunucusundan doğrudan gönderir (`src/lib/mailer.ts`, nodemailer —
+  `SMTP_*`/`CONTACT_TO` ortam değişkenleri, `NEXT_PUBLIC_` değil, yalnızca sunucuda). Kurulum:
+  `ILETISIM-FORMU-KURULUMU.md`. SMTP yapılandırılmamışsa `/api/contact` `503` döner, form
   ziyaretçinin kendi e-posta uygulamasını (`mailto:`) prefilled açar — mesaj hiç kaybolmaz.
 - **Google Analytics isteğe bağlı ve onaya bağlıdır** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, kurulum:
   `ANALYTICS-KURULUMU.md`). Ortam değişkeni tanımlı değilse çerez onay şeridi (`cookie-consent.tsx`)
@@ -50,8 +52,9 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   `iletisim`, `girisim-programi`, `siparis`, `siparis/tamamlandi`, `icerik-formu`, `yasal/[id]`,
   artı `sitemap.ts`/`robots.ts`.
 - `src/app/api/` — server route'lar: `orders/create`, `orders/checkout-data`, `orders/content-form`,
-  `orders/by-token`, `orders/payment-status`, `payments/iyzico/initialize`, `payments/iyzico/callback`.
-  Hepsi `runtime = "nodejs"`, service-role Supabase erişimi burada.
+  `orders/by-token`, `orders/payment-status`, `payments/iyzico/initialize`, `payments/iyzico/callback`,
+  `contact` (form bildirimleri, SMTP). Hepsi `runtime = "nodejs"`, service-role Supabase erişimi
+  (`contact` hariç) burada.
 - `src/components/` — UI; `src/components/checkout/` — sipariş adımları.
 - `src/lib/` — yapılandırma, güvenlik/doğrulama (`security.ts`), sipariş durumu (`order-context.tsx`,
   React Context + `localStorage` önbellek), yerel sahte depo (`backend.ts`, yalnızca aynı tarayıcı

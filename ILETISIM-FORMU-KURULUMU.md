@@ -1,112 +1,69 @@
 # Form bildirimlerini e-postaya bağlama (kurulum)
 
-`/iletisim` ve `/girisim-programi` sayfalarındaki formlar, bu kurulum yapılmadan **kendi başına hiçbir yere e-posta gönderemez**. Bu belge, her iki formun da gönderildiğinde otomatik olarak **iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır — SIPARIS-TAKIBI.md'deki sipariş bildirimiyle birebir aynı yöntem (Google Apps Script), farklı olarak bu sefer bir tabloya satır eklemek yerine doğrudan e-posta gönderiyor. **Tek bir Apps Script dağıtımı ve tek bir secret çifti iki formu da kapsar** — her form gönderdiği veriye bir `kind` alanı ekler (`iletisim` veya `girisim`), betik buna göre farklı bir e-posta konusu/gövdesi oluşturur.
+`/iletisim` ve `/girisim-programi` sayfalarındaki formlar, bu kurulum yapılmadan **kendi başına
+hiçbir yere e-posta gönderemez**. Bu belge, her iki formun da gönderildiğinde otomatik olarak
+**iletisim@vitrinweb.com.tr** adresine bir e-posta olarak düşmesini sağlayan kurulumu anlatır.
 
-Bu kurulum yapılmadan da formlar **çalışır**: ziyaretçinin "Gönder" tuşuna basması, mesajı hazır şekilde kendi e-posta uygulamasında açar (ziyaretçi oradan Gönder'e basar). Aşağıdaki kurulum, bu ekstra adımı ortadan kaldırıp gönderimi tamamen otomatik hale getirir.
+Gönderim, sunucudaki `/api/contact` uç noktası (`src/app/api/contact/route.ts`) üzerinden,
+**iletisim@vitrinweb.com.tr kutusunun kendi SMTP sunucusu** ile doğrudan yapılır (bkz.
+`src/lib/mailer.ts`, [nodemailer](https://nodemailer.com/)). Böylece giden e-postalarda hem
+**Gönderen** hem **Alıcı** `iletisim@vitrinweb.com.tr` olur — kişisel bir Gmail hesabı hiçbir
+şekilde karışmaz. `kind` alanı hangi formdan geldiğini belirtir (`iletisim` veya `girisim`),
+uç nokta buna göre farklı bir e-posta konusu/gövdesi oluşturur.
 
-Ücretsiz ve ~10 dakikalık bir kurulumdur.
+Bu kurulum yapılmadan da formlar **çalışır**: ziyaretçinin "Gönder" tuşuna basması, mesajı hazır
+şekilde kendi e-posta uygulamasında açar (ziyaretçi oradan Gönder'e basar). Aşağıdaki kurulum, bu
+ekstra adımı ortadan kaldırıp gönderimi tamamen otomatik hale getirir.
 
-## 1. Google E-Tablo oluştur (yalnızca betiği barındırmak için)
+## 1. SMTP bilgilerini posta panelinden al
 
-1. [sheets.new](https://sheets.new) adresine git.
-2. Adını **"Vitrin Form Bildirimi"** yap (içeriği boş kalacak, yalnızca aşağıdaki betiği barındırıyor).
+`iletisim@vitrinweb.com.tr` kutusunun webmail panelinde (bu projede SmarterMail) soldaki
+**Ayarlar → Hesap** altında posta istemcisi (Outlook, telefon vb.) bağlantısı için gösterilen
+sunucu adresini bul — genelde `srvX.saglayici.com` gibi bir host ve SMTP için 587 (TLS) ya da
+465 (SSL) portu olur. Kutunun kendi giriş şifresini not et (Vercel'e şifreyi sen gireceksin, bu
+belgede saklanmaz).
 
-## 2. Apps Script'i ekle
+## 2. Vercel'e ortam değişkenlerini ekle
 
-1. Üst menüden **Uzantılar (Extensions) → Apps Script**.
-2. Hazır kodu silip aşağıdakini yapıştır:
+Vercel projende **Settings → Environment Variables** ile aşağıdaki değerleri **Production**
+ortamı için ekle. Bunların hiçbiri `NEXT_PUBLIC_` önekini taşımaz — yalnızca sunucuda çalışır,
+tarayıcıya hiçbir zaman gönderilmez (önceki Apps Script yönteminden farkı budur).
 
-```javascript
-// ÖNEMLİ: Aşağıdaki metni olduğu gibi bırakmayın, kendi rastgele değerinizle değiştirin.
-// Bir tane üretmek için: bu kodu geçici olarak yapıştırıp "Çalıştır (Run)" deyin, sonra
-// üstteki "Yürütme günlüğü (Execution log)" sekmesinde çıkan değeri kopyalayıp SHARED_SECRET
-// olarak buraya yapıştırın: function uretVeYazdir(){Logger.log(Utilities.getUuid())}
-const SHARED_SECRET = "BURAYA_KENDI_RASTGELE_ANAHTARINIZI_YAZIN";
-const ALICI = "iletisim@vitrinweb.com.tr";
+| Ad | Değer | Zorunlu |
+|---|---|---|
+| `SMTP_HOST` | Panelden aldığın sunucu adresi (örn. `srv06.saglayici.com`) | Evet |
+| `SMTP_PORT` | Panelden aldığın port (örn. `587`) — boş bırakılırsa `587` varsayılır | Hayır |
+| `SMTP_SECURE` | Port 465 (SSL) kullanıyorsan `true`, 587 (TLS/STARTTLS) kullanıyorsan `false` ya da boş bırak | Hayır |
+| `SMTP_USER` | `iletisim@vitrinweb.com.tr` | Evet |
+| `SMTP_PASS` | Kutunun giriş şifresi | Evet |
+| `CONTACT_TO` | Mesajların düşeceği adres — boş bırakılırsa `iletisim@vitrinweb.com.tr` | Hayır |
+| `SMTP_FROM` | Gönderen başlığı — boş bırakılırsa `"Vitrinweb" <SMTP_USER>` | Hayır |
 
-function doPost(e) {
-  try {
-    const data = JSON.parse(e.postData.contents);
-    if (data.secret !== SHARED_SECRET) {
-      return ContentService.createTextOutput("forbidden");
-    }
-    const clip = (v, n) => (v || "").slice(0, n);
-
-    if (data.kind === "girisim") {
-      const founderName = clip(data.founderName, 200);
-      const companyName = clip(data.companyName, 200);
-      const email = clip(data.email, 200);
-      const attachments = [];
-      if (data.fileBase64 && data.fileName) {
-        attachments.push(
-          Utilities.newBlob(Utilities.base64Decode(data.fileBase64), data.fileType || "application/octet-stream", clip(data.fileName, 200))
-        );
-      }
-      MailApp.sendEmail({
-        to: ALICI,
-        replyTo: email,
-        subject: "[Girişim Destek Programı] " + companyName,
-        body: [
-          "Kurucu: " + founderName + " <" + email + ">",
-          "Telefon: " + clip(data.phone, 50),
-          "Şehir: " + clip(data.city, 100),
-          "Kuruluş durumu: " + clip(data.status, 100),
-          "",
-          clip(data.description, 5000),
-        ].join("\n"),
-        attachments: attachments,
-      });
-    } else {
-      const name = clip(data.name, 200);
-      const email = clip(data.email, 200);
-      MailApp.sendEmail({
-        to: ALICI,
-        replyTo: email,
-        subject: "[vitrinweb.com.tr İletişim Formu] " + clip(data.subject, 300),
-        body: clip(data.message, 5000) + "\n\n—\n" + name + " <" + email + ">",
-      });
-    }
-    return ContentService.createTextOutput("ok");
-  } catch (err) {
-    return ContentService.createTextOutput("error: " + err);
-  }
-}
-```
-
-3. Sol üstte "Untitled project" yazan yere tıklayıp adını **"Vitrin Form Bildirimi"** yap, disket (kaydet) simgesine bas.
-
-> `SHARED_SECRET`'i mutlaka değiştirin — aşağıdaki adım 4'te Vercel'e gireceğiniz `NEXT_PUBLIC_CONTACT_FORM_SECRET` ile **birebir aynı** olmalı. Sipariş bildirimindeki `SHARED_SECRET` ile aynı değeri kullanmayın; ayrı bir değer üretin.
-
-## 3. Web uygulaması olarak yayınla
-
-1. Sağ üstteki mavi **Dağıt (Deploy) → Yeni dağıtım (New deployment)**.
-2. Dişli simgesine tıklayıp tür olarak **Web uygulaması (Web app)** seçin.
-3. **Yürüten (Execute as):** Ben / kendi hesabınız.
-4. **Erişimi olanlar (Who has access):** **Herkes (Anyone)**.
-5. **Dağıt (Deploy)** deyin, Google hesabınızla yetkilendirin ("Bu uygulama doğrulanmadı" uyarısı çıkarsa **Gelişmiş → devam et**).
-6. **"Web app URL"** değerini kopyalayın (`https://script.google.com/macros/s/.../exec`).
-
-> İlk çalıştırmada Google, betiğe **e-posta gönderme** izni isteyecek — bu normal, `MailApp.sendEmail` için gerekli. Kendi Gmail/Workspace hesabınız adına gönderim yapar; ayrı bir e-posta sunucusu kurmanız gerekmez.
-
-## 4. Vercel'e bağla
-
-Vercel projenizde **Settings → Environment Variables** ile iki değer ekleyin (Production ortamı için):
-
-| Ad | Değer |
-|---|---|
-| `NEXT_PUBLIC_CONTACT_FORM_URL` | 3. adımda kopyaladığınız Web app URL |
-| `NEXT_PUBLIC_CONTACT_FORM_SECRET` | 2. adımdaki `SHARED_SECRET` ile birebir aynı metin |
-
-`NEXT_PUBLIC_` ile başlayan ortam değişkenleri derleme anında tarayıcı koduna gömülür; bu yüzden kaydettikten sonra Vercel'de yeni bir deploy tetiklenmesi gerekir (bir sonraki `main` push'u otomatik yapar, aksi hâlde Vercel panelinden **Deployments → ⋯ → Redeploy** ile elle tetikleyebilirsiniz).
+Kaydettikten sonra Vercel'de yeni bir deploy tetiklenmesi gerekir (bir sonraki `main` push'u
+otomatik yapar, aksi hâlde Vercel panelinden **Deployments → ⋯ → Redeploy** ile elle
+tetikleyebilirsin).
 
 ## Nasıl çalışır?
 
-- **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim programı başvurusu), veri doğrudan bu tek Web app adresine POST edilir; Apps Script `kind` alanına bakıp uygun konuyla `iletisim@vitrinweb.com.tr` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak ayarlanır, yanıtla tuşuna basmanız yeterli). Girişim programı başvurusunda bir dosya (sunum, PDF vb.) seçilmişse, tarayıcıda base64'e çevrilip aynı istekle gönderilir ve e-postaya ek olarak eklenir. Ziyaretçiye başarı mesajı gösterilir.
-- **Kurulum henüz yapılmadıysa** (`NEXT_PUBLIC_CONTACT_FORM_URL` tanımsız): ilgili form, ziyaretçinin kendi e-posta uygulamasını konu ve mesaj dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz — yalnızca seçilen dosya bu yolla otomatik eklenemez (mailto bağlantıları dosya ekleyemez), ziyaretçiye açılan e-postaya dosyayı elle eklemesi gerektiği söylenir.
+- **Kurulum tamamlandıysa:** Hangi formdan gönderilirse gönderilsin (iletişim veya girişim
+  programı başvurusu), veri `/api/contact`'a POST edilir; uç nokta `kind` alanına bakıp uygun
+  konuyla `CONTACT_TO` adresine bir e-posta gönderir (gönderenin e-postası `replyTo` olarak
+  ayarlanır, yanıtla tuşuna basman yeterli). Girişim programı başvurusunda bir dosya (sunum, PDF
+  vb.) seçilmişse, tarayıcıda base64'e çevrilip aynı istekle gönderilir ve e-postaya ek olarak
+  eklenir. Ziyaretçiye başarı mesajı gösterilir.
+- **Kurulum henüz yapılmadıysa** (`SMTP_HOST`/`SMTP_USER`/`SMTP_PASS` tanımsız): `/api/contact`
+  `503` ile `ok:false` döner, ilgili form ziyaretçinin kendi e-posta uygulamasını konu ve mesaj
+  dolu şekilde açar; ziyaretçi oradan gönderir. Mesaj hiçbir zaman sessizce kaybolmaz — yalnızca
+  seçilen dosya bu yolla otomatik eklenemez (mailto bağlantıları dosya ekleyemez), ziyaretçiye
+  açılan e-postaya dosyayı elle eklemesi gerektiği söylenir.
 
 ## Sınırlamalar (bilerek kabul edilen)
 
-- `NEXT_PUBLIC_CONTACT_FORM_URL` ve `NEXT_PUBLIC_CONTACT_FORM_SECRET`, `NEXT_PUBLIC_` önekiyle tarayıcıya gönderilen kodun içinde bulunur — bir "şifre" değil, yalnızca rastgele bot isteklerini eleyen bir filtredir. Sipariş bildirimindekiyle aynı tehdit modeli (bkz. SIPARIS-TAKIBI.md).
-- Girişim programı başvuru formundaki dosya eki tek dosya ve en fazla 8 MB ile sınırlıdır (PDF, PPT, Word veya görsel) — Gmail'in tek e-postadaki toplam ek boyutu sınırının altında kalmak için kasıtlı olarak düşük tutuldu.
-- Her iki form da gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa gönderim sessizce durur.
-- Spam/hız sınırlaması yoktur (istemci tarafı doğrulama dışında). Sorun çıkarsa Apps Script dağıtımını iptal edip yeniden kurmak (yeni bir `SHARED_SECRET` ile) sıfırlamanın en hızlı yoludur.
+- Girişim programı başvuru formundaki dosya eki tek dosya ve en fazla 8 MB ile sınırlıdır (PDF,
+  PPT, Word veya görsel) — alıcı kutusunun tek e-postadaki toplam ek boyutu sınırının altında
+  kalmak için kasıtlı olarak düşük tutuldu.
+- Her iki form da gizli bir "bal küpü" (honeypot) alanı içerir; botlar bu alanı doldurursa
+  gönderim istemci tarafında sessizce durulur.
+- Spam/hız sınırlaması yoktur (istemci tarafı doğrulama ve sunucu tarafı alan doğrulaması
+  dışında). `/api/contact` doğrudan dışarıdan POST edilebilir bir uç nokta olduğu için kötüye
+  kullanım görülürse ilk çare SMTP şifresini (`SMTP_PASS`) değiştirip Vercel'de güncellemektir.

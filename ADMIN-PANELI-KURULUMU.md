@@ -28,8 +28,11 @@ deploy tetiklenmesi gerekir.
 - `src/proxy.ts` (Next.js'in "proxy", eski adıyla "middleware" dosyası) `/admin/*` ve
   `/api/admin/*` isteklerini bu çerez geçerli olmadıkça `/admin/login`'e yönlendirir (API
   isteklerinde `401` döner).
-- Panelde her mesaj satırı açılıp tüm alanları (konu/mesaj ya da kurucu/şirket/açıklama vb.)
-  gösterir; durum değiştirmek anında kaydedilir.
+- `/admin` form mesajlarını, `/admin/siparisler` ödeme sonrası müşteri içerik formlarını listeler.
+  Panelde her satır açılıp tüm alanları gösterir; durum değiştirmek anında kaydedilir.
+- **Kaba kuvvet koruması:** 15 dakikalık pencerede 5'ten fazla başarısız giriş denemesi olursa
+  (Supabase'teki `admin_login_attempts` tablosu, şifre doğru olsa bile) tüm girişler geçici olarak
+  reddedilir. Tek operatörlü bir panel olduğu için kilitleme IP bazlı değil, geneldir.
 - Arama motorları için `robots.txt`'te `/admin` devre dışı bırakıldı, sayfa başlıklarında da
   `noindex` var.
 

@@ -37,11 +37,20 @@ async function hmacSha256(secret: string, data: string): Promise<string> {
   return toBase64Url(sig);
 }
 
+/** Zamanlama saldırılarına karşı sabit zamanlı karşılaştırma — Edge/Node ayrımı olmadan
+    çalışması için node:crypto.timingSafeEqual yerine elle XOR biriktirme kullanır. */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 export async function verifyAdminPassword(password: string): Promise<boolean> {
   const expected = process.env.ADMIN_PASSWORD;
   if (!expected || !password) return false;
   const [a, b] = await Promise.all([sha256Hex(password), sha256Hex(expected)]);
-  return a === b;
+  return timingSafeEqualStr(a, b);
 }
 
 export async function createSessionToken(): Promise<string> {
@@ -60,5 +69,5 @@ export async function verifySessionToken(token: string | undefined): Promise<boo
   const expiresAt = Number(expiresAtStr);
   if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return false;
   const expected = await hmacSha256(secret, expiresAtStr);
-  return expected === sig;
+  return timingSafeEqualStr(expected, sig);
 }

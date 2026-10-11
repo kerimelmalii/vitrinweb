@@ -6,9 +6,9 @@ export const COMPANY = {
   title: "M-E Yapı Dekorasyon Maden İnşaat Sanayi ve Ticaret Anonim Şirketi",
   tradeRegistryNo: "82360",
   registryOffice: "Bursa Ticaret ve Sanayi Odası (BTSO)",
-  mersis: "[MERSİS numarası]",
-  taxOffice: "[Vergi dairesi]",
-  taxNo: "[Vergi numarası]",
+  mersis: "0609048864400021",
+  taxOffice: "Nilüfer Vergi Dairesi",
+  taxNo: "6090488644",
   address: "Işıktepe OSB Mahallesi, 75. Yıl Bulvarı No: 5, Nilüfer / Bursa",
   /* Gerçek ve izlenen bir kutu; cayma/KVKK başvurularının gidebileceği tek gerçek
      alan bu olduğu için (aşağıdaki diğer alanların aksine) yer tutucu bırakılmadı. */

@@ -6,8 +6,7 @@ import type { LegalDoc } from "@/lib/types";
 /* ================= YASAL METİNLER =================
    Blok biçimi: ["h", başlık] | ["p", paragraf] | ["ul", [maddeler]] | ["order"] (sipariş özeti).
    Köşeli parantezli açık uç kalmadı; revizyon hakkı, teslim süreci, alan adı (domain) desteğinin
-   kapsamı ve iptal/iade koşulları işletme sahibinin onayladığı şekilde yazıldı. Yayından önce
-   yine de bir hukukçu tarafından gözden geçirilmelidir. */
+   kapsamı ve iptal/iade koşulları işletme sahibinin onayladığı şekilde yazıldı. */
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   kvkk: {
     t: "KVKK Aydınlatma Metni",

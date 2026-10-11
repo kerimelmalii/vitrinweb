@@ -237,7 +237,7 @@ export const FAQS: Faq[] = [
   {
     cat: "Süreç ve İçerik",
     q: "Sitemin içeriğini kendim güncelleyebilir miyim?",
-    a: "Standart pakette içerik değişikliği taleplerinizi bize iletirsiniz, biz güncelleriz: servis süresince ayda 2 küçük güncelleme (metin, fotoğraf, fiyat, çalışma saatleri, Google yorumlarının yenilenmesi) 2 iş günü içinde yapılır. Fiyat, metin veya görselleri kendiniz yönetmek isterseniz, Yönetim Paneli ek özelliğini (teklif üzerine) ekleyebilirsiniz.",
+    a: "Standart pakette içerik değişikliği taleplerinizi bize iletirsiniz, biz güncelleriz: servis süresince ayda 2 küçük güncelleme (metin, fotoğraf, fiyat, çalışma saatleri, Google yorumlarının yenilenmesi) 2 iş günü içinde yapılır. Kullanılmayan aylık güncelleme hakkı sonraki aya devretmez. Fiyat, metin veya görselleri kendiniz yönetmek isterseniz, Yönetim Paneli ek özelliğini (teklif üzerine) ekleyebilirsiniz.",
   },
   {
     cat: "Süreç ve İçerik",

@@ -4,14 +4,28 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/icons";
 
-const STATUS_LABELS: Record<string, string> = {
+const MESSAGE_STATUS_LABELS: Record<string, string> = {
   yeni: "Yeni",
   okundu: "Okundu",
   yanitlandi: "Yanıtlandı",
   arsivlendi: "Arşivlendi",
 };
 
-export function AdminStatusSelect({ id, status }: { id: string; status: string }) {
+const ORDER_FORM_STATUS_LABELS: Record<string, string> = {
+  yeni: "Yeni",
+  incelendi: "İncelendi",
+  tamamlandi: "Tamamlandı",
+};
+
+function StatusSelect({
+  status,
+  labels,
+  onChange,
+}: {
+  status: string;
+  labels: Record<string, string>;
+  onChange: (next: string) => Promise<void>;
+}) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -19,11 +33,7 @@ export function AdminStatusSelect({ id, status }: { id: string; status: string }
     if (next === status) return;
     setSaving(true);
     try {
-      await fetch(`/api/admin/messages/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adminStatus: next }),
-      });
+      await onChange(next);
       router.refresh();
     } finally {
       setSaving(false);
@@ -38,12 +48,44 @@ export function AdminStatusSelect({ id, status }: { id: string; status: string }
       onClick={(e) => e.stopPropagation()}
       onChange={(e) => change(e.target.value)}
     >
-      {Object.entries(STATUS_LABELS).map(([value, label]) => (
+      {Object.entries(labels).map(([value, label]) => (
         <option key={value} value={value}>
           {label}
         </option>
       ))}
     </select>
+  );
+}
+
+export function AdminStatusSelect({ id, status }: { id: string; status: string }) {
+  return (
+    <StatusSelect
+      status={status}
+      labels={MESSAGE_STATUS_LABELS}
+      onChange={(next) =>
+        fetch(`/api/admin/messages/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminStatus: next }),
+        }).then(() => undefined)
+      }
+    />
+  );
+}
+
+export function AdminOrderFormStatusSelect({ id, status }: { id: string; status: string }) {
+  return (
+    <StatusSelect
+      status={status}
+      labels={ORDER_FORM_STATUS_LABELS}
+      onChange={(next) =>
+        fetch(`/api/admin/orders/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contentFormStatus: next }),
+        }).then(() => undefined)
+      }
+    />
   );
 }
 

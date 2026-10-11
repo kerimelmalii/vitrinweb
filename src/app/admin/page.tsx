@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminLogoutButton, AdminStatusSelect } from "@/components/admin/controls";
+import { AdminTabs } from "@/components/admin/tabs";
 import { Icon } from "@/components/icons";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -77,6 +78,8 @@ export default async function AdminPage({ searchParams }: PageProps) {
         <h1 className="h-3">Form Mesajları</h1>
         <AdminLogoutButton />
       </div>
+
+      <AdminTabs active="mesajlar" />
 
       <div className="admin-filters">
         <span className="fine" style={{ marginRight: "4px" }}>

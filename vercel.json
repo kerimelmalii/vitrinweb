@@ -25,7 +25,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+          "value": "camera=(), microphone=(), geolocation=(), payment=(self \"https://sandbox-cpp.iyzipay.com\" \"https://cpp.iyzipay.com\"), usb=(), interest-cohort=()"
         }
       ]
     }

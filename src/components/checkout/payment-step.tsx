@@ -201,6 +201,7 @@ export function PaymentStep() {
               src={paymentPageUrl + (paymentPageUrl.includes("?") ? "&" : "?") + "iframe=true"}
               title="iyzico güvenli ödeme"
               className="iyzico-frame"
+              allow="payment"
               onLoad={() => setIframeLoading(false)}
             />
           </div>

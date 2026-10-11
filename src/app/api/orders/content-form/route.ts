@@ -188,6 +188,7 @@ export async function POST(request: NextRequest) {
       .from("orders")
       .update({
         content_form: content,
+        content_form_status: "yeni",
         project_status: "Tasarım",
         received_at: new Date().toISOString(),
       })

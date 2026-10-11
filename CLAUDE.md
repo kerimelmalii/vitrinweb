@@ -35,11 +35,20 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   kurulum: `SIPARIS-TAKIBI.md`) bildirilir — iyzico callback'i (`src/app/api/payments/iyzico/callback`)
   ödeme doğrulandığında çağırır; ortam değişkeni tanımlı değilse sessizce atlanır.
 - `/iletisim` ve `/girisim-programi` sayfalarındaki formlar `src/app/api/contact`'a POST eder
-  (`src/lib/form-webhook.ts`, `kind` alanıyla ayrışır); uç nokta `iletisim@vitrinweb.com.tr`
-  kutusunun kendi SMTP sunucusundan doğrudan gönderir (`src/lib/mailer.ts`, nodemailer —
-  `SMTP_*`/`CONTACT_TO` ortam değişkenleri, `NEXT_PUBLIC_` değil, yalnızca sunucuda). Kurulum:
-  `ILETISIM-FORMU-KURULUMU.md`. SMTP yapılandırılmamışsa `/api/contact` `503` döner, form
-  ziyaretçinin kendi e-posta uygulamasını (`mailto:`) prefilled açar — mesaj hiç kaybolmaz.
+  (`src/lib/form-webhook.ts`, `kind` alanıyla ayrışır). Uç nokta iki şeyi **ayrı ayrı, en iyi
+  çaba ile** dener: (1) `iletisim@vitrinweb.com.tr` kutusunun kendi SMTP sunucusundan doğrudan
+  e-posta gönderir (`src/lib/mailer.ts`, nodemailer — `SMTP_*`/`CONTACT_TO`, `NEXT_PUBLIC_`
+  değil, yalnızca sunucuda; kurulum: `ILETISIM-FORMU-KURULUMU.md`), (2) Supabase'teki
+  `contact_messages` tablosuna kalıcı kayıt yazar (admin panelin tek güvenilir kaynağı — orders
+  ile aynı desen). İkisinden biri başarılı olduğu sürece `/api/contact` `ok:true` döner; ikisi de
+  başarısız olursa `503` döner ve form ziyaretçinin kendi e-posta uygulamasını (`mailto:`)
+  prefilled açar — mesaj hiçbir zaman kaybolmaz.
+- **`/admin`**, form mesajlarını listeleyen/durumlarına göre ayıran (yeni/okundu/yanıtlandı/
+  arşivlendi) tek-şifreli bir yönetim paneli (`ADMIN_PASSWORD`/`ADMIN_SESSION_SECRET`, kurulum:
+  `ADMIN-PANELI-KURULUMU.md`). `src/proxy.ts` (Next.js 16'da `middleware.ts` yerine geçen dosya
+  adı — **"proxy" ismi zorunlu**, aksi hâlde build hata verir) `/admin/*` ve `/api/admin/*`'i
+  imzalı oturum çerezi (`src/lib/admin-session.ts`, HMAC-SHA256) olmadan engeller. `robots.txt`'te
+  devre dışı, sayfa `noindex`.
 - **Google Analytics isteğe bağlı ve onaya bağlıdır** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, kurulum:
   `ANALYTICS-KURULUMU.md`). Ortam değişkeni tanımlı değilse çerez onay şeridi (`cookie-consent.tsx`)
   hiç görünmez. Tanımlıysa şerit görünür; yalnızca "Kabul Et" diyen ziyaretçide GA4 betiği yüklenir
@@ -50,11 +59,12 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 
 - `src/app/` — sayfa rotaları (App Router): `/`, `neden`, `ucretlendirme`, `blog`, `blog/[slug]`,
   `iletisim`, `girisim-programi`, `siparis`, `siparis/tamamlandi`, `icerik-formu`, `yasal/[id]`,
-  artı `sitemap.ts`/`robots.ts`.
+  `admin`, `admin/login`, artı `sitemap.ts`/`robots.ts`.
 - `src/app/api/` — server route'lar: `orders/create`, `orders/checkout-data`, `orders/content-form`,
   `orders/by-token`, `orders/payment-status`, `payments/iyzico/initialize`, `payments/iyzico/callback`,
-  `contact` (form bildirimleri, SMTP). Hepsi `runtime = "nodejs"`, service-role Supabase erişimi
-  (`contact` hariç) burada.
+  `contact` (form bildirimleri, SMTP + Supabase), `admin/login`, `admin/logout`,
+  `admin/messages/[id]`. Hepsi `runtime = "nodejs"`, service-role Supabase erişimi burada.
+- `src/proxy.ts` — `/admin` ve `/api/admin` için oturum kontrolü (bkz. yukarıdaki not).
 - `src/components/` — UI; `src/components/checkout/` — sipariş adımları.
 - `src/lib/` — yapılandırma, güvenlik/doğrulama (`security.ts`), sipariş durumu (`order-context.tsx`,
   React Context + `localStorage` önbellek), yerel sahte depo (`backend.ts`, yalnızca aynı tarayıcı
@@ -102,3 +112,13 @@ Her özellik: `claude/convert-project-typescript-3jy59p` dalını `origin/main`'
 değişiklik → commit → push (`--force-with-lease`, dal zaten squash-merge edildiği için) → PR aç →
 squash-merge et. Kullanıcı onayı zaten bu şekilde çalışmaya devam et diye verildi; her PR için tekrar
 sorma.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

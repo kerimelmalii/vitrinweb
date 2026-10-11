@@ -13,6 +13,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname().replace(/\/$/, "") || "/";
   const { legal, openLegal } = useApp();
   const isCheckout = pathname === "/siparis" || pathname === "/baslangic";
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+
+  if (isAdmin) return <>{children}</>;
 
   return (
     <>

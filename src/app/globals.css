@@ -285,7 +285,6 @@ body:has(.cookie-bar) .wa-float{display:none}
 .legal ul,.post ul{list-style:disc;padding-left:1.3em;margin:0 0 14px;display:grid;gap:6px}
 .post ol{list-style:decimal;padding-left:1.4em;margin:0 0 16px;display:grid;gap:8px}
 .lg-meta{font-size:.85rem;color:var(--mute)}
-.lg-draft{background:var(--tint);border-radius:14px;padding:12px 14px;font-size:.88rem!important;color:var(--ink)!important}
 .lg-order{background:var(--surface-2);border-radius:18px;padding:16px 18px;margin:4px 0 16px}
 .lg-order dl{margin:0;display:grid;gap:8px}
 .lg-order dl div{display:grid;grid-template-columns:120px 1fr;gap:12px;font-size:.92rem}

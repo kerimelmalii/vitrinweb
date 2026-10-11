@@ -54,10 +54,13 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   başarısız olursa `503` döner ve form ziyaretçinin kendi e-posta uygulamasını (`mailto:`)
   prefilled açar — mesaj hiçbir zaman kaybolmaz.
 - **`/admin`**, tek-şifreli bir yönetim paneli (`ADMIN_PASSWORD`/`ADMIN_SESSION_SECRET`, kurulum:
-  `ADMIN-PANELI-KURULUMU.md`), iki sekme: `/admin` form mesajlarını (yeni/okundu/yanıtlandı/
-  arşivlendi), `/admin/siparisler` ödeme sonrası müşteri içerik formlarını (`orders.content_form`,
-  durum: `orders.content_form_status` — yeni/incelendi/tamamlandi, **müşteriye görünen**
-  `project_status` pipeline'ından ayrı bir alan, onunla karıştırma) listeler. `src/proxy.ts`
+  `ADMIN-PANELI-KURULUMU.md`), üç sekme: `/admin` form mesajlarını (yeni/okundu/yanıtlandı/
+  arşivlendi), `/admin/tum-siparisler` **tüm** siparişleri (ödenmemiş/sepette bırakılmış dahil,
+  `payment_status`'e göre filtrelenebilir — Google E-Tablo takibine artık gerek yok, aynı veri
+  panelde) ve ödenmiş olanlarda düzenlenebilir `project_status` seçicisi, `/admin/siparisler`
+  ödeme sonrası müşteri içerik formu **doldurulmuş** siparişleri (`orders.content_form`, durum:
+  `orders.content_form_status` — yeni/incelendi/tamamlandi, **müşteriye görünen** `project_status`
+  pipeline'ından ayrı bir alan, onunla karıştırma) listeler. `src/proxy.ts`
   (Next.js 16'da `middleware.ts` yerine geçen dosya adı — **"proxy" ismi zorunlu**, aksi hâlde
   build hata verir) `/admin/*` ve `/api/admin/*`'i imzalı oturum çerezi (`src/lib/admin-session.ts`,
   HMAC-SHA256) olmadan engeller. `robots.txt`'te devre dışı, sayfalar `noindex`.
@@ -71,7 +74,7 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 
 - `src/app/` — sayfa rotaları (App Router): `/`, `neden`, `ucretlendirme`, `blog`, `blog/[slug]`,
   `iletisim`, `girisim-programi`, `siparis`, `siparis/tamamlandi`, `icerik-formu`, `yasal/[id]`,
-  `admin`, `admin/login`, `admin/siparisler`, artı `sitemap.ts`/`robots.ts`.
+  `admin`, `admin/login`, `admin/tum-siparisler`, `admin/siparisler`, artı `sitemap.ts`/`robots.ts`.
 - `src/app/api/` — server route'lar: `orders/create`, `orders/checkout-data`, `orders/content-form`,
   `orders/by-token`, `orders/payment-status`, `payments/iyzico/initialize`, `payments/iyzico/callback`,
   `contact` (form bildirimleri, SMTP + Supabase), `admin/login`, `admin/logout`,

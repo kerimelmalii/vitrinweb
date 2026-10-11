@@ -788,6 +788,12 @@ textarea.input{min-height:120px;resize:vertical}
 .admin-status-yeni{border-color:var(--ink);color:var(--ink)}
 .admin-status-yanitlandi,.admin-status-tamamlandi{border-color:var(--ok);color:var(--ok)}
 .admin-status-arsivlendi{opacity:.65}
+.admin-status-yenisiparis{border-color:var(--ink);color:var(--ink)}
+.admin-status-bilgilerbekleniyor,.admin-status-tasarim,.admin-status-gelistirme,.admin-status-revizyon{border-color:var(--logo);color:var(--logo)}
+.admin-status-yayinahazir,.admin-status-yayinda{border-color:var(--ok);color:var(--ok)}
+.admin-pay-badge{flex:none;font-size:.76rem;font-weight:700;padding:.3rem .65rem;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.admin-pay-paid{background:var(--ok);color:#fff}
+.admin-pay-cancelled,.admin-pay-refunded{color:var(--danger)}
 .admin-tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--line)}
 .admin-tab{font-size:.92rem;font-weight:600;color:var(--mute);padding:.7rem 1rem;text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
 .admin-tab:hover{color:var(--ink)}

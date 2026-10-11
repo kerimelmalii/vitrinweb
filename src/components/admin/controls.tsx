@@ -17,13 +17,34 @@ const ORDER_FORM_STATUS_LABELS: Record<string, string> = {
   tamamlandi: "Tamamlandı",
 };
 
+export const PAYMENT_STATUS_LABELS: Record<string, string> = {
+  pending: "Beklemede",
+  payment_started: "Ödeme Başlatıldı",
+  paid: "Ödendi",
+  cancelled: "İptal Edildi",
+  refunded: "İade Edildi",
+};
+
+export const PROJECT_STATUS_LABELS: [string, string][] = [
+  ["Yeni Sipariş", "yenisiparis"],
+  ["Bilgiler Bekleniyor", "bilgilerbekleniyor"],
+  ["Tasarım", "tasarim"],
+  ["Geliştirme", "gelistirme"],
+  ["Revizyon", "revizyon"],
+  ["Yayına Hazır", "yayinahazir"],
+  ["Yayında", "yayinda"],
+];
+const PROJECT_STATUS_SLUGS: Record<string, string> = Object.fromEntries(PROJECT_STATUS_LABELS.map(([v, s]) => [v, s]));
+
 function StatusSelect({
   status,
   labels,
+  slug,
   onChange,
 }: {
   status: string;
   labels: Record<string, string>;
+  slug?: (s: string) => string;
   onChange: (next: string) => Promise<void>;
 }) {
   const router = useRouter();
@@ -42,7 +63,7 @@ function StatusSelect({
 
   return (
     <select
-      className={`admin-status-select admin-status-${status}`}
+      className={`admin-status-select admin-status-${slug ? slug(status) : status}`}
       value={status}
       disabled={saving}
       onClick={(e) => e.stopPropagation()}
@@ -83,6 +104,23 @@ export function AdminOrderFormStatusSelect({ id, status }: { id: string; status:
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contentFormStatus: next }),
+        }).then(() => undefined)
+      }
+    />
+  );
+}
+
+export function AdminProjectStatusSelect({ id, status }: { id: string; status: string }) {
+  return (
+    <StatusSelect
+      status={status}
+      labels={Object.fromEntries(PROJECT_STATUS_LABELS.map(([v]) => [v, v]))}
+      slug={(s) => PROJECT_STATUS_SLUGS[s] || "yenisiparis"}
+      onChange={(next) =>
+        fetch(`/api/admin/orders/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ projectStatus: next }),
         }).then(() => undefined)
       }
     />

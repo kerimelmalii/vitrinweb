@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/icons";
 
-export default function AdminLoginPage() {
+/** Açık yönlendirmeyi (open redirect) önlemek için yalnızca /admin altındaki
+    bağıl yollara izin verilir — dışarıdan gelen next parametresine güvenilmez. */
+function safeNextPath(raw: string | null): string {
+  if (raw && /^\/admin(\/[^/].*)?$/.test(raw) && !raw.startsWith("//")) return raw;
+  return "/admin";
+}
+
+function LoginForm() {
   const router = useRouter();
+  const next = safeNextPath(useSearchParams().get("next"));
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +34,7 @@ export default function AdminLoginPage() {
         setLoading(false);
         return;
       }
-      router.replace("/admin");
+      router.replace(next);
       router.refresh();
     } catch {
       setError("Giriş yapılamadı, bağlantınızı kontrol edin.");
@@ -35,35 +43,43 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="admin-login">
-      <div className="panel admin-login-panel">
-        <div className="admin-login-icon">
-          <Icon n="lock" size={22} />
-        </div>
-        <h1 className="h-3">Yönetim Paneli</h1>
-        <p className="fine" style={{ marginTop: "6px" }}>
-          Devam etmek için şifreyi girin.
-        </p>
-        <input
-          className="input"
-          type="password"
-          placeholder="Şifre"
-          autoFocus
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && submit()}
-          style={{ marginTop: "20px" }}
-        />
-        {error && (
-          <p className="err" role="alert" style={{ marginTop: "8px" }}>
-            {error}
-          </p>
-        )}
-        <button className="btn btn-primary btn-block" style={{ marginTop: "16px" }} onClick={submit} disabled={loading}>
-          {loading ? "Giriş yapılıyor…" : "Giriş Yap"}
-        </button>
+    <div className="panel admin-login-panel">
+      <div className="admin-login-icon">
+        <Icon n="lock" size={22} />
       </div>
+      <h1 className="h-3">Yönetim Paneli</h1>
+      <p className="fine" style={{ marginTop: "6px" }}>
+        Devam etmek için şifreyi girin.
+      </p>
+      <input
+        className="input"
+        type="password"
+        placeholder="Şifre"
+        autoFocus
+        autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && submit()}
+        style={{ marginTop: "20px" }}
+      />
+      {error && (
+        <p className="err" role="alert" style={{ marginTop: "8px" }}>
+          {error}
+        </p>
+      )}
+      <button className="btn btn-primary btn-block" style={{ marginTop: "16px" }} onClick={submit} disabled={loading}>
+        {loading ? "Giriş yapılıyor…" : "Giriş Yap"}
+      </button>
+    </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <main className="admin-login">
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </main>
   );
 }

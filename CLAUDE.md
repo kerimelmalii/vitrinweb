@@ -28,12 +28,11 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   içindeki varsayılan artık gerçek domain'e düzeltildi (env var hâlâ ayarlanmamışsa bile doğru
   adres üretilir), ama en doğrusu `NEXT_PUBLIC_SITE_URL`'i yine de Vercel Production ortam
   değişkeni olarak ayarlamak.
-- **DOĞRULANDI (2026-10-11), ACİL:** Vercel Production'da `IYZICO_ENVIRONMENT` hâlâ `sandbox`
-  (canlı `/api/payments/iyzico/initialize` yanıtı `"environment":"sandbox"` ve
-  `sandbox-cpp.iyzipay.com` döndürüyor — doğrudan test edildi). DNS zaten canlı olduğu için gerçek
-  müşteriler sahte bir ödeme ekranına yönlendiriliyor. `IYZICO_ENVIRONMENT=production` +
-  `IYZICO_API_KEY`/`IYZICO_SECRET_KEY` (gerçek iyzico merchant anahtarları — sandbox anahtarlarıyla
-  karıştırma) Vercel Production'a eklenip redeploy edilmeden bu tamamen çalışır bir mağaza değil.
+- **iyzico canlı mod doğrulandı (2026-10-11):** Vercel Production'da `IYZICO_ENVIRONMENT=production`
+  + gerçek `IYZICO_API_KEY`/`IYZICO_SECRET_KEY` ayarlı — canlı `/api/payments/iyzico/initialize`
+  yanıtı `"environment":"production"`, ödeme sayfası `cpp.iyzipay.com` (sandbox değil) döndürüyor,
+  doğrudan test edildi. `IYZICO_SANDBOX_API_KEY`/`IYZICO_SANDBOX_SECRET_KEY` bilerek silinmedi
+  (geri dönüş için), ama artık kullanılmıyor — `IYZICO_ENVIRONMENT` ikisi arasında seçim yapıyor.
 - Tamamlanan siparişler isteğe bağlı olarak bir Google E-Tablo'ya (`src/lib/order-webhook.ts`,
   kurulum: `SIPARIS-TAKIBI.md`) bildirilir — iyzico callback'i (`src/app/api/payments/iyzico/callback`)
   ödeme doğrulandığında çağırır; ortam değişkeni tanımlı değilse sessizce atlanır.

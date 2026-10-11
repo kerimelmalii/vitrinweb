@@ -17,8 +17,16 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   (`order-context.tsx`) yalnızca o tarayıcı oturumu için önbellek/UX amaçlıdır; erişim
   bağlantısıyla (`?t=`) farklı bir cihaz/tarayıcıdan dönen müşteri için `GET
   /api/orders/by-token` sunucudan siparişi yeniden kurar.
-- **Yasal metinler taslak**, köşeli parantezli alanlar dolduruluncaya ve bir hukukçu onaylayana kadar
-  gerçek müşteriden veri toplamak için kullanılmamalı.
+- **Yasal metinler nihai (doğrulandı 2026-10-11):** "taslak, hukukçu gözden geçirmeli" uyarısı
+  kaldırıldı, işletme sahibi metinleri onayladı. `src/data/company.ts`'teki MERSİS numarası, vergi
+  dairesi ve vergi numarası resmi belgelerden (ticaret sicil tasdiknamesi, imza sirküleri, vergi
+  levhası) dolduruldu. **KEP adresi hâlâ köşeli parantezli yer tutucu** — bu, ayrı bir başvuruyla
+  (PTT KEP, TNB KEP vb.) edinilen resmi bir adres, belgeden çıkarılamaz; edinilince `company.ts`'e
+  eklenmeli. Elektronik Ticarette Hizmet Sağlayıcı Yönetmeliği'nin tacir için öngördüğü tanıtıcı
+  bilgi zorunluluğu (ticaret unvanı, MERSİS no, merkez adresi, KEP/e-posta, telefon) doğrulandı;
+  vergi dairesi/no tacir için ayrıca zorunlu değil (yalnızca esnaf için "vergi kimlik numarası"
+  aranıyor), bu yüzden `legal-company-info.tsx` bilinçli olarak bu ikisini genel ziyaretçiye
+  göstermiyor.
 - **DNS cutover tamamlandı (doğrulandı 2026-10-09):** `https://vitrinweb.com.tr` artık Vercel'e
   (apex, `www.vitrinweb.com.tr`'ye 308 yönlendiriyor — canonical `www`'lı hâli) işaret ediyor ve
   gerçek Next.js server kodu çalışıyor; GitHub Pages dönemi bitti. Bu geçiş sırasında

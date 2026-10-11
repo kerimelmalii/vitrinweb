@@ -16,9 +16,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "Yetkisiz." }, { status: 401 });
   }
 
+  const next = pathname + request.nextUrl.search;
   const url = request.nextUrl.clone();
   url.pathname = "/admin/login";
   url.search = "";
+  if (next !== "/admin") url.searchParams.set("next", next);
   return NextResponse.redirect(url);
 }
 

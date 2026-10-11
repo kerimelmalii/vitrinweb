@@ -137,9 +137,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
             <div className="admin-row-body">
               <p className="fine">
                 <strong>E-posta:</strong>{" "}
-                <a href={`mailto:${row.email}`} onClick={(e) => e.stopPropagation()}>
-                  {row.email}
-                </a>
+                <a href={`mailto:${row.email}`}>{row.email}</a>
               </p>
               {Object.entries(row.fields || {}).map(([key, value]) =>
                 value ? (

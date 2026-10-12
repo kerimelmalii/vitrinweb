@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Md } from "@/components/markdown";
 import { formatDate } from "@/data/blog";
 import { parseBlocks, parseFrontMatter } from "@/lib/markdown";
+import { openGraph } from "@/lib/open-graph";
 
 const { data, body } = parseFrontMatter(fs.readFileSync(path.join(process.cwd(), "content/sayfalar/icerik-politikasi.md"), "utf8"));
 const blocks = parseBlocks(body);
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   title: data.seoTitle,
   description: data.description,
   alternates: { canonical: "/icerik-politikasi" },
+  openGraph: openGraph("/icerik-politikasi"),
 };
 
 export default function Page() {

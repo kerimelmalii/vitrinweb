@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { ContactPage } from "@/components/contact-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const metadata: Metadata = {
   title: "İletişim",
   description: "Sorularınız için e-posta veya Instagram'dan doğrudan bize ulaşın.",
   alternates: { canonical: "/iletisim" },
+  openGraph: openGraph("/iletisim"),
 };
 
 const breadcrumbLd = {

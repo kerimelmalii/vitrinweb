@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { WhyPage } from "@/components/why-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const metadata: Metadata = {
   title: "Neden web sitesi?",
   description: "İşletmeniz için bir web sitesinin neden önemli olduğunu araştırmalarla anlatıyoruz.",
   alternates: { canonical: "/neden" },
+  openGraph: openGraph("/neden"),
 };
 
 const breadcrumbLd = {

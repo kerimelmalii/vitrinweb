@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
-import { BASE_PRICE, money } from "@/lib/config";
 import { safeJsonLd } from "@/lib/json-ld";
+import { BASE_PRICE } from "@/lib/config";
 import { SITE_URL } from "@/lib/site";
+import { openGraph, SITE_OG_DESCRIPTION, SITE_TITLE } from "@/lib/open-graph";
 import "./globals.css";
 
-const SITE_TITLE = `${money(BASE_PRICE)} TL'ye profesyonel web sitesi`;
 /* Google aramada ~155-160 karakterden sonra kırpıyor; bu yüzden en önemli bilgiler (fiyat,
    temel değer önermeleri) ilk 130 karaktere sığdırılıyor. */
 const SITE_DESCRIPTION =
@@ -21,17 +21,11 @@ export const metadata: Metadata = {
   title: { default: `${SITE_TITLE} | Vitrinweb`, template: "%s | Vitrinweb" },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
-  openGraph: {
-    title: SITE_TITLE,
-    description: "Modern, hızlı ve mobil uyumlu web siteniz. İlk yıl servis ve bakım ücreti yok.",
-    type: "website",
-    siteName: "Vitrinweb",
-    locale: "tr_TR",
-  },
+  openGraph: openGraph("/"),
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
-    description: "Modern, hızlı ve mobil uyumlu web siteniz. İlk yıl servis ve bakım ücreti yok.",
+    description: SITE_OG_DESCRIPTION,
   },
   other: {
     referrer: "strict-origin-when-cross-origin",

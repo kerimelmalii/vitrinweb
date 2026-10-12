@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { PricingPage } from "@/components/pricing-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const metadata: Metadata = {
   title: "Ücretlendirme",
   description: "Temel web sitesi 10.000 TL. Ek özellik fiyatları ve yıllık servis ücretleri.",
   alternates: { canonical: "/ucretlendirme" },
+  openGraph: openGraph("/ucretlendirme"),
 };
 
 const breadcrumbLd = {

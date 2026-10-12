@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AboutPage } from "@/components/about-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 const TITLE = "Hakkımızda";
 const DESCRIPTION =
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/hakkimizda" },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "website" },
+  openGraph: openGraph("/hakkimizda", { title: TITLE, description: DESCRIPTION }),
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 

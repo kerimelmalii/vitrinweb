@@ -4,12 +4,16 @@ import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 import { openGraph } from "@/lib/open-graph";
 
+const TITLE = "Girişim Destek Programı";
+const DESCRIPTION =
+  "Yeni kurulan girişimlere profesyonel web sitesi, 12 ay bakım ve SEO desteği; karşılığında nakit değil %2 hisse.";
+
 export const metadata: Metadata = {
-  title: "Girişim Destek Programı",
-  description:
-    "Yeni kurulan girişimlere profesyonel web sitesi, 12 ay bakım ve SEO desteği; karşılığında nakit değil %2 hisse.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/girisim-programi" },
-  openGraph: openGraph("/girisim-programi"),
+  openGraph: openGraph("/girisim-programi", { title: TITLE, description: DESCRIPTION }, true),
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 const breadcrumbLd = {

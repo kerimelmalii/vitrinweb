@@ -28,6 +28,19 @@
           "value": "camera=(), microphone=(), geolocation=(), payment=(self \"https://sandbox-cpp.iyzipay.com\" \"https://cpp.iyzipay.com\"), usb=(), interest-cohort=()"
         }
       ]
+    },
+    {
+      "source": "/brosur.png",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://panel.vitrinweb.com.tr"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
+      ]
     }
   ]
 }

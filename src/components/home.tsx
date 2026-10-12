@@ -246,7 +246,7 @@ export function AnnualService() {
               {money(YEARLY)} TL<small> / yıl</small>
             </div>
             <p style={{ margin: 0 }} className="mute">
-              2. yıl ücreti {TL(YEARLY)}. Sonraki yıllarda ücret, TÜİK&apos;in açıkladığı yıllık enflasyon (TÜFE)
+              2. yıl ücreti {TL(YEARLY)}. Sonraki yıllarda ücret, Enflasyon Araştırma Grubu&apos;nun (ENAG) açıkladığı yıllık enflasyon
               oranında güncellenir ve yenilemeden önce size bildirilir.
             </p>
           </div>

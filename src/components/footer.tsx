@@ -46,6 +46,9 @@ export function Footer() {
                 <Link href="/blog">Blog</Link>
               </li>
               <li>
+                <Link href="/brosur">Tanıtım broşürü</Link>
+              </li>
+              <li>
                 <Link href="/icerik-politikasi">İçerik Politikası</Link>
               </li>
               <li>

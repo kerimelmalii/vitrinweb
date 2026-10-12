@@ -224,7 +224,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "4. Yıllık servis ve bakım"],
       [
         "p",
-        `İlk servis yılı, sitenin yayına alındığı tarihte başlar. İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, TÜİK'in açıkladığı yıllık TÜFE oranında güncellenir ve yeni ücret yenilemeden en az 30 gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
+        `İlk servis yılı, sitenin yayına alındığı tarihte başlar. İlk yıl servis ve bakım ücretsizdir. 2. yıl ücreti ${TL(YEARLY)}'dir; sonraki yıllarda ücret, Enflasyon Araştırma Grubu'nun (ENAG) açıkladığı yıllık enflasyon oranında güncellenir ve yeni ücret yenilemeden en az 30 gün önce bildirilir. Servisin yenilenmesi isteğinize bağlıdır; yenilemek istemezseniz hiçbir ücret ödemeden hizmeti sona erdirebilirsiniz.`,
       ],
       ["h", "5. İfa (teslim)"],
       [

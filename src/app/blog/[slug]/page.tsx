@@ -5,6 +5,7 @@ import { BLOG, coverSrc, getPost, isoWithZone } from "@/data/blog";
 import { COMPANY } from "@/data/company";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const dynamicParams = false;
 
@@ -20,13 +21,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: post.seoTitle,
     description: post.description,
     alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      type: "article",
-      publishedTime: isoWithZone(post.date),
-      modifiedTime: isoWithZone(post.updated ?? post.date),
-    },
+    openGraph: openGraph(
+      `/blog/${post.slug}`,
+      {
+        title: post.title,
+        description: post.description,
+        type: "article",
+        publishedTime: isoWithZone(post.date),
+        modifiedTime: isoWithZone(post.updated ?? post.date),
+      },
+      true,
+    ),
     twitter: { card: "summary_large_image", title: post.title, description: post.description },
   };
 }

@@ -4,6 +4,7 @@ import { LegalPage } from "@/components/legal";
 import { LEGAL_DOCS, LEGAL_LINKS } from "@/data/legal";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export function generateStaticParams() {
   return LEGAL_LINKS.map(([id]) => ({ id }));
@@ -16,7 +17,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const doc = LEGAL_DOCS[id];
-  return doc ? { title: doc.t, alternates: { canonical: `/yasal/${id}` } } : {};
+  return doc
+    ? { title: doc.t, alternates: { canonical: `/yasal/${id}` }, openGraph: openGraph(`/yasal/${id}`) }
+    : {};
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

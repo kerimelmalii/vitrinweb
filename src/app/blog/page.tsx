@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { BlogList } from "@/components/blog";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "Web siteleri, arama motorlarında görünürlük ve işletmenizi internette büyütmek üzerine pratik yazılar.",
   alternates: { canonical: "/blog" },
+  openGraph: openGraph("/blog"),
 };
 
 const breadcrumbLd = {

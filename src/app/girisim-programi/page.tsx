@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { GirisimProgramiPage } from "@/components/girisim-programi-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 export const metadata: Metadata = {
   title: "Girişim Destek Programı",
   description:
     "Yeni kurulan girişimlere profesyonel web sitesi, 12 ay bakım ve SEO desteği; karşılığında nakit değil %2 hisse.",
   alternates: { canonical: "/girisim-programi" },
+  openGraph: openGraph("/girisim-programi"),
 };
 
 const breadcrumbLd = {

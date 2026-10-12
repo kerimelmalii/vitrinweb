@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IsgaleHayirPage } from "@/components/isgale-hayir-page";
 import { safeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
+import { openGraph } from "@/lib/open-graph";
 
 const TITLE = "İşgale Hayır!";
 const DESCRIPTION =
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/isgale-hayir" },
   robots: { index: true, follow: true },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "website" },
+  openGraph: openGraph("/isgale-hayir", { title: TITLE, description: DESCRIPTION }, true),
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 

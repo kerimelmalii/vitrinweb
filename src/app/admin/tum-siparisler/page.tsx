@@ -3,6 +3,7 @@ import { AdminLogoutButton, AdminProjectStatusSelect, PAYMENT_STATUS_LABELS } fr
 import { AdminTabs } from "@/components/admin/tabs";
 import { Icon } from "@/components/icons";
 import { TL } from "@/lib/config";
+import { adminDateFmt } from "@/lib/format";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { AddonRecord, Invoice, PaymentStatus, QuoteRequestRecord } from "@/lib/types";
 
@@ -24,7 +25,6 @@ interface AllOrderRow {
   created_at: string | null;
 }
 
-const dateFmt = new Intl.DateTimeFormat("tr-TR", { dateStyle: "medium", timeStyle: "short" });
 const PAYMENT_FILTERS: [string, string][] = [
   ["pending", "Beklemede"],
   ["payment_started", "Ödeme Başlatıldı"],
@@ -112,7 +112,7 @@ export default async function AdminAllOrdersPage({ searchParams }: PageProps) {
               <span className="admin-row-name">{row.business?.brand || row.customer?.name}</span>
               <span className="admin-row-summary">{TL(row.total)}</span>
               <span className="fine admin-row-date">
-                {row.created_at ? dateFmt.format(new Date(row.created_at)) : ""}
+                {row.created_at ? adminDateFmt.format(new Date(row.created_at)) : ""}
               </span>
               {row.payment_status === "paid" && (
                 <AdminProjectStatusSelect id={row.id} status={row.project_status || "Yeni Sipariş"} />

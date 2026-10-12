@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AdminLogoutButton, AdminStatusSelect } from "@/components/admin/controls";
 import { AdminTabs } from "@/components/admin/tabs";
 import { Icon } from "@/components/icons";
+import { adminDateFmt } from "@/lib/format";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -31,8 +32,6 @@ const FIELD_LABELS: Record<string, string> = {
   status: "Kuruluş durumu",
   description: "Açıklama",
 };
-
-const dateFmt = new Intl.DateTimeFormat("tr-TR", { dateStyle: "medium", timeStyle: "short" });
 
 interface PageProps {
   searchParams: Promise<{ kind?: string; status?: string }>;
@@ -133,7 +132,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
                   <Icon n="file" size={15} />
                 </span>
               )}
-              <span className="fine admin-row-date">{dateFmt.format(new Date(row.created_at))}</span>
+              <span className="fine admin-row-date">{adminDateFmt.format(new Date(row.created_at))}</span>
               <AdminStatusSelect id={row.id} status={row.admin_status} />
               <Icon n="chev" size={16} className="admin-row-chev" />
             </summary>

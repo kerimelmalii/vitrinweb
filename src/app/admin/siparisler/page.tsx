@@ -4,6 +4,7 @@ import { AdminTabs } from "@/components/admin/tabs";
 import { Icon } from "@/components/icons";
 import { ADDONS } from "@/data/content";
 import { TL } from "@/lib/config";
+import { adminDateFmt } from "@/lib/format";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { ContentForm } from "@/lib/types";
 
@@ -22,7 +23,6 @@ interface OrderRow {
 }
 
 const ADDON_NAMES: Record<string, string> = Object.fromEntries(ADDONS.map((a) => [a.id, a.name]));
-const dateFmt = new Intl.DateTimeFormat("tr-TR", { dateStyle: "medium", timeStyle: "short" });
 
 function Line({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
@@ -141,7 +141,7 @@ function ContentFormDetail({ content }: { content: ContentForm }) {
       <Flag label="Performans verisi paylaşım izni verildi" on={content.consents?.experienceData} />
       {content.serviceStartConsentAt && (
         <p className="fine" style={{ marginTop: "10px" }}>
-          Tasarım başlatma onayı: {dateFmt.format(new Date(content.serviceStartConsentAt))}
+          Tasarım başlatma onayı: {adminDateFmt.format(new Date(content.serviceStartConsentAt))}
         </p>
       )}
     </>
@@ -223,7 +223,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
               <span className="admin-row-name">{row.business?.brand || row.customer?.name}</span>
               <span className="admin-row-summary">{TL(row.total)}</span>
               <span className="fine admin-row-date">
-                {row.received_at ? dateFmt.format(new Date(row.received_at)) : ""}
+                {row.received_at ? adminDateFmt.format(new Date(row.received_at)) : ""}
               </span>
               <AdminOrderFormStatusSelect id={row.id} status={row.content_form_status || "yeni"} />
               <Icon n="chev" size={16} className="admin-row-chev" />

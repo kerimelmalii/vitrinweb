@@ -8,10 +8,17 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 
 ## Durum ve kısıtlar (unutma)
 
-- **Ödeme gerçek:** iyzico Checkout Form, tam sayfa yönlendirme akışıyla (bkz.
-  `IYZICO-ENTEGRASYON.md`). Kart bilgileri Vitrin'e hiç uğramaz; sunucu tarafında imza
-  doğrulaması yapılmadan bir sipariş asla `paid` sayılmaz. Sandbox/production ortamı
-  `IYZICO_ENVIRONMENT` ile seçilir.
+- **Ödeme gerçek:** iyzico Checkout Form, `/siparis` sayfasına gömülü bir `<iframe>` içinde
+  (`paymentPageUrl`'e `&iframe=true` eklenerek, bkz. `IYZICO-ENTEGRASYON.md` madde 31) —
+  müşteri ayrı bir sayfaya hiç yönlendirilmiyor. Kart bilgileri yine de Vitrin'e hiç uğramaz
+  (iframe içindeki tüm alanlar iyzico'nun kendi scripti tarafından oluşturulur); sunucu
+  tarafında imza doğrulaması yapılmadan bir sipariş asla `paid` sayılmaz. Ödeme sonucu
+  (`/siparis/tamamlandi`) iframe içinde açılırsa `payment-success.tsx`'teki frame-busting
+  kontrolü üst pencereye çıkarır. CSP'ye yalnızca `frame-src 'self' https://*.iyzipay.com`
+  ve `Permissions-Policy`'ye `payment=(self "https://sandbox-cpp.iyzipay.com"
+  "https://cpp.iyzipay.com")` eklendi — script-src/style-src gibi daha geniş izinlere hiç
+  gerek kalmadı (önceki, terk edilmiş DOM-script-injection denemesinden farkı budur).
+  Sandbox/production ortamı `IYZICO_ENVIRONMENT` ile seçilir.
 - Sipariş kaydının **tek güvenilir kaynağı Supabase**'tir (service-role anahtarla, yalnızca
   server route'lardan yazılır/güncellenir — `src/lib/supabase-admin.ts`). `localStorage`
   (`order-context.tsx`) yalnızca o tarayıcı oturumu için önbellek/UX amaçlıdır; erişim

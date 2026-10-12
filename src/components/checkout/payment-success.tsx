@@ -25,6 +25,16 @@ export function PaymentSuccess() {
   });
 
   useEffect(() => {
+    /* Ödeme iyzico'nun gömülü (iframe) ödeme ekranında tamamlandığında, bu sonuç sayfası
+       küçük bir iframe içinde açılır. Müşterinin tüm sekmede sonucu görebilmesi için üst
+       pencereye çıkılır — iyzico'nun kendi sayfasından değil, her zaman Vitrin'in kendi
+       (aynı origin) sonuç sayfasından yapıldığı için cross-origin kısıtlaması yoktur. */
+    if (typeof window !== "undefined" && window.top && window.top !== window.self) {
+      window.top.location.href = window.location.href;
+    }
+  }, []);
+
+  useEffect(() => {
     if (failed || !orderId || !resultToken) return;
 
     const controller = new AbortController();

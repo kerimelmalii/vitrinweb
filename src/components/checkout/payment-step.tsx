@@ -40,6 +40,8 @@ export function PaymentStep() {
   const corp = inv.type === "kurumsal";
   const [busy, setBusy] = useState(false);
   const [payErr, setPayErr] = useState("");
+  const [paymentPageUrl, setPaymentPageUrl] = useState<string | null>(null);
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   const validate = (): Record<string, string | undefined> => {
     const e: Record<string, string | undefined> = {};
@@ -117,7 +119,8 @@ export function PaymentStep() {
       }
 
       patch({ consents, status: "payment_started" });
-      window.location.assign(result.paymentPageUrl);
+      setPaymentPageUrl(result.paymentPageUrl);
+      setBusy(false);
       return;
     } catch (error) {
       setPayErr(
@@ -170,7 +173,7 @@ export function PaymentStep() {
       step={3}
       asideLeft
       title="Siparişinizi tamamlayın."
-      sub="Fatura bilgilerinizi girin. Ödeme için güvenli iyzico ekranına yönlendirileceksiniz."
+      sub="Fatura bilgilerinizi girin. Ardından bu sayfada güvenli iyzico ödeme ekranı açılır."
       aside={summary}
       hint="Sıradaki adım: iyzico ödeme ekranında kart bilgilerinizi girersiniz. Ödeme sunucuda doğrulandıktan sonra siparişiniz tamamlanır."
     >
@@ -183,6 +186,38 @@ export function PaymentStep() {
           </span>
         </div>
       </div>
+      {paymentPageUrl && (
+        <div className="panel">
+          <h2 className="h-3" style={{ marginBottom: "14px" }}>
+            Güvenli Ödeme Ekranı
+          </h2>
+          <div className="iyzico-frame-wrap">
+            {iframeLoading && (
+              <div className="iyzico-frame-loading">
+                <span className="spin"></span>Güvenli ödeme ekranı yükleniyor…
+              </div>
+            )}
+            <iframe
+              src={paymentPageUrl + (paymentPageUrl.includes("?") ? "&" : "?") + "iframe=true"}
+              title="iyzico güvenli ödeme"
+              className="iyzico-frame"
+              allow="payment"
+              onLoad={() => setIframeLoading(false)}
+            />
+          </div>
+          <p className="fine" style={{ textAlign: "center", marginTop: "10px" }}>
+            Kart bilgileriniz Vitrinweb sistemlerine girmez ve Vitrinweb tarafından saklanmaz.
+          </p>
+          <p className="fine" style={{ textAlign: "center", marginTop: "6px" }}>
+            Ödeme ekranı görünmüyor mu?{" "}
+            <a href={paymentPageUrl} target="_blank" rel="noopener noreferrer">
+              Yeni sekmede açın
+            </a>
+            .
+          </p>
+        </div>
+      )}
+      {!paymentPageUrl && (
       <div className="panel">
         <h2 className="h-3" style={{ marginBottom: "14px" }}>
           Fatura Bilgileri
@@ -346,7 +381,7 @@ export function PaymentStep() {
           )}
         </button>
         <p className="fine" style={{ textAlign: "center", marginTop: "8px" }}>
-          Tutar {VAT_NOTE}. Butona bastığınızda güvenli iyzico ödeme ekranına yönlendirilirsiniz.
+          Tutar {VAT_NOTE}. Butona bastığınızda güvenli iyzico ödeme ekranı bu sayfada açılır.
         </p>
         {payErr && (
           <div className="payerr" role="alert">
@@ -376,6 +411,7 @@ export function PaymentStep() {
           ))}
         </div>
       </div>
+      )}
     </Shell>
   );
 }

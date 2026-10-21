@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Logo } from "@/components/header";
 import { safeJsonLd } from "@/lib/json-ld";
 import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
+import { openGraph } from "@/lib/open-graph";
 import { BASE_PATH, SITE_URL } from "@/lib/site";
 
 const TITLE = "Tanıtım Broşürü";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/brosur" },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "website" },
+  openGraph: openGraph("/brosur", { title: TITLE, description: DESCRIPTION }),
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 

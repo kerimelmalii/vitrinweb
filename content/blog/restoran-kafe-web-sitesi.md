@@ -1,5 +1,4 @@
 ---
-yayin: 2026-10-22
 title: Restoran ve kafe web sitesi nasıl olmalı? Menüden rezervasyona rehber
 seoTitle: Restoran ve Kafe Web Sitesi Nasıl Olmalı?
 description: Restoran ve kafeler için web sitesinde olması gerekenleri anlatıyoruz: okunabilir menü, rezervasyon, konum, fotoğraflar, Google İşletme Profili ve fiyat listesi kuralları.

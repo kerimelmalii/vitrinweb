@@ -1,11 +1,11 @@
 import { Home } from "@/components/home";
-import { FAQS } from "@/data/content";
+import { AGENCY_FAQS } from "@/data/content";
 import { safeJsonLd } from "@/lib/json-ld";
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: FAQS.map((f) => ({
+  mainEntity: AGENCY_FAQS.map((f) => ({
     "@type": "Question",
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },

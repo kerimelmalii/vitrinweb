@@ -4,55 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
-import { BrowserFrame, MockPhone, MockSite } from "@/components/mock-site";
-import { OfferPanel } from "@/components/offer-panel";
 import { SectionHead } from "@/components/section-head";
-import { FAQ_CATEGORIES, FAQS, HERO_DEMOS, PROCESS, REFERENCES, TRUST, WHY } from "@/data/content";
+import { AGENCY_FAQ_CATEGORIES, AGENCY_FAQS, AGENCY_TRUST, FAQ_CATEGORIES, FAQS, REFERENCES } from "@/data/content";
+import { PRODUCTS } from "@/data/products";
+import { ProductScreen } from "@/components/product-screen";
+import { AgencyProcess, ProductGrid, ReadyOrCustom } from "@/components/products";
 import { BASE_PRICE, TL, VAT_NOTE, YEARLY, money } from "@/lib/config";
 import { useApp } from "@/lib/order-context";
 import { BASE_PATH } from "@/lib/site";
-import type { Reference } from "@/lib/types";
-
-/* ================= ANA SAYFA ================= */
-export function PackageSection() {
-  const { startCheckout } = useApp();
-  return (
-    <section id="paket" className="sec">
-      <div className="container-x">
-        <SectionHead
-          title="Tek paket, net fiyat."
-          sub="İşletmenizi internette tanıtmak için gereken her şey pakete dahil. Ek özellikleri sipariş sırasında seçersiniz."
-        />
-        <OfferPanel
-          heading="Profesyonel Web Sitesi"
-          cta={
-            <>
-              <button
-                className="btn btn-primary btn-lg btn-block"
-                style={{ maxWidth: "520px" }}
-                onClick={() => startCheckout()}
-              >
-                Web Sitesi Edinin
-              </button>
-              <p className="flow">Bilgilerinizi girin, ödemenizi yapın, tasarım sürecini birlikte başlatalım.</p>
-              <div className="trustrow">
-                {TRUST.map((t) => (
-                  <span key={t}>
-                    <Icon n="check" size={14} sw={2.5} />
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <Link className="plink" href="/ucretlendirme">
-                Ek özellik fiyatlarını görün
-              </Link>
-            </>
-          }
-        />
-      </div>
-    </section>
-  );
-}
+import type { Faq, Reference } from "@/lib/types";
 
 export function PaymentTrust() {
   const POINTS: ["shield" | "check" | "card", string][] = [
@@ -96,7 +56,7 @@ export function PaymentTrust() {
 }
 
 /* Mobilde ilk ekran geçildiğinde görünen, alt bilgiye gelince gizlenen başlatma çubuğu. */
-export function StickyCTA() {
+export function StickyCTA({ agency = false }: { agency?: boolean }) {
   const { startCheckout } = useApp();
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -115,21 +75,32 @@ export function StickyCTA() {
   }, []);
   return (
     <div className={"sticky-cta " + (show ? "on" : "")} aria-hidden={!show}>
-      <div>
-        <b>{TL(BASE_PRICE)}</b>
-        <small>İlk yıl servis ücretsiz</small>
-      </div>
-      <button className="btn btn-primary" tabIndex={show ? 0 : -1} onClick={() => startCheckout()}>
-        Web Sitesi Edinin
-      </button>
+      {agency ? (
+        <>
+          <div>
+            <b>Ücretsiz ön görüşme</b>
+            <small>Size uygun çözümü birlikte bulalım</small>
+          </div>
+          <Link className="btn btn-primary" tabIndex={show ? 0 : -1} href="/iletisim">
+            Bilgi Alın
+          </Link>
+        </>
+      ) : (
+        <>
+          <div>
+            <b>{TL(BASE_PRICE)}</b>
+            <small>İlk yıl servis ücretsiz</small>
+          </div>
+          <button className="btn btn-primary" tabIndex={show ? 0 : -1} onClick={() => startCheckout()}>
+            Web Sitesi Edinin
+          </button>
+        </>
+      )}
     </div>
   );
 }
 
-export function Hero() {
-  const { startCheckout, goSection } = useApp();
-  const d0 = HERO_DEMOS[0];
-  const d1 = HERO_DEMOS[1];
+export function AgencyHero() {
   return (
     <section id="top" className="hero">
       <div className="container-x hero-grid">
@@ -137,21 +108,22 @@ export function Hero() {
           <h1 className="h-display rise">
             <span className="soft">İşletmenizin dijital vitrini.</span>
             <br />
-            {money(BASE_PRICE)} TL&apos;ye profesyonel web sitesi.
+            Dijital işlerinizi sadeleştiriyoruz.
           </h1>
           <p className="lead rise" style={{ animationDelay: "90ms" }}>
-            Modern, hızlı ve mobil uyumlu web sitenizi sizin için hazırlıyoruz. İlk yıl servis ve bakım ücreti yok.
+            Reklam takibi, stok, ürün görselleri, müşteri bulma ve web sitesi: işletmenizin dijital işlerini, size uygun
+            araçlarla çözüyoruz.
           </p>
           <div className="hero-cta rise" style={{ animationDelay: "170ms" }}>
-            <button className="btn btn-primary btn-lg" onClick={() => startCheckout()}>
-              Web Sitesi Edinin
-            </button>
-            <button className="btn btn-line btn-lg" onClick={() => goSection("paket")}>
-              Paket Detaylarını İnceleyin
-            </button>
+            <Link className="btn btn-primary btn-lg" href="/urunler">
+              Ürünleri İnceleyin
+            </Link>
+            <Link className="btn btn-line btn-lg" href="/iletisim">
+              Bilgi Alın
+            </Link>
           </div>
           <ul className="trust rise" style={{ animationDelay: "240ms" }}>
-            {TRUST.map((t) => (
+            {AGENCY_TRUST.map((t) => (
               <li key={t}>
                 <Icon n="check" size={16} sw={2.5} />
                 {t}
@@ -159,50 +131,50 @@ export function Hero() {
             ))}
           </ul>
         </div>
-        <div className="hero-visual rise" style={{ animationDelay: "200ms" }} aria-hidden="true">
-          <div className="hv-price">
-            <small>Profesyonel web sitesi</small>
-            <b>{TL(BASE_PRICE)}</b>
-            <small className="vat">{VAT_NOTE}</small>
-            <span>
-              <i></i>İlk yıl servis ve bakım: 0 TL
-            </span>
+        <div className="hero-visual hv-stack rise" style={{ animationDelay: "200ms" }} aria-hidden="true">
+          <div className="hv-main">
+            <ProductScreen kind="meta" />
           </div>
-          <BrowserFrame url={d0.url}>
-            <MockSite d={d0} />
-          </BrowserFrame>
-          <div className="hv-phone">
-            <MockPhone d={d1} />
+          <div className="hv-side">
+            <ProductScreen kind="gorsel" />
           </div>
         </div>
         <p className="hv-cap fine" aria-hidden="true">
-          Örnek: sektörünüze göre hazırlanan bir tasarım önizlemesi, gerçek bir müşteri değildir.
+          Temsilî ekranlar; adlar ve rakamlar örnek veridir.
         </p>
       </div>
     </section>
   );
 }
 
-export function WhyWebsite() {
+const PROBLEMS: { q: string; slug: string }[] = [
+  { q: "Reklama para harcıyorum ama ne getirdiğini bilmiyorum.", slug: "meta-reklam-paneli" },
+  { q: "Stoğu Excel'de tutuyorum, ürün bitince fark ediyorum.", slug: "depo-takibi" },
+  { q: "Ürün fotoğraflarım amatör görünüyor.", slug: "urun-gorsel-studyosu" },
+  { q: "Yeni müşteriyi nerede arayacağımı bilmiyorum.", slug: "musteri-bulma" },
+  { q: "Müşteriler beni Google'da arıyor ama bulamıyor.", slug: "web-sitesi" },
+  { q: "Aynı bilgiyi her gün üç programa elle giriyoruz.", slug: "ozel-cozumler" },
+];
+
+export function Problems() {
+  const name = (slug: string) =>
+    PRODUCTS.find((p) => p.slug === slug)?.name ?? "İşletmeye Özel Çözümler";
   return (
-    <section id="neden" className="sec">
+    <section id="sorunlar" className="sec">
       <div className="container-x">
         <SectionHead
-          title="Web sitesi, işletmenizin 7/24 açık vitrinidir."
-          sub="Müşteri sizi bulmadan önce aramaya başlar. Karşısına çıkan şey, işletmeniz hakkındaki ilk izlenimdir."
-          right={
-            <Link className="btn btn-line" href="/neden">
-              Araştırmaları İnceleyin
-            </Link>
-          }
+          title="Tanıdık geliyor mu?"
+          sub="Önce sorunu dinleriz, sonra ona uygun aracı kurarız. Bu cümlelerden biri size aitse doğru yerdesiniz."
         />
-        <div className="why">
-          {WHY.map((w, i) => (
-            <div key={w.t} className={"why-t " + (i === 0 ? "tint" : "")}>
-              <Icon n={w.icon} size={30} sw={1.4} />
-              <h3 className="h-3">{w.t}</h3>
-              <p>{w.d}</p>
-            </div>
+        <div className="probs">
+          {PROBLEMS.map((it, i) => (
+            <Link key={it.slug} href={`/urunler/${it.slug}`} className={"prob " + (i === 0 ? "tint" : "")}>
+              <span className="prob-q">&ldquo;{it.q}&rdquo;</span>
+              <span className="prob-a">
+                {name(it.slug)}
+                <Icon n="arrow" size={15} sw={2.2} />
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -210,20 +182,47 @@ export function WhyWebsite() {
   );
 }
 
-export function Process() {
+export function ProductsSection() {
   return (
-    <section id="surec" className="sec" style={{ paddingTop: "0" }}>
+    <section id="urunler" className="sec" style={{ paddingTop: 0 }}>
       <div className="container-x">
-        <SectionHead title="Süreç nasıl işliyor?" sub="Dört adım. Her adımda ne olacağını önceden bilirsiniz." />
-        <ol className="proc">
-          {PROCESS.map((s) => (
-            <li key={s.n}>
-              <div className="n">{s.n}</div>
-              <h3 className="h-3">{s.t}</h3>
-              <p>{s.d}</p>
-            </li>
-          ))}
-        </ol>
+        <SectionHead
+          title="Ürünlerimiz"
+          sub="Her biri belirli bir işi çözer ve işletmenize göre kurulur."
+          right={
+            <Link className="btn btn-line" href="/urunler">
+              Tüm ürünler
+            </Link>
+          }
+        />
+        <ProductGrid />
+      </div>
+    </section>
+  );
+}
+
+export function WebsiteBand() {
+  const { startCheckout } = useApp();
+  return (
+    <section id="web-sitesi" className="sec" style={{ paddingTop: 0 }}>
+      <div className="container-x">
+        <div className="wband">
+          <div>
+            <h2 className="h-2">Web sitesi mi lazım?</h2>
+            <p className="lead" style={{ marginTop: "14px" }}>
+              Modern ve mobil uyumlu web siteniz {TL(BASE_PRICE)} ({VAT_NOTE}). İlk yıl servis ve bakım ücretsiz, taahhüt yok.
+              Siparişinizi hemen verebilirsiniz.
+            </p>
+          </div>
+          <div className="wband-a">
+            <button className="btn btn-primary btn-lg" onClick={() => startCheckout()}>
+              Web Sitesi Edinin
+            </button>
+            <Link className="plink" href="/urunler/web-sitesi">
+              Paket detaylarını inceleyin
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -298,9 +297,9 @@ function References({ items }: { items: Reference[] }) {
 
 export function About() {
   const P: [string, string][] = [
-    ["Net fiyat", `Temel paket ${TL(BASE_PRICE)}. Ek özellikler ayrı ve açık fiyatlarla listelenir.`],
-    ["Sade tasarım", "Sektörünüze uygun, hızlı açılan ve kolay anlaşılan siteler tasarlarız."],
-    ["Açık süreç", "Sipariş numaranız, proje durumunuz ve sıradaki adım her zaman belli."],
+    ["Önce sorun, sonra araç", "Teknolojiyi değil, işinizdeki sorunu konuşuruz. İşe yaramayacak bir şeyi satmayız."],
+    ["Net kapsam ve fiyat", "Neyin yapılacağı, ne kadar süreceği ve kaça mal olacağı işe başlamadan yazılı olarak bellidir."],
+    ["Veriniz sizde", "Kayıtlarınızı istediğiniz an dışa aktarabilirsiniz; hizmeti bıraktığınızda verileriniz size teslim edilir."],
   ];
   return (
     <section id="hakkimizda" className="sec" style={{ paddingTop: "0" }}>
@@ -308,8 +307,8 @@ export function About() {
         <div>
           <h2 className="h-2">Gösterişsiz, net ve şeffaf.</h2>
           <p className="lead" style={{ marginTop: "16px" }}>
-            Bir web sitesi pahalı ya da belirsiz olmak zorunda değil. Neyin dahil olduğunu, ne kadar ödeyeceğinizi ve
-            sürecin nasıl ilerleyeceğini baştan söylüyoruz.
+            Dijital araçlar küçük bir işletme için karmaşık ya da pahalı olmak zorunda değil. Neyin işinize yarayacağını,
+            ne kadar ödeyeceğinizi ve sürecin nasıl ilerleyeceğini baştan söylüyoruz.
           </p>
           <References items={REFERENCES} />
         </div>
@@ -326,7 +325,15 @@ export function About() {
   );
 }
 
-export function FAQ() {
+export function FAQ({
+  items = FAQS,
+  cats = FAQ_CATEGORIES,
+  sub = "Kararınızı vermeden önce merak ettiğiniz her şey.",
+}: {
+  items?: Faq[];
+  cats?: readonly string[];
+  sub?: string;
+}) {
   const [open, setOpen] = useState<Set<number>>(new Set([0]));
   const toggle = (i: number) =>
     setOpen((s) => {
@@ -339,13 +346,13 @@ export function FAQ() {
   return (
     <section id="sss" className="sec" style={{ paddingTop: "0" }}>
       <div className="container-x">
-        <SectionHead title="Sık sorulan sorular" sub="Kararınızı vermeden önce merak ettiğiniz her şey." />
+        <SectionHead title="Sık sorulan sorular" sub={sub} />
         <div className="faq-cats">
-          {FAQ_CATEGORIES.map((cat) => (
+          {cats.map((cat) => (
             <div className="faq-cat" key={cat}>
               <h3 className="faq-cat-t">{cat}</h3>
               <div className="faq">
-                {FAQS.filter((f) => f.cat === cat).map((f) => {
+                {items.filter((f) => f.cat === cat).map((f) => {
                   i++;
                   const idx = i;
                   return (
@@ -380,11 +387,30 @@ export function FAQ() {
   );
 }
 
-export function FinalCTA() {
+export function FinalCTA({ agency = false }: { agency?: boolean }) {
   const { startCheckout } = useApp();
   return (
     <section className="sec" style={{ paddingTop: "0" }}>
       <div className="container-x">
+        {agency ? (
+          <div className="final">
+            <div>
+              <h2 className="h-1">İşletmeniz için doğru çözümü birlikte bulalım.</h2>
+              <p className="lead" style={{ marginTop: "16px" }}>
+                İşinizi kısaca anlatın; hangi ürünün size fayda sağlayacağını, kapsamı ve fiyatıyla yazılı olarak iletelim.
+              </p>
+            </div>
+            <div className="box">
+              <Link className="btn btn-primary btn-lg" href="/iletisim">
+                Bilgi Alın
+              </Link>
+              <Link className="btn btn-line btn-lg" href="/urunler">
+                Ürünleri İnceleyin
+              </Link>
+              <p className="fine">Ücretsiz ön görüşme, hiçbir taahhüt doğurmaz.</p>
+            </div>
+          </div>
+        ) : (
         <div className="final">
           <div>
             <h2 className="h-1">İşletmenizin web sitesini bugün başlatalım.</h2>
@@ -403,6 +429,7 @@ export function FinalCTA() {
             <p className="fine">Dakikalar içinde siparişinizi oluşturun.</p>
           </div>
         </div>
+        )}
       </div>
       <div className="container-x" style={{ marginTop: "24px" }}>
         <div className="final venture-panel">
@@ -462,16 +489,16 @@ export function FinalCTA() {
 export function Home() {
   return (
     <main id="main">
-      <Hero />
-      <WhyWebsite />
-      <PackageSection />
-      <PaymentTrust />
-      <Process />
-      <AnnualService />
+      <AgencyHero />
+      <Problems />
+      <ProductsSection />
+      <ReadyOrCustom />
+      <AgencyProcess id="surec" />
+      <WebsiteBand />
       <About />
-      <FAQ />
-      <FinalCTA />
-      <StickyCTA />
+      <FAQ items={AGENCY_FAQS} cats={AGENCY_FAQ_CATEGORIES} sub="Bizimle çalışmadan önce merak ettikleriniz." />
+      <FinalCTA agency />
+      <StickyCTA agency />
     </main>
   );
 }

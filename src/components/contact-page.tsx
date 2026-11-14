@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { Icon } from "@/components/icons";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
@@ -32,6 +32,13 @@ function ContactForm() {
   const [err, setErr] = useState<Errors>({});
   const [hp, setHp] = useState("");
   const [status, setStatus] = useState<"idle" | "sent" | "mailto" | "sending">("idle");
+
+  /* Ürün sayfalarındaki "Bilgi Alın" düğmesi konuyu ?konu= ile gönderir; alan önceden dolu gelir. */
+  useEffect(() => {
+    const konu = clean(new URLSearchParams(window.location.search).get("konu") || "", LIMITS.short).trim();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- adres çubuğundaki konuyu ilk açılışta forma bir kez aktarır
+    if (konu) setF((o) => (o.subject ? o : { ...o, subject: `${konu} hakkında bilgi` }));
+  }, []);
 
   const set = (k: keyof FormState, v: string) => {
     setF((o) => ({ ...o, [k]: v }));
@@ -147,8 +154,8 @@ export function ContactPage() {
               Bir sorunuz mu var? Yazın.
             </h1>
             <p className="lead" style={{ marginTop: "16px" }}>
-              Siparişten önce veya sonra, aklınıza takılan her şey için formu doldurun ya da doğrudan aşağıdaki
-              kanallardan ulaşın.
+              Bir ürünümüz hakkında bilgi almak, ön görüşme planlamak ya da siparişinizle ilgili soru sormak için formu
+              doldurun veya doğrudan aşağıdaki kanallardan ulaşın.
             </p>
           </div>
           <div className="contact-hero-visual" aria-hidden="true">

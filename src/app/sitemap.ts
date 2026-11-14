@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { BLOG } from "@/data/blog";
 import { LEGAL_LINKS } from "@/data/legal";
+import { ALL_PRODUCTS } from "@/data/products";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -10,11 +11,11 @@ export const dynamic = "force-static";
 const buildDate = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["/", "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/isgale-hayir", "/hakkimizda", "/icerik-politikasi", "/brosur"].map((path) => ({
+  const staticRoutes = ["/", "/urunler", ...ALL_PRODUCTS.map((p) => `/urunler/${p.slug}`), "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/isgale-hayir", "/hakkimizda", "/icerik-politikasi", "/brosur"].map((path) => ({
     url: SITE_URL + path,
     lastModified: buildDate,
     changeFrequency: "monthly" as const,
-    priority: path === "/" ? 1 : 0.7,
+    priority: path === "/" ? 1 : path.startsWith("/urunler") ? 0.8 : 0.7,
   }));
   const blogRoutes = BLOG.map((p) => ({
     url: `${SITE_URL}/blog/${p.slug}`,

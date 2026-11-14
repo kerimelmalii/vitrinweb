@@ -267,11 +267,70 @@ export const REFERENCES: Reference[] = [];
 export const TRUST = ["İlk yıl servis ücretsiz", "Taahhüt yok", "Güvenli ödeme", "Mobil uyumlu"];
 
 export const NAV: NavItem[] = [
-  { label: "Neden Web Sitesi?", to: "/neden" },
-  { label: "Süreç", sec: "surec" },
-  { label: "Ücretlendirme", to: "/ucretlendirme" },
+  { label: "Ürünler", to: "/urunler" },
+  { label: "Nasıl Çalışıyoruz", sec: "surec" },
   { label: "Blog", to: "/blog" },
   { label: "Hakkımızda", to: "/hakkimizda" },
   { label: "SSS", sec: "sss" },
   { label: "İletişim", to: "/iletisim" },
+];
+
+/** Ajansın çalışma adımları (ana sayfa ve ürünler sayfası). Web sitesi paketinin kendi adımları PROCESS'tedir. */
+export const AGENCY_PROCESS: ProcessStep[] = [
+  { n: "01", t: "Tanışma", d: "İşinizin nasıl yürüdüğünü ve nerede zaman ya da müşteri kaybettiğinizi dinleriz. Ücretsizdir." },
+  { n: "02", t: "Yazılı öneri", d: "Hangi ürünün ya da çözümün işinize yarayacağını; kapsam, süre ve fiyatıyla tek sayfada iletiriz." },
+  { n: "03", t: "Kurulum", d: "Aracı işletmenize göre kurar, verilerinizi aktarır, ekibinize kullanmayı gösteririz." },
+  { n: "04", t: "Destek", d: "Kullanım sürdükçe bakım ve destek bizde. Bir şey değiştiğinde aracınız da güncel kalır." },
+];
+
+export const AGENCY_TRUST = ["Ücretsiz ön görüşme", "Net kapsam ve fiyat", "Taahhüt yok", "Türkçe destek"];
+
+export const AGENCY_FAQ_CATEGORIES = ["Çalışma şekli", "Fiyat ve sözleşme", "Veri ve güvenlik"] as const;
+
+export const AGENCY_FAQS: Faq[] = [
+  {
+    cat: "Çalışma şekli",
+    q: "Vitrinweb ne yapıyor?",
+    a: "İşletmelerin dijital işlerini sadeleştiren araçlar kuruyoruz: reklam takibi, stok takibi, ürün görselleri, müşteri bulma ve web sitesi. Hazır ürünlerimiz işinize uymuyorsa işletmenize özel bir çözüm geliştiriyoruz.",
+  },
+  {
+    cat: "Çalışma şekli",
+    q: "Hangi ürünün bana uygun olduğunu nasıl bileceğim?",
+    a: "Bilmeniz gerekmiyor. Kısa bir ön görüşmede işinizi dinliyor, size gerçekten fayda sağlayacak olanı öneriyoruz. Hiçbiri uygun değilse bunu da açıkça söylüyoruz.",
+  },
+  {
+    cat: "Çalışma şekli",
+    q: "Ön görüşme ücretli mi, bir taahhüt doğuruyor mu?",
+    a: "Hayır. Ön görüşme ücretsizdir ve hiçbir taahhüt doğurmaz. Görüşmeden sonra size yazılı bir öneri iletiriz; karar sizindir.",
+  },
+  {
+    cat: "Çalışma şekli",
+    q: "Kurulum ne kadar sürer?",
+    a: "Ürüne ve kapsama göre değişir. Süreyi yazılı önerimizde, işe başlamadan önce açıkça belirtiriz.",
+  },
+  {
+    cat: "Fiyat ve sözleşme",
+    q: "Ürünlerin fiyatı nedir?",
+    a: `Web sitesi paketinin fiyatı sabittir: ${TL(BASE_PRICE)}, KDV dahil. Diğer ürünler bağlanacak hesap, ürün veya kullanıcı sayısına göre fiyatlandırılır; görüşmeden sonra yazılı teklif iletiriz. Fiyatı onaylamadan hiçbir işe başlamayız.`,
+  },
+  {
+    cat: "Fiyat ve sözleşme",
+    q: "Aylık ücretli hizmetleri istediğim zaman bırakabilir miyim?",
+    a: "Evet. Aylık hizmetlerde taahhüt yoktur; istediğiniz ayın sonunda sonlandırabilirsiniz. Koşullar, işe başlamadan önce yazılı olarak iletilir.",
+  },
+  {
+    cat: "Fiyat ve sözleşme",
+    q: "Fatura kesiliyor mu?",
+    a: "Evet. Tüm hizmetlerimiz için fatura düzenlenir.",
+  },
+  {
+    cat: "Veri ve güvenlik",
+    q: "Verilerim kime ait?",
+    a: "Size. Araçlarımızda tuttuğunuz kayıtları istediğiniz an dışa aktarabilirsiniz; hizmeti sonlandırdığınızda verileriniz size teslim edilir ve talebinizle silinir.",
+  },
+  {
+    cat: "Veri ve güvenlik",
+    q: "Reklam veya muhasebe hesaplarıma erişim veriyor muyum?",
+    a: "Yalnızca aracın çalışması için gereken en dar izni isteriz; örneğin reklam paneli için yalnızca okuma izni. Verdiğiniz izni dilediğiniz an kendi hesabınızdan geri alabilirsiniz.",
+  },
 ];

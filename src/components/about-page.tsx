@@ -3,8 +3,7 @@ import { Icon } from "@/components/icons";
 import { LegalCompanyInfo } from "@/components/legal-company-info";
 import { SectionHead } from "@/components/section-head";
 import { COMPANY } from "@/data/company";
-import { PROCESS } from "@/data/content";
-import { BASE_PRICE, TL } from "@/lib/config";
+import { AGENCY_PROCESS } from "@/data/content";
 
 function Wordmark({ className }: { className: string }) {
   return (
@@ -18,23 +17,23 @@ function Wordmark({ className }: { className: string }) {
 const WHY_VITRIN: { icon: "card" | "shield" | "trend" | "check"; title: string; body: string }[] = [
   {
     icon: "card",
-    title: "Net ve sabit fiyat",
-    body: `Temel paket ${TL(BASE_PRICE)}, ek özellikler ayrı ve açık fiyatlarla listelenir. Sürpriz ücret yok.`,
+    title: "Net kapsam ve fiyat",
+    body: "Neyin yapılacağı, ne kadar süreceği ve kaça mal olacağı işe başlamadan yazılı olarak bellidir. Sürpriz ücret yok.",
   },
   {
     icon: "shield",
     title: "Taahhüt yok",
-    body: "İlk yılın sonunda memnun kalmazsanız hiçbir ücret ödemeden ayrılabilirsiniz.",
+    body: "Aylık hizmetlerimizi istediğiniz zaman bırakabilirsiniz; verileriniz size teslim edilir.",
   },
   {
     icon: "trend",
-    title: "Temel SEO dahil",
-    body: "Her sitede sayfa başlıkları, açıklamalar ve site haritası gibi temel SEO altyapısı standart olarak kurulur.",
+    title: "Önce sorun, sonra araç",
+    body: "Teknolojiyi değil, işinizdeki sorunu konuşuruz. İşinize yaramayacak bir şeyi önermeyiz.",
   },
   {
     icon: "check",
     title: "Şeffaf süreç",
-    body: "Sipariş numaranız, proje durumunuz ve sıradaki adım her zaman bellidir.",
+    body: "Her adımda ne yapıldığı ve sıradaki adımın ne olduğu her zaman bellidir.",
   },
 ];
 
@@ -49,7 +48,7 @@ const VALUES: { icon: "layout" | "check" | "shield" | "globe"; title: string; bo
   { icon: "layout", title: "Sadelik", body: "Karmaşık değil, anlaşılır. Hem sitelerimizde hem süreçlerimizde." },
   { icon: "check", title: "Şeffaflık", body: "Fiyat, süreç ve sözleşme koşulları baştan nettir." },
   { icon: "shield", title: "Güven", body: "Taahhüt yok, gizli ücret yok. Karar her zaman sizde kalır." },
-  { icon: "globe", title: "Erişilebilirlik", body: "Profesyonel bir web sitesi yalnızca büyük işletmelerin ayrıcalığı olmamalı." },
+  { icon: "globe", title: "Erişilebilirlik", body: "İyi dijital araçlar yalnızca büyük işletmelerin ayrıcalığı olmamalı." },
 ];
 
 export function AboutPage() {
@@ -61,7 +60,7 @@ export function AboutPage() {
             Vitrinweb, işletmelerin dijital dünyadaki ilk adımı için var.
           </h1>
           <p className="lead" style={{ marginTop: "16px" }}>
-            Karmaşık olmayan, dürüst fiyatlandıran ve gerçekten kullanılan web siteleri tasarlıyoruz.
+            Karmaşık olmayan, dürüst fiyatlandıran ve gerçekten kullanılan dijital araçlar kuruyoruz.
           </p>
         </div>
       </section>
@@ -70,8 +69,9 @@ export function AboutPage() {
         <div className="container-x">
           <SectionHead title="Vitrinweb nedir?" />
           <p className="lead" style={{ maxWidth: "68ch" }}>
-            Vitrinweb, işletmelerin profesyonel bir web sitesine sade, anlaşılır ve şeffaf bir süreçle sahip olmasını
-            sağlayan bir web tasarım hizmetidir.
+            Vitrinweb, işletmelere dijital çözümler sunan bir ajanstır. Reklam takibi, stok takibi, ürün görselleri, müşteri
+            bulma ve web sitesi gibi işleri; işletmenin ihtiyacına uygun, sade ve anlaşılır araçlarla çözer. Hazır
+            ürünlerimizin karşılamadığı işler için işletmeye özel çözümler geliştirir.
           </p>
         </div>
       </section>
@@ -125,8 +125,8 @@ export function AboutPage() {
             <div>
               <h2 className="h-3">Vizyon</h2>
               <p>
-                Türkiye&apos;deki her işletmenin, büyüklüğü fark etmeksizin, kendine ait güvenilir bir web adresine
-                sahip olduğu bir gelecek.
+                Türkiye&apos;deki her işletmenin, büyüklüğü fark etmeksizin, işini kolaylaştıran ve kendisine ait dijital
+                araçlara sahip olduğu bir gelecek.
               </p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export function AboutPage() {
         <div className="container-x">
           <SectionHead title="Yaklaşımımız" sub="Dört adım. Her adımda ne olacağını önceden bilirsiniz." />
           <ol className="proc">
-            {PROCESS.map((s) => (
+            {AGENCY_PROCESS.map((s) => (
               <li key={s.n}>
                 <div className="n">{s.n}</div>
                 <h3 className="h-3">{s.t}</h3>

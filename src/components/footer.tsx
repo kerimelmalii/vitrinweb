@@ -4,7 +4,7 @@ import { Icon } from "@/components/icons";
 import { InstaLink, Logo } from "@/components/header";
 import { COMPANY, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
-import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
+import { ALL_PRODUCTS } from "@/data/products";
 import { BASE_PATH } from "@/lib/site";
 import { SectionLink } from "@/components/section-link";
 
@@ -16,8 +16,8 @@ export function Footer() {
           <div className="ftr-brand">
             <Logo />
             <p className="fine">
-              İşletmenizin dijital vitrini. Temel web sitesi {TL(BASE_PRICE)} ({VAT_NOTE}), ilk yıl servis ve bakım
-              ücretsiz, taahhüt yok.
+              İşletmenizin dijital vitrini. Reklam, stok, ürün görseli, müşteri bulma ve web sitesi için işletmelere dijital
+              çözümler.
             </p>
             <InstaLink cls="ftr-ig" label="Instagram'da bizi takip edin" />
             {PHONE_DIGITS && (
@@ -34,13 +34,26 @@ export function Footer() {
             )}
           </div>
           <div>
+            <h2 className="ftr-h">Ürünler</h2>
+            <ul>
+              {ALL_PRODUCTS.map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/urunler/${p.slug}`}>{p.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
             <h2 className="ftr-h">Sayfalar</h2>
             <ul>
+              <li>
+                <Link href="/urunler">Tüm ürünler</Link>
+              </li>
               <li>
                 <Link href="/neden">Neden web sitesi?</Link>
               </li>
               <li>
-                <Link href="/ucretlendirme">Ücretlendirme</Link>
+                <Link href="/ucretlendirme">Web sitesi fiyatları</Link>
               </li>
               <li>
                 <Link href="/blog">Blog</Link>

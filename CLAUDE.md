@@ -1,6 +1,14 @@
 # Vitrin
 
-Türkçe, tek paket (10.000 TL) satan bir web sitesi ajansı satış sitesi. Next.js 16 (App Router) +
+**Kasım 2026'dan itibaren ajans sitesi:** Vitrinweb işletmelere dijital çözümler sunar. Ürünler
+`src/data/products.ts`'te (Meta Reklam Paneli, Depo ve Stok Takibi, Ürün Görsel Stüdyosu, Müşteri
+Bulma Aracı, Web Sitesi, İşletmeye Özel Çözümler); `/urunler` listeler, her ürünün sayfası
+`/urunler/[slug]` (`src/components/products.tsx`). Ürün ekranları `src/components/product-screen.tsx`'te
+SVG olarak çizilir, tüm adlar ve rakamlar örnektir. Web sitesi paketi bu ürünlerden biridir ve
+aşağıdaki sipariş/ödeme altyapısı yalnızca onun içindir; diğer ürünlerin çağrısı "Bilgi Alın"
+(`/iletisim?konu=<ürün>`, konu alanı önceden dolar) ve WhatsApp'tır.
+
+Web sitesi paketi: tek paket (10.000 TL). Next.js 16 (App Router) +
 TypeScript, **Vercel'de Next.js server olarak çalışır** (statik export değil — `src/app/api/`
 altında gerçek server route'lar var: sipariş oluşturma, ödeme başlatma/doğrulama, içerik formu).
 Detaylı iş/hukuk planı: `DEVIR-BELGESI.md`. Genel bakış: `README.md`. iyzico entegrasyonunun

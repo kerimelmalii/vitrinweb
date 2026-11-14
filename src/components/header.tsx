@@ -83,7 +83,8 @@ export function CheckoutHeader() {
 function NavButton({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
   const pathname = usePathname().replace(/\/$/, "") || "/";
   const { goSection } = useApp();
-  const isOn = !!item.to && (item.to === pathname || (item.to === "/blog" && pathname.startsWith("/blog")));
+  const isOn =
+    !!item.to && (item.to === pathname || ((item.to === "/blog" || item.to === "/urunler") && pathname.startsWith(item.to + "/")));
   if (item.to) {
     return (
       <Link
@@ -118,7 +119,6 @@ function NavButton({ item, onNavigate }: { item: NavItem; onNavigate: () => void
 }
 
 export function Header() {
-  const { startCheckout } = useApp();
   const [open, setOpen] = useState(false);
   const [sc, setSc] = useState(false);
   const pathname = usePathname();
@@ -142,15 +142,9 @@ export function Header() {
           ))}
         </nav>
         <div className="hdr-r">
-          <button
-            className="btn btn-primary hdr-cta"
-            onClick={() => {
-              setOpen(false);
-              startCheckout();
-            }}
-          >
-            Web Sitesi Edinin
-          </button>
+          <Link className="btn btn-primary hdr-cta" href="/iletisim" onClick={() => setOpen(false)}>
+            Bilgi Alın
+          </Link>
           <WhatsAppLink cls="iconbtn ig-h" />
           <InstaLink cls="iconbtn ig-h" />
           <button
@@ -171,15 +165,9 @@ export function Header() {
           ))}
           <WhatsAppLink cls="navl mnav-ig" label="WhatsApp" />
           <InstaLink cls="navl mnav-ig" label="Instagram" />
-          <button
-            className="btn btn-primary btn-block"
-            onClick={() => {
-              setOpen(false);
-              startCheckout();
-            }}
-          >
-            Web Sitesi Edinin
-          </button>
+          <Link className="btn btn-primary btn-block" href="/iletisim" onClick={() => setOpen(false)}>
+            Bilgi Alın
+          </Link>
         </div>
       )}
     </header>

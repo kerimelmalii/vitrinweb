@@ -3,21 +3,18 @@ import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { safeJsonLd } from "@/lib/json-ld";
-import { BASE_PRICE } from "@/lib/config";
 import { SITE_URL } from "@/lib/site";
 import { openGraph, SITE_OG_DESCRIPTION, SITE_TITLE } from "@/lib/open-graph";
 import "./globals.css";
 
-/* Google aramada ~155-160 karakterden sonra kırpıyor; bu yüzden en önemli bilgiler (fiyat,
-   temel değer önermeleri) ilk 130 karaktere sığdırılıyor. */
+/* Google aramada ~155-160 karakterden sonra kırpıyor; bu yüzden en önemli bilgiler ilk 130 karaktere sığdırılıyor. */
 const SITE_DESCRIPTION =
-  "İşletmenizin dijital vitrini. 10.000 TL'ye modern, hızlı, mobil uyumlu web sitesi. İlk yıl servis ve bakım ücretsiz, taahhüt yok.";
+  "İşletmelere dijital çözümler: Meta reklam paneli, depo ve stok takibi, ürün görselleri, müşteri bulma ve web sitesi. Ücretsiz ön görüşme.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  /* Marka ("Vitrinweb") henüz aranan bir isim değil; asıl teklifin (fiyat + "profesyonel web
-     sitesi") başlıkta önce gelmesi, tıklama ve alaka skorunu markanın önde olmasından daha
-     çok artırır. Diğer tüm sayfalarda zaten bu sırada (bkz. template). */
+  /* Marka ("Vitrinweb") henüz aranan bir isim değil; asıl teklifin başlıkta önce gelmesi, tıklama
+     ve alaka skorunu markanın önde olmasından daha çok artırır. Diğer sayfalarda da bu sırada. */
   title: { default: `${SITE_TITLE} | Vitrinweb`, template: "%s | Vitrinweb" },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
@@ -43,6 +40,7 @@ const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: COMPANY.brand,
+  description: "İşletmelere dijital çözümler sunan ajans: reklam paneli, stok takibi, ürün görselleri, müşteri bulma ve web sitesi.",
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   email: COMPANY.email,
@@ -57,23 +55,12 @@ const websiteLd = {
   url: SITE_URL,
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  name: "Profesyonel web sitesi",
-  description: "Modern, hızlı ve mobil uyumlu web sitesi. İlk yıl servis ve bakım ücretsiz.",
-  provider: { "@type": "Organization", name: COMPANY.brand, url: SITE_URL },
-  areaServed: "TR",
-  offers: { "@type": "Offer", price: String(BASE_PRICE), priceCurrency: "TRY", url: SITE_URL },
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       </head>
       <body>
         <a className="skip" href="#main">

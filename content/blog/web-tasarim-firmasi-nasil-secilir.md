@@ -1,4 +1,5 @@
 ---
+updated: 2026-11-21
 title: Web tasarım firması nasıl seçilir? Teklif almadan önce bilmeniz gereken 7 ölçüt
 seoTitle: Web Tasarım Firması Nasıl Seçilir? 7 Ölçüt
 description: Web tasarım firması seçerken portföy, fiyat şeffaflığı, alan adı sahipliği, süreç, bakım ve SEO vaatlerinde dikkat edilecek 7 ölçüt.
@@ -121,7 +122,7 @@ Boş kalan hücreler, firmaya sormanız gereken soruları gösterir. En düşük
 | Sizi aceleye getiren "bugüne özel" indirimler | Karşılaştırma yapmanızın engellenmesi |
 
 > [!vitrin] Bu soruları kendimize de soruyoruz
-> Vitrinweb'de yukarıdaki soruların çoğunun cevabını sipariş öncesinde sitede yazılı olarak veriyoruz: Temel paket KDV dahil 10.000 TL ve neyin dahil olduğu listeli; ek özelliklerin fiyatları açık; ilk yıl servis ve bakım ücretsiz, ikinci yıl ücreti 1.000 TL ve sonraki yıllarda enflasyon oranında güncelleniyor, yenilemeden önce bildiriliyor. Taahhüt yok. Mesafeli satış sözleşmesi ile iptal ve iade politikası sitede yayında; ödeme lisanslı ödeme kuruluşu üzerinden alınıyor ve kart bilgileri bizim sistemlerimizde saklanmıyor. Google'da belirli bir sırayı garanti etmiyoruz, çünkü bunu kimse dürüstçe garanti edemez. Tüm ayrıntılar [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi).
+> Vitrinweb'de yukarıdaki soruların cevabını çalışma başlamadan yazılı olarak veriyoruz: Kısa bir keşif görüşmesinin ardından teslim edilecek sayfaları ve özellikleri, sizden beklenen içerikleri, revizyon sınırlarını, takvimi, ücreti ve yayından sonraki bakım koşullarını tek bir teklif belgesinde sunuyoruz. Hangi verilerin işleneceği ve hizmet sona erdiğinde devrin nasıl yapılacağı da bu belgede yer alır. Google'da belirli bir sırayı garanti etmiyoruz, çünkü bunu kimse dürüstçe garanti edemez. Tüm ayrıntılar [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi).
 
 [[cta]]
 

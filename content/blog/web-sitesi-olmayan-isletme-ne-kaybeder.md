@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-30
+updated: 2026-11-21
 title: Web sitesi neden gerekli? Sitesi olmayan bir işletme neler kaybeder?
 seoTitle: Web Sitesi Neden Gerekli? İşletmeler İçin 8 Neden
 description: Web sitesi neden gerekli, Instagram ve Google İşletme Profili yetmez mi? Sitesi olmayan işletmenin kayıpları ve eski sitenin ne zaman yenilenmesi gerektiği.
@@ -89,7 +89,7 @@ Bir web sitesi kurulduğu günün koşullarına göre hazırlanır. Yıllar içi
 Sitenizin nerede müşteri kaybettiğini adım adım bulmak için [web sitem neden müşteri getirmiyor](/blog/web-sitem-neden-musteri-getirmiyor) yazımızdaki kontrol listesini kullanabilirsiniz.
 
 > [!vitrin] Biz eski siteleri onarmıyoruz, yenisini kuruyoruz
-> Vitrinweb olarak işimizi iki gruba odakladık: web sitesi hiç olmayan işletmeler ve mevcut sitesinin yerine daha iyisini isteyen işletmeler. Eski sitelerin onarımını üstlenmiyoruz. Bunun yerine yeni siteyi, yukarıdaki listede saydığımız sorunlar baştan olmayacak şekilde kuruyoruz: telefonda düzgün görünen modern bir tasarım, hızlı açılış, HTTPS, tek dokunuşla WhatsApp ve arama, Google Haritalar, sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri. Temel paket KDV dahil 10.000 TL ve ilk yıl servis ve bakım ücretsiz; yani site yayına girdikten sonra bilgilerin güncel kalmasıyla da biz ilgileniyoruz. Pakete nelerin dahil olduğunu [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi), web sitesinin işletmelere sağladıklarını [Neden web sitesi?](/neden-web-sitesi) sayfamızda bulabilirsiniz.
+> Vitrinweb olarak işimizi iki gruba odakladık: web sitesi hiç olmayan işletmeler ve mevcut sitesinin yerine daha iyisini isteyen işletmeler. Eski sitelerin onarımını üstlenmiyoruz. Bunun yerine yeni siteyi, yukarıdaki listede saydığımız sorunlar baştan olmayacak şekilde kuruyoruz: telefonda düzgün görünen modern bir tasarım, hızlı açılış, HTTPS, tek dokunuşla WhatsApp ve arama, Google Haritalar, sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri. Yayından sonraki bakım koşulları da çalışma başlamadan yazılı teklifte belirlenir; site yayına girdikten sonra bilgilerin güncel kalmasıyla da ilgileniyoruz. Pakete nelerin dahil olduğunu [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi), web sitesinin işletmelere sağladıklarını [Neden web sitesi?](/neden-web-sitesi) sayfamızda bulabilirsiniz.
 
 [[cta]]
 

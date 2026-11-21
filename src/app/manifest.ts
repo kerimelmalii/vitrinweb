@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: COMPANY.brand,
     short_name: COMPANY.brand,
-    description: "İşletmenizin dijital vitrini. Modern, hızlı ve mobil uyumlu web sitesi.",
+    description: "İşletmeler için kurumsal web sitesi, dijital ürünler ve özel yazılım çözümleri.",
     start_url: "/",
     display: "standalone",
     background_color: "#FFFFFF",

@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-20
+updated: 2026-11-21
 title: Google İşletme Profili nedir, nasıl oluşturulur? Adım adım rehber
 seoTitle: Google İşletme Profili Nasıl Oluşturulur? Adım Adım
 description: Google İşletme Profili'ni açma, doğrulama ve eksiksiz doldurma adımlarını; işletme adı, kategori ve yorumlarda yapılan yaygın hataları anlatıyoruz.
@@ -82,7 +82,7 @@ Yorum isterken Google'ın kurallarına dikkat edin: Yorum karşılığında indi
 Google İşletme Profili sınırlı alan sunar. Hizmetlerinizi ayrıntılı anlatmak, fiyat listesi, galeri ve sık sorulan sorular için bir web sitesi gerekir. Profilinizdeki web sitesi bağlantısı, ilgilenen müşteriyi daha fazla bilgiye taşır. Sitenizdeki adres, telefon ve çalışma saatlerinin profilinizdekiyle birebir aynı olması da hem müşteri hem Google için güven verir.
 
 > [!vitrin] Site ve profil aynı bilgiyi söylemeli
-> Vitrinweb'in kurduğu sitelerde Google Haritalar ve iletişim sayfası temel pakete dahil; işletme adı, adres, telefon ve çalışma saatleri yapısal veri olarak da işleniyor. Sipariş sonrası doldurulan içerik formunda bu bilgileri ayrıca istiyoruz. Müşterilerimizden ricamız, formu Google İşletme Profili'ni açarak, oradaki bilgilerle birebir aynı doldurmaları. Profil henüz yoksa, site yayına girdiğinde profilin web sitesi alanına yeni sitenin adresini eklemelerini hatırlatıyoruz. Paketin içeriğini [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi) görebilirsiniz.
+> Vitrinweb'in kurduğu sitelerde Google Haritalar ve iletişim sayfası temel pakete dahil; işletme adı, adres, telefon ve çalışma saatleri yapısal veri olarak da işleniyor. Proje başlangıcında doldurulan içerik formunda bu bilgileri ayrıca istiyoruz. Müşterilerimizden ricamız, formu Google İşletme Profili'ni açarak, oradaki bilgilerle birebir aynı doldurmaları. Profil henüz yoksa, site yayına girdiğinde profilin web sitesi alanına yeni sitenin adresini eklemelerini hatırlatıyoruz. Paketin içeriğini [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi) görebilirsiniz.
 
 [[cta]]
 

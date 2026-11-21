@@ -29,9 +29,9 @@ export function ProductHeroFigure({ p }: { p: Product }) {
 
 /** Kapanış metnini ilk cümle (başlık) ve kalanı (açıklama) olarak ayırır; noktalı virgülde de böler. */
 function splitClosing(t: string): [string, string | undefined] {
-  const m = /[.?;]\s/.exec(t);
+  const m = /[.?;]\s/.exec(t) || (t.length > 80 ? /,\s/.exec(t) : null);
   if (!m) return [t, undefined];
-  const head = t.slice(0, m.index) + (t[m.index] === ";" ? "." : t[m.index]);
+  const head = t.slice(0, m.index) + (t[m.index] === ";" || t[m.index] === "," ? "." : t[m.index]);
   const rest = t.slice(m.index + 2);
   return [head, rest.charAt(0).toLocaleUpperCase("tr") + rest.slice(1)];
 }

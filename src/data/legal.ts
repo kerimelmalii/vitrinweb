@@ -3,6 +3,8 @@ import { EXTRA_PRICES, INCLUDED, NOT_INCLUDED } from "@/data/content";
 import { TL, VAT_NOTE, YEARLY } from "@/lib/config";
 import type { LegalDoc } from "@/lib/types";
 
+const UPDATED_NOW = "21 Kasım 2026";
+
 /* ================= YASAL METİNLER =================
    Blok biçimi: ["h", başlık] | ["p", paragraf] | ["ul", [maddeler]] | ["order"] (sipariş özeti).
    Köşeli parantezli açık uç kalmadı; revizyon hakkı, teslim süreci, alan adı (domain) desteğinin
@@ -10,6 +12,8 @@ import type { LegalDoc } from "@/lib/types";
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   kvkk: {
     t: "KVKK Aydınlatma Metni",
+    lead: "Vitrinweb kanallarında paylaştığınız kişisel verilerin nasıl işlendiğini ve yasal haklarınızı nasıl kullanabileceğinizi bu sayfada inceleyebilirsiniz.",
+    u: UPDATED_NOW,
     b: () => {
       const kepClause = isPlaceholder(COMPANY.kep) ? "" : `${COMPANY.kep} KEP adresine veya `;
       return [
@@ -25,6 +29,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
           [
             "Kimlik: ad, soyad; bireysel faturalar için T.C. kimlik numarası.",
             "İletişim: telefon numarası, e-posta adresi, fatura adresi, WhatsApp numarası.",
+            "Talep: bilgi talebi ve keşif görüşmesi formlarında paylaştığınız işletme adı, sektör, ilgilendiğiniz ürün veya hizmet ve ihtiyacınıza ilişkin not.",
             "Müşteri işlem: sipariş içeriği, seçilen özellikler, teklif talepleri, proje formu ile gönderdiğiniz metin, logo ve görseller.",
             "Finans: fatura bilgileri, ödeme tutarı ve ödeme işlem referansı. Kart bilgileriniz tarafımızca işlenmez ve saklanmaz; ödeme, lisanslı ödeme kuruluşu tarafından alınır.",
             "İşlem güvenliği: IP adresi, işlem tarihi ve saati, sistem kayıtları.",
@@ -35,8 +40,9 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         [
           "ul",
           [
-            "Siparişinize ilişkin sözleşmenin kurulması ve ifası,",
-            "web sitenizin tasarlanması, geliştirilmesi, yayına alınması, servis ve bakımının yapılması,",
+            "bilgi ve görüşme taleplerinizin değerlendirilmesi ve sizinle iletişim kurulması,",
+            "Siparişinize veya onayladığınız hizmete ilişkin sözleşmenin kurulması ve ifası,",
+            "web sitenizin veya kurulan dijital ürünün tasarlanması, geliştirilmesi, yayına alınması, servis ve bakımının yapılması,",
             "faturalandırma ve muhasebe işlemleri,",
             "sizinle iletişim kurulması ve talep ettiğiniz özellikler için teklif hazırlanması,",
             "mevzuattan doğan yükümlülüklerin yerine getirilmesi ve yetkili kurumların taleplerinin karşılanması,",
@@ -52,7 +58,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         ["h", "5. Toplama yöntemi"],
         [
           "p",
-          "Kişisel verileriniz; bu sitedeki sipariş ve proje formları ile e-posta, telefon ve WhatsApp yazışmaları aracılığıyla, kısmen otomatik yollarla toplanır.",
+          "Kişisel verileriniz; bu sitedeki bilgi talebi, keşif görüşmesi, proje başlangıç, iletişim ve sipariş formları ile e-posta, telefon ve WhatsApp yazışmaları aracılığıyla, kısmen otomatik yollarla toplanır.",
         ],
         ["h", "6. Aktarım"],
         [
@@ -61,7 +67,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         ],
         [
           "p",
-          "Kullanılan bazı hizmet sağlayıcıların sunucuları yurt dışında bulunabilir. Bu durumda aktarım, KVKK'nın 9. maddesine uygun olarak yeterlilik kararı, standart sözleşme gibi uygun güvenceler veya kanunda sayılan diğer hâller çerçevesinde yapılır. Sitenin barındırılması için GitHub, Inc. (ABD) kullanılır; kurulmuşsa form ve sipariş bildirimleri Google LLC'nin (ABD) altyapısı üzerinden iletilir. Yeni bir hizmet sağlayıcı devreye alındığında bu liste güncellenir.",
+          "Kullanılan bazı hizmet sağlayıcıların sunucuları yurt dışında bulunabilir. Bu durumda aktarım, KVKK'nın 9. maddesine uygun olarak yeterlilik kararı, standart sözleşme gibi uygun güvenceler veya kanunda sayılan diğer hâller çerçevesinde yapılır. Sitenin barındırılması için Vercel Inc. (ABD), form ve sipariş kayıtlarının saklanması için Supabase Inc. altyapısı (veri merkezi Japonya) kullanılır; analiz çerezlerine onay verdiyseniz kullanım istatistikleri Google LLC (ABD) tarafından işlenir. Yeni bir hizmet sağlayıcı devreye alındığında bu liste güncellenir.",
         ],
         ["h", "7. Saklama süresi"],
         [
@@ -89,12 +95,14 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
           "p",
           `Başvurunuzu, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun olarak ve kimliğinizi tespit edici bilgilerle birlikte; yazılı olarak ${COMPANY.address} adresine, ${kepClause}sistemimizde kayıtlı e-posta adresinizden ${COMPANY.email} adresine iletebilirsiniz. Başvurunuz en geç 30 gün içinde ücretsiz olarak sonuçlandırılır. İşlemin ayrıca bir maliyet gerektirmesi hâlinde, Kişisel Verileri Koruma Kurulunca belirlenen tarifedeki ücret alınabilir.`,
         ],
+        ["a", "Veri Talebi Gönderin", `mailto:${COMPANY.email}?subject=${encodeURIComponent("KVKK kapsamında veri talebi")}`],
       ];
     },
   },
 
   gizlilik: {
     t: "Gizlilik Sözleşmesi",
+    archive: "Bu metin, web sitesi paketinin sitede online satın alınabildiği dönemde yayımlanan önceki sürümdür; güncel bilgilendirme için KVKK Aydınlatma Metni ve Veri İşleme ve Güvenlik sayfalarına bakın.",
     b: () => [
       [
         "p",
@@ -160,8 +168,11 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
   },
 
   cerez: {
-    t: "Çerez ve Yerel Depolama Politikası",
+    t: "Çerez Politikası ve Tercihleri",
+    lead: "Sitemizde kullanılan çerez türlerini ve tercihlerinizi nasıl yönetebileceğinizi inceleyin.",
+    u: UPDATED_NOW,
     b: () => [
+      ["widget", "cerez"],
       ["p", "Bu sitede reklam veya pazarlama amaçlı çerez kullanılmaz. Analiz çerezleri ise yalnızca açık onayınızla çalışır (bkz. aşağıda)."],
       ["h", "Kullanılan zorunlu depolama"],
       [
@@ -173,13 +184,14 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         [
           "Sipariş taslağı: formu yarıda bırakırsanız kaldığınız yerden devam edebilmeniz içindir. En fazla 7 gün saklanır ve ödeme tamamlandığında silinir.",
           "Açık sipariş kimliği: sayfayı yenilediğinizde siparişinize dönebilmeniz içindir. Kişisel veri içermez.",
-          "Çerez onayı tercihiniz: \"Kabul Et\" veya \"Reddet\" seçiminizi hatırlamak içindir.",
+          "Çerez tercihiniz: analiz çerezlerine izin verip vermediğinizi hatırlamak içindir.",
+          "Gönderilen form özeti: aynı talebin yanlışlıkla iki kez gönderilmesini önlemek için oturum depolamasında tutulur; tarayıcı sekmesi kapandığında silinir ve form içeriğini değil yalnızca bir özet kodu içerir.",
         ],
       ],
       ["h", "Onaya bağlı analiz çerezleri"],
       [
         "p",
-        "Sitenin alt kısmındaki şeritte \"Kabul Et\"i seçerseniz, ziyaretçi sayısı ve hangi sayfaların ilgi gördüğü gibi anonimleştirilmiş kullanım istatistiklerini ölçmek için Google Analytics çalışır. Bu araç IP adresinizi anonimleştirir, sizi kişisel olarak tanımlamaz ve verileriniz reklam amacıyla kullanılmaz. \"Reddet\"i seçerseniz veya hiçbir seçim yapmazsanız Google Analytics hiç çalışmaz. Google'ın kendi gizlilik uygulamaları için Google Gizlilik Politikası'na bakabilirsiniz.",
+        "Çerez panelinde \"Tümüne İzin Ver\"i seçer veya analiz çerezlerini açarsanız, ziyaretçi sayısı ve hangi sayfaların ilgi gördüğü gibi anonimleştirilmiş kullanım istatistiklerini ölçmek için Google Analytics çalışır. Bu araç IP adresinizi anonimleştirir, sizi kişisel olarak tanımlamaz ve verileriniz reklam amacıyla kullanılmaz. \"Yalnızca Gerekli Çerezler\"i seçerseniz veya hiçbir seçim yapmazsanız Google Analytics hiç çalışmaz. Google'ın kendi gizlilik uygulamaları için Google Gizlilik Politikası'na bakabilirsiniz.",
       ],
       ["h", "Üçüncü taraf kaynaklar"],
       [
@@ -189,13 +201,14 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Tercihlerinizi yönetme"],
       [
         "p",
-        "Yerel depolamayı tarayıcınızın ayarlarından dilediğiniz zaman silebilirsiniz; bu durumda hem tamamlanmamış sipariş taslağınız hem de çerez onayı tercihiniz silinir ve şerit tekrar görünür. Analiz çerezlerini reddetmek, sitenin diğer özelliklerini kullanmanızı hiçbir şekilde etkilemez.",
+        "Yerel depolamayı tarayıcınızın ayarlarından dilediğiniz zaman silebilirsiniz; bu durumda çerez tercihiniz de silinir ve tercih paneli tekrar görünür. Tercihinizi sayfanın altındaki \"Çerez Tercihleri\" bağlantısından da dilediğiniz zaman değiştirebilirsiniz. Analiz çerezlerini reddetmek, sitenin diğer özelliklerini kullanmanızı hiçbir şekilde etkilemez.",
       ],
     ],
   },
 
-  mesafeli: {
-    t: "Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi",
+  "mesafeli-satis-sozlesmesi": {
+    t: "Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi (Web Sitesi Paketi)",
+    archive: "Bu metin, web sitesi paketinin sitede online olarak satın alınabildiği dönemde verilen siparişler için geçerli olan önceki sürümdür. Bu dönemde sipariş veren müşterilerimiz için hükümleri aynen geçerlidir.",
     b: () => [
       ["p", "Bu metin, 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği uyarınca, siparişinizi onaylamadan önce bilgilendirilmeniz amacıyla hazırlanmıştır."],
       ["h", "Ön Bilgilendirme Formu"],
@@ -283,7 +296,8 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
   },
 
   teslimat: {
-    t: "Teslimat ve İade Şartları",
+    t: "Teslimat ve İade Şartları (Web Sitesi Paketi)",
+    archive: "Bu metin, web sitesi paketinin sitede online olarak satın alınabildiği dönemde verilen siparişler için geçerli olan önceki sürümdür.",
     b: () => [
       [
         "p",
@@ -337,19 +351,21 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
     ],
   },
 
-  iade: {
-    t: "İptal ve İade Politikası",
+  "iptal-ve-iade": {
+    t: "İptal ve İade",
+    lead: "Bir hizmeti iptal etmek veya iade talebinde bulunmak için izleyeceğiniz adımları burada bulabilirsiniz.",
+    u: UPDATED_NOW,
     b: () => [
-      ["p", "Bu sayfa, sözleşmedeki iptal ve iade koşullarının kısa bir özetidir."],
+      ["p", "Bu sayfa, sözleşmedeki iptal ve iade koşullarının kısa bir özetidir. Onaylanan hizmete ilişkin özel koşullar teklif ve kapsam belgesinde ayrıca belirtilir."],
       ["h", "Çalışma başlamadan önce"],
       [
         "p",
-        "Sipariş tarihinden itibaren 14 gün içinde, proje formunu göndererek tasarım çalışmasının başlamasını onaylamadıysanız siparişinizi gerekçe göstermeden iptal edebilirsiniz. Ödemenizin tamamı, bildiriminiz bize ulaştıktan sonra en geç 14 gün içinde ödeme yaptığınız araçla iade edilir.",
+        "Sözleşmenin kurulduğu tarihten itibaren 14 gün içinde, çalışmanın başlamasını onaylamadıysanız hizmeti gerekçe göstermeden iptal edebilirsiniz. Ödemenizin tamamı, bildiriminiz bize ulaştıktan sonra en geç 14 gün içinde ödeme yaptığınız araçla iade edilir.",
       ],
       ["h", "Çalışma başladıktan sonra"],
       [
         "p",
-        "Onayınızla tasarım çalışması başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
+        "Onayınızla çalışma başladıktan sonra yasal cayma hakkı kullanılamaz. Buna rağmen iptal talep ederseniz, o ana kadar tamamlanan iş karşılığında orantılı bir bedel düşülerek kalan tutar iade edilir.",
       ],
       ["h", "Yıllık servis ve bakım"],
       [
@@ -359,14 +375,25 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "Teklif ile fiyatlanan işler"],
       ["p", "Size ilettiğimiz teklifi onaylamadığınız sürece herhangi bir ücret alınmaz. Onayladığınız teklifler için de yukarıdaki cayma hakkı kuralları geçerlidir."],
       ["h", "Nasıl başvurulur?"],
-      ["p", `İptal talebinizi sipariş numaranızla birlikte ${COMPANY.email} adresine iletmeniz yeterlidir.`],
+      [
+        "p",
+        `Talebinizi aşağıdaki form veya ${COMPANY.email} adresi üzerinden proje veya sipariş numaranızla iletin. Başvurunuz hizmetin durumu ve geçerli koşullar çerçevesinde değerlendirilerek size bilgi verilir.`,
+      ],
+      ["widget", "iptal"],
     ],
   },
 
-  kosullar: {
-    t: "Kullanım Koşulları",
+  "kullanim-kosullari": {
+    t: "Site Kullanım Koşulları",
+    lead: "Bu sayfa, Vitrinweb web sitesini, örnek ekranları ve etkileşimli demoları kullanırken geçerli olan koşulları açıklar.",
+    u: UPDATED_NOW,
     b: () => [
       ["p", `Bu site ${COMPANY.title} tarafından işletilmektedir. Siteyi kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız.`],
+      ["h", "Site ve demolar"],
+      [
+        "p",
+        "Ürün sayfalarında sunulan örnekler iş akışını tanıtmak amacıyla hazırlanmıştır. Örnek verili demolardaki işletme, kişi, kayıt ve rakamlar kurgusaldır. Örnek verili demoları incelerken işletmenize veya üçüncü kişilere ait gerçek kayıt, belge ve erişim bilgilerini girmeyin; demolarda yaptığınız değişiklikler kaydedilmez ve oturum sonunda sıfırlanır.",
+      ],
       ["h", "1. Site içeriği"],
       [
         "p",
@@ -375,12 +402,12 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       ["h", "2. Bilgilerin doğruluğu"],
       [
         "p",
-        "Sipariş sırasında verdiğiniz bilgilerin doğru ve güncel olmasından siz sorumlusunuz. Sitedeki fiyat ve içerikler önceden haber verilmeksizin güncellenebilir; verilmiş siparişler, sipariş anındaki fiyat ve koşullara tabidir.",
+        "Formlarda ve siparişlerde verdiğiniz bilgilerin doğru ve güncel olmasından siz sorumlusunuz. Sitedeki içerikler önceden haber verilmeksizin güncellenebilir; onaylanmış teklif ve siparişler, onay anındaki fiyat ve koşullara tabidir.",
       ],
       ["h", "3. Bilgilendirme içerikleri"],
       ["p", "Blog yazıları ve diğer bilgilendirme içerikleri genel bilgi amaçlıdır; hukuki, mali veya teknik danışmanlık yerine geçmez."],
       ["h", "4. Dış bağlantılar"],
-      ["p", "Sitede yer alan üçüncü taraf bağlantılarının içeriğinden ve gizlilik uygulamalarından ilgili site sahipleri sorumludur."],
+      ["p", `Üçüncü taraf bağlantılarındaki işlemler ilgili sağlayıcının ortamında yürütülür; bu bağlantıların içeriğinden ve gizlilik uygulamalarından ilgili site sahipleri sorumludur. Kullanım koşulları hakkında ${COMPANY.email} adresinden bize ulaşabilirsiniz.`],
       ["h", "5. Yasaklı kullanım"],
       ["p", "Sitenin güvenliğini tehlikeye atacak, işleyişini bozacak, otomatik yollarla veri toplayacak veya gerçeğe aykırı sipariş oluşturacak kullanımlar yasaktır."],
       ["h", "6. Değişiklikler ve uygulanacak hukuk"],
@@ -388,8 +415,10 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
     ],
   },
 
-  ileti: {
-    t: "Ticari Elektronik İleti Onay Metni",
+  "ticari-ileti": {
+    t: "Ticari Elektronik İleti Tercihleri",
+    lead: "Vitrinweb’den hangi kanallarda tanıtım iletisi almak istediğinizi ve tercihlerinizi nasıl güncelleyebileceğinizi inceleyin.",
+    u: UPDATED_NOW,
     b: () => [
       [
         "p",
@@ -401,17 +430,150 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
         `Onayınızı dilediğiniz zaman, iletilerdeki ret bağlantısıyla, ${COMPANY.email} adresine yazarak veya İYS üzerinden ücretsiz olarak geri alabilirsiniz. Talebiniz en geç 3 iş günü içinde işleme alınır.`,
       ],
       ["p", "Siparişiniz, faturanız ve aldığınız hizmetin kullanımı ve bakımıyla ilgili bilgilendirmeler bu onaydan bağımsız olarak gönderilebilir."],
+      ["h", "Tercihinizi güncelleyin"],
+      ["widget", "ileti"],
+    ],
+  },
+
+  "veri-isleme-ve-guvenlik": {
+    t: "Veri İşleme ve Güvenlik",
+    lead: "Bir ürün veya proje kapsamında hangi verilerin işlendiğini, erişim ve teslim koşullarını nasıl yapılandırdığımızı inceleyin.",
+    u: UPDATED_NOW,
+    b: () => [
+      [
+        "p",
+        "Bu sayfa, kurduğumuz ürünlerde ve yürüttüğümüz projelerde işletmenize ait verilerin nasıl ele alındığını genel hatlarıyla açıklar. Kişisel verilerinizin işlenmesine ilişkin resmi bilgilendirme KVKK Aydınlatma Metni'nde yer alır.",
+      ],
+      ["h", "Hangi verilere ihtiyaç duyulur?"],
+      [
+        "p",
+        "Ürün ve kurulum modeline göre çalışmada kullanılacak kayıtları birlikte tanımlarız. Görüşme Özeti için paylaşımına yetkili olduğunuz kayıt, Belge Okuma için seçilen belge ve alanlar, Müşteri Asistanı için onaylı yanıt kaynakları kapsam belgesinde ayrı ayrı belirtilir. Çalışmanın gerektirmediği veriyi istemeyiz.",
+      ],
+      ["h", "Erişim ve saklama"],
+      [
+        "ul",
+        [
+          "Barındırma konumu, kullanılan hizmet sağlayıcılar, erişim rolleri ve saklama süreleri her ürün ve proje için kapsam belgesinde yazılı olarak tanımlanır.",
+          "Reklam, Google veya pazaryeri hesaplarınız için şifre istemeyiz; erişim, ilgili platformun yetkilendirme adımlarıyla ve yalnızca çalışmanın gerektirdiği en dar izinle verilir. Verdiğiniz izni dilediğiniz an kendi hesabınızdan geri alabilirsiniz.",
+          "Bu sitenin kendi formlarında paylaştığınız bilgiler için kullanılan altyapı KVKK Aydınlatma Metni'nde listelenir.",
+        ],
+      ],
+      ["h", "Hizmet sonunda"],
+      [
+        "p",
+        "Hizmet sona erdiğinde verilerinizin dışa aktarılması, size teslim edilmesi veya silinmesi talebinize göre yapılır; dışa aktarım biçimi ve süresi kapsam belgesinde belirtilir. Fatura gibi yasal saklama yükümlülüğü bulunan kayıtlar ilgili mevzuatta öngörülen süre boyunca saklanır.",
+      ],
+      ["h", "İletişim"],
+      ["p", `Erişim, veri teslimi veya güvenlik bildirimi için ${COMPANY.email} adresinden bize ulaşabilirsiniz.`],
+      ["a", "Destek İçin Yazın", `mailto:${COMPANY.email}?subject=${encodeURIComponent("Vitrinweb veri ve güvenlik talebi")}`],
+    ],
+  },
+
+  "on-bilgilendirme": {
+    t: "Ön Bilgilendirme",
+    lead: "Hizmeti onaylamadan önce sağlayıcı bilgilerini, hizmet kapsamını, teslim ve başvuru koşullarını inceleyin.",
+    u: UPDATED_NOW,
+    b: () => [
+      [
+        "p",
+        "Bu metin, 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği uyarınca, uzaktan iletişim araçlarıyla onaylanan hizmetlerde onayınızdan önce bilgilendirilmeniz amacıyla hazırlanmıştır.",
+      ],
+      ["h", "Sağlayıcı Bilgileri"],
+      ["p", companyLine()],
+      ["h", "Hizmetin Temel Özellikleri"],
+      [
+        "p",
+        "Sunulacak hizmet ve teslimatlar (web sitesi paketi, dijital ürün kurulumu, görsel üretimi, tamamlayıcı hizmet veya işletmeye özel yazılım) onayınıza sunulan yazılı teklif ve kapsam belgesinde ayrıntılı olarak yer alır. Kapsam belgesinde yer almayan işler hizmete dahil değildir.",
+      ],
+      ["h", "Ticari Koşullar"],
+      [
+        "p",
+        "Hizmet bedeli, vergiler, ödeme şekli ve varsa dönemsel ücretler onaya sunulan teklif belgesinde gösterilir. Teklifi onaylamadığınız sürece herhangi bir ücret talep edilmez ve çalışmaya başlanmaz.",
+      ],
+      ["h", "Teslim Koşulları"],
+      [
+        "p",
+        "Teslim süresi ve yöntemi (yayına alma, dosya teslimi veya erişim devri) kapsam belgesinde yazılı olarak belirtilir. Sizden beklenen içerik ve onayların gecikmesi teslim takvimini aynı ölçüde uzatır.",
+      ],
+      ["h", "Cayma Hakkı ve İstisnalar"],
+      [
+        "p",
+        `Hizmeti tüketici sıfatıyla alıyorsanız, sözleşmenin kurulduğu günden itibaren 14 gün içinde herhangi bir gerekçe göstermeksizin ve cezai şart ödemeksizin cayabilirsiniz. Cayma bildiriminizi bu süre içinde ${COMPANY.email} adresine iletmeniz yeterlidir; ödemeniz, bildiriminiz bize ulaştıktan sonra en geç 14 gün içinde ödemede kullandığınız araçla iade edilir.`,
+      ],
+      [
+        "p",
+        "Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca, cayma süresi dolmadan önce onayınızla ifasına başlanan hizmetlerde cayma hakkı kullanılamaz. Çalışma, başlamasını açıkça onaylamanızla başlar; bu onayı vermediğiniz sürece cayma hakkınız devam eder.",
+      ],
+      ["h", "Başvuru Yolları"],
+      [
+        "p",
+        `Şikâyetlerinizi ${COMPANY.email} adresine iletebilirsiniz. Uyuşmazlık hâlinde, Ticaret Bakanlığınca her yıl belirlenen parasal sınırlar dahilinde, yerleşim yerinizdeki veya işlemi yaptığınız yerdeki Tüketici Hakem Heyetine ya da Tüketici Mahkemesine başvurabilirsiniz.`,
+      ],
+    ],
+  },
+
+  mesafeli: {
+    t: "Mesafeli Hizmet Sözleşmesi",
+    lead: "Onaylanan hizmetin kapsamı, tarafların bilgileri ve uygulanabilir tüketici hakları bu sözleşmede düzenlenir.",
+    u: UPDATED_NOW,
+    b: () => [
+      ["h", "Taraflar"],
+      ["p", `Sağlayıcı: ${companyLine()} Müşteri: teklif veya sipariş onayında bilgileri yer alan kişi ya da işletme.`],
+      ["h", "Hizmet Kapsamı"],
+      [
+        "p",
+        "Sözleşmenin konusu, müşterinin uzaktan iletişim araçlarıyla onayladığı hizmettir. Hizmetin teslimatları, takvimi, revizyon sınırları ve kapsam dışında kalan işler onaylanan teklif ve kapsam belgesinde belirtilir; Ön Bilgilendirme metni ve kapsam belgesi bu sözleşmenin ayrılmaz parçasıdır.",
+      ],
+      ["h", "Onaylanan Ticari Koşullar"],
+      [
+        "p",
+        "Hizmet bedeli, ödeme şekli ve varsa dönemsel ücretler onaylanan teklifteki gibidir. Kapsam dışı ücretli işe, bedeli müşteri tarafından yazılı olarak onaylanmadan başlanmaz.",
+      ],
+      ["h", "Teslim ve Kabul"],
+      [
+        "ul",
+        [
+          "Sağlayıcı, hizmeti kapsam belgesinde belirtilen nitelik ve takvimde, özenle sunar.",
+          "Müşteri, çalışmada kullanılacak içerik ve erişimleri zamanında iletir ve bu içeriklerin üçüncü kişilerin fikri mülkiyet ve kişilik haklarını ihlal etmediğini taahhüt eder. İçeriklerin gecikmesi teslim takvimini aynı ölçüde uzatır.",
+          "Teslim, kapsam belgesinde tanımlanan yöntemle (yayına alma, dosya teslimi veya erişim devri) yapılır ve müşteriye yazılı olarak bildirilir.",
+        ],
+      ],
+      ["h", "Destek"],
+      ["p", "Kullanım eğitimi, hata bildirimi, bakım ve ek geliştirme koşulları kapsam belgesinde yazılı olarak tanımlanır."],
+      ["h", "İptal ve İade"],
+      ["p", "Cayma hakkı ve iade koşulları Ön Bilgilendirme metninde ve İptal ve İade sayfasında belirtildiği gibidir."],
+      ["h", "Başvurular"],
+      [
+        "p",
+        `Talep ve şikâyetler için ${COMPANY.email} adresine yazabilirsiniz. Bu sözleşmeden doğan uyuşmazlıklarda Türk hukuku uygulanır; tüketici işlemlerinde Tüketici Hakem Heyetleri ve Tüketici Mahkemeleri yetkilidir.`,
+      ],
+      ["h", "Yürürlük"],
+      ["p", "Sözleşme, müşterinin teklifi ve bu koşulları elektronik ortamda veya yazılı olarak onaylamasıyla kurulur."],
     ],
   },
 };
 
 export const LEGAL_LINKS: [string, string][] = [
   ["kvkk", "KVKK Aydınlatma Metni"],
-  ["gizlilik", "Gizlilik Sözleşmesi"],
   ["cerez", "Çerez Politikası"],
-  ["mesafeli", "Mesafeli Satış Sözleşmesi"],
-  ["teslimat", "Teslimat ve İade Şartları"],
-  ["iade", "İptal ve İade Politikası"],
-  ["kosullar", "Kullanım Koşulları"],
-  ["ileti", "Ticari Elektronik İleti Onayı"],
+  ["kullanim-kosullari", "Kullanım Koşulları"],
+  ["veri-isleme-ve-guvenlik", "Veri İşleme ve Güvenlik"],
+  ["on-bilgilendirme", "Ön Bilgilendirme Formu"],
+  ["mesafeli", "Mesafeli Hizmet Sözleşmesi"],
+  ["iptal-ve-iade", "İptal ve İade"],
+  ["ticari-ileti", "Ticari Elektronik İleti Tercihleri"],
 ];
+
+/** Önceki sürümler: eski siparişler için yürürlükte kalan metinler. */
+export const LEGAL_ARCHIVE: [string, string][] = [
+  ["mesafeli-satis-sozlesmesi", "Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi (Web Sitesi Paketi)"],
+  ["teslimat", "Teslimat ve İade Şartları (Web Sitesi Paketi)"],
+  ["gizlilik", "Gizlilik Sözleşmesi"],
+];
+
+/** Eski adresler ve sipariş akışındaki kısa adlar. */
+export const LEGAL_ALIASES: Record<string, string> = {
+  kosullar: "kullanim-kosullari",
+  iade: "iptal-ve-iade",
+  ileti: "ticari-ileti",
+};

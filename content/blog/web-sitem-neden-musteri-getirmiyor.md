@@ -95,7 +95,7 @@ En sık gözden kaçan sorun budur. Müşteri ikna olmuştur, ama sizi aramak i�
 Son madde sitenin değil işletmenin elindedir, ama sonucu doğrudan etkiler: Saatlerce cevapsız kalan bir mesaj, rakibinize giden bir müşteridir.
 
 > [!vitrin] Hangi sayfanın mesaj getirdiğini görmek
-> Vitrinweb'in kurduğu her sitede WhatsApp bağlantısı [temel pakete](/ucretlendirme) dahil ve ziyaretçi tek dokunuşla size yazabiliyor. Kendi blogumuzda bunu bir adım ileri götürdük: Yazıların altındaki "Bilgi Al" butonu WhatsApp'ı, okunan yazının adını içeren hazır bir mesajla açıyor. Böylece gelen her mesajda, kişinin hangi yazıyı okuduktan sonra yazdığını görüyoruz. Ziyaretçi çerezlere onay verdiyse buton tıklamaları istatistik aracına da işleniyor. Hangi sayfanın gerçekten iletişim getirdiğini bilmek, neyin işe yaradığını tahmin etmekten çok daha değerli.
+> Vitrinweb'in kurduğu her sitede WhatsApp bağlantısı [temel pakete](/urunler/web-sitesi-paketi) dahil ve ziyaretçi tek dokunuşla size yazabiliyor. Kendi blogumuzda bunu bir adım ileri götürdük: Yazıların altındaki "Bilgi Al" butonu WhatsApp'ı, okunan yazının adını içeren hazır bir mesajla açıyor. Böylece gelen her mesajda, kişinin hangi yazıyı okuduktan sonra yazdığını görüyoruz. Ziyaretçi çerezlere onay verdiyse buton tıklamaları istatistik aracına da işleniyor. Hangi sayfanın gerçekten iletişim getirdiğini bilmek, neyin işe yaradığını tahmin etmekten çok daha değerli.
 
 [[cta]]
 

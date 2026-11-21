@@ -259,7 +259,41 @@ const COVERS = {
         : `<rect x="${x - 26}" y="${y - 22}" width="52" height="36" rx="12" fill="${C.ink}"/><path d="M${x - 14} ${y + 14} l-4 14 l18 -14" fill="${C.ink}"/>`;
       return box + g;
     }).join("")}`,
+  "urun-fotografi-cekerken-nelere-dikkat-etmeli": () => `
+    ${ground(760, 360, 1240)}
+    <rect x="380" y="200" width="250" height="330" rx="12" fill="${C.white}" ${st()}/><path d="M505 200v330M380 365h250" ${st(5)}/>
+    <g ${st(4, C.soft)}><path d="M640 300 L760 380"/><path d="M640 360 L770 430"/><path d="M640 420 L760 480"/></g>
+    <rect x="560" y="640" width="480" height="24" rx="12" fill="${C.line}" ${st(5)}/>
+    ${shadow(760, 640, 70, 10)}
+    <rect x="732" y="420" width="56" height="56" rx="16" fill="${C.ink}"/><rect x="740" y="470" width="40" height="26" rx="4" fill="${C.ink2}"/>
+    <rect x="712" y="490" width="96" height="150" rx="22" fill="${C.white}" ${st()}/><rect x="728" y="530" width="64" height="66" rx="6" fill="${C.line}"/>
+    <path d="M744 552h32M744 568h22" ${st(5, C.ink2)}/>
+    ${phone(960, 330, 200, 360, `<rect x="980" y="380" width="160" height="230" rx="12" fill="${C.line}"/>
+      <path d="M1000 400h24M1000 400v24M1120 400h-24M1120 400v24M1000 590h24M1000 590v-24M1120 590h-24M1120 590v-24" ${st(5)}/>
+      <rect x="1044" y="452" width="32" height="96" rx="10" fill="${C.ink}"/><circle cx="1060" cy="650" r="18" fill="${C.white}" ${st(5)}/>`)}
+    <path d="M900 520 q30 -40 60 -40" ${st(4, C.soft)} stroke-dasharray="4 12" fill="none"/>`,
+  "meta-reklam-raporunda-hangi-rakamlara-bakmali": () => `
+    ${ground()}
+    ${browser(420, 200, 760, 520, `
+      ${[0, 1, 2].map((i) => `<rect x="${450 + i * 240}" y="${278}" width="220" height="110" rx="18" fill="${i === 1 ? C.ink : C.line}"/>${bar(472 + i * 240, 304, 90, 12, C.soft)}${bar(472 + i * 240, 336, 140, 26, i === 1 ? C.white : C.ink)}`).join("")}
+      <rect x="450" y="410" width="700" height="280" rx="18" fill="${C.white}" ${st(5)}/>
+      ${[0.42, 0.6, 0.5, 0.72, 0.9, 0.66, 0.46].map((h, i) => `<rect x="${490 + i * 92}" y="${670 - h * 220}" width="52" height="${h * 220}" rx="10" fill="${i === 4 ? C.ink : C.line2}"/>`).join("")}
+      <path d="M516 560 L608 520 L700 540 L792 480 L884 440 L976 470 L1068 520" ${st(6, C.ink2)} fill="none"/>
+      ${[516, 608, 700, 792, 884, 976, 1068].map((x, i) => `<circle cx="${x}" cy="${[560, 520, 540, 480, 440, 470, 520][i]}" r="9" fill="${C.white}" ${st(5, C.ink2)}/>`).join("")}`)}
+    ${checkBadge(1180, 250, 40)}`,
+  "stok-tablosunu-duzenlerken-nereden-baslamali": () => `
+    ${ground()}
+    <rect x="380" y="220" width="520" height="440" rx="22" fill="${C.white}" ${st()}/>
+    <rect x="380" y="220" width="520" height="70" rx="22" fill="${C.ink}"/><rect x="380" y="260" width="520" height="30" fill="${C.ink}"/>
+    ${[0, 1, 2].map((c) => bar(410 + c * 170, 248, 110, 14, C.soft)).join("")}
+    ${[0, 1, 2, 3, 4].map((r) => `<path d="M380 ${360 + r * 60}H900" ${st(4, C.line2)}/>${bar(410, 322 + r * 60, 90, 14)}${bar(580, 322 + r * 60, 120, 14)}${bar(770, 322 + r * 60, 60, 14, r === 1 ? C.ink : C.line)}`).join("")}
+    <path d="M550 290V660M740 290V660" ${st(4, C.line2)}/>
+    ${shadow(1080, 760, 120)}
+    <path d="M990 600 l90 -36 l90 36 l-90 36z" fill="${C.white}" ${st()}/><path d="M990 600 v118 l90 36 l90 -36 v-118M1080 636v118" fill="${C.white}" ${st()}/>
+    <path d="M1100 660v56M1112 656v52M1124 652v58M1138 646v44M1150 642v52" ${st(5)}/>
+    ${phone(1000, 200, 170, 290, `<rect x="1020" y="250" width="130" height="110" rx="12" fill="${C.line}"/><path d="M1030 305H1140" ${st(5, C.ink2)}/>${bar(1020, 380, 110, 14)}${bar(1020, 410, 80, 14)}${bar(1020, 444, 130, 28, C.ink)}`)}`,
 };
+
 
 /* ---------- üretim ---------- */
 /* Çizimler 1600x900 tuvalde tasarlandı; kartlarda okunur olsun diye ortadan %12 büyütülür. */

@@ -1,90 +1,110 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-import { Icon } from "@/components/icons";
-import { InstaLink, Logo } from "@/components/header";
-import { COMPANY, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
+import { openCookiePrefs } from "@/components/cookie-consent";
+import { Logo } from "@/components/header";
+import { BRAND_TEXT } from "@/data/agency";
+import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
-import { BASE_PRICE, TL, VAT_NOTE } from "@/lib/config";
-import { BASE_PATH } from "@/lib/site";
-import { SectionLink } from "@/components/section-link";
+import { menuProducts } from "@/data/products";
 
 export function Footer() {
+  const year = new Date().getFullYear();
+  const [kvkk, cerez, ...restLegal] = LEGAL_LINKS;
   return (
     <footer className="ftr">
       <div className="container-x">
         <div className="ftr-in">
           <div className="ftr-brand">
             <Logo />
-            <p className="fine">
-              İşletmenizin dijital vitrini. Temel web sitesi {TL(BASE_PRICE)} ({VAT_NOTE}), ilk yıl servis ve bakım
-              ücretsiz, taahhüt yok.
-            </p>
-            <InstaLink cls="ftr-ig" label="Instagram'da bizi takip edin" />
-            {PHONE_DIGITS && (
-              <div className="ftr-contacts">
-                <a className="ftr-ig" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                  <Icon n="whatsapp" size={18} />
-                  <span>WhatsApp</span>
-                </a>
-                <a className="ftr-ig" href={`tel:+${PHONE_DIGITS}`}>
-                  <Icon n="phone" size={18} />
-                  <span>{COMPANY.phone}</span>
-                </a>
-              </div>
-            )}
+            <p className="fine">{BRAND_TEXT}</p>
           </div>
           <div>
-            <h2 className="ftr-h">Sayfalar</h2>
+            <h2 className="ftr-h">Ürünler</h2>
             <ul>
               <li>
-                <Link href="/neden">Neden web sitesi?</Link>
+                <Link href="/urunler">Tüm Ürünler</Link>
+              </li>
+              {menuProducts().map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/urunler/${p.slug}`}>{p.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="ftr-h">Vitrinweb</h2>
+            <ul>
+              <li>
+                <Link href="/hakkimizda">Hakkımızda</Link>
               </li>
               <li>
-                <Link href="/ucretlendirme">Ücretlendirme</Link>
+                <Link href="/nasil-calisiyoruz">Nasıl Çalışıyoruz?</Link>
+              </li>
+              <li>
+                <Link href="/demolar">Demolar</Link>
+              </li>
+              <li>
+                <Link href="/sektorler">Sektörler</Link>
+              </li>
+              <li>
+                <Link href="/girisim-programi">Girişimlere Destek</Link>
               </li>
               <li>
                 <Link href="/blog">Blog</Link>
               </li>
-              <li>
-                <Link href="/brosur">Tanıtım broşürü</Link>
-              </li>
-              <li>
-                <Link href="/icerik-politikasi">İçerik Politikası</Link>
-              </li>
-              <li>
-                <SectionLink id="sss">Sık sorulan sorular</SectionLink>
-              </li>
+            </ul>
+            <h2 className="ftr-h ftr-h2">İletişim</h2>
+            <ul>
               <li>
                 <Link href="/iletisim">İletişim</Link>
               </li>
               <li>
-                <Link href="/girisim-programi">Girişim Destek Programı</Link>
+                <Link href="/kesif-gorusmesi">Keşif Görüşmesi</Link>
+              </li>
+              {PHONE_DIGITS && (
+                <li>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                    WhatsApp
+                  </a>
+                </li>
+              )}
+              <li>
+                <a href={`mailto:${COMPANY.email}`}>E-posta</a>
               </li>
               <li>
-                <Link href="/hakkimizda">Hakkımızda</Link>
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+                  Instagram
+                </a>
               </li>
             </ul>
           </div>
           <div>
             <h2 className="ftr-h">Yasal</h2>
             <ul>
-              {LEGAL_LINKS.map(([id, label]) => (
+              {[kvkk, cerez].map(([id, label]) => (
                 <li key={id}>
                   <Link href={`/yasal/${id}`}>{label}</Link>
                 </li>
               ))}
               <li>
-                <Link href="/hakkimizda">Şirket Bilgileri</Link>
+                <button type="button" className="ftr-btn" onClick={openCookiePrefs}>
+                  Çerez Tercihleri
+                </button>
               </li>
+              {restLegal.map(([id, label]) => (
+                <li key={id}>
+                  <Link href={`/yasal/${id}`}>{label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
         <div className="ftr-b">
-          <p className="fine">© 2026 {COMPANY.brand}. Tüm hakları saklıdır.</p>
+          <p className="fine">© {year} Vitrinweb. Tüm hakları saklıdır.</p>
           <p className="fine">
-            <Icon n="lock" size={14} /> Ödemeler lisanslı ödeme kuruluşu üzerinden, güvenli bağlantıyla alınır.
+            {COMPANY.title} · <Link href="/hakkimizda#sirket-bilgileri">Şirket Bilgileri</Link>
           </p>
-          <Image className="pay-badge" src={`${BASE_PATH}/odeme-yontemleri.png`} alt="iyzico ile Öde — Mastercard, Visa, American Express, Troy" width={429} height={32} />
         </div>
       </div>
     </footer>

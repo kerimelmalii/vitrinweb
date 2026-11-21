@@ -63,7 +63,7 @@ Bu rakamlar büyük markalara ait ve her işletmede aynı sonucu vermez. Ama yö
 - **Ana görselin geç yüklenmesi:** Sayfanın en üstündeki ana görsel "sonradan yükle" (lazy load) olarak ayarlanırsa, LCP gereksiz yere uzar.
 
 > [!vitrin] Bu sitede hız için yaptıklarımız
-> Okuduğunuz sayfa da dahil Vitrinweb'in kendi sitesinde şu kuralları uyguluyoruz: Yazı tipini başka bir sunucudan değil kendi sunucumuzdan yüklüyoruz, böylece ziyaretçinin tarayıcısı üçüncü bir taraf beklemiyor. Görseller ekran boyutuna göre otomatik küçültülüp WebP olarak sunuluyor; bu blogdaki her kapak görselinin dosya boyutu yaklaşık 10 KB. Görsellerin boyutları önceden belirli, bu yüzden sayfa yüklenirken içerik kaymıyor. Ziyaretçi istatistiği betiği de yalnızca çerez onayı verildikten sonra yükleniyor. Müşterilerimiz için kurduğumuz sitelerde de aynı yaklaşımla çalışıyoruz; paketin içeriğini [ücretlendirme sayfamızda](/ucretlendirme) görebilirsiniz.
+> Okuduğunuz sayfa da dahil Vitrinweb'in kendi sitesinde şu kuralları uyguluyoruz: Yazı tipini başka bir sunucudan değil kendi sunucumuzdan yüklüyoruz, böylece ziyaretçinin tarayıcısı üçüncü bir taraf beklemiyor. Görseller ekran boyutuna göre otomatik küçültülüp WebP olarak sunuluyor; bu blogdaki her kapak görselinin dosya boyutu yaklaşık 10 KB. Görsellerin boyutları önceden belirli, bu yüzden sayfa yüklenirken içerik kaymıyor. Ziyaretçi istatistiği betiği de yalnızca çerez onayı verildikten sonra yükleniyor. Müşterilerimiz için kurduğumuz sitelerde de aynı yaklaşımla çalışıyoruz; paketin içeriğini [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi) görebilirsiniz.
 
 [[cta]]
 

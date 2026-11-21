@@ -100,6 +100,21 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: "",
   },
+
+  /* Ajans dönüşümünde kaldırılan veya adı değişen sayfalar. /siparis/tamamlandi, /icerik-formu ve
+     ödeme API'leri bilerek yönlendirilmez: eski siparişlerin bağlantıları çalışmaya devam eder. */
+  async redirects() {
+    return [
+      { source: "/ucretlendirme", destination: "/bilgi-al?urun=web-sitesi-paketi", permanent: true },
+      { source: "/siparis", destination: "/bilgi-al?urun=web-sitesi-paketi", permanent: true },
+      { source: "/neden", destination: "/neden-web-sitesi", permanent: true },
+      { source: "/urunler/web-sitesi", destination: "/urunler/web-sitesi-paketi", permanent: true },
+      { source: "/urunler/ozel-cozumler", destination: "/isletmeye-ozel", permanent: true },
+      { source: "/yasal/kosullar", destination: "/yasal/kullanim-kosullari", permanent: true },
+      { source: "/yasal/iade", destination: "/yasal/iptal-ve-iade", permanent: true },
+      { source: "/yasal/ileti", destination: "/yasal/ticari-ileti", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

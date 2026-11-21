@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { BASE_PRICE, money } from "@/lib/config";
-
-export const SITE_TITLE = `${money(BASE_PRICE)} TL'ye profesyonel web sitesi`;
-export const SITE_OG_DESCRIPTION = "Modern, hızlı ve mobil uyumlu web siteniz. İlk yıl servis ve bakım ücreti yok.";
+export const SITE_TITLE = "Vitrinweb | İşletmeler İçin Dijital Ürünler ve Özel Yazılım";
+export const SITE_OG_DESCRIPTION =
+  "Markanızı güçlendiren web siteleri, ürün görsel stüdyosu, reklam raporlama ve stok takibi araçları ile işletmenize özel yazılım çözümlerini keşfedin.";
 
 type OpenGraph = NonNullable<Metadata["openGraph"]>;
 

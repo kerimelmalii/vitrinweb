@@ -8,11 +8,13 @@ export function Modal({
   title,
   onClose,
   wide,
+  size,
   children,
 }: {
   title: string;
   onClose: () => void;
   wide?: boolean;
+  size?: "xl";
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -41,7 +43,7 @@ export function Modal({
       }}
     >
       <div
-        className={"mdl " + (wide ? "wide" : "")}
+        className={"mdl " + (wide ? "wide " : "") + (size === "xl" ? "xl" : "")}
         role="dialog"
         aria-modal="true"
         aria-label={title}

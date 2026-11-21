@@ -1,6 +1,8 @@
 import { BLOG } from "@/data/blog";
 import { LEGAL_LINKS } from "@/data/legal";
-import { BASE_PRICE, money } from "@/lib/config";
+import { PRODUCTS } from "@/data/products";
+import { SECTORS } from "@/data/sectors";
+import { SERVICES } from "@/data/services";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -14,19 +16,36 @@ function build(): string {
   const lines: string[] = [
     "# Vitrinweb",
     "",
-    `> Türkiye'deki işletmeler için ${money(BASE_PRICE)} TL'ye profesyonel, mobil uyumlu web sitesi kuran bir ajans. İlk yıl servis ve bakım ücretsiz, taahhüt yok.`,
+    "> Vitrinweb; işletmeler için yüksek standartlı web siteleri, operasyonları hızlandıran hazır dijital ürünler ve iş süreçlerine özel yazılımlar geliştirir.",
     "",
     "## Sayfalar",
     "",
-    `- [Anasayfa](${SITE_URL}/): Fiyat, süreç, yıllık servis, sık sorulan sorular ve sipariş başlangıcı.`,
-    `- [Neden web sitesi?](${SITE_URL}/neden): Bir web sitesinin işletmelere sağladığı faydalar, verilerle.`,
-    `- [Ücretlendirme](${SITE_URL}/ucretlendirme): Temel paket ve ek özellik fiyatları.`,
-    `- [Blog](${SITE_URL}/blog): Web sitesi, SEO ve dijital görünürlük üzerine yazılar.`,
-    `- [İletişim](${SITE_URL}/iletisim): İletişim formu, e-posta ve Instagram.`,
-    `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine %2 hisse karşılığında web sitesi, bakım ve SEO desteği.`,
-    `- [İşgale Hayır!](${SITE_URL}/isgale-hayir): Filistin ve Doğu Türkistan için farkındalık sayfası.`,
-    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in misyonu, vizyonu, değerleri ve şirket bilgileri.`,
+    `- [Ana Sayfa](${SITE_URL}/): Ürünler, çalışma şekli ve sık sorulan sorular.`,
+    `- [Ürünler](${SITE_URL}/urunler): Dokuz dijital ürünün kataloğu.`,
+    `- [İşletmeye Özel Çözümler](${SITE_URL}/isletmeye-ozel): Yönetim paneli, süreç otomasyonu ve sistem entegrasyonu.`,
+    `- [Tamamlayıcı Hizmetler](${SITE_URL}/hizmetler): Google profil, WhatsApp karşılama, online randevu ve diğer hizmetler.`,
+    `- [Demolar](${SITE_URL}/demolar): Örnek veriyle çalışan etkileşimli demolar.`,
+    `- [Sektörler](${SITE_URL}/sektorler): Sektöre göre önerilen çözümler.`,
+    `- [Nasıl Çalışıyoruz?](${SITE_URL}/nasil-calisiyoruz): Keşif, kapsam, pilot ve teslim süreci.`,
+    `- [Neden web sitesi?](${SITE_URL}/neden-web-sitesi): Kurumsal web sitesinin işletmeye katkıları.`,
+    `- [Bilgi Alın](${SITE_URL}/bilgi-al): Ürün veya hizmet için bilgi talebi formu.`,
+    `- [Blog](${SITE_URL}/blog): Ürün fotoğrafı, reklam raporlama, stok düzeni, web sitesi ve yerel görünürlük rehberleri.`,
+    `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine kademeli hak edilen %2 pay karşılığında web sitesi, 12 ay bakım ve SEO desteği.`,
+    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in hikâyesi, kurucusu ve şirket bilgileri.`,
+    `- [İletişim](${SITE_URL}/iletisim): Yeni proje, destek ve iş birliği kanalları.`,
     `- [İçerik Politikası](${SITE_URL}/icerik-politikasi): Blog yazılarının nasıl hazırlandığı, yapay zekâ kullanımı ve kaynak seçimi.`,
+    "",
+    "## Ürünler",
+    "",
+    ...PRODUCTS.map((p) => `- [${p.name}](${SITE_URL}/urunler/${p.slug}): ${p.description}`),
+    "",
+    "## Tamamlayıcı hizmetler",
+    "",
+    ...SERVICES.map((s) => `- [${s.name}](${SITE_URL}/hizmetler/${s.slug}): ${s.description}`),
+    "",
+    "## Sektörler",
+    "",
+    ...SECTORS.map((s) => `- [${s.name}](${SITE_URL}/sektorler/${s.slug}): ${s.description}`),
     "",
     "## Blog yazıları",
     "",

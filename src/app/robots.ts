@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/siparis", "/baslangic", "/admin"],
+      disallow: ["/siparis", "/baslangic", "/admin", "/icerik-formu", "/proje-baslangic", "/bakim", "/og-kart"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

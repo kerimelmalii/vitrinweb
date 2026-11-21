@@ -121,7 +121,7 @@ Boş kalan hücreler, firmaya sormanız gereken soruları gösterir. En düşük
 | Sizi aceleye getiren "bugüne özel" indirimler | Karşılaştırma yapmanızın engellenmesi |
 
 > [!vitrin] Bu soruları kendimize de soruyoruz
-> Vitrinweb'de yukarıdaki soruların çoğunun cevabını sipariş öncesinde sitede yazılı olarak veriyoruz: Temel paket KDV dahil 10.000 TL ve neyin dahil olduğu listeli; ek özelliklerin fiyatları açık; ilk yıl servis ve bakım ücretsiz, ikinci yıl ücreti 1.000 TL ve sonraki yıllarda enflasyon oranında güncelleniyor, yenilemeden önce bildiriliyor. Taahhüt yok. Mesafeli satış sözleşmesi ile iptal ve iade politikası sitede yayında; ödeme lisanslı ödeme kuruluşu üzerinden alınıyor ve kart bilgileri bizim sistemlerimizde saklanmıyor. Google'da belirli bir sırayı garanti etmiyoruz, çünkü bunu kimse dürüstçe garanti edemez. Tüm ayrıntılar [ücretlendirme sayfamızda](/ucretlendirme).
+> Vitrinweb'de yukarıdaki soruların çoğunun cevabını sipariş öncesinde sitede yazılı olarak veriyoruz: Temel paket KDV dahil 10.000 TL ve neyin dahil olduğu listeli; ek özelliklerin fiyatları açık; ilk yıl servis ve bakım ücretsiz, ikinci yıl ücreti 1.000 TL ve sonraki yıllarda enflasyon oranında güncelleniyor, yenilemeden önce bildiriliyor. Taahhüt yok. Mesafeli satış sözleşmesi ile iptal ve iade politikası sitede yayında; ödeme lisanslı ödeme kuruluşu üzerinden alınıyor ve kart bilgileri bizim sistemlerimizde saklanmıyor. Google'da belirli bir sırayı garanti etmiyoruz, çünkü bunu kimse dürüstçe garanti edemez. Tüm ayrıntılar [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi).
 
 [[cta]]
 

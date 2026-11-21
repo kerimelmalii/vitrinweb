@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = getPost(slug);
   if (!post) return {};
   return {
-    title: post.seoTitle,
+    title: post.seoTitle.includes("Vitrinweb") ? { absolute: post.seoTitle } : post.seoTitle,
     description: post.description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: openGraph(
@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE_URL },
+      { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: SITE_URL },
       { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
       { "@type": "ListItem", position: 3, name: post.title, item: url },
     ],

@@ -1,13 +1,22 @@
 # Vitrin
 
-**Kasım 2026'dan itibaren ajans sitesi:** Vitrinweb işletmelere dijital çözümler sunar. Ürünler
-`src/data/products.ts`'te (Meta Reklam Paneli, Depo ve Stok Takibi, Ürün Görsel Stüdyosu, Müşteri
-Bulma Aracı, Web Sitesi, İşletmeye Özel Çözümler); `/urunler` listeler, her ürünün sayfası
-`/urunler/[slug]` (`src/components/products.tsx`). Ürün ekranları `src/components/product-screen.tsx`'te
-SVG olarak çizilir, tüm adlar ve rakamlar örnektir. Web sitesi paketi bu ürünlerden biridir ve
-aşağıdaki sipariş/ödeme altyapısı yalnızca onun içindir; diğer ürünlerin çağrısı "Bilgi Alın"
-(`/iletisim?konu=<ürün>`, konu alanı önceden dolar) ve WhatsApp'tır.
+**Kasım 2026'dan itibaren ajans sitesi** ("Vitrinweb Kurumsal Ajans Sitesi Metinleri" belgesine göre).
+Veri: `src/data/products.ts` (9 ürün, her birinin `status` alanı — hazir/pilot/gelistiriliyor — etiketi ve
+ana buton metnini belirler; yayın durumu değişince yalnızca bu alan güncellenir), `services.ts` (8
+tamamlayıcı hizmet, `/hizmetler/[slug]`), `sectors.ts` (6 sektör, `/sektorler/[slug]`), `cases.ts`
+(izinli uygulama örnekleri, `/uygulamalar/[slug]`; boşken hiçbir sayfa/bölüm görünmez — uydurma vaka
+eklenmez), `agency.ts` (menü, ana sayfa, süreç, SSS, kurucu). Çizimler `src/components/art.tsx`'te saf SVG
+(kanca yok, sunucuda da çalışır); etkileşimli demolar `src/components/demos.tsx` (yalnızca tarayıcıda,
+örnek veri, hiçbir istek atmaz). Ürün paylaşım görselleri `public/og/<slug>.png`: `OG_KART=1 npx next
+start -p 3123` + `node scripts/og-gorselleri.mjs` ile yeniden üretilir (ürün ekranı değişince).
+Tüm çağrılar `/bilgi-al?urun=<slug>` (ayrıca `&hizmet=`, `&sektor=`, `&not=`) veya `/kesif-gorusmesi`;
+formlar `/api/contact`'a `kind` = bilgi | kesif | proje | iptal | ileti (+ eski iletisim, girisim) ile gider.
+**Online satın alma kapalı:** `/siparis` ve `/ucretlendirme` `next.config.ts` yönlendirmeleriyle
+`/bilgi-al`'a gider; `/siparis/tamamlandi`, `/icerik-formu` ve iyzico API'leri eski siparişler için
+çalışır durumda tutulur. Yeni web sitesi projelerinin içerik formu `/proje-baslangic` (proje numarası ile).
+Eski yasal metinler (web sitesi paketi sözleşmesi vb.) `/yasal/` altında "Önceki sürümler" olarak durur.
 
+Aşağıdaki not online satışın açık olduğu dönemden kalmadır; altyapı hâlâ kodda.
 Web sitesi paketi: tek paket (10.000 TL). Next.js 16 (App Router) +
 TypeScript, **Vercel'de Next.js server olarak çalışır** (statik export değil — `src/app/api/`
 altında gerçek server route'lar var: sipariş oluşturma, ödeme başlatma/doğrulama, içerik formu).

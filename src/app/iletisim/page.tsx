@@ -1,29 +1,21 @@
-import type { Metadata } from "next";
-import { ContactPage } from "@/components/contact-page";
+import { ContactPage } from "@/components/pages";
+import { breadcrumbLd } from "@/components/ui";
 import { safeJsonLd } from "@/lib/json-ld";
+import { pageMeta } from "@/lib/page-meta";
 import { SITE_URL } from "@/lib/site";
-import { openGraph } from "@/lib/open-graph";
 
-export const metadata: Metadata = {
-  title: "İletişim",
-  description: "Sorularınız için e-posta veya Instagram'dan doğrudan bize ulaşın.",
-  alternates: { canonical: "/iletisim" },
-  openGraph: openGraph("/iletisim"),
-};
+export const metadata = pageMeta(
+  "/iletisim",
+  "İletişim | Vitrinweb",
+  "Yeni projeler, mevcut sipariş ve teknik destek talepleri ile iş birliği konuları için Vitrinweb ekibine ulaşın.",
+);
 
-const breadcrumbLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "İletişim", item: `${SITE_URL}/iletisim` },
-  ],
-};
+const ld = breadcrumbLd(SITE_URL, [{ name: "İletişim", path: "/iletisim" }]);
 
 export default function Page() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(ld) }} />
       <ContactPage />
     </>
   );

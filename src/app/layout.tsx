@@ -9,13 +9,13 @@ import "./globals.css";
 
 /* Google aramada ~155-160 karakterden sonra kırpıyor; bu yüzden en önemli bilgiler ilk 130 karaktere sığdırılıyor. */
 const SITE_DESCRIPTION =
-  "İşletmelere dijital çözümler: Meta reklam paneli, depo ve stok takibi, ürün görselleri, müşteri bulma ve web sitesi. Ücretsiz ön görüşme.";
+  "Markanızı güçlendiren web siteleri, ürün görsel stüdyosu, reklam raporlama ve stok takibi araçları ile işletmenize özel yazılım çözümlerini keşfedin.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   /* Marka ("Vitrinweb") henüz aranan bir isim değil; asıl teklifin başlıkta önce gelmesi, tıklama
      ve alaka skorunu markanın önde olmasından daha çok artırır. Diğer sayfalarda da bu sırada. */
-  title: { default: `${SITE_TITLE} | Vitrinweb`, template: "%s | Vitrinweb" },
+  title: { default: "Vitrinweb | İşletmeler İçin Dijital Ürünler ve Özel Yazılım", template: "%s | Vitrinweb" },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: openGraph("/"),
@@ -40,7 +40,7 @@ const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: COMPANY.brand,
-  description: "İşletmelere dijital çözümler sunan ajans: reklam paneli, stok takibi, ürün görselleri, müşteri bulma ve web sitesi.",
+  description: "Vitrinweb; işletmeler için yüksek standartlı web siteleri, operasyonları hızlandıran hazır dijital ürünler ve iş süreçlerine özel yazılımlar geliştirir.",
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   email: COMPANY.email,
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a className="skip" href="#main">
-          İçeriğe geç
+          Ana İçeriğe Geç
         </a>
         <noscript>Bu sitenin çalışması için JavaScript gereklidir.</noscript>
         <OrderProvider>

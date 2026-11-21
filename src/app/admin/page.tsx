@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 interface ContactMessageRow {
   id: string;
-  kind: "iletisim" | "girisim";
+  kind: string;
   name: string;
   email: string;
   summary: string;
@@ -21,8 +21,45 @@ interface ContactMessageRow {
   created_at: string;
 }
 
-const KIND_LABELS: Record<string, string> = { iletisim: "İletişim", girisim: "Girişim Programı" };
+const KIND_LABELS: Record<string, string> = {
+  bilgi: "Bilgi Talebi",
+  kesif: "Keşif Görüşmesi",
+  proje: "Proje Başlangıcı",
+  iptal: "İptal ve İade",
+  ileti: "İleti Tercihi",
+  iletisim: "İletişim",
+  girisim: "Girişim Programı",
+};
+const KINDS = Object.keys(KIND_LABELS);
+/* Eski tablo kısıtı nedeniyle "iletisim" olarak kaydedilip gerçek türü alanlarda taşıyan satırlar. */
+const rowKind = (r: ContactMessageRow) => (r.kind === "iletisim" && r.fields?.tur && KIND_LABELS[r.fields.tur] ? r.fields.tur : r.kind);
 const FIELD_LABELS: Record<string, string> = {
+  contact: "E-posta / Telefon",
+  business: "İşletme",
+  sector: "Sektör",
+  product: "İlgilendiği ürün",
+  meeting: "Keşif görüşmesi",
+  addons: "Ek özellikler",
+  service: "Hizmet",
+  page: "Gönderildiği sayfa",
+  project: "Proje numarası",
+  person: "İletişim kişisi",
+  address: "Adres",
+  hours: "Çalışma saatleri",
+  publish: "Sitede yayınlanacaklar",
+  about: "İşletme tanıtımı",
+  services: "Hizmetler",
+  social: "Sosyal medya",
+  missing: "Hazır olmayan içerikler",
+  domain: "Alan adı",
+  refs: "Örnek siteler",
+  style: "Renk ve görsel tercih",
+  cta: "Öncelikli çağrı",
+  files: "Dosyalar",
+  order: "Sipariş / proje no",
+  action: "Talep",
+  channels: "Kanallar",
+  tur: "Form türü",
   subject: "Konu",
   message: "Mesaj",
   founderName: "Kurucu",
@@ -52,7 +89,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
       .select("*")
       .order("created_at", { ascending: false })
       .limit(200);
-    if (kind === "iletisim" || kind === "girisim") query = query.eq("kind", kind);
+    if (kind && KINDS.includes(kind)) query = query.eq("kind", kind);
     if (status && ["yeni", "okundu", "yanitlandi", "arsivlendi"].includes(status)) {
       query = query.eq("admin_status", status);
     }
@@ -87,12 +124,11 @@ export default async function AdminPage({ searchParams }: PageProps) {
         <Link className={`admin-filter${!kind ? " active" : ""}`} href={filterHref({ kind: undefined })}>
           Tümü
         </Link>
-        <Link className={`admin-filter${kind === "iletisim" ? " active" : ""}`} href={filterHref({ kind: "iletisim" })}>
-          İletişim
-        </Link>
-        <Link className={`admin-filter${kind === "girisim" ? " active" : ""}`} href={filterHref({ kind: "girisim" })}>
-          Girişim Programı
-        </Link>
+        {KINDS.map((k) => (
+          <Link key={k} className={`admin-filter${kind === k ? " active" : ""}`} href={filterHref({ kind: k })}>
+            {KIND_LABELS[k]}
+          </Link>
+        ))}
         <span className="fine" style={{ margin: "0 4px 0 14px" }}>
           Durum:
         </span>
@@ -124,7 +160,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
         {rows.map((row) => (
           <details key={row.id} className="admin-row">
             <summary>
-              <span className={`admin-badge admin-badge-${row.kind}`}>{KIND_LABELS[row.kind] || row.kind}</span>
+              <span className={`admin-badge admin-badge-${rowKind(row)}`}>{KIND_LABELS[rowKind(row)] || row.kind}</span>
               <span className="admin-row-name">{row.name}</span>
               <span className="admin-row-summary">{row.summary}</span>
               {row.file_name && (
@@ -137,10 +173,11 @@ export default async function AdminPage({ searchParams }: PageProps) {
               <Icon n="chev" size={16} className="admin-row-chev" />
             </summary>
             <div className="admin-row-body">
-              <p className="fine">
-                <strong>E-posta:</strong>{" "}
-                <a href={`mailto:${row.email}`}>{row.email}</a>
-              </p>
+              {row.email && (
+                <p className="fine">
+                  <strong>E-posta:</strong> <a href={`mailto:${row.email}`}>{row.email}</a>
+                </p>
+              )}
               {Object.entries(row.fields || {}).map(([key, value]) =>
                 value ? (
                   <p key={key} style={{ marginTop: "10px" }}>
@@ -152,7 +189,8 @@ export default async function AdminPage({ searchParams }: PageProps) {
               )}
               {row.file_name && (
                 <p className="fine" style={{ marginTop: "10px" }}>
-                  Ek dosya: {row.file_name} ({row.file_type}) — e-posta bildirimine eklendi.
+                  Ek dosya: {row.file_name}
+                  {row.file_type ? ` (${row.file_type})` : ""} — e-posta bildirimine eklendi.
                 </p>
               )}
               <p className="fine" style={{ marginTop: "10px" }}>

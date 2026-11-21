@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BlogCta } from "@/components/blog-cta";
-import { PostCard } from "@/components/blog";
+import { PostCard, lite } from "@/components/blog";
+import { CopyLink } from "@/components/blog-browser";
 import { Md } from "@/components/markdown";
 import { coverSrc, formatDate, readMin, relatedPosts, type BlogPost as Post } from "@/data/blog";
 
@@ -14,7 +15,7 @@ export function BlogPost({ p }: { p: Post }) {
     <main id="main" className="container-x doc-wrap">
       <nav className="crumbs" aria-label="Konum">
         <Link className="linkb" href="/">
-          Anasayfa
+          Ana Sayfa
         </Link>
         <span aria-hidden="true">/</span>
         <Link className="linkb" href="/blog">
@@ -61,12 +62,18 @@ export function BlogPost({ p }: { p: Post }) {
         )}
         <Md blocks={p.body} cta={<BlogCta slug={p.slug} title={p.title} variant="inline" />} />
       </article>
-      <BlogCta slug={p.slug} title={p.title} variant="end" />
+      <BlogCta slug={p.slug} title={p.title} variant="end" product={p.product} closing={p.closing} />
+      <div className="post-share">
+        <CopyLink />
+        <Link className="linkb" href="/blog">
+          Tüm Yazılara Dönün
+        </Link>
+      </div>
       <section className="post-foot" aria-label="Yazı hakkında">
         <div className="post-author">
           <p className="post-foot-h">Yazar hakkında</p>
           <p>
-            <b>{AUTHOR.name}</b>, işletmeler için web sitesi tasarlayan ve yayına alan Vitrinweb&apos;in içerik ekibidir. Yazılarımızda kendi
+            <b>{AUTHOR.name}</b>, işletmelere web siteleri, hazır dijital ürünler ve özel yazılımlar geliştiren Vitrinweb&apos;in içerik ekibidir. Yazılarımızda kendi
             çalışmalarımızdan edindiğimiz deneyimi ve güvenilir kaynakları bir araya getiriyoruz. <Link href={AUTHOR.href}>Bizi tanıyın</Link>
           </p>
         </div>
@@ -88,7 +95,7 @@ export function BlogPost({ p }: { p: Post }) {
           </h2>
           <div className="bgrid">
             {others.map((o) => (
-              <PostCard key={o.slug} p={o} level="h3" />
+              <PostCard key={o.slug} p={lite(o)} level="h3" />
             ))}
           </div>
         </nav>

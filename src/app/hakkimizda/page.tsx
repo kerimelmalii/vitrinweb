@@ -1,34 +1,21 @@
-import type { Metadata } from "next";
-import { AboutPage } from "@/components/about-page";
+import { AboutPage } from "@/components/pages";
+import { breadcrumbLd } from "@/components/ui";
 import { safeJsonLd } from "@/lib/json-ld";
+import { pageMeta } from "@/lib/page-meta";
 import { SITE_URL } from "@/lib/site";
-import { openGraph } from "@/lib/open-graph";
 
-const TITLE = "Hakkımızda";
-const DESCRIPTION =
-  "Vitrinweb'in misyonu, vizyonu ve değerleri: işletmelere sade, şeffaf ve uygun fiyatlı web sitesi hizmeti sunuyoruz.";
+export const metadata = pageMeta(
+  "/hakkimizda",
+  "Vitrinweb Hakkında | İşletmeler İçin Dijital Çözümler Ajansı",
+  "Web tasarımıyla başlayan Vitrinweb’in, işletmeler için hazır dijital ürünler ve özel yazılımlar geliştiren bir çözümler ajansına dönüşüm hikâyesini okuyun.",
+);
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: "/hakkimizda" },
-  openGraph: openGraph("/hakkimizda", { title: TITLE, description: DESCRIPTION }),
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-};
-
-const breadcrumbLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: TITLE, item: `${SITE_URL}/hakkimizda` },
-  ],
-};
+const ld = breadcrumbLd(SITE_URL, [{ name: "Hakkımızda", path: "/hakkimizda" }]);
 
 export default function Page() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(ld) }} />
       <AboutPage />
     </>
   );

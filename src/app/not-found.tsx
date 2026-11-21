@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { NotFound } from "@/components/legal";
 
 export const metadata: Metadata = {
-  title: "Sayfa Bulunamadı",
+  title: { absolute: "Aradığınız sayfaya ulaşılamıyor | Vitrinweb" },
   robots: { index: false, follow: true },
 };
 

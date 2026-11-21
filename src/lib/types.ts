@@ -262,10 +262,18 @@ export type LegalBlock =
   | ["h", string]
   | ["p", string]
   | ["ul", string[]]
-  | ["order"];
+  | ["order"]
+  | ["a", string, string]
+  | ["widget", "cerez" | "iptal" | "ileti"];
 
 export interface LegalDoc {
   t: string;
+  /** Sayfanın açılış metni (başlığın altında). */
+  lead?: string;
+  /** Son güncelleme; verilmezse genel tarih. */
+  u?: string;
+  /** Arşivdeki önceki sürüm notu. */
+  archive?: string;
   b: () => LegalBlock[];
 }
 

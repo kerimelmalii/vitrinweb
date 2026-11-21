@@ -1,7 +1,10 @@
 import type { MetadataRoute } from "next";
 import { BLOG } from "@/data/blog";
 import { LEGAL_LINKS } from "@/data/legal";
-import { ALL_PRODUCTS } from "@/data/products";
+import { PRODUCTS } from "@/data/products";
+import { SECTORS } from "@/data/sectors";
+import { SERVICES } from "@/data/services";
+import { CASES } from "@/data/cases";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -11,7 +14,28 @@ export const dynamic = "force-static";
 const buildDate = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["/", "/urunler", ...ALL_PRODUCTS.map((p) => `/urunler/${p.slug}`), "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/isgale-hayir", "/hakkimizda", "/icerik-politikasi", "/brosur"].map((path) => ({
+  const staticRoutes = [
+    "/",
+    "/urunler",
+    ...PRODUCTS.map((p) => `/urunler/${p.slug}`),
+    "/isletmeye-ozel",
+    "/hizmetler",
+    ...SERVICES.map((s) => `/hizmetler/${s.slug}`),
+    "/demolar",
+    "/sektorler",
+    ...SECTORS.map((s) => `/sektorler/${s.slug}`),
+    ...CASES.map((c) => `/uygulamalar/${c.slug}`),
+    "/nasil-calisiyoruz",
+    "/neden-web-sitesi",
+    "/bilgi-al",
+    "/kesif-gorusmesi",
+    "/blog",
+    "/hakkimizda",
+    "/iletisim",
+    "/icerik-politikasi",
+    "/girisim-programi",
+    "/isgale-hayir",
+  ].map((path) => ({
     url: SITE_URL + path,
     lastModified: buildDate,
     changeFrequency: "monthly" as const,

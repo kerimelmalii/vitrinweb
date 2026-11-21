@@ -50,7 +50,7 @@ export default function Page() {
             <a className="btn btn-primary" href={BROCHURE} download="Vitrinweb-Tanitim-Brosuru.png">
               Broşürü indir
             </a>
-            <Link className="btn btn-line" href="/ucretlendirme">
+            <Link className="btn btn-line" href="/urunler/web-sitesi-paketi">
               Ücretlendirme ayrıntıları
             </Link>
           </p>
@@ -70,7 +70,7 @@ export default function Page() {
             </h2>
             <p>
               Sorularınızı <Link href="/iletisim">iletişim sayfamızdan</Link> ya da WhatsApp üzerinden iletebilirsiniz.
-              Paketin tüm koşulları <Link href="/ucretlendirme">ücretlendirme sayfasında</Link> ve yasal metinlerde yer alır.
+              Paketin tüm koşulları <Link href="/urunler/web-sitesi-paketi">web sitesi paketi sayfasında</Link> ve yasal metinlerde yer alır.
             </p>
           </section>
         </article>

@@ -1,5 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { PRODUCTS } from "@/data/products";
+import { SECTORS } from "@/data/sectors";
+import { SERVICES } from "@/data/services";
 import { blocksText, collectLinks, parseBlocks, parseFrontMatter, unlinkBlocks, type Block } from "@/lib/markdown";
 
 /* ================= BLOG =================
@@ -24,6 +27,10 @@ export interface BlogPost {
   category: string;
   coverAlt: string;
   related: string[];
+  /** Yazı sonundaki çağrının yönlendirdiği ürün (ön bilgide "urun"); yoksa Web Sitesi Paketi. */
+  product: string;
+  /** Yazı sonu çağrı metni (ön bilgide "kapanis"). */
+  closing?: string;
   body: Block[];
   sources: Block[];
   toc: { id: string; text: string }[];
@@ -35,7 +42,27 @@ const PLANNED_DIR = path.join(process.cwd(), "content/blog-planli");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
-const PAGE_ROUTES = new Set(["/", "/neden", "/ucretlendirme", "/blog", "/iletisim", "/girisim-programi", "/hakkimizda", "/icerik-politikasi", "/isgale-hayir"]);
+const PAGE_ROUTES = new Set([
+  "/",
+  "/urunler",
+  ...PRODUCTS.map((p) => `/urunler/${p.slug}`),
+  "/hizmetler",
+  ...SERVICES.map((s) => `/hizmetler/${s.slug}`),
+  "/sektorler",
+  ...SECTORS.map((s) => `/sektorler/${s.slug}`),
+  "/isletmeye-ozel",
+  "/demolar",
+  "/nasil-calisiyoruz",
+  "/neden-web-sitesi",
+  "/bilgi-al",
+  "/kesif-gorusmesi",
+  "/blog",
+  "/iletisim",
+  "/girisim-programi",
+  "/hakkimizda",
+  "/icerik-politikasi",
+  "/isgale-hayir",
+]);
 const SOURCES_HEADING = "Kaynaklar";
 
 function load(file: string): BlogPost {
@@ -64,6 +91,8 @@ function load(file: string): BlogPost {
     category: data.category,
     coverAlt: data.coverAlt,
     related: data.related ? data.related.split(",").map((s) => s.trim()).filter(Boolean) : [],
+    product: data.urun || "web-sitesi-paketi",
+    closing: data.kapanis || undefined,
     body: main,
     sources,
     toc: main.flatMap((b) => (b.t === "h2" ? [{ id: b.id, text: b.text }] : [])),
@@ -82,12 +111,13 @@ function validate(posts: BlogPost[]) {
     if (!fs.existsSync(path.join(PUBLIC_DIR, "blog", p.slug, "kapak.webp")))
       throw new Error(`${where}: kapak görseli yok (public/blog/${p.slug}/kapak.webp) — scripts/blog-kapaklari.mjs çalıştırın`);
     for (const r of p.related) if (!slugs.has(r)) throw new Error(`${where}: ilgili yazı bulunamadı: ${r}`);
+    if (!PRODUCTS.some((x) => x.slug === p.product)) throw new Error(`${where}: "urun" alanındaki ürün bulunamadı: ${p.product}`);
     for (const href of collectLinks([...p.body, ...p.sources])) {
       if (href.startsWith("/blog/")) {
         const target = href.slice(6).split("#")[0];
         if (!slugs.has(target)) throw new Error(`${where}: kırık iç bağlantı ${href}`);
       } else if (href.startsWith("/")) {
-        const route = href.split("#")[0];
+        const route = href.split(/[?#]/)[0];
         if (!PAGE_ROUTES.has(route) && !route.startsWith("/yasal/")) throw new Error(`${where}: bilinmeyen sayfa ${href}`);
       } else if (href.startsWith("#")) {
         continue;

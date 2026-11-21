@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-export const SITE_TITLE = "İşletmeler için dijital çözümler";
+export const SITE_TITLE = "Vitrinweb | İşletmeler İçin Dijital Ürünler ve Özel Yazılım";
 export const SITE_OG_DESCRIPTION =
-  "Reklam paneli, stok takibi, ürün görselleri, müşteri bulma ve web sitesi. İşletmenizin dijital işlerini sadeleştiriyoruz.";
+  "Markanızı güçlendiren web siteleri, ürün görsel stüdyosu, reklam raporlama ve stok takibi araçları ile işletmenize özel yazılım çözümlerini keşfedin.";
 
 type OpenGraph = NonNullable<Metadata["openGraph"]>;
 

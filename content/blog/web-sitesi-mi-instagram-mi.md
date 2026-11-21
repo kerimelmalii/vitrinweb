@@ -117,7 +117,7 @@ Hayır. Web sitesi bir kez kurulur ve ara sıra güncellenir; Instagram ise düz
 
 ## Sonuç
 
-Instagram ve web sitesi rakip değil, ekip arkadaşıdır. Instagram dikkat çeker ve ilişki kurar; web sitesi bilgi verir, güven oluşturur ve Google'da arayan müşteriyi yakalar. Yalnızca Instagram'a dayanan bir işletme, Google'da arayan müşterileri ve Instagram kullanmayan kitleyi kaçırır. İkisini birlikte kullanmak, bugün bir işletmenin internetteki en sağlam başlangıcıdır. Web sitesinin işletmelere sağladığı faydaları [Neden web sitesi?](/neden) sayfamızda da özetledik.
+Instagram ve web sitesi rakip değil, ekip arkadaşıdır. Instagram dikkat çeker ve ilişki kurar; web sitesi bilgi verir, güven oluşturur ve Google'da arayan müşteriyi yakalar. Yalnızca Instagram'a dayanan bir işletme, Google'da arayan müşterileri ve Instagram kullanmayan kitleyi kaçırır. İkisini birlikte kullanmak, bugün bir işletmenin internetteki en sağlam başlangıcıdır. Web sitesinin işletmelere sağladığı faydaları [Neden web sitesi?](/neden-web-sitesi) sayfamızda da özetledik.
 
 ## Kaynaklar
 

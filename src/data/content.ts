@@ -2,9 +2,7 @@ import { money, TL, VAT_INCLUDED, YEARLY, BASE_PRICE } from "@/lib/config";
 import type {
   Addon,
   Faq,
-  HeroDemo,
   IncludedFeature,
-  NavItem,
   ProcessStep,
   QuoteAddon,
   Reference,
@@ -80,70 +78,6 @@ export const joinTr = (l: string[]): string =>
 
 export const quoteNames = (q: string[] | undefined): string[] =>
   QUOTE_ADDONS.filter((a) => (q || []).includes(a.id)).map((a) => (a.custom ? "özel isteğiniz" : a.name));
-
-const FONT = "'Manrope','Segoe UI',system-ui,sans-serif";
-
-/** Hero görselinde kullanılan iki dekoratif konsept (CSS ile çizilir). */
-export const HERO_DEMOS: HeroDemo[] = [
-  {
-    id: "danismanlik",
-    cat: "Danışmanlık",
-    desc: "Premium kurumsal tasarım",
-    url: "kuzeydanismanlik.com",
-    tags: ["Kurumsal", "Kişisel", "Hizmet"],
-    sector: "Danışmanlık",
-    addon: "blog",
-    feat: ["Hizmetler ve çalışma yaklaşımı", "Vaka ve referans alanı", "Görüşme planlama butonu"],
-    m: {
-      variant: "center",
-      name: "Kuzey Danışmanlık",
-      nav: ["Hizmetler", "Yaklaşım", "Vakalar", "İletişim"],
-      tag: "STRATEJİ VE BÜYÜME",
-      h: "Büyümeniz için net bir yol haritası.",
-      p: "İşletmenizi verilerle okuyup uygulanabilir bir plana dönüştürüyoruz.",
-      cta: "Görüşme Planla",
-      cta2: "Hizmetler",
-      cards: ["Strateji", "Operasyon", "Finans"],
-      bg: "#F3F5F9",
-      ink: "#0E1B36",
-      ac: "#2B54D8",
-      acink: "#FFFFFF",
-      card: "#FFFFFF",
-      g: ["#C9D5F5", "#8FA8EB", "#DDE5F8"],
-      r: "0.8cqw",
-      font: FONT,
-    },
-  },
-  {
-    id: "guzellik",
-    cat: "Güzellik merkezi",
-    desc: "Randevu odaklı tasarım",
-    url: "novaguzellik.com",
-    tags: ["Sağlık", "Hizmet"],
-    sector: "Güzellik",
-    addon: "randevu",
-    feat: ["Hizmet ve fiyat listesi", "Randevu butonu her sayfada", "Galeri ve WhatsApp iletişimi"],
-    m: {
-      variant: "split",
-      name: "Nova Güzellik",
-      nav: ["Hizmetler", "Fiyatlar", "Galeri", "İletişim"],
-      tag: "RANDEVU ODAKLI",
-      h: "Kendinize zaman ayırın.",
-      p: "Cilt bakımı ve güzellik hizmetleri için randevunuzu alın.",
-      cta: "Randevu Al",
-      cta2: "Hizmetler",
-      cards: ["Cilt Bakımı", "Lazer", "Saç ve Makyaj"],
-      bg: "#FBF4F1",
-      ink: "#3A2A2C",
-      ac: "#C4708A",
-      acink: "#FFFFFF",
-      card: "#FFFFFF",
-      g: ["#F1C9C4", "#E8A9B4", "#F7E1D7"],
-      r: "1.2cqw",
-      font: FONT,
-    },
-  },
-];
 
 export const WHY: WhyItem[] = [
   { icon: "globe", t: "Her an açık bir vitrin", d: "İşletmeniz kapalıyken bile müşterileriniz hizmetlerinizi, fiyatlarınızı ve çalışma saatlerinizi görebilir." },
@@ -265,72 +199,3 @@ export const FAQS: Faq[] = [
 export const REFERENCES: Reference[] = [];
 
 export const TRUST = ["İlk yıl servis ücretsiz", "Taahhüt yok", "Güvenli ödeme", "Mobil uyumlu"];
-
-export const NAV: NavItem[] = [
-  { label: "Ürünler", to: "/urunler" },
-  { label: "Nasıl Çalışıyoruz", sec: "surec" },
-  { label: "Blog", to: "/blog" },
-  { label: "Hakkımızda", to: "/hakkimizda" },
-  { label: "SSS", sec: "sss" },
-  { label: "İletişim", to: "/iletisim" },
-];
-
-/** Ajansın çalışma adımları (ana sayfa ve ürünler sayfası). Web sitesi paketinin kendi adımları PROCESS'tedir. */
-export const AGENCY_PROCESS: ProcessStep[] = [
-  { n: "01", t: "Tanışma", d: "İşinizin nasıl yürüdüğünü ve nerede zaman ya da müşteri kaybettiğinizi dinleriz. Ücretsizdir." },
-  { n: "02", t: "Yazılı öneri", d: "Hangi ürünün ya da çözümün işinize yarayacağını; kapsam, süre ve fiyatıyla tek sayfada iletiriz." },
-  { n: "03", t: "Kurulum", d: "Aracı işletmenize göre kurar, verilerinizi aktarır, ekibinize kullanmayı gösteririz." },
-  { n: "04", t: "Destek", d: "Kullanım sürdükçe bakım ve destek bizde. Bir şey değiştiğinde aracınız da güncel kalır." },
-];
-
-export const AGENCY_TRUST = ["Ücretsiz ön görüşme", "Net kapsam ve fiyat", "Taahhüt yok", "Türkçe destek"];
-
-export const AGENCY_FAQ_CATEGORIES = ["Çalışma şekli", "Fiyat ve sözleşme", "Veri ve güvenlik"] as const;
-
-export const AGENCY_FAQS: Faq[] = [
-  {
-    cat: "Çalışma şekli",
-    q: "Vitrinweb ne yapıyor?",
-    a: "İşletmelerin dijital işlerini sadeleştiren araçlar kuruyoruz: reklam takibi, stok takibi, ürün görselleri, müşteri bulma ve web sitesi. Hazır ürünlerimiz işinize uymuyorsa işletmenize özel bir çözüm geliştiriyoruz.",
-  },
-  {
-    cat: "Çalışma şekli",
-    q: "Hangi ürünün bana uygun olduğunu nasıl bileceğim?",
-    a: "Bilmeniz gerekmiyor. Kısa bir ön görüşmede işinizi dinliyor, size gerçekten fayda sağlayacak olanı öneriyoruz. Hiçbiri uygun değilse bunu da açıkça söylüyoruz.",
-  },
-  {
-    cat: "Çalışma şekli",
-    q: "Ön görüşme ücretli mi, bir taahhüt doğuruyor mu?",
-    a: "Hayır. Ön görüşme ücretsizdir ve hiçbir taahhüt doğurmaz. Görüşmeden sonra size yazılı bir öneri iletiriz; karar sizindir.",
-  },
-  {
-    cat: "Çalışma şekli",
-    q: "Kurulum ne kadar sürer?",
-    a: "Ürüne ve kapsama göre değişir. Süreyi yazılı önerimizde, işe başlamadan önce açıkça belirtiriz.",
-  },
-  {
-    cat: "Fiyat ve sözleşme",
-    q: "Ürünlerin fiyatı nedir?",
-    a: `Web sitesi paketinin fiyatı sabittir: ${TL(BASE_PRICE)}, KDV dahil. Diğer ürünler bağlanacak hesap, ürün veya kullanıcı sayısına göre fiyatlandırılır; görüşmeden sonra yazılı teklif iletiriz. Fiyatı onaylamadan hiçbir işe başlamayız.`,
-  },
-  {
-    cat: "Fiyat ve sözleşme",
-    q: "Aylık ücretli hizmetleri istediğim zaman bırakabilir miyim?",
-    a: "Evet. Aylık hizmetlerde taahhüt yoktur; istediğiniz ayın sonunda sonlandırabilirsiniz. Koşullar, işe başlamadan önce yazılı olarak iletilir.",
-  },
-  {
-    cat: "Fiyat ve sözleşme",
-    q: "Fatura kesiliyor mu?",
-    a: "Evet. Tüm hizmetlerimiz için fatura düzenlenir.",
-  },
-  {
-    cat: "Veri ve güvenlik",
-    q: "Verilerim kime ait?",
-    a: "Size. Araçlarımızda tuttuğunuz kayıtları istediğiniz an dışa aktarabilirsiniz; hizmeti sonlandırdığınızda verileriniz size teslim edilir ve talebinizle silinir.",
-  },
-  {
-    cat: "Veri ve güvenlik",
-    q: "Reklam veya muhasebe hesaplarıma erişim veriyor muyum?",
-    a: "Yalnızca aracın çalışması için gereken en dar izni isteriz; örneğin reklam paneli için yalnızca okuma izni. Verdiğiniz izni dilediğiniz an kendi hesabınızdan geri alabilirsiniz.",
-  },
-];

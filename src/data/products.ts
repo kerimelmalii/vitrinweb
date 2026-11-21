@@ -1,15 +1,47 @@
-import { BASE_PRICE, TL } from "@/lib/config";
+import type { MockData } from "@/lib/types";
 
-/** Ürün ekranı çizimi: her ürünün sayfasında ve kartında gösterilen temsilî arayüz. */
-export type ProductScreenKind = "meta" | "depo" | "gorsel" | "musteri" | "web" | "ozel";
+/* ================= ÜRÜNLER =================
+   Katalogdaki dokuz çekirdek ürün. Metinler "Vitrinweb Kurumsal Ajans Sitesi Metinleri"
+   belgesinden gelir. Ekranlar ve demolar örnek veridir. Her ürünün yayın durumu tek bir
+   alandan (status) okunur; etiket ve ana buton metni bu alana bağlıdır. */
 
-export interface ProductStep {
-  t: string;
-  d: string;
-}
+export type ProductStatus = "hazir" | "pilot" | "gelistiriliyor";
+export type ProductCategory = "gorsel-web" | "reklam-musteri" | "stok-operasyon" | "belge-gorusme";
+export type ArtKind = "gorsel" | "meta" | "depo" | "karne" | "web" | "gorusme" | "belge" | "asistan" | "musteri" | "ozel";
 
-export interface ProductFeature {
-  icon: string;
+export const STATUS: Record<ProductStatus, { label: string; desc: string; button: string }> = {
+  hazir: {
+    label: "Kullanıma Hazır",
+    desc: "İşletmenize uygun kurulum ve kullanım seçeneklerini planlayalım.",
+    button: "Bilgi Alın",
+  },
+  pilot: {
+    label: "Pilot Aşamasında",
+    desc: "Çözümü işletmenizde tanımlı ve kontrollü bir kapsamla deneyimleyin.",
+    button: "Pilot İçin Başvurun",
+  },
+  gelistiriliyor: {
+    label: "Geliştiriliyor",
+    desc: "Kullanıma açıldığında öncelikli olarak haberdar olmak için talebinizi bırakın.",
+    button: "Öncelikli Erişim İsteyin",
+  },
+};
+
+export const SAMPLE = {
+  label: "Örnek Veri",
+  desc: "Bu demodaki işletme, kayıt ve rakamlar gösterim amaçlıdır.",
+  button: "Demoyu Deneyin",
+};
+
+export const CATEGORIES: { id: ProductCategory | "tumu"; label: string }[] = [
+  { id: "tumu", label: "Tümü" },
+  { id: "gorsel-web", label: "Görsel ve Web" },
+  { id: "reklam-musteri", label: "Reklam ve Müşteri" },
+  { id: "stok-operasyon", label: "Stok ve Operasyon" },
+  { id: "belge-gorusme", label: "Belge ve Görüşme" },
+];
+
+export interface Step {
   t: string;
   d: string;
 }
@@ -17,367 +49,825 @@ export interface ProductFeature {
 export interface Product {
   slug: string;
   name: string;
-  /** Kartlarda ve menüde tek satırlık açıklama. */
-  short: string;
-  /** Ürün sayfasının ana başlığı: ürünün sonucu, müşterinin dilinden. */
+  icon: string;
+  art: ArtKind;
+  category: ProductCategory;
+  status: ProductStatus;
+  seoTitle: string;
+  description: string;
+  /** /urunler listesindeki kart metni. */
+  listText: string;
+  /** Ana sayfa ürün kartı metni (yalnızca öne çıkan üç ürün). */
+  homeText?: string;
+  linkLabel: string;
   title: string;
   lead: string;
-  /** Arama sonuçlarında görünen açıklama (~155 karakter). */
-  description: string;
-  icon: string;
-  screen: ProductScreenKind;
-  /** Müşterinin bu ürünü aramasına yol açan cümleler. */
-  pains: string[];
-  steps: ProductStep[];
-  features: ProductFeature[];
-  forWho: string[];
-  notFor: string[];
-  pricing: { label: string; d: string };
+  /** Hero'daki ikinci buton; demo bölümüne kaydırır. */
+  secondary: string;
+  caption?: string;
+  alt: string;
+  stepsTitle: string;
+  steps: Step[];
+  /** Özellik tablosu. */
+  features?: { title: string; items: Step[] };
+  /** Madde listesi (ör. "Neleri görebilirsiniz?"). */
+  chips?: { title: string; intro?: string; items: string[] };
+  /** Örnek çıktı satırları. */
+  sample?: { title: string; lines: string[] };
+  demoTitle: string;
+  demoIntro: string;
+  forWho: string;
+  setup: { title: string; text: string };
   faqs: { q: string; a: string }[];
-  /** Web sitesi gibi sitede doğrudan satın alınabilen ürün. Diğerleri görüşmeyle başlar. */
-  checkout?: boolean;
+  closing: string;
+  /** /bilgi-al not alanındaki örnek. */
+  formExample: string;
+  /** Diğer ürün önerileri. */
+  related: string[];
 }
 
-/* Sıra, ürünler sayfasındaki ve ana sayfadaki sıradır. Özel çözümler her zaman sonda, geniş kartla gösterilir. */
 export const PRODUCTS: Product[] = [
-  {
-    slug: "meta-reklam-paneli",
-    name: "Meta Reklam Paneli",
-    short: "Instagram ve Facebook reklamlarınızın harcamasını ve sonucunu tek ekranda görün.",
-    title: "Reklamınız ne getiriyor, tek ekranda görün.",
-    lead: "Instagram ve Facebook reklamlarınızın harcamasını, gelen mesajları ve sonuçları sade bir panelde topluyoruz. Haftalık özet WhatsApp'ınıza gelir.",
-    description:
-      "Instagram ve Facebook reklamlarınızın harcamasını ve sonucunu sade, Türkçe bir panelde görün. Bütçe uyarısı ve haftalık özet dahil.",
-    icon: "trend",
-    screen: "meta",
-    pains: [
-      "Reklama her ay para harcıyorum ama ne getirdiğini bilmiyorum.",
-      "Meta'nın reklam yöneticisi çok karışık, rakamları anlamıyorum.",
-      "Bütçe bittiğinde ya da reklam durduğunda geç fark ediyorum.",
-    ],
-    steps: [
-      { t: "Hesabınızı bağlarız", d: "Reklam hesabınıza, sizin verdiğiniz izinle ve yalnızca okuma yetkisiyle bağlanırız." },
-      { t: "Paneli kurarız", d: "Sizin için önemli rakamları seçeriz: harcama, mesaj, arama, satış ya da ziyaret." },
-      { t: "Her hafta özet", d: "Panel her gün güncellenir; haftalık kısa özet WhatsApp veya e-postanıza gelir." },
-    ],
-    features: [
-      { icon: "layout", t: "Tek ekran", d: "Kampanyalar, harcama ve sonuçlar aynı yerde; menüler arasında kaybolmazsınız." },
-      { icon: "message", t: "Mesaj başına maliyet", d: "Reklamdan gelen her WhatsApp ve Instagram mesajının size kaça mal olduğunu görürsünüz." },
-      { icon: "info", t: "Bütçe uyarısı", d: "Harcama belirlediğiniz sınıra yaklaşınca ya da bir reklam durunca haber verir." },
-      { icon: "file", t: "Haftalık özet", d: "Geçen haftaya göre ne değişti, üç cümlede." },
-      { icon: "phone", t: "Telefonda rahat", d: "Panel telefonda da okunur; bilgisayar başında olmanız gerekmez." },
-      { icon: "shield", t: "Yalnızca okuma izni", d: "Paneliniz reklamlarınızı değiştirmez; yalnızca verileri okur." },
-    ],
-    forWho: [
-      "Instagram veya Facebook'ta düzenli reklam veren işletmeler",
-      "Reklamını bir ajansa ya da çalışanına yaptıran ve sonucu kendi görmek isteyen işletme sahipleri",
-      "Birden fazla şubesi veya kampanyası olan işletmeler",
-    ],
-    notFor: [
-      "Henüz hiç reklam vermemiş işletmeler (önce reklamın kendisi gerekir)",
-      "Yalnızca Google reklamı veren işletmeler (bu panel Meta reklamları içindir)",
-    ],
-    pricing: {
-      label: "Kurulum + aylık ücret",
-      d: "Fiyat, bağlanacak reklam hesabı ve rapor sayısına göre belirlenir. Kısa bir görüşmeden sonra yazılı teklif iletiriz.",
-    },
-    faqs: [
-      {
-        q: "Reklamlarımı siz mi yönetiyorsunuz?",
-        a: "Hayır. Panel reklamlarınızı göstermek içindir; reklamlarınızı siz, çalışanınız ya da ajansınız yönetmeye devam eder. Panele yalnızca okuma izniyle bağlanırız.",
-      },
-      {
-        q: "Hangi bilgileri görürüm?",
-        a: "Harcama, gösterim, tıklama, mesaj ve sizin için önemli sonuçlar (arama, form, satış gibi). Hangi rakamların görüneceğini kurulumda birlikte seçeriz.",
-      },
-      {
-        q: "İstediğim zaman bırakabilir miyim?",
-        a: "Evet. Aylık hizmet istediğiniz ay sona erdirilebilir; erişim izni de sizin tarafınızdan her an geri alınabilir.",
-      },
-    ],
-  },
-  {
-    slug: "depo-takibi",
-    name: "Depo ve Stok Takibi",
-    short: "Stok giriş ve çıkışlarını telefonla kaydedin, ürün bitmeden haber alın.",
-    title: "Excel'den çıkın, stoğunuzu telefonla sayın.",
-    lead: "Ürün girişlerini ve çıkışlarını telefonunuzla, barkod okutarak kaydedin. Kritik seviyeye düşen ürünü siz fark etmeden önce panel size söyler.",
-    description:
-      "Stok giriş ve çıkışlarını telefonla, barkod okutarak kaydedin. Kritik stok uyarısı, hareket geçmişi ve Excel'e aktarma dahil.",
-    icon: "box",
-    screen: "depo",
-    pains: [
-      "Stoğu Excel'de tutuyorum, dosya hiç güncel değil.",
-      "Ürün bittiğinde, müşteri sorunca fark ediyorum.",
-      "Kim neyi ne zaman depodan çıkardı, bilmiyorum.",
-    ],
-    steps: [
-      { t: "Ürünlerinizi aktarırız", d: "Mevcut Excel listenizi ya da ürün kayıtlarınızı sisteme biz aktarırız." },
-      { t: "Ekibinizi tanıtırız", d: "Çalışanlarınız kendi hesaplarıyla telefondan giriş ve çıkış kaydeder." },
-      { t: "Uyarıları ayarlarız", d: "Her ürün için kritik seviyeyi belirleriz; stok düşünce haber gelir." },
-    ],
-    features: [
-      { icon: "scan", t: "Barkodla kayıt", d: "Telefon kamerasıyla barkodu okutun; adet girin, kaydedin." },
-      { icon: "info", t: "Kritik stok uyarısı", d: "Belirlediğiniz seviyenin altına düşen ürünler listenin başında görünür." },
-      { icon: "file", t: "Hareket geçmişi", d: "Her giriş ve çıkış, kimin yaptığı ve ne zaman yapıldığıyla kayıtlıdır." },
-      { icon: "layout", t: "Birden fazla depo", d: "Depo, şube veya raf bazında ayrı stok tutabilirsiniz." },
-      { icon: "upload", t: "Excel'e aktarma", d: "Tüm stok ve hareket kayıtlarını istediğiniz an Excel olarak indirirsiniz." },
-      { icon: "lock", t: "Yetki ayarı", d: "Kimin yalnızca kayıt girebileceğini, kimin raporları görebileceğini siz belirlersiniz." },
-    ],
-    forWho: [
-      "Toptancılar, atölyeler ve deposu olan perakendeciler",
-      "Pazaryerinde satış yapan ve stoğu elle takip eden e-ticaret satıcıları",
-      "Stok bilgisini Excel'de ya da kâğıtta tutan işletmeler",
-    ],
-    notFor: [
-      "Muhasebe veya fatura programı arayanlar (bu bir stok takip aracıdır)",
-      "Halihazırda stok modülü olan bir ERP programını verimli kullanan işletmeler",
-    ],
-    pricing: {
-      label: "Kurulum + aylık ücret",
-      d: "Fiyat, ürün sayısı, depo sayısı ve kullanıcı sayısına göre belirlenir. Ürün aktarımı kuruluma dahildir.",
-    },
-    faqs: [
-      {
-        q: "Barkod okuyucu almam gerekiyor mu?",
-        a: "Hayır. Telefonun kamerası barkod okumak için yeterlidir. Yoğun kullanımda isterseniz bir el tipi barkod okuyucu da bağlanabilir.",
-      },
-      {
-        q: "Ürünlerimin barkodu yoksa ne olur?",
-        a: "Ürünlerinize sistem içinde kod verilir ve isterseniz yazdırılabilir etiketler hazırlanır. Barkodsuz ürünler listeden seçilerek de kaydedilebilir.",
-      },
-      {
-        q: "Verilerim bana mı ait?",
-        a: "Evet. Tüm kayıtlarınızı istediğiniz an Excel olarak indirebilirsiniz; hizmeti sonlandırdığınızda verileriniz size teslim edilir ve talebinizle silinir.",
-      },
-    ],
-  },
   {
     slug: "urun-gorsel-studyosu",
     name: "Ürün Görsel Stüdyosu",
-    short: "Telefonla çektiğiniz ürün fotoğraflarını satışa hazır, profesyonel görsellere dönüştürün.",
-    title: "Ürün fotoğraflarınız, stüdyoda çekilmiş gibi.",
-    lead: "Telefonla çektiğiniz fotoğrafı gönderin; ürününüze uygun arka plan, ışık ve sahneyle pazaryeri ve sosyal medya için hazır görseller teslim edelim.",
-    description:
-      "Ürün fotoğraflarınıza uygun arka plan ve sahne ekliyoruz. Trendyol, Hepsiburada ve Instagram için hazır, tutarlı görseller.",
     icon: "image",
-    screen: "gorsel",
-    pains: [
-      "Ürün fotoğraflarım amatör görünüyor, rakiplerim daha profesyonel.",
-      "Her ürün için stüdyo çekimi yaptırmak çok pahalı.",
-      "Pazaryeri beyaz arka plan istiyor, Instagram'a başka görsel lazım.",
-    ],
+    art: "gorsel",
+    category: "gorsel-web",
+    status: "hazir",
+    seoTitle: "E-Ticaret İçin Ürün Görsel Stüdyosu | Vitrinweb",
+    description:
+      "Mevcut ürün fotoğraflarınızı e-ticaret, pazaryeri ve sosyal medya için arka planı, ışığı ve kadrajı standartlaştırılmış görsel setlere dönüştürün.",
+    listText: "Mevcut ürün fotoğraflarınızı mağaza, pazaryeri ve reklam kanalları için tutarlı bir görsel sete dönüştürün.",
+    homeText:
+      "Mevcut ürün fotoğraflarınızı e-ticaret, pazaryeri ve sosyal medya standartlarına uygun, tutarlı görsel setlere dönüştürün.",
+    linkLabel: "Görsel Stüdyosunu İnceleyin",
+    title: "Ürününüz aynı. Görsel standardı satışa hazır.",
+    lead: "Elinizdeki ürün fotoğraflarını paylaşın; ürünün rengini, dokusunu ve ayırt edici detaylarını koruyarak her satış kanalına uygun profesyonel görsel setler hazırlayalım.",
+    secondary: "Görselleri Karşılaştırın",
+    caption: "Aynı ürün, iki farklı kanal standardı.",
+    alt: "Orijinal ürün fotoğrafı ile arka planı ve ışığı düzenlenmiş final görsel yan yana.",
+    stepsTitle: "Görsel seti nasıl hazırlanır?",
     steps: [
-      { t: "Fotoğrafı gönderin", d: "Ürününüzü telefonla, düz bir zeminde çekip WhatsApp'tan ya da formdan iletin." },
-      { t: "Sahneyi hazırlarız", d: "Ürününüze ve markanıza uygun arka plan, ışık ve sahneleri hazırlarız." },
-      { t: "Hazır seti alın", d: "Pazaryeri, Instagram gönderisi ve hikâye ölçülerinde görseller teslim edilir." },
+      {
+        t: "Fotoğrafları ve kanal hedeflerini paylaşın.",
+        d: "Ürün adedini, yayınlanacak mecraları ve varsa marka stil referanslarınızı iletin.",
+      },
+      {
+        t: "Örnek çalışmayı onaylayın.",
+        d: "Seçilen bir ürün için hazırladığımız ışık, arka plan ve kadraj yönünü birlikte değerlendirelim.",
+      },
+      {
+        t: "Final seti teslim alın.",
+        d: "Onaylanan görsel dilde üretilen tüm görselleri kararlaştırılan ölçü ve dosya biçimlerinde eksiksiz teslim alın.",
+      },
     ],
-    features: [
-      { icon: "image", t: "Ürüne uygun sahne", d: "Kozmetik için banyo tezgâhı, kahve için mutfak, takı için kadife: ürünün dünyasına uygun." },
-      { icon: "check", t: "Pazaryeri uyumu", d: "Beyaz arka planlı ana görsel, platformların istediği ölçü ve formatta." },
-      { icon: "layout", t: "Tüm ölçüler", d: "Kare gönderi, dikey hikâye ve web sitesi ölçülerinde aynı setten çıktı." },
-      { icon: "star", t: "Marka tutarlılığı", d: "Tüm ürünleriniz aynı ışık ve tarzda; vitrininiz düzenli görünür." },
-      { icon: "shield", t: "Ürün değişmez", d: "Yalnızca arka plan ve ışık değişir; ürününüzün rengi, şekli ve yazısı olduğu gibi kalır." },
-      { icon: "search", t: "İnsan kontrolü", d: "Her görsel teslimden önce elle kontrol edilir; hatalı çıktı size ulaşmaz." },
-    ],
-    forWho: [
-      "Trendyol, Hepsiburada veya kendi sitesinden satış yapan e-ticaret işletmeleri",
-      "Instagram'da ürün satan butikler, üreticiler ve el yapımı ürün satıcıları",
-      "Yeni ürünlerini hızlıca vitrine koymak isteyen markalar",
-    ],
-    notFor: [
-      "Model veya manken çekimi gereken giyim ürünleri (bu hizmet ürün görseli içindir)",
-      "Ürünün olduğundan farklı görünmesini isteyenler: ürünün kendisini değiştirmiyoruz",
-    ],
-    pricing: {
-      label: "Görsel paketi",
-      d: "Fiyat, ürün sayısı ve her ürün için istenen sahne sayısına göre paket olarak belirlenir. Düzenli ihtiyaç için aylık paket de sunulur.",
+    features: {
+      title: "Görsel setinde neler var?",
+      items: [
+        { t: "Sade ürün görseli", d: "Ürünü odağa alan temiz ve standart arka planlarla yüksek okunabilirlikli listeleme görselleri oluşturun." },
+        { t: "Kullanım sahnesi", d: "Ürünün gerçek bağlamını ve ölçeğini hissettiren sahnelerle koleksiyon hikayenizi güçlendirin." },
+        { t: "Koleksiyon bütünlüğü", d: "Aynı serideki tüm ürünlerde ışık, açı, kadraj ve renk dilini marka standartlarında tutarlı tutun." },
+        { t: "Kanala özel çıktı", d: "Web sitesi, pazaryeri, reklam ve sosyal medya için gereken tüm en-boy oranlarını brief aşamasında belirleyin." },
+        {
+          t: "Teslim öncesi kalite kontrol",
+          d: "Ürün formu, renk doğruluğu, etiket yazıları ve ambalaj detayları kaynak fotoğrafla birebir karşılaştırılır.",
+        },
+      ],
+    },
+    demoTitle: "Aynı ürünü farklı sahnelerde inceleyin.",
+    demoIntro: "Sahne seçin, kaydırıcıyla orijinal ve işlenmiş görseli karşılaştırın.",
+    forWho:
+      "Kendi ürününü üreten veya satan markalar, butikler ve e-ticaret ekipleri için. Henüz fotoğrafı çekilmemiş ya da mevcut karelerinde kritik detayları seçilmeyen ürünler için çekim ihtiyacını kapsam görüşmesinde değerlendiririz.",
+    setup: {
+      title: "Görsel üretim kapsamını kataloğunuza göre şekillendirin.",
+      text: "Proje kapsamı; ürün adedi, ürün başına görsel sayısı, sahne çeşitliliği ve çıktı ölçülerine göre belirlenir. Düzenli sezon veya katalog yenilemeleri için aylık teslim modeli planlayabiliriz.",
     },
     faqs: [
       {
-        q: "Fotoğrafı nasıl çekmeliyim?",
-        a: "Gün ışığında, düz ve sade bir zeminde, ürünün tamamı görünecek şekilde çekmeniz yeterli. Size kısa bir çekim rehberi göndeririz.",
+        q: "Telefonla çekilmiş fotoğraflar yeterli olur mu?",
+        a: "Ürün net, dengeli aydınlatılmış ve eksiksiz görünüyorsa başlangıç için değerlendirebiliriz. Eksik açı varsa hangi karelerin yeniden çekilmesi gerektiğini çekim notlarıyla paylaşırız.",
       },
       {
-        q: "Görseller pazaryeri kurallarına uygun mu?",
-        a: "Ana ürün görseli, pazaryerlerinin istediği beyaz arka plan ve ölçülerde hazırlanır. Sahne görselleri ise ek görsel ve sosyal medya için kullanılır.",
+        q: "Ürün formu veya ambalaj detayları değişir mi?",
+        a: "Çalışma arka plan, ışık ve kadraj düzenlemesi üzerine kuruludur. Renk, logo, etiket yazısı ve ürün geometrisi kaynak fotoğrafa sadık kalınarak kontrol edilir.",
       },
       {
-        q: "Görsellerin kullanım hakkı kime ait?",
-        a: "Teslim edilen görselleri işletmeniz için süresiz kullanabilirsiniz.",
+        q: "Teslim süresi nasıl belirlenir?",
+        a: "Ürün adedi ve sahne kapsamı netleştikten sonra kesin teslim takvimini yazılı olarak paylaşıyoruz.",
+      },
+      {
+        q: "Revizyon hakkım bulunuyor mu?",
+        a: "Revizyon turu sayısı ve kapsama giren düzenleme kriterleri teklif belgesinde açıkça yer alır.",
       },
     ],
+    closing:
+      "İlk üründen başlayarak kalite farkını birlikte görelim. Kullanacağınız kanalları ve mevcut fotoğrafınızı paylaşın, görsel yönü planlayalım.",
+    formExample: "Mağazamızda listeleyeceğimiz 12 ürünün telefonla çekilmiş fotoğrafları hazır.",
+    related: ["web-sitesi-paketi", "meta-reklam-paneli", "depo-takibi"],
+  },
+  {
+    slug: "meta-reklam-paneli",
+    name: "Meta Reklam Paneli",
+    icon: "trend",
+    art: "meta",
+    category: "reklam-musteri",
+    status: "pilot",
+    seoTitle: "Facebook ve Instagram Reklam Raporlama Paneli | Vitrinweb",
+    description: "Meta reklam harcamasını, kampanya sonuçlarını ve sonuç başına maliyeti sade, karar odaklı bir yönetim panelinde izleyin.",
+    listText: "Facebook ve Instagram reklamlarında harcamayı, hedef bazlı sonuçları ve birim maliyeti tek ekranda izleyin.",
+    homeText:
+      "Facebook ve Instagram reklam harcamalarınızı, kampanya sonuçlarınızı ve sonuç başına maliyeti karmaşadan uzak tek ekranda izleyin.",
+    linkLabel: "Reklam Panelini İnceleyin",
+    title: "Reklam bütçenizin karşılığını karmaşadan uzak tek ekranda okuyun.",
+    lead: "Facebook ve Instagram kampanyalarınızın harcama tutarını, hesabınızda ölçülen sonuçları ve birim maliyetleri seçtiğiniz tarih aralığına göre net biçimde takip edin.",
+    secondary: "Demoyu Deneyin",
+    caption: "Haftalık reklam performans özeti · Örnek veri",
+    alt: "Kampanya harcaması, toplam sonuç sayısı ve sonuç başına maliyet göstergeleri.",
+    stepsTitle: "Panel nasıl çalışır?",
+    steps: [
+      {
+        t: "Hesap ve metrik yapısını tanımlayın.",
+        d: "Raporlanacak reklam hesaplarını, kampanya hedeflerini ve erişim izinlerini kurulumda belirleyin.",
+      },
+      {
+        t: "Performansı tek ekrandan izleyin.",
+        d: "Tarih aralığını seçin; harcama, sonuç ve maliyet metriklerini kampanya bazında karşılaştırın.",
+      },
+      {
+        t: "Kritik değişimlerden haberdar olun.",
+        d: "Bütçe eşiği uyarılarını ve haftalık özet bildirimlerini yönetim rutininize göre ayarlayın.",
+      },
+    ],
+    features: {
+      title: "Panelde neler var?",
+      items: [
+        { t: "Harcama takibi", d: "Seçili dönemdeki planlanan bütçe ile gerçekleşen harcama tutarını anlık izleyin." },
+        { t: "Hedef bazlı sonuçlar", d: "Kampanya kurgunuza göre ölçülen mesaj, form veya satın alma sonuçlarını net biçimde görün." },
+        { t: "Sonuç başına maliyet", d: "Ölçülebilen kampanyalarda tek bir sonuç için oluşan gerçek birim maliyeti karşılaştırın." },
+        { t: "Dönemsel karşılaştırma", d: "Haftalık veya aylık performansları aynı metrik seti üzerinden kıyaslayın." },
+        { t: "Bütçe eşiği uyarısı", d: "Etkinleştirildiğinde belirlediğiniz harcama sınırına ulaşıldığında bildirim alın." },
+        { t: "Haftalık özet", d: "Tercih ettiğinizde ve özellik etkinse temel performans rakamlarını WhatsApp özetiyle takip edin." },
+      ],
+    },
+    demoTitle: "Haftalık reklam performansı nasıl görünüyor?",
+    demoIntro: "Tarih aralığını ve kampanyayı değiştirin; harcama, sonuç ve maliyet metriklerinin nasıl güncellendiğini görün.",
+    forWho:
+      "Aktif Facebook ve Instagram kampanyalarını düzenli izleyen işletme yöneticileri ve müşterilerine yalın rapor sunmak isteyen ajanslar için. Reklam kampanyası kurulumu ve yönetimi ihtiyacınız varsa görüşmede ayrı kapsam olarak planlayabiliriz.",
+    setup: {
+      title: "Kurulum ve kullanım",
+      text: "Bağlanacak hesap sayısını, rapor metriklerini, destek kapsamını ve bildirim tercihlerinizi birlikte yapılandıralım.",
+    },
+    faqs: [
+      {
+        q: "Reklam kampanyalarını kim yönetir?",
+        a: "Bu ürün raporlama ve performans takibi odaklıdır. Kampanya kurulumu, kreatif ve bütçe yönetimi hesabınızı yöneten ekip tarafından sürdürülür.",
+      },
+      {
+        q: "Paneldeki veriler doğrudan satış sayımla birebir örtüşür mü?",
+        a: "Panel, Meta reklam hesabında ölçümlenen verileri yansıtır. Gerçekleşen sipariş veya mağaza cirolarıyla karşılaştırma için işletme içi satış kayıtlarının birlikte değerlendirilmesi gerekir.",
+      },
+      {
+        q: "Birden fazla reklam hesabını bağlayabilir miyiz?",
+        a: "Hesap sayısı ve yetki yapısı kurulum aşamasında planlanır; bağlantı gerekli hesap izinlerinin tanımlanmasına bağlıdır.",
+      },
+      {
+        q: "Rapor dışa aktarımı ve abonelik iptali nasıl ilerler?",
+        a: "Teslim edilebilir rapor formatları ve abonelik sonlandırma koşulları yazılı kapsam belgesinde açıkça belirtilir.",
+      },
+    ],
+    closing:
+      "Haftalık reklam özetinizde ilk bakışta hangi üç metriği görmek istersiniz? Hesap yapınızı paylaşın, panel kurgusunu birlikte değerlendirelim.",
+    formExample: "Instagram reklamlarımızın harcama ve gelen mesaj performansını haftalık izlemek istiyoruz.",
+    related: ["urun-gorsel-studyosu", "musteri-bulma", "depo-takibi"],
+  },
+  {
+    slug: "depo-takibi",
+    name: "Depo Takibi",
+    icon: "scan",
+    art: "depo",
+    category: "stok-operasyon",
+    status: "pilot",
+    seoTitle: "Barkodlu Depo ve Stok Takibi Sistemi | Vitrinweb",
+    description:
+      "Mobil cihazınızla barkod okutun, depo giriş-çıkış hareketlerini anlık kaydedin, kritik stokları ve işlem geçmişini kolayca yönetin.",
+    listText: "Barkodla ürün bulun, giriş-çıkış hareketlerini kaydedin ve kritik stokları anlık yönetin.",
+    homeText:
+      "Barkod okutarak ürün giriş ve çıkışlarını telefonunuzdan kaydedin, kritik stok seviyesine inen ürünleri anında görün.",
+    linkLabel: "Depo Takibini İnceleyin",
+    title: "Hangi üründen ne kadar kaldığını telefonunuzdan anlık yönetin.",
+    lead: "Barkod okutarak ürüne saniyeler içinde ulaşın, giriş ve çıkış hareketlerini yerinde kaydedin, kritik seviyeye yaklaşan ürünleri tek listeden takip edin.",
+    secondary: "Stok Demosunu Deneyin",
+    caption: "Barkod tarama ve kritik stok ekranı · Örnek veri",
+    alt: "Mobil stok çıkış formu ve kritik stok seviyesinin altındaki ürünler listesi.",
+    stepsTitle: "Depo takibi nasıl çalışır?",
+    steps: [
+      { t: "Ürün kataloğunuzu tanımlayın.", d: "Barkod, ürün kodu, mevcut stok adedi ve kritik stok eşiklerini sisteme aktarın." },
+      {
+        t: "Hareketi deponun içinde kaydedin.",
+        d: "Ürünün barkodunu telefonla okutun, giriş veya çıkış işlemini seçip adedi onaylayın.",
+      },
+      {
+        t: "Stok ve geçmişi anlık izleyin.",
+        d: "Hareket kayıtlarını, kritik stok listesini ve Excel uyumlu raporlarınızı tek ekrandan yönetin.",
+      },
+    ],
+    features: {
+      title: "Depo takibinde neler var?",
+      items: [
+        { t: "Barkodla hızlı erişim", d: "Ürün kodunu elle aramaya gerek kalmadan kamerayla ilgili ürün kartını açın." },
+        { t: "Giriş ve çıkış kayıtları", d: "Depoya giren ve çıkan tüm adetleri zaman damgalı ayrı hareketler olarak kaydedin." },
+        { t: "Kritik stok takibi", d: "Belirlediğiniz alt sınırın altına düşen ürünleri otomatik önceliklendirilmiş listede görün." },
+        { t: "Hareket geçmişi", d: "Her ürünün ne zaman, hangi yönde ve kaç adet işlem gördüğünü geriye dönük inceleyin." },
+        { t: "Excel dışa aktarım", d: "Güncel stok listesini ve hareket dökümlerini Excel’de açılabilir formatta dışa aktarın." },
+      ],
+    },
+    demoTitle: "Bir stok çıkışı kaydedin.",
+    demoIntro: "Örnek üründen çıkış yapın; kalan stok ve kritik seviye uyarısını anında görün.",
+    forWho:
+      "Stoklarını hâlâ Excel tabloları veya defterle takip eden mağaza, toptancı, atölye ve e-ticaret operasyonları için. Çoklu depo yönetimi, muhasebe entegrasyonu veya pazaryeri senkronizasyonu ihtiyaçlarınızı teklif öncesinde ayrıca kapsamlandırıyoruz.",
+    setup: {
+      title: "Kurulum ve kullanım",
+      text: "Başlangıç ürün listenizi, kullanıcı rollerini ve takip edeceğiniz hareket türlerini kurulum öncesi netleştiriyoruz.",
+    },
+    faqs: [
+      {
+        q: "Mevcut Excel listemle geçiş yapabilir miyim?",
+        a: "Mevcut tablonuzu inceliyor; doğrudan aktarılabilecek sütunları ve tamamlanması gereken alanları sizinle paylaşıyoruz.",
+      },
+      {
+        q: "Barkodu olmayan ürünleri sisteme ekleyebilir miyim?",
+        a: "Ürün koduyla takip yapısını kurulumda planlayabiliriz. Kullanılacak etiketleme ve tarama yöntemi kapsam belgesinde belirlenir.",
+      },
+      {
+        q: "Kritik stok uyarısı nasıl çalışır?",
+        a: "Ürün bazında tanımladığınız eşik değere göre tetiklenir. Eşik değerleri satış hızınıza ve tedarik sürenize göre dilediğiniz gibi güncelleyebilirsiniz.",
+      },
+      {
+        q: "Verilerimi istediğim zaman dışa aktarabilir miyim?",
+        a: "Dışa aktarım kapsamı ve dosya formatları teklif ve kapsam belgesinde açıkça tanımlanır.",
+      },
+    ],
+    closing:
+      "Mevcut stok tablonuzla hızlı bir başlangıç yapalım. Ürün sayınızı ve günlük depo hareketlerinizi paylaşın, kurulum planını çıkaralım.",
+    formExample: "Yaklaşık 200 ürünü Excel’de takip ediyoruz; depo çıkışlarını telefonla kaydetmek istiyoruz.",
+    related: ["belge-okuma", "urun-gorsel-studyosu", "meta-reklam-paneli"],
+  },
+  {
+    slug: "google-haritalar-karnesi",
+    name: "Google Haritalar Karnesi",
+    icon: "pin",
+    art: "karne",
+    category: "reklam-musteri",
+    status: "gelistiriliyor",
+    seoTitle: "Google İşletme Profili Karnesi | Vitrinweb",
+    description:
+      "İşletmenizin Google İşletme Profilindeki çalışma saatleri, kategoriler, iletişim bilgileri ve yorum temalarını kapsamlı bir karneyle denetleyin.",
+    listText: "Google İşletme Profilinizde müşterilerin gördüğü bilgileri denetleyin, öncelikli iyileştirme alanlarını belirleyin.",
+    linkLabel: "Örnek Karneyi İnceleyin",
+    title: "Müşteriler Google’da sizi aradığında nasıl bir izlenim ediniyor?",
+    lead: "İşletmenizin Google profilini detaylı biçimde inceleyelim. Eksik, tutarsız veya güncel olmayan alanları belirleyip öncelikli aksiyon planınızı net bir karneyle sunalım.",
+    secondary: "Örnek Karneyi İnceleyin",
+    caption: "Profil tutarlılığı kontrolü · Örnek veri",
+    alt: "Kurgusal bir işletme için iletişim bilgileri, çalışma saatleri ve profil tutarlılığı kontrol ekranı.",
+    stepsTitle: "Karne nasıl hazırlanır?",
+    steps: [
+      { t: "İşletme profilinizi paylaşın.", d: "İncelenecek profil bağlantısını ve temel hizmet alanlarınızı iletin." },
+      {
+        t: "Kapsamlı profil denetimi yapalım.",
+        d: "Kategori doğruluğu, çalışma saatleri, iletişim bağlantıları, görsel kalitesi ve kapsam uygunsa yorum temalarını inceleyelim.",
+      },
+      {
+        t: "Öncelikli aksiyon listenizi alın.",
+        d: "Hangi alanların acilen güncellenmesi gerektiğini ve nereden başlamanız gerektiğini tek raporda görün.",
+      },
+    ],
+    chips: {
+      title: "Karnede neler yer alır?",
+      items: [
+        "Profil bilgi tutarlılığı",
+        "Ana ve ek hizmet kategorileri",
+        "Güncel çalışma saatleri",
+        "Web sitesi ve iletişim bağlantıları",
+        "Profil görsel standardı",
+        "Müşteri yorumlarında öne çıkan temalar",
+      ],
+    },
+    demoTitle: "Örnek karneyi inceleyin.",
+    demoIntro: "İlçe ve kategori seçimi, gösterim amaçlı kurgusal örnekleri değiştirir.",
+    forWho:
+      "Google görünürlüğünü profesyonelce denetlemek isteyen yerel işletmeler ve yetkili ekipler için. Çok şubeli yapılarda kapsamı şube sayısına göre planlıyoruz.",
+    setup: {
+      title: "Kapsam",
+      text: "Tek şube için kapsamlı karne hazırlayabilir veya çok şubeli işletmeler için dönemsel takip modeli kurabiliriz. Profil düzenleme desteğini ayrıca planlayabiliriz.",
+    },
+    faqs: [
+      {
+        q: "Google hesap şifremi paylaşmam gerekiyor mu?",
+        a: "Hayır. Erişim gerektiren çalışmalarda şifre paylaşımı olmadan yetkilendirme adımlarını size iletiyoruz.",
+      },
+      {
+        q: "Karne sonrasında sıralamam garantili olarak yükselir mi?",
+        a: "Karne, profilinizdeki eksikleri ve iyileştirme önceliklerini görünür kılar. Google arama sıralaması ve görüntülenme performansı platform algoritmalarına bağlı olduğundan sonuç garantisi verilmez.",
+      },
+      {
+        q: "Rapordaki güncellemeleri kim uygular?",
+        a: "İsterseniz kendi ekibiniz karne üzerinden ilerleyebilir; profil düzenleme ve optimizasyon desteğini bizim yürütmemizi isterseniz kapsamı buna göre belirleyebiliriz.",
+      },
+    ],
+    closing: "Müşterilerinizin Google’da karşılaştığı ilk izlenimi birlikte gözden geçirelim.",
+    formExample: "İki şubemizin Google profilindeki çalışma saatleri ve iletişim bilgilerini denetlemek istiyoruz.",
+    related: ["web-sitesi-paketi", "musteri-bulma", "musteri-asistani"],
+  },
+  {
+    slug: "web-sitesi-paketi",
+    name: "Web Sitesi Paketi",
+    icon: "globe",
+    art: "web",
+    category: "gorsel-web",
+    status: "hazir",
+    seoTitle: "İşletmeler İçin Kurumsal Web Sitesi Paketi | Vitrinweb",
+    description: "Mobil uyumlu, hızlı ve kurumsal kimliğinizi yansıtan web sitesi paketimizi ve ek özellik seçeneklerini inceleyin.",
+    listText: "Hizmetlerinizi, konumunuzu ve iletişim kanallarınızı modern, mobil uyumlu bir kurumsal sitede yayınlayın.",
+    linkLabel: "Web Sitesi Paketini İnceleyin",
+    title: "Müşterilerinize güven veren, modern bir kurumsal web sitesi.",
+    lead: "Hizmetlerinizi net biçimde sergileyin, adres ve iletişim bilgilerinize erişimi kolaylaştırın. Kapsamı, takvimi ve teslimatları baştan belli bir süreçle yayına geçin.",
+    secondary: "Örnek Siteleri İnceleyin",
+    caption: "Mobil ve masaüstü görünüm · Örnek tasarım",
+    alt: "Örnek bir işletme web sitesinin mobil ve masaüstü görünümü.",
+    stepsTitle: "Web siteniz nasıl hazırlanır?",
+    steps: [
+      {
+        t: "İşletmenizi ve hedeflerinizi paylaşın.",
+        d: "Faaliyet alanınızı ve ziyaretçilerinizin sitenizde ilk bakışta ne görmesini istediğinizi belirleyelim.",
+      },
+      {
+        t: "Sayfa mimarisini ve ek özellikleri netleştirin.",
+        d: "Hizmet sayfaları, katalog, blog veya randevu gibi ihtiyaçları birlikte planlayalım.",
+      },
+      {
+        t: "İçeriklerinizi iletin ve yayına hazırlanalım.",
+        d: "Onay sonrasında logo, görsel ve hizmet metinlerinizi proje başlangıç formundan güvenle paylaşın.",
+      },
+    ],
+    chips: {
+      title: "Paket kapsamında neler var?",
+      intro:
+        "Alan adı, barındırma, bakım, teslim süresi ve revizyon koşulları yazılı kapsam belgesinde şeffaf biçimde sunulur.",
+      items: [
+        "Kurumsal kimliğinize uygun mobil uyumlu web sitesi",
+        "Hizmet ve iletişim bilgilerinize özel yapılandırılmış sayfalar",
+        "Hızlı iletişim bağlantıları",
+        "Yayına alma desteği",
+      ],
+    },
+    demoTitle: "Örnek siteleri inceleyin.",
+    demoIntro: "Bu ön izlemedeki işletme ve içerikler gösterim amacıyla hazırlanmıştır.",
+    forWho:
+      "İlk kurumsal web sitesini hayata geçiren, mevcut sitesini modern standartlara taşıyan veya hizmetlerini düzenli bir yapıda sunmak isteyen işletmeler için. Kapsamlı e-ticaret altyapıları ve özel sistem entegrasyonları ayrı proje olarak tekliflendirilir.",
+    setup: {
+      title: "Ek seçenekler",
+      text: "İhtiyaç duyduğunuz ek özellikleri bilgi formunda işaretleyin; sitenizin mimarisine en uygun kurguyu birlikte planlayalım.",
+    },
+    faqs: [
+      {
+        q: "Mevcut alan adımı kullanabilir miyim?",
+        a: "Evet. Alan adı sağlayıcınızı ve erişim durumunuzu paylaşmanız yeterli; yönlendirme ve kurulum adımlarını birlikte planlıyoruz.",
+      },
+      {
+        q: "Metin ve görselleri nasıl ileteceğim?",
+        a: "Çalışma onaylandıktan sonra size özel açılan proje başlangıç formundan tüm içeriklerinizi yükleyebilirsiniz. Henüz hazır olmayan içerikleri formda not düşebilirsiniz.",
+      },
+      {
+        q: "Yıllık bakım ve barındırma nasıl işliyor?",
+        a: "Barındırma, teknik bakım ve içerik güncelleme koşulları çalışmaya başlamadan önce yazılı kapsam belgesinde paylaşılır.",
+      },
+      {
+        q: "Sitemi ileride büyütebilir miyim?",
+        a: "Evet. Blog, ürün kataloğu veya ek dil gibi ihtiyaçlarınız doğduğunda mevcut altyapıya uygun genişleme planını birlikte çıkarabiliriz.",
+      },
+    ],
+    closing: "Markanızı dijitalde doğru temsil eden bir yapı kuralım. İhtiyaçlarınızı paylaşın, size özel kapsamı netleştirelim.",
+    formExample: "Mevcut alan adımız var; hizmetlerimizi ve randevu kanalımızı sunan modern bir site istiyoruz.",
+    related: ["urun-gorsel-studyosu", "google-haritalar-karnesi", "musteri-asistani"],
+  },
+  {
+    slug: "gorusme-ozeti",
+    name: "Görüşme Özeti",
+    icon: "mic",
+    art: "gorusme",
+    category: "belge-gorusme",
+    status: "gelistiriliyor",
+    seoTitle: "Satış Görüşmesi Kaydını Özetleme | Vitrinweb Görüşme Özeti",
+    description:
+      "Satış görüşmesi kayıtlarını metne dönüştürün; müşteri taleplerini, alınan kararları ve sonraki aksiyonları ekibinizle net biçimde takip edin.",
+    listText:
+      "Satış görüşmelerinin kaydını metne dönüştürün; kararları, açık soruları ve aksiyon adımlarını tek özette toplayın.",
+    linkLabel: "Görüşme Özetini İnceleyin",
+    title: "Görüşme bittiğinde kararlar ve aksiyonlar net kalsın.",
+    lead: "Satış görüşmelerinin kaydını yazıya dökün; müşterinin beklentilerini, alınan kararları ve kimin hangi adımı üstlendiğini tek ve düzenli bir özette toplayın.",
+    secondary: "Örnek Özeti İnceleyin",
+    caption: "Konuşma dökümü ve yapılandırılmış özet · Örnek görüşme",
+    alt: "Bir satış görüşmesinin metin dökümü ile yanında müşteri taleplerini, açık soruları ve sonraki adımları gösteren özet ekranı.",
+    stepsTitle: "Görüşme özeti nasıl oluşur?",
+    steps: [
+      {
+        t: "Yetkili görüşme kaydını yükleyin.",
+        d: "Katılımcıların bilgilendirildiği ve paylaşım yetkisine sahip olduğunuz ses kaydını sisteme aktarın.",
+      },
+      {
+        t: "Metin ve yapılandırılmış özeti alın.",
+        d: "Konuşma dökümüyle birlikte talepler, kararlar ve aksiyon adımlarını içeren düzenli bir taslak oluşur.",
+      },
+      {
+        t: "Kontrol edip ekibinizle paylaşın.",
+        d: "Özel isimleri, rakamları ve taahhüt içeren maddeleri gözden geçirin; doğrulanan özeti takibe alın.",
+      },
+    ],
+    chips: {
+      title: "Neleri görebilirsiniz?",
+      items: ["Konuşma dökümü", "Görüşme özeti", "Müşteri talepleri", "Alınan kararlar", "Açık sorular", "Sonraki aksiyonlar"],
+    },
+    sample: {
+      title: "Örnek çıktı",
+      lines: [
+        "Talep: Ürün listesi haftalık güncellensin.",
+        "Açık soru: Listeyi kim onaylayacak?",
+        "Sonraki adım: Örnek listeyi ekip incelemesine gönderin.",
+      ],
+    },
+    demoTitle: "Örnek bir görüşmeyi inceleyin.",
+    demoIntro: "Konuşma dökümünü, özeti ve sonraki adımları sekmeler arasında karşılaştırın.",
+    forWho:
+      "Yoğun satış görüşmeleri yürüten işletme yöneticileri, müşteri ilişkileri ekipleri ve keşif toplantıları yapan ajanslar için.",
+    setup: {
+      title: "Kurulum",
+      text: "Ses dosyası formatlarını, konuşma dilini, özet şablonunu ve kayıt saklama koşullarını kurulum görüşmesinde netleştiriyoruz.",
+    },
+    faqs: [
+      {
+        q: "Toplantılara otomatik olarak katılıyor mu?",
+        a: "Bu ürünün standart akışı, paylaşmaya yetkili olduğunuz kaydı yüklemenizle başlar. Otomatik toplantı entegrasyonu ihtiyacınız varsa ayrıca değerlendiririz.",
+      },
+      {
+        q: "Özette hata oluşabilir mi?",
+        a: "Ses netliği, üst üste konuşmalar ve özel terimler çıktıyı etkileyebilir. Müşteriye veya ekibe iletilecek metinlerin önce kontrol edilmesi önerilir.",
+      },
+      {
+        q: "Kayıtlar nerede ve nasıl saklanır?",
+        a: "Kullanılan altyapı, erişim yetkileri ve saklama süreleri çalışma başlamadan önce yazılı olarak paylaşılır.",
+      },
+    ],
+    closing:
+      "Satış görüşmelerinizde gözden kaçmasını istemediğiniz kritik bilgileri paylaşın, size uygun özet akışını planlayalım.",
+    formExample: "Satış görüşmelerindeki talepleri ve sonraki adımları ekip için düzenli özetlemek istiyoruz.",
+    related: ["belge-okuma", "musteri-asistani", "musteri-bulma"],
+  },
+  {
+    slug: "belge-okuma",
+    name: "Belge Okuma",
+    icon: "file",
+    art: "belge",
+    category: "belge-gorusme",
+    status: "gelistiriliyor",
+    seoTitle: "Fatura ve Formlardan Otomatik Veri Çıkarma | Vitrinweb Belge Okuma",
+    description:
+      "PDF, fotoğraf ve taranmış belgelerden ihtiyacınız olan alanları çıkarın; ekip onayıyla tablolarınıza ve iş akışlarınıza aktarın.",
+    listText: "Fatura, irsaliye, form ve sözleşmelerden kritik alanları çıkarın; ekip onayıyla kayıtlarınıza aktarın.",
+    linkLabel: "Belge Okumayı İnceleyin",
+    title: "Belgelerdeki veriyi tek tek elle girmeden kayda alın.",
+    lead: "Fatura, irsaliye, başvuru formu veya sözleşmelerde takip ettiğiniz alanları hızla çıkarın. Kontrol adımından geçirerek kullandığınız tabloya veya iş akışına aktarın.",
+    secondary: "Örnek Belgeyi İnceleyin",
+    caption: "Kaynak belge ve çıkarılan alanlar · Örnek veri",
+    alt: "Örnek irsaliye belgesi ile yanında çıkarılan tarih, ürün kodu ve miktar alanları.",
+    stepsTitle: "Belge okuma nasıl çalışır?",
+    steps: [
+      { t: "Belge türünü ve alanları tanımlayın.", d: "Okunacak dosya tipini ve çekmek istediğiniz veri alanlarını belirleyin." },
+      {
+        t: "Alanları otomatik taslağa alın.",
+        d: "Belge numarası, tarih, ürün kodu, miktar veya form yanıtlarını yapılandırılmış taslakta görün.",
+      },
+      {
+        t: "Doğrulayın ve aktarın.",
+        d: "İşaretlenen alanları kaynak belgeyle karşılaştırıp onaylayın; kayıtları hedef tablo veya sistem için hazır hâle getirin.",
+      },
+    ],
+    chips: {
+      title: "Kullanım senaryoları",
+      items: [
+        "İrsaliyeden stok giriş taslağı",
+        "Faturadan belge numarası ve tarih",
+        "Başvuru formundan seçili alanlar",
+        "Sözleşmeden taraf adı ve tarih bilgisi",
+      ],
+    },
+    demoTitle: "İrsaliyeden veri okuyun.",
+    demoIntro: "Kaynak irsaliye ile otomatik çıkarılan ürün kodu ve adet alanlarını yan yana görün, işaretli alanı düzeltip kaydı onaylayın.",
+    forWho:
+      "Aynı belge tiplerinden düzenli olarak manuel veri girişi yapan depo, operasyon, idari işler ve ön muhasebe ekipleri için.",
+    setup: {
+      title: "Kurulum",
+      text: "Örnek belgeleriniz üzerinden okunacak alanları, onay mekanizmasını ve aktarım yapılacak sistemi birlikte planlıyoruz.",
+    },
+    faqs: [
+      {
+        q: "Telefonla çekilmiş belge fotoğraflarını okuyabilir mi?",
+        a: "Fotoğrafın net olması ve belgenin eksiksiz kadrajlanması önemlidir. Örnek belgeleriniz üzerinden uygun formatı test ederek belirliyoruz.",
+      },
+      {
+        q: "Muhasebe veya stok kaydı doğrudan otomatik mi açılır?",
+        a: "Veri aktarımı ve kayıt oluşturma adımları, seçilen entegrasyon yapısına ve ekip onay kuralına göre planlanır.",
+      },
+      {
+        q: "Sözleşmelerde hangi bilgileri çıkarabilir?",
+        a: "Taraf adı, tarih veya belirli madde başlıkları gibi tanımlı alanları çıkarabilir. Hukuki değerlendirme ve yorum için mutlaka hukuk uzmanına başvurulmalıdır.",
+      },
+    ],
+    closing: "Ekibinizin en sık elle işlediği belge türünü paylaşın; hangi alanları hızlandırabileceğimizi birlikte inceleyelim.",
+    formExample: "İrsaliyelerdeki ürün kodu ve adet bilgilerini her gün elle sisteme giriyoruz.",
+    related: ["depo-takibi", "gorusme-ozeti", "musteri-asistani"],
+  },
+  {
+    slug: "musteri-asistani",
+    name: "Müşteri Asistanı",
+    icon: "chat",
+    art: "asistan",
+    category: "reklam-musteri",
+    status: "gelistiriliyor",
+    seoTitle: "Onaylı Kaynaklarla Yanıt Veren Müşteri Asistanı | Vitrinweb",
+    description:
+      "Sık sorulan müşteri sorularını kurumunuzun onaylı bilgi kaynaklarıyla yanıtlayın, özel talepleri kesintisiz biçimde ekibinize aktarın.",
+    listText: "Müşteri sorularını kurumunuzun onaylı bilgi kaynaklarıyla yanıtlayın, özel talepleri ekibinize aktarın.",
+    linkLabel: "Müşteri Asistanını İnceleyin",
+    title: "Müşteriniz sorsun, asistanınız onaylı bilgilerinizle yanıtlasın.",
+    lead: "Teslimat, kullanım koşulları, çalışma saatleri ve sık sorulan konularda yalnızca kurumunuzun onayladığı kaynaklardan yararlanan bir müşteri asistanı kurun. Ekibinize devredilecek konuları baştan tanımlayın.",
+    secondary: "Örnek Konuşmayı Görün",
+    caption: "Onaylı kaynaktan yanıt ve ekibe devir · Örnek konuşma",
+    alt: "Müşteri asistanının çalışma saatlerini yanıtladığı ve özel bir talebi müşteri ekibine aktardığı örnek sohbet ekranı.",
+    stepsTitle: "Asistan nasıl kurulur?",
+    steps: [
+      {
+        t: "Onaylı bilgi kaynaklarını derleyin.",
+        d: "Güncel hizmet bilgilerini, ürün rehberlerini ve sık sorulan soruları sisteme tanımlayın.",
+      },
+      {
+        t: "Yanıt ve devir sınırlarını çizin.",
+        d: "Asistanın hangi soruları doğrudan yanıtlayacağını, hangi durumlarda ekibinize yönlendirme yapacağını belirleyin.",
+      },
+      {
+        t: "Gerçek senaryolarla test edin.",
+        d: "Yayına almadan önce yanıt tonunu, doğruluğunu ve ekibe devir akışını birlikte doğrulayın.",
+      },
+    ],
+    chips: {
+      title: "Kapsam unsurları",
+      items: [
+        "Onaylı belge ve sayfalar",
+        "Sık sorulan sorular",
+        "Bilgi güncelleme akışı",
+        "Ekibe devir kuralları",
+        "Kapsama göre web veya WhatsApp bağlantısı",
+      ],
+    },
+    demoTitle: "Örnek konuşmayı deneyin.",
+    demoIntro: "Hazır sorulardan birini seçin; asistanın onaylı kaynaktan nasıl yanıt verdiğini ve ne zaman ekibe aktardığını görün.",
+    forWho:
+      "Benzer müşteri sorularına her gün düzenli yanıt veren mağaza, e-ticaret ve hizmet işletmeleri için. Kurulum için güncel ve onaylı bilgi dokümanları ile devredilen talepleri karşılayacak bir iletişim kanalı gerekir.",
+    setup: {
+      title: "Kurulum",
+      text: "Yayın kanalını, onaylı kaynakları, devir akışını ve içerik güncellemelerinden sorumlu rolü kurulumda birlikte belirliyoruz.",
+    },
+    faqs: [
+      {
+        q: "Asistan müşteriye özel söz veya fiyat verebilir mi?",
+        a: "Hayır. Asistan yalnızca onayladığınız kaynaklardaki bilgileri aktarır. Özel fiyat, istisna, taahhüt ve karar gerektiren tüm talepler ekibinize yönlendirilir.",
+      },
+      {
+        q: "İşletme bilgilerimiz değiştiğinde ne olur?",
+        a: "Kaynak güncelleme ve yanıt doğrulama sürecini kurulum aşamasında net bir rutin olarak planlıyoruz.",
+      },
+      {
+        q: "WhatsApp üzerinde çalışabilir mi?",
+        a: "Hedef kanal ve hesap bağlantısı gereksinimlerini kurulum öncesinde teknik olarak değerlendiriyoruz.",
+      },
+    ],
+    closing: "Müşterilerinizin en sık sorduğu üç soruyla başlayalım; asistan kurgunuzu birlikte planlayalım.",
+    formExample: "Teslimat ve ürün kullanımıyla ilgili sık soruları onaylı belgelerimizden yanıtlamak istiyoruz.",
+    related: ["gorusme-ozeti", "belge-okuma", "web-sitesi-paketi"],
   },
   {
     slug: "musteri-bulma",
-    name: "Müşteri Bulma Aracı",
-    short: "Bölge ve sektöre göre size uygun işletmeleri bulun, kimle önce görüşeceğinizi bilin.",
-    title: "Kime satacağınızı tahmin etmeyin, görün.",
-    lead: "İşletmelere satış yapıyorsanız, hedeflediğiniz ilçe ve sektördeki işletmeleri bulmanıza ve hangileriyle önce görüşmeniz gerektiğini belirlemenize yardımcı oluyoruz.",
-    description:
-      "İşletmelere satış yapanlar için: hedef ilçe ve sektördeki işletmeleri bulun, önceliklendirin ve satış görüşmelerinizi düzenleyin.",
+    name: "Müşteri Bulma",
     icon: "target",
-    screen: "musteri",
-    pains: [
-      "Yeni müşteriyi nerede arayacağımı bilmiyorum.",
-      "Satış ekibim rastgele arıyor, kime öncelik vereceğimizi bilmiyoruz.",
-      "Hangi işletmeyle görüştük, sonra ne olacaktı, kayıt yok.",
-    ],
+    art: "musteri",
+    category: "reklam-musteri",
+    status: "pilot",
+    seoTitle: "B2B Potansiyel Müşteri Araştırma ve Takip Aracı | Vitrinweb",
+    description:
+      "Hedef müşteri kriterlerinizi belirleyin, kullanım yetkiniz olan işletme kayıtlarını sınıflandırın ve satış ekibinizin takip sürecini düzenleyin.",
+    listText:
+      "Hedef müşteri ölçütlerinizi belirleyin; kullanım yetkiniz olan kayıtları sınıflandırıp satış ekibiniz için düzenli takip listesi oluşturun.",
+    linkLabel: "Müşteri Bulmayı İnceleyin",
+    title: "Satış ekibiniz kiminle, neden görüşeceğini net biçimde bilsin.",
+    lead: "İşletme kayıtlarını hedef sektör, bölge ve hizmet ihtiyacı kriterlerine göre değerlendirin. Uygun potansiyel müşterileri ekibinizin düzenli takip edebileceği tek bir çalışma listesinde toplayın.",
+    secondary: "Örnek Listeyi İnceleyin",
+    caption: "Filtrelenmiş satış takip listesi · Örnek veri",
+    alt: "Sektör ve bölge kriterlerine göre filtrelenmiş kurgusal işletmelerden oluşan satış takip listesi.",
+    stepsTitle: "Müşteri bulma nasıl çalışır?",
     steps: [
-      { t: "Hedefi belirleriz", d: "Hangi ilçe, hangi sektör ve nasıl bir işletme sizin müşteriniz, birlikte tanımlarız." },
-      { t: "Fırsatları çıkarırız", d: "Bölgedeki işletmeleri bulur, size uygunluklarına göre sıralarız." },
-      { t: "Takibi kolaylaştırırız", d: "Kiminle görüşüldü, sonuç ne oldu, sıradaki adım ne; hepsi tek listede." },
+      { t: "Hedef profili tanımlayın.", d: "Odaklanmak istediğiniz sektör, bölge ve işletme niteliklerini belirleyin." },
+      {
+        t: "Kayıtları sınıflandırın.",
+        d: "Kullanım yetkisine sahip olduğunuz kaynaklar veya kendi mevcut listeniz üzerinden kayıtları önceliklendirin.",
+      },
+      {
+        t: "Satış takibini planlayın.",
+        d: "Ekipçe seçilen kayıtları, sorumlu kişiyi ve sonraki temas adımını tek listeden yönetin.",
+      },
     ],
-    features: [
-      { icon: "pin", t: "Bölge ve sektör", d: "İlçe, mahalle ve sektör seçerek hedef bölgenizi daraltırsınız." },
-      { icon: "trend", t: "Önceliklendirme", d: "İşletmeler sizin ürününüze uygunluk puanına göre sıralanır." },
-      { icon: "check", t: "Görüşme takibi", d: "Her işletme için durum, not ve bir sonraki adım kaydedilir." },
-      { icon: "layout", t: "Ekip görünümü", d: "Satış ekibiniz aynı listeyi görür; aynı işletme iki kez aranmaz." },
-    ],
-    forWho: [
-      "İşletmelere ürün veya hizmet satan firmalar (B2B)",
-      "Sahada ya da telefonla satış yapan ekipler",
-      "Yeni bir ilçe veya şehre açılmak isteyen işletmeler",
-    ],
-    notFor: [
-      "Son tüketiciye (bireylere) satış yapan işletmeler",
-      "Toplu ve izinsiz mesaj göndermek isteyenler: yasal kurallara uygun iletişim kuruyoruz",
-    ],
-    pricing: {
-      label: "Kapsama göre",
-      d: "Fiyat, hedef bölge sayısı ve kullanıcı sayısına göre belirlenir. Görüşmeden sonra yazılı teklif iletiriz.",
+    chips: {
+      title: "Listede neler yer alır?",
+      items: ["Sektör", "Bölge", "Kaynak", "Öncelik", "Sorumlu", "Sonraki Adım"],
+    },
+    demoTitle: "B2B satış listesini filtreleyin.",
+    demoIntro: "Kurgusal işletmeleri sektör, bölge ve öncelik kriterlerine göre filtreleyin.",
+    forWho:
+      "Potansiyel müşteri araştırmasını sistematik hâle getirmek isteyen B2B satış ekipleri, hizmet sağlayıcılar ve iş geliştirme yöneticileri için.",
+    setup: {
+      title: "Kurulum",
+      text: "Hedef müşteri kriterlerinizi, kullanılacak veri kaynaklarını ve takip sorumluluklarını kurulum görüşmesinde planlıyoruz.",
     },
     faqs: [
       {
-        q: "Bulduğunuz işletmelere toplu mesaj atabilir miyim?",
-        a: "Araç, toplu ve izinsiz mesaj göndermek için değildir. Ticari iletiler yasal kurallara tabidir; size uygun ve kurallara uyan bir iletişim yöntemi öneririz.",
+        q: "Kendi mevcut listemi kullanabilir miyim?",
+        a: "Mevcut listenizin yapısını ve hangi alanların sınıflandırmada kullanılabileceğini birlikte değerlendiriyoruz.",
       },
       {
-        q: "Hangi sektörlerde çalışıyor?",
-        a: "Adresi ve kamuya açık işletme bilgisi olan her sektörde kullanılabilir: kafe, kuaför, klinik, mağaza, ofis gibi.",
+        q: "Sistem otomatik mesaj veya e-posta gönderir mi?",
+        a: "Bu ürün araştırma, değerlendirme ve ekip içi satış takibi kapsamındadır. İletişim kararı ve kanal seçimi tamamen ekibinize aittir.",
       },
       {
-        q: "Kendi müşteri listemi ekleyebilir miyim?",
-        a: "Evet. Elinizdeki listeyi aktarabilir, takip ve önceliklendirme özelliklerini onunla da kullanabilirsiniz.",
+        q: "Google Haritalar Karnesi ile farkı nedir?",
+        a: "Müşteri Bulma, satış ekibinizin potansiyel müşteri araştırmasını ve takibini düzenler. Google Haritalar Karnesi ise kendi işletme profilinizde müşterilerin gördüğü bilgileri denetler.",
       },
     ],
-  },
-  {
-    slug: "web-sitesi",
-    name: "Web Sitesi",
-    short: `İşletmeniz için modern, hızlı ve mobil uyumlu web sitesi. ${TL(BASE_PRICE)}, ilk yıl servis ücretsiz.`,
-    title: `${TL(BASE_PRICE)}'ye profesyonel web sitesi.`,
-    lead: "Modern, hızlı ve mobil uyumlu web sitenizi sizin için hazırlıyoruz. Metinleri biz yazarız; ilk yıl alan adı, barındırma, servis ve bakım dahil.",
-    description: `İşletmeniz için ${TL(BASE_PRICE)}'ye modern, hızlı, mobil uyumlu web sitesi. İlk yıl servis ve bakım ücretsiz, taahhüt yok.`,
-    icon: "globe",
-    screen: "web",
-    checkout: true,
-    pains: [
-      "Müşteriler beni Google'da arıyor ama bulamıyor.",
-      "Instagram hesabım var ama kendi sitem yok.",
-      "Mevcut sitem eski, telefonda düzgün görünmüyor.",
-    ],
-    steps: [
-      { t: "Sipariş verin", d: "Bilgilerinizi girin, paketinizi seçin ve güvenli ödemeyle siparişinizi tamamlayın." },
-      { t: "İçeriklerinizi iletin", d: "Logo, fotoğraf ve işletme bilgilerinizi kısa bir formla gönderin." },
-      { t: "Yayına alalım", d: "İçerikleriniz tamamlandıktan sonra 5 iş günü içinde, onayınızla siteniz yayında." },
-    ],
-    features: [
-      { icon: "layout", t: "5 sayfalık tasarım", d: "Ana sayfa, hakkımızda, hizmetler, galeri ve iletişim; sektörünüze göre." },
-      { icon: "phone", t: "Mobil uyumlu", d: "Telefon, tablet ve bilgisayarda düzgün görünür." },
-      { icon: "file", t: "Metin yazımı", d: "Verdiğiniz bilgilerden sayfa metinlerinizi biz yazarız." },
-      { icon: "search", t: "SEO uyumlu altyapı", d: "Sayfa başlıkları, açıklamalar, site haritası ve yapısal veri." },
-      { icon: "message", t: "WhatsApp ve tıkla-ara", d: "Ziyaretçiniz tek dokunuşla size ulaşır." },
-      { icon: "shield", t: "İlk yıl servis ücretsiz", d: "Alan adı, barındırma, SSL, güvenlik güncellemeleri ve ayda 2 küçük güncelleme." },
-    ],
-    forWho: [
-      "Web sitesi olmayan ya da sitesini yenilemek isteyen küçük işletmeler",
-      "Google aramalarında görünmek isteyen yerel işletmeler",
-      "Hızlı, net fiyatlı ve uğraştırmayan bir süreç arayanlar",
-    ],
-    notFor: [
-      "Çok sayıda ürünlü, büyük ölçekli e-ticaret altyapısı arayanlar (bunu teklifle değerlendiriyoruz)",
-      "Başka bir firmanın yaptığı mevcut sitenin onarımını isteyenler",
-    ],
-    pricing: {
-      label: TL(BASE_PRICE),
-      d: "KDV dahil, tek seferlik. İlk yıl servis ve bakım ücretsiz, taahhüt yok. Ek özellikler (blog, randevu, çoklu dil) açık fiyatlarla eklenir.",
-    },
-    faqs: [
-      {
-        q: "Sitem ne zaman hazır olur?",
-        a: "İçerikleriniz eksiksiz ulaştıktan sonra 5 iş günü içinde siteniz yayına hazır olur.",
-      },
-      {
-        q: "İlk yıldan sonra ne ödüyorum?",
-        a: "2. yıl servis ve bakım ücreti yıllık 1.000 TL'dir; sonraki yıllarda enflasyon oranında güncellenir ve önceden bildirilir. Memnun kalmazsanız yenilemezsiniz.",
-      },
-      {
-        q: "Ödeme nasıl alınıyor?",
-        a: "Ödeme, BDDK lisanslı ödeme kuruluşu iyzico üzerinden, 3D Secure doğrulamasıyla alınır. Kart bilgileriniz bize ulaşmaz.",
-      },
-    ],
+    closing:
+      "Hedeflediğiniz işletmelerin ortak özelliklerini paylaşın; satış takip yapınızı nasıl sadeleştirebileceğimizi birlikte inceleyelim.",
+    formExample: "Satış ekibimizin elindeki işletme listesini sektör ve bölgeye göre sınıflandırmak istiyoruz.",
+    related: ["meta-reklam-paneli", "gorusme-ozeti", "google-haritalar-karnesi"],
   },
 ];
 
-/** İşletmeye özel geliştirme: ürün listesinde geniş kartla ayrıca gösterilir. */
-export const CUSTOM_SOLUTION: Product = {
-  slug: "ozel-cozumler",
-  name: "İşletmeye Özel Çözümler",
-  short: "Hazır yazılımların karşılamadığı işleriniz için size özel panel, otomasyon ve entegrasyon.",
-  title: "Hazır yazılım işinize uymuyorsa, size özel kuralım.",
-  lead: "Elle yapılan, tekrar eden ya da birden fazla program arasında kaybolan işlerinizi dinliyor; işletmenize özel bir panel, otomasyon veya entegrasyonla çözüyoruz.",
-  description:
-    "Hazır yazılımların karşılamadığı işleriniz için işletmenize özel panel, otomasyon ve entegrasyon. Keşiften teslime, net kapsam ve fiyatla.",
-  icon: "tool",
-  screen: "ozel",
-  pains: [
-    "Aynı bilgiyi her gün üç farklı programa elle giriyoruz.",
-    "Hiçbir hazır yazılım bizim işleyişimize tam uymuyor.",
-    "Siparişleri, randevuları ya da talepleri WhatsApp yazışmalarından takip ediyoruz.",
-  ],
-  steps: [
-    { t: "Keşif görüşmesi", d: "İşinizin nasıl yürüdüğünü ve nerede zaman kaybettiğinizi dinleriz. Ücretsizdir." },
-    { t: "Yazılı öneri", d: "Kapsam, süre ve fiyat tek sayfada. Neyin yapılıp neyin yapılmayacağı baştan bellidir." },
-    { t: "Kurulum ve destek", d: "Önce küçük bir pilotla başlar, sonra kullanıma alırız. Bakım ve destek devam eder." },
-  ],
-  features: [
-    { icon: "layout", t: "Yönetim panelleri", d: "Sipariş, randevu, talep ya da saha işlerini takip ettiğiniz size özel ekranlar." },
-    { icon: "trend", t: "Otomasyonlar", d: "Tekrar eden işler kendiliğinden yapılır: hatırlatma, rapor, bildirim." },
-    { icon: "globe", t: "Entegrasyonlar", d: "Kullandığınız programları birbirine bağlar, aynı bilgiyi iki kez girmezsiniz." },
-    { icon: "file", t: "Belge ve rapor", d: "Teklif, form ve raporlarınız tek tıkla, kendi şablonunuzla hazırlanır." },
-  ],
-  forWho: [
-    "Elle yapılan, tekrar eden işleri olan işletmeler",
-    "Birden fazla program arasında bilgi taşıyan ekipler",
-    "Hazır yazılımların işleyişine uymadığı işletmeler",
-  ],
-  notFor: ["Hazır bir programın kolayca çözebileceği işler: bu durumda size o programı öneririz"],
-  pricing: {
-    label: "Proje teklifi",
-    d: "Keşif görüşmesinden sonra kapsam, süre ve fiyatı yazılı olarak iletiriz. Fiyatı onaylamadan hiçbir işe başlamayız.",
+/** Menü ve alt bilgideki sıra (katalog sırasından farklı). */
+export const MENU_ORDER = [
+  "urun-gorsel-studyosu",
+  "meta-reklam-paneli",
+  "depo-takibi",
+  "web-sitesi-paketi",
+  "gorusme-ozeti",
+  "belge-okuma",
+  "musteri-asistani",
+  "musteri-bulma",
+  "google-haritalar-karnesi",
+];
+
+export const getProduct = (slug: string): Product | undefined => PRODUCTS.find((p) => p.slug === slug);
+export const menuProducts = (): Product[] => MENU_ORDER.map((s) => getProduct(s)).filter((p): p is Product => !!p);
+export const HOME_PRODUCTS = ["urun-gorsel-studyosu", "meta-reklam-paneli", "depo-takibi"];
+
+/** /urunler ihtiyaca göre gezinme. */
+export const NEEDS: { label: string; slugs: string[] }[] = [
+  { label: "Ürünlerimi daha profesyonel sunmak istiyorum", slugs: ["urun-gorsel-studyosu", "web-sitesi-paketi"] },
+  { label: "Reklam verilerimi net okumak istiyorum", slugs: ["meta-reklam-paneli"] },
+  { label: "Stoklarımı kontrol altına almak istiyorum", slugs: ["depo-takibi", "belge-okuma"] },
+  { label: "Dijitalde güçlü görünmek istiyorum", slugs: ["web-sitesi-paketi", "google-haritalar-karnesi", "urun-gorsel-studyosu"] },
+  { label: "Tekrarlanan işleri otomatikleştirmek istiyorum", slugs: ["belge-okuma", "gorusme-ozeti", "musteri-asistani"] },
+];
+
+/** Bilgi talebi formundaki "İlgilendiğiniz Ürün" alanı için ek seçenekler. */
+export const INTEREST_EXTRA: { id: string; label: string }[] = [
+  { id: "hizmetler", label: "Tamamlayıcı Hizmetler" },
+  { id: "isletmeye-ozel", label: "İşletmeye Özel Çözüm" },
+  { id: "karar-vermedim", label: "Henüz Karar Vermedim" },
+];
+
+export const interestLabel = (id: string): string =>
+  getProduct(id)?.name || INTEREST_EXTRA.find((x) => x.id === id)?.label || "";
+
+export const infoHref = (slug: string, extra = ""): string => `/bilgi-al?urun=${encodeURIComponent(slug)}${extra}`;
+
+export const whatsAppText = (service: string): string =>
+  `Merhaba, Vitrinweb’in ${service} çözümü hakkında bilgi almak istiyorum. İşletmem: . Destek aradığım konu: .`;
+
+/* ---------- Web Sitesi Paketi ---------- */
+export const WEB_ADDONS = ["Blog", "Online Randevu", "Gelişmiş İletişim Formu", "Ürün/Hizmet Kataloğu", "Çoklu Dil"];
+export const WEB_CUSTOM = ["Online Ödeme", "Yönetim Paneli", "Özel Geliştirme"];
+
+const FONT = "'Manrope','Segoe UI',system-ui,sans-serif";
+const SERIF = "Georgia,'Times New Roman',serif";
+
+export const SAMPLE_SITES: { id: string; label: string; url: string; m: MockData }[] = [
+  {
+    id: "kuafor",
+    label: "Kuaför ve Güzellik Salonu",
+    url: "linasalon.com",
+    m: {
+      variant: "split",
+      name: "Lina Salon",
+      nav: ["Hizmetler", "Fiyatlar", "Galeri", "İletişim"],
+      tag: "SAÇ · CİLT · MAKYAJ",
+      h: "Kendinize ayırdığınız zaman, özenle.",
+      p: "Saç kesimi, renklendirme ve cilt bakımı için randevunuzu birkaç adımda planlayın.",
+      cta: "Randevu Al",
+      cta2: "Hizmetler",
+      cards: ["Saç Tasarımı", "Cilt Bakımı", "Gelin Paketi"],
+      bg: "#FBF6F3",
+      ink: "#33262A",
+      ac: "#A9586E",
+      acink: "#FFFFFF",
+      card: "#FFFFFF",
+      g: ["#EDC9C6", "#DFA7B1", "#F6E2D9"],
+      r: "1.2cqw",
+      font: FONT,
+      hfont: SERIF,
+    },
   },
-  faqs: [
-    {
-      q: "Keşif görüşmesi ücretli mi?",
-      a: "Hayır. İlk görüşme ücretsizdir ve herhangi bir taahhüt doğurmaz.",
+  {
+    id: "kafe",
+    label: "Kafe ve Restoran",
+    url: "koseustu.com",
+    m: {
+      variant: "full",
+      name: "Köşe Üstü",
+      nav: ["Menü", "Rezervasyon", "Konum", "İletişim"],
+      tag: "HER GÜN 08.00 – 23.00",
+      h: "Mahallenin en sıcak masası.",
+      p: "Taze kahve, ev yapımı tatlılar ve mevsim menüsü. Masanızı önceden ayırın.",
+      cta: "Masa Ayırt",
+      cta2: "Menüyü Gör",
+      cards: ["Kahvaltı", "Öğle Menüsü", "Tatlılar", "Kahve"],
+      bg: "#1E1814",
+      ink: "#F5EDE3",
+      ac: "#D9A55B",
+      acink: "#1E1814",
+      card: "#2A221C",
+      g: ["#6B4B33", "#3B2A1F", "#9C6B3F"],
+      r: "0.6cqw",
+      font: FONT,
+      hfont: SERIF,
     },
-    {
-      q: "Yazılımın sahibi kim olur?",
-      a: "Sahiplik ve kaynak kodun teslimi projeye göre sözleşmede açıkça yazılır; teklifte baştan belirtiriz.",
+  },
+  {
+    id: "danismanlik",
+    label: "Danışmanlık",
+    url: "kuzeydanismanlik.com",
+    m: {
+      variant: "center",
+      name: "Kuzey Danışmanlık",
+      nav: ["Hizmetler", "Yaklaşım", "Vakalar", "İletişim"],
+      tag: "STRATEJİ VE BÜYÜME",
+      h: "Büyümeniz için net bir yol haritası.",
+      p: "İşletmenizi verilerle okuyup uygulanabilir bir plana dönüştürüyoruz.",
+      cta: "Görüşme Planla",
+      cta2: "Hizmetler",
+      cards: ["Strateji", "Operasyon", "Finans"],
+      bg: "#F3F5F7",
+      ink: "#14202E",
+      ac: "#2E5E4E",
+      acink: "#FFFFFF",
+      card: "#FFFFFF",
+      g: ["#CFDCD6", "#9FB9AE", "#E2EAE6"],
+      r: "0.8cqw",
+      font: FONT,
     },
-    {
-      q: "Küçük bir işletme için de yapıyor musunuz?",
-      a: "Evet. Çoğu zaman küçük bir pilotla başlıyor, işe yaradığını gördükten sonra büyütüyoruz.",
+  },
+  {
+    id: "klinik",
+    label: "Klinik",
+    url: "denizagizdis.com",
+    m: {
+      variant: "grid",
+      name: "Deniz Ağız ve Diş",
+      nav: ["Tedaviler", "Ekibimiz", "Ulaşım", "İletişim"],
+      tag: "HAFTA İÇİ 09.00 – 19.00",
+      h: "Kliniğimize ulaşmak için ihtiyacınız olan her şey.",
+      p: "",
+      cta: "Randevu İçin Arayın",
+      cta2: "",
+      cards: ["Tedaviler", "Ekibimiz", "Ulaşım"],
+      tiles: [
+        ["Genel muayene", "Randevu ile"],
+        ["Çocuk diş hekimliği", "Hafta içi"],
+        ["Ortodonti", "Ön görüşme"],
+        ["Ulaşım", "Haritada görün"],
+      ],
+      bg: "#F4F8FA",
+      ink: "#12303B",
+      ac: "#1F6F86",
+      acink: "#FFFFFF",
+      card: "#FFFFFF",
+      g: ["#CFE3EA", "#9CC6D3", "#E4F0F4"],
+      r: "1cqw",
+      font: FONT,
     },
-  ],
-};
-
-export const ALL_PRODUCTS: Product[] = [...PRODUCTS, CUSTOM_SOLUTION];
-
-export const getProduct = (slug: string): Product | undefined => ALL_PRODUCTS.find((p) => p.slug === slug);
-
-/** Ürün için iletişim formunun konusu önceden dolu gelir. */
-export const contactHref = (p: Product): string => `/iletisim?konu=${encodeURIComponent(p.name)}`;
-
-export const productWhatsAppText = (p: Product): string => `Merhaba, ${p.name} hakkında bilgi almak istiyorum.`;
+  },
+];

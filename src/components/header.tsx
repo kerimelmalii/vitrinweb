@@ -2,31 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
-import { NAV } from "@/data/content";
+import { NAV_LINKS } from "@/data/agency";
 import { INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
-import { useApp } from "@/lib/order-context";
-import type { NavItem } from "@/lib/types";
+import { menuProducts, STATUS } from "@/data/products";
 
-export function Logo() {
+export function Logo({ sub = true }: { sub?: boolean }) {
   const pathname = usePathname().replace(/\/$/, "") || "/";
   return (
     <Link
       className="logo"
       href="/"
-      aria-label="Vitrinweb, ana sayfa"
+      aria-label="Vitrinweb ana sayfa"
       onClick={(e) => {
-        /* Zaten ana sayfadaysa Link'in kendisi gezinme yapmaz (URL aynı), bu yüzden
-           kaydırma konumu sıfırlanmaz; bunu elle yapıyoruz. */
+        /* Zaten ana sayfadaysa Link gezinme yapmaz; kaydırmayı elle sıfırlıyoruz. */
         if (pathname === "/") {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }}
     >
-      vitrin<span className="logo-web">web</span>
-      <i></i>
+      <span className="logo-w">
+        vitrin<span className="logo-web">web</span>
+        <i></i>
+      </span>
+      {sub && <span className="logo-sub">Dijital Çözümler</span>}
     </Link>
   );
 }
@@ -69,10 +70,10 @@ export function CheckoutHeader() {
         <Logo />
         <div className="flex items-center gap-4">
           <span className="secure-b">
-            <Icon n="lock" size={16} /> Güvenli sipariş
+            <Icon n="lock" size={16} /> Güvenli sayfa
           </span>
           <Link className="navl" href="/">
-            Siteye Dön
+            Siteye Dönün
           </Link>
         </div>
       </div>
@@ -80,48 +81,46 @@ export function CheckoutHeader() {
   );
 }
 
-function NavButton({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
-  const pathname = usePathname().replace(/\/$/, "") || "/";
-  const { goSection } = useApp();
-  const isOn =
-    !!item.to && (item.to === pathname || ((item.to === "/blog" || item.to === "/urunler") && pathname.startsWith(item.to + "/")));
-  if (item.to) {
-    return (
-      <Link
-        href={item.to}
-        className={"navl " + (isOn ? "on" : "")}
-        aria-current={isOn ? "page" : undefined}
-        onClick={onNavigate}
-      >
-        {item.label}
-      </Link>
-    );
-  }
+function ProductsMenu({ onNavigate, mobile = false }: { onNavigate: () => void; mobile?: boolean }) {
+  const ps = menuProducts();
   return (
-    <Link
-      href={`/#${item.sec}`}
-      className="navl"
-      onClick={(e) => {
-        /* Ctrl/Cmd/Shift+tık veya orta tık: yeni sekmede açma gibi tarayıcı
-           varsayılanına izin ver, yalnızca normal tıklamada JS ile kaydır. */
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-        e.preventDefault();
-        onNavigate();
-        /* Mobil menü açıksa onNavigate() onu kapatır ve sayfa yüksekliği değişir;
-           kaydırma hedefi bu kapanma DOM'a yansıyıp bir kare boyanmadan hesaplanırsa
-           menünün yüksekliği kadar aşağı taşar. İki rAF, o boyamayı bekler. */
-        requestAnimationFrame(() => requestAnimationFrame(() => goSection(item.sec as string)));
-      }}
-    >
-      {item.label}
-    </Link>
+    <ul className={mobile ? "mnav-sub" : "pmenu-list"}>
+      <li className="pmenu-all">
+        <Link href="/urunler" onClick={onNavigate}>
+          <b>Tüm Ürünler</b>
+          {!mobile && <small>Dokuz ürünü karşılaştırın</small>}
+        </Link>
+      </li>
+      {ps.map((p) => (
+        <li key={p.slug}>
+          <Link href={`/urunler/${p.slug}`} onClick={onNavigate}>
+            <Icon n={p.icon} size={17} sw={1.8} />
+            <span>
+              <b>{p.name}</b>
+              {!mobile && <small>{STATUS[p.status].label}</small>}
+            </span>
+          </Link>
+        </li>
+      ))}
+      <li className="pmenu-extra">
+        <Link href="/hizmetler" onClick={onNavigate}>
+          <Icon n="layout" size={17} sw={1.8} />
+          <span>
+            <b>Tamamlayıcı Hizmetler</b>
+          </span>
+        </Link>
+      </li>
+    </ul>
   );
 }
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [mSub, setMSub] = useState(false);
   const [sc, setSc] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/\/$/, "") || "/";
+  const menuRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     const f = () => setSc(window.scrollY > 6);
@@ -129,27 +128,77 @@ export function Header() {
     window.addEventListener("scroll", f, { passive: true });
     return () => window.removeEventListener("scroll", f);
   }, []);
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- sayfa değişince mobil menüyü kapatır
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sayfa değişince menüleri kapatır
+    setOpen(false);
+    setMenu(false);
+  }, [pathname]);
+  useEffect(() => {
+    if (!menu) return;
+    const out = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(false);
+    };
+    const esc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenu(false);
+        menuRef.current?.querySelector("button")?.focus();
+      }
+    };
+    document.addEventListener("mousedown", out);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", out);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [menu]);
+
+  const isOn = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const close = () => {
+    setOpen(false);
+    setMenu(false);
+  };
 
   return (
     <header className={"hdr " + (sc || open ? "s" : "")}>
       <div className="container-x hdr-in">
         <Logo />
         <nav className="nav-desk" aria-label="Ana menü">
-          {NAV.map((it) => (
-            <NavButton key={it.label} item={it} onNavigate={() => setOpen(false)} />
-          ))}
+          <ul>
+            {NAV_LINKS.map((it) =>
+              it.menu ? (
+                <li key={it.label} className="pmenu" ref={menuRef}>
+                  <button
+                    type="button"
+                    className={"navl" + (isOn("/urunler") || isOn("/hizmetler") || pathname === "/isletmeye-ozel" ? " on" : "")}
+                    aria-expanded={menu}
+                    aria-controls="pmenu"
+                    onClick={() => setMenu(!menu)}
+                  >
+                    {it.label} <Icon n="chev" size={15} sw={2} />
+                  </button>
+                  {menu && (
+                    <div className="pmenu-pop" id="pmenu">
+                      <ProductsMenu onNavigate={close} />
+                    </div>
+                  )}
+                </li>
+              ) : (
+                <li key={it.label}>
+                  <Link href={it.href} className={"navl" + (isOn(it.href) ? " on" : "")} aria-current={isOn(it.href) ? "page" : undefined}>
+                    {it.label}
+                  </Link>
+                </li>
+              ),
+            )}
+          </ul>
         </nav>
         <div className="hdr-r">
-          <Link className="btn btn-primary hdr-cta" href="/iletisim" onClick={() => setOpen(false)}>
+          <Link className="btn btn-primary hdr-cta" href="/bilgi-al" onClick={close}>
             Bilgi Alın
           </Link>
-          <WhatsAppLink cls="iconbtn ig-h" />
-          <InstaLink cls="iconbtn ig-h" />
           <button
             className="iconbtn burger"
-            aria-label={open ? "Menüyü kapat" : "Menüyü aç"}
+            aria-label={open ? "Menüyü Kapat" : "Menüyü Aç"}
             aria-expanded={open}
             aria-controls="mnav"
             onClick={() => setOpen(!open)}
@@ -159,17 +208,53 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <div className="mnav" id="mnav">
-          {NAV.map((it) => (
-            <NavButton key={it.label} item={it} onNavigate={() => setOpen(false)} />
-          ))}
-          <WhatsAppLink cls="navl mnav-ig" label="WhatsApp" />
-          <InstaLink cls="navl mnav-ig" label="Instagram" />
-          <Link className="btn btn-primary btn-block" href="/iletisim" onClick={() => setOpen(false)}>
+        <nav className="mnav" id="mnav" aria-label="Mobil menü">
+          {NAV_LINKS.map((it) =>
+            it.menu ? (
+              <div key={it.label} className="mnav-group">
+                <button type="button" className="navl mnav-toggle" aria-expanded={mSub} onClick={() => setMSub(!mSub)}>
+                  {it.label}
+                  <Icon n="chev" size={18} />
+                </button>
+                {mSub && <ProductsMenu onNavigate={close} mobile />}
+              </div>
+            ) : (
+              <Link key={it.label} href={it.href} className={"navl" + (isOn(it.href) ? " on" : "")} onClick={close}>
+                {it.label}
+              </Link>
+            ),
+          )}
+          <div className="mnav-social">
+            <WhatsAppLink cls="navl mnav-ig" label="WhatsApp" />
+            <InstaLink cls="navl mnav-ig" label="Instagram" />
+          </div>
+          <Link className="btn btn-primary btn-block" href="/bilgi-al" onClick={close}>
             Bilgi Alın
           </Link>
-        </div>
+        </nav>
       )}
     </header>
+  );
+}
+
+/** Mobilde sayfa kaydırılınca görünen sabit "Bilgi Alın" çubuğu. */
+export function MobileCta() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const f = () => setOn(window.scrollY > 520);
+    f();
+    window.addEventListener("scroll", f, { passive: true });
+    return () => window.removeEventListener("scroll", f);
+  }, []);
+  return (
+    <div className={"sticky-cta" + (on ? " on" : "")} aria-hidden={!on}>
+      <div>
+        <b>Vitrinweb</b>
+        <small>Dijital Çözümler</small>
+      </div>
+      <Link className="btn btn-primary" href="/bilgi-al" tabIndex={on ? 0 : -1}>
+        Bilgi Alın
+      </Link>
+    </div>
   );
 }

@@ -292,6 +292,48 @@ const COVERS = {
     <path d="M990 600 l90 -36 l90 36 l-90 36z" fill="${C.white}" ${st()}/><path d="M990 600 v118 l90 36 l90 -36 v-118M1080 636v118" fill="${C.white}" ${st()}/>
     <path d="M1100 660v56M1112 656v52M1124 652v58M1138 646v44M1150 642v52" ${st(5)}/>
     ${phone(1000, 200, 170, 290, `<rect x="1020" y="250" width="130" height="110" rx="12" fill="${C.line}"/><path d="M1030 305H1140" ${st(5, C.ink2)}/>${bar(1020, 380, 110, 14)}${bar(1020, 410, 80, 14)}${bar(1020, 444, 130, 28, C.ink)}`)}`,
+  "amator-futbol-kulubu-yonetimi": () => `
+    ${ground()}
+    <rect x="360" y="300" width="460" height="300" rx="22" fill="${C.white}" ${st()}/>
+    <path d="M590 300V600" ${st(5, C.line2)}/><circle cx="590" cy="450" r="56" fill="none" ${st(5, C.line2)}/>
+    <rect x="360" y="390" width="60" height="120" fill="none" ${st(5, C.line2)}/><rect x="760" y="390" width="60" height="120" fill="none" ${st(5, C.line2)}/>
+    ${shadow(700, 760, 70)}<circle cx="700" cy="700" r="56" fill="${C.white}" ${st()}/>
+    <path d="M700 672l24 18l-9 28h-30l-9-28z" fill="${C.ink}"/><path d="M700 644v28M724 690l26-10M715 718l14 24M685 718l-14 24M676 690l-26-10" ${st(5)}/>
+    ${phone(940, 230, 230, 460, `${bar(966, 296, 120, 16, C.ink)}${[0, 1, 2, 3, 4].map((r) => `<circle cx="984" cy="${364 + r * 58}" r="14" fill="${r === 2 ? C.white : C.ink}" ${st(4)}/>${bar(1010, 357 + r * 58, 100 + (r % 2) * 30, 14)}`).join("")}${bar(966, 640, 178, 26, C.line2)}`)}
+    ${checkBadge(1170, 250, 36)}`,
+  "google-haritalar-rakip-karsilastirma": () => `
+    ${ground()}
+    ${storefront(380, 470, 250, 290)}${storefront(970, 470, 250, 290)}
+    ${pin(505, 330, 0.9)}${pin(1095, 330, 0.9, C.white)}
+    <rect x="680" y="300" width="240" height="380" rx="20" fill="${C.white}" ${st()}/>
+    ${[0, 1, 2, 3, 4, 5].map((r) => `${bar(706, 338 + r * 54, 90, 14)}<circle cx="846" cy="${345 + r * 54}" r="11" fill="${r % 3 === 1 ? C.white : C.ink}" ${st(4)}/><circle cx="886" cy="${345 + r * 54}" r="11" fill="${r % 2 ? C.ink : C.white}" ${st(4)}/>`).join("")}
+    ${stars(700, 720, 14, 5, 4, 2.6)}`,
+  "musteri-asistani-kurmadan-once": () => `
+    ${ground()}${plant(380, 760)}
+    ${browser(450, 210, 700, 500, `
+      ${bubble(490, 300, 330, 70, "left", C.line, C.line2)}${bar(516, 328, 260, 14, C.soft)}
+      ${bubble(780, 410, 330, 110, "right", C.ink, C.ink)}${bar(806, 440, 270, 14, C.white)}${bar(806, 472, 200, 14, C.soft)}
+      ${bubble(490, 570, 280, 70, "left", C.line, C.line2)}${bar(516, 598, 200, 14, C.soft)}`)}
+    <circle cx="1190" cy="640" r="52" fill="${C.white}" ${st()}/><circle cx="1190" cy="620" r="17" fill="${C.ink}"/><path d="M1158 676a32 28 0 0 1 64 0z" fill="${C.ink}"/>
+    <path d="M1100 560 q60 0 80 40" ${st(4, C.soft)} stroke-dasharray="4 12" fill="none"/>`,
+  "belgelerden-elle-veri-girisi": () => `
+    ${ground()}
+    <g transform="rotate(-6 560 470)"><rect x="400" y="230" width="320" height="440" rx="18" fill="${C.white}" ${st()}/>
+    ${bar(430, 270, 140, 18, C.ink)}${textLines(430, 320, [240, 200, 220], 30)}
+    <rect x="430" y="430" width="260" height="150" rx="10" fill="none" ${st(4, C.line2)}/>${[0, 1, 2].map((r) => `<path d="M430 ${480 + r * 34}H690" ${st(3, C.line2)}/>`).join("")}${bar(430, 610, 120, 16)}</g>
+    <path d="M760 450 h110 m-30 -28 l30 28 l-30 28" ${st(7)} fill="none"/>
+    <rect x="910" y="260" width="300" height="400" rx="20" fill="${C.white}" ${st()}/>
+    ${[0, 1, 2, 3, 4].map((r) => `${bar(936, 300 + r * 66, 80, 12, C.soft)}<rect x="936" y="${320 + r * 66}" width="248" height="28" rx="8" fill="${r === 3 ? C.white : C.line}" ${r === 3 ? st(4) : ""}/>`).join("")}
+    ${checkBadge(1210, 270, 36)}`,
+  "musteri-gorusmesi-ozeti": () => `
+    ${ground()}
+    ${bubble(390, 250, 260, 90, "left", C.white)}${bar(418, 284, 190, 14, C.line2)}
+    ${bubble(470, 380, 240, 80, "right", C.ink, C.ink)}${bar(496, 410, 170, 14, C.soft)}
+    <path d="M420 560 q20 -40 40 0 t40 0 t40 0 t40 0 t40 0" ${st(6, C.soft)} fill="none"/>
+    <path d="M760 470 h90 m-30 -26 l30 26 l-30 26" ${st(7)} fill="none"/>
+    <rect x="890" y="230" width="320" height="460" rx="20" fill="${C.white}" ${st()}/>
+    ${bar(918, 266, 150, 18, C.ink)}
+    ${[0, 1, 2].map((r) => `${bar(918, 320 + r * 110, 90, 12, C.soft)}<rect x="918" y="${342 + r * 110}" width="22" height="22" rx="6" fill="${r === 2 ? C.white : C.ink}" ${st(4)}/>${bar(954, 346 + r * 110, 200, 14)}${bar(954, 374 + r * 110, 150, 14)}`).join("")}`,
 };
 
 

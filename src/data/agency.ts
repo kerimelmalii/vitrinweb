@@ -276,13 +276,10 @@ export const HOME_GUIDES = [
   "stok-tablosunu-duzenlerken-nereden-baslamali",
 ];
 
+/** Kurucunun notu; sahibinin isteğiyle sitede kişi adı gösterilmez. */
 export const FOUNDER = {
-  name: "Kerim Elmalı",
   role: "Vitrinweb Kurucusu",
   text: "Vitrinweb’i, işletmelerin dijital dönüşüme nereden ve nasıl başlayacağını belirsizlik yaşamadan netleştirebileceği bir çözüm ortağı olarak kurdum. Her projede önce en çok zaman ve enerji tüketen adımı belirliyor, ardından kapsamı, teslimatları ve çalışma sonunda elinizde olacak gerçek çıktıyı tüm şeffaflığıyla ortaya koyuyoruz.",
-  /** public/ altında gerçek bir fotoğraf eklendiğinde yolu buraya yazın (ör. "/kurucu.webp"). */
-  photo: "",
-  photoAlt: "Vitrinweb kurucusu Kerim Elmalı.",
 };
 
 export const ABOUT_STORY =

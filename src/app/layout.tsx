@@ -1,3 +1,4 @@
+import { preload } from "react-dom";
 import type { Metadata, Viewport } from "next";
 import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
@@ -44,6 +45,9 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  /* Yazı tipleri CSS okunmadan önce inmeye başlasın; yoksa metin geç yeniden çizilir (mobil LCP). */
+  preload("/fonts/manrope-latin.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload("/fonts/manrope-latin-ext.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   return (
     <html lang="tr">
       <head>

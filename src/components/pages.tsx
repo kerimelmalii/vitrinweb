@@ -571,10 +571,6 @@ export function WhyWebPage() {
 
 /* ================= HAKKIMIZDA ================= */
 export function AboutPage() {
-  const initials = FOUNDER.name
-    .split(" ")
-    .map((w) => w[0])
-    .join("");
   return (
     <main id="main">
       <section className="sec page-top">
@@ -597,31 +593,21 @@ export function AboutPage() {
         </div>
       </section>
       <section className="sec sec-tint" aria-labelledby="kurucu">
-        <div className="container-x founder">
-          <figure className="founder-ph">
-            {FOUNDER.photo ? (
-              // eslint-disable-next-line @next/next/no-img-element -- yol company verisinden gelir, boyut CSS ile sabit
-              <img src={FOUNDER.photo} alt={FOUNDER.photoAlt} width={480} height={560} />
-            ) : (
-              <span className="founder-mono" aria-hidden="true">
-                {initials}
-              </span>
-            )}
-          </figure>
-          <div>
-            <h2 className="h-2" id="kurucu">
-              {FOUNDER.name}
-            </h2>
-            <p className="founder-role">{FOUNDER.role}</p>
-            <blockquote className="founder-q">{FOUNDER.text}</blockquote>
-            <div className="hero-cta">
-              <Link className="btn btn-line" href="/nasil-calisiyoruz">
-                Nasıl Çalışıyoruz?
-              </Link>
-              <Link className="btn btn-primary" href="/iletisim">
-                İletişime Geçin
-              </Link>
-            </div>
+        <div className="container-x founder-note">
+          <h2 className="h-2" id="kurucu">
+            Kurucunun notu
+          </h2>
+          <blockquote className="founder-q">
+            {FOUNDER.text}
+            <cite>{FOUNDER.role}</cite>
+          </blockquote>
+          <div className="hero-cta">
+            <Link className="btn btn-line" href="/nasil-calisiyoruz">
+              Nasıl Çalışıyoruz?
+            </Link>
+            <Link className="btn btn-primary" href="/iletisim">
+              İletişime Geçin
+            </Link>
           </div>
         </div>
       </section>
@@ -631,7 +617,7 @@ export function AboutPage() {
           <p className="lead about-content-team">
             Blog yazılarımız Vitrinweb İçerik Ekibi imzasıyla yayınlanır. Yazılarda ürün görselleri, reklam raporlama, stok düzeni, web siteleri ve Google
             görünürlüğü üzerine kendi çalışmalarımızdan edindiğimiz deneyimi güvenilir kaynaklarla birleştiriyoruz; yayından önce her bilgiyi kontrol
-            ediyoruz. <Link href="/icerik-politikasi">İçeriklerimizi nasıl hazırladığımızı okuyun</Link>.
+            ediyoruz. <Link href="/icerik-ekibi">İçerik ekibimizi tanıyın</Link> ya da <Link href="/icerik-politikasi">içeriklerimizi nasıl hazırladığımızı okuyun</Link>.
           </p>
         </div>
       </section>

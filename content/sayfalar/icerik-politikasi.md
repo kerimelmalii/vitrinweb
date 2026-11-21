@@ -2,14 +2,14 @@
 title: İçeriklerimizi nasıl hazırlıyoruz?
 seoTitle: İçerik Politikası
 description: Vitrinweb blogundaki yazıların nasıl hazırlandığını, yapay zekâyı nerede kullandığımızı ve bilgileri nasıl kontrol ettiğimizi açıklıyoruz.
-updated: 2026-10-10
+updated: 2026-11-22
 ---
 
-Vitrinweb blogundaki yazılar, işletme sahiplerinin web sitesi, Google görünürlüğü ve dijital müşteri kazanımı hakkında doğru karar verebilmesi için hazırlanır. Bu sayfada yazılarımızı kimin, nasıl hazırladığını açıkça paylaşıyoruz.
+Vitrinweb blogundaki yazılar, işletme sahiplerinin web sitesi, Google görünürlüğü, ürün görselleri, reklam raporlama ve operasyonun dijitalleşmesi hakkında doğru karar verebilmesi için hazırlanır. Bu sayfada yazılarımızı kimin, nasıl hazırladığını açıkça paylaşıyoruz.
 
 ## Yazılarımızı kim hazırlıyor?
 
-Yazılar **Vitrinweb İçerik Ekibi** imzasıyla yayınlanır. İçerik ekibimiz, işletmeler için web sitesi tasarlayan ve yayına alan Vitrinweb ekibinin parçasıdır. Yazılarda kendi projelerimizden edindiğimiz deneyimi ve güvenilir kaynakları bir araya getiriyoruz.
+Yazılar **[Vitrinweb İçerik Ekibi](/icerik-ekibi)** imzasıyla yayınlanır. İçerik ekibimiz, işletmelere web siteleri, hazır dijital ürünler ve özel yazılımlar geliştiren Vitrinweb ekibinin parçasıdır. Yazılarda kendi projelerimizden edindiğimiz deneyimi ve güvenilir kaynakları bir araya getiriyoruz.
 
 ## Bir yazı nasıl hazırlanıyor?
 

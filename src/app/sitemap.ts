@@ -12,10 +12,10 @@ export const dynamic = "force-static";
 /* Her yayında "şimdi" yazmak Google'ın lastmod'a güvenmemesine yol açar; bu yüzden sayfalar
    içeriklerinin gerçekten değiştiği günü taşır. Bir sayfanın metni değişince PAGE_UPDATED'deki
    tarihi (yoksa SITE_UPDATED'i) o güne çekin. Blog yazıları kendi tarihlerini kullanır. */
-const SITE_UPDATED = "2026-11-21";
+const SITE_UPDATED = "2026-11-22";
 const LEGAL_UPDATED_ISO = "2026-09-28";
 const PAGE_UPDATED: Record<string, string> = {
-  "/icerik-politikasi": "2026-10-10",
+  "/icerik-politikasi": "2026-11-22",
 };
 const newestPost = BLOG.map((p) => p.updated ?? p.date).sort().at(-1) ?? SITE_UPDATED;
 const pageDate = (path: string) => (path === "/blog" ? newestPost : PAGE_UPDATED[path] ?? SITE_UPDATED);
@@ -38,8 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/kesif-gorusmesi",
     "/blog",
     "/hakkimizda",
+    "/bursa",
     "/iletisim",
     "/icerik-politikasi",
+    "/icerik-ekibi",
     "/girisim-programi",
     "/isgale-hayir",
   ].map((path) => ({

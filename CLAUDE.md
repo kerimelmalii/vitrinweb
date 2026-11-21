@@ -107,6 +107,13 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 - `/llms.txt` (özet) ve `/llms-full.txt` (tüm ürün/hizmet/sektör/SSS metni) veriden üretilir; elle metin yazma.
 - IndexNow: `public/<anahtar>.txt` + `scripts/indexnow.mjs`; `.github/workflows/indexnow.yml` her başarılı
   Production deploy'undan sonra sitemap'i Bing/Yandex'e bildirir (ChatGPT araması Bing dizinini kullanır).
+- Yazar: "Vitrinweb İçerik Ekibi" → `/icerik-ekibi` (ProfilePage; BlogPosting author `@id` = `/icerik-ekibi#ekip`).
+  Sahibinin isteğiyle sitede kurucunun **adı gösterilmez** (Hakkımızda'da yalnızca "Kurucunun notu"; Person şeması yok).
+- Yerel sayfa: `/bursa` (merkez Nilüfer). Başka şehir sayfası açma: gerçek varlık olmadan doorway sayılır.
+- Yazı tipleri `public/fonts/` altında, `layout.tsx` içinde `preload` edilir (mobil LCP); `vercel.json`'da 1 yıl önbellek.
+  Dosya değişirse adını değiştir. Ana sayfa hero metninde giriş animasyonu yok (LCP adayı görünür başlasın).
+- `/brosur` kaldırıldı (online satış dönemi), `/urunler/web-sitesi-paketi`'ne 308. Blog takvimi: projedeki
+  `claude/blog-plani-ajans-donemi.md`; eski satış dönemi ifadeleri SEO betiğinde K20 ile taranır.
 
 ## Kod yapısı
 

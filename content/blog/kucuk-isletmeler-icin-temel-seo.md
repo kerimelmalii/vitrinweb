@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-16
+updated: 2026-11-22
 title: Küçük işletmeler için temel SEO: Google'da görünmenin 9 adımı
 seoTitle: Küçük İşletmeler İçin Temel SEO: 9 Adım
 description: SEO nedir, küçük işletme nereden başlamalı? Google'ın kendi rehberine dayanan 9 adım, boşa zaman harcatan konular ve sonuçların görülme süresi.
@@ -70,7 +70,7 @@ Ziyaretçilerinizin büyük kısmı sitenize telefondan gelir. Sitenin telefonda
 Yerel müşterilere hizmet veriyorsanız, Google İşletme Profili'niz SEO çalışmanızın ayrılmaz parçasıdır. Profilinizi doğrulayın, bilgileri eksiksiz doldurun ve sitenizdeki bilgilerle aynı tutun. Bu konuyu [yerel SEO rehberimizde](/blog/yerel-seo-rehberi) ayrıca ele aldık.
 
 > [!vitrin] Her sitede kurduğumuz temel SEO altyapısı
-> Vitrinweb'in kurduğu her sitede sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri başlangıçta hazır geliyor; paketin tüm içeriği [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi). Bunlar, yukarıdaki adımların teknik kısmını karşılıyor. İçerik kısmı ise işletmenin bilgisine dayanıyor: Sipariş sonrasında doldurulan içerik formunda hizmetlerinizi, hakkınızdaki metni ve iletişim bilgilerinizi bu yüzden ayrıntılı soruyoruz.
+> Vitrinweb'in kurduğu her sitede sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri başlangıçta hazır geliyor; paketin tüm içeriği [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi). Bunlar, yukarıdaki adımların teknik kısmını karşılıyor. İçerik kısmı ise işletmenin bilgisine dayanıyor: Proje başlangıcında doldurulan içerik formunda hizmetlerinizi, hakkınızdaki metni ve iletişim bilgilerinizi bu yüzden ayrıntılı soruyoruz.
 > Bu blogdaki yazıları da kendi hazırladığımız bir SEO standardına göre yazıyoruz: her yazıda tek ana konu, müşterinin sorusuna ilk paragrafta cevap, güvenilir kaynaklar ve kontrol edilmiş bilgiler. Nasıl çalıştığımızı [içerik politikamızda](/icerik-politikasi) anlattık.
 
 [[cta]]

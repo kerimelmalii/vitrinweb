@@ -24,6 +24,7 @@ Kaynak tarihleri, sayfanın Google'daki "son güncelleme" tarihidir (10 Ekim 202
 | K17 | Sıralama garantisi ve benzeri yanıltıcı vaat yok | Evet (kalıp arama) | [Bir SEO'ya ihtiyacınız var mı?](https://developers.google.com/search/docs/fundamentals/do-i-need-seo) (2026-06-05), [Spam politikaları](https://developers.google.com/search/docs/essentials/spam-policies) (2026-08-28) |
 | K18 | robots.txt siteyi engellemiyor, Sitemap satırı var | Evet | [robots.txt'ye giriş](https://developers.google.com/search/docs/crawling-indexing/robots/intro) (2025-12-10) |
 | K19 | Site haritası: yalnızca doğru alan adı, dizinlenebilir sayfaların hepsi, noindex sayfa yok | Evet | [Site haritası oluşturma](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap) (2026-07-08) |
+| K20 | Sitede artık geçerli olmayan (eski fiyat, eski satış akışı, eski alt bilgi) ifade yok; liste `vitrinweb-eski-ifadeler.txt` ya da `--eski` | Evet (kalıp arama) | İyi uygulama: tutarlı ve güncel bilgi ([Faydalı, güvenilir içerik](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)) |
 
 ## Elle (canlı sitede) yapılacak kontroller
 
@@ -33,6 +34,7 @@ Kaynak tarihleri, sayfanın Google'daki "son güncelleme" tarihidir (10 Ekim 202
 | C02 | Canlı robots.txt ve sitemap.xml 200 dönüyor | WebFetch |
 | C03 | Search Console: Sayfalar raporu, site haritası durumu, Core Web Vitals | Search Console (kullanıcı ya da bağlayıcı) |
 | C04 | PageSpeed Insights mobil: LCP ≤ 2,5 sn, INP ≤ 200 ms, CLS ≤ 0,1 | pagespeed.web.dev |
+| C04b | Lighthouse (mobil, derlenmiş site yerelde): performans, erişilebilirlik, en iyi uygulamalar, SEO ≥ 90; ana sayfa, bir ürün sayfası, bir blog yazısı | Yerel Lighthouse (SKILL.md, aylık adım 3b) |
 | C05 | Google İşletme Profili: ad/adres/telefon/saatler sitedekiyle aynı | Profil ile sitenin iletişim sayfası karşılaştırılır |
 | C06 | İçerik kalitesi: ilk paragrafta cevap, özgün katkı, kaynaklar (yalnızca blog) | SEO Makale Standardı Bölüm 14 |
 | C07 | Olmayan bir adres gerçek 404 dönüyor (soft 404 yok) | WebFetch ile `/seo-denetim-404-testi` açılır; 404 hatası beklenir, 200 + içerik gelirse bulgu. Dayanak: [HTTP durum kodları](https://developers.google.com/search/docs/crawling-indexing/http-network-errors) (2026-02-04) |

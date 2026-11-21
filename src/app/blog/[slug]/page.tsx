@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AUTHOR, BlogPost } from "@/components/blog-post";
+import { AUTHOR, AUTHOR_ID, BlogPost } from "@/components/blog-post";
 import { BLOG, coverSrc, getPost, isoWithZone } from "@/data/blog";
 import { COMPANY } from "@/data/company";
 import { safeJsonLd } from "@/lib/json-ld";
@@ -56,7 +56,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     inLanguage: "tr-TR",
     articleSection: post.category,
     wordCount: post.words,
-    author: [{ "@type": "Organization", name: AUTHOR.name, url: SITE_URL + AUTHOR.href }],
+    author: [{ "@type": "Organization", "@id": AUTHOR_ID, name: AUTHOR.name, url: SITE_URL + AUTHOR.href, parentOrganization: { "@id": ORG_ID } }],
     publisher: { "@type": "Organization", "@id": ORG_ID, name: COMPANY.brand, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` } },
     isPartOf: { "@id": SITE_ID },
   };

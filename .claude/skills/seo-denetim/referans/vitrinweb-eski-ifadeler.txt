@@ -1,0 +1,9 @@
+# Sitede artık geçerli olmayan (online satış dönemine ait) ifadeler. Biçim: düzenli ifade | açıklama
+# Kasım 2026'dan beri Vitrinweb ajans modeliyle çalışır: sabit fiyat yok, ücret yazılı teklifte belirlenir.
+10\.000\s*TL | eski sabit paket fiyatı
+ilk yıl servis ve bakım ücretsiz | eski paket koşulu
+ikinci yıl ücreti\s*1\.000 | eski yıllık servis ücreti
+sipariş (öncesinde|sonrası|sonrasında|verin|vermek için) | eski online sipariş akışı
+güvenli ödeme adımları | eski online ödeme
+Instagram'da bizi takip edin | eski alt bilgi metni
+dijital vitrini\. Temel web sitesi | eski alt bilgi metni

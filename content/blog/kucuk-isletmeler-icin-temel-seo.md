@@ -2,7 +2,7 @@
 updated: 2026-10-16
 title: Küçük işletmeler için temel SEO: Google'da görünmenin 9 adımı
 seoTitle: Küçük İşletmeler İçin Temel SEO: 9 Adım
-description: SEO nedir, küçük bir işletme nereden başlamalı? Google'ın kendi rehberine dayanan 9 adımı, zaman harcamamanız gereken konuları ve sonuçların ne zaman görüleceğini anlatıyoruz.
+description: SEO nedir, küçük işletme nereden başlamalı? Google'ın kendi rehberine dayanan 9 adım, boşa zaman harcatan konular ve sonuçların görülme süresi.
 date: 2026-09-18
 category: SEO ve Teknik
 coverAlt: Arama çubuğu, arama sonuçları listesi, büyüteç ve yükselen çubuk grafik

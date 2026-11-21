@@ -1,6 +1,6 @@
 ---
 title: Küçük işletmeler için içerik pazarlaması: nereden başlamalı?
-description: İçerik pazarlaması büyük markalara özgü bir şey değil. Küçük bir işletmenin, elindeki bilgiyi düzenli paylaşarak nasıl hem güven hem arama trafiği kazanabileceğini anlatıyoruz.
+description: İçerik pazarlaması yalnızca büyük markalar için değil. Küçük işletmenin bilgisini düzenli paylaşarak güven ve arama trafiği kazanma yolları.
 date: 2026-10-08
 category: Dijital Pazarlama
 coverAlt: Üst üste duran yazı sayfaları ve bir kalem

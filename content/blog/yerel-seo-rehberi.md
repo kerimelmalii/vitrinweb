@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-24
+updated: 2026-11-21
 title: Yerel SEO rehberi: Mahallenizdeki aramalarda nasıl görünürsünüz?
 seoTitle: Yerel SEO Rehberi: Yakınınızdaki Aramalarda Görünün
 description: "Yakınımdaki kuaför" gibi aramalarda kimin çıkacağını Google nasıl belirler? Yerel SEO'nun üç temelini ve küçük işletmeler için adım adım yapılacakları anlatıyoruz.
@@ -82,7 +82,7 @@ Birden fazla ilçeye ya da şehre hizmet veren işletmeler, her bölge için ayr
 Küçük bir işletme için çoğu zaman en doğrusu, hizmet verdiğiniz bölgeleri tek bir sayfada doğal cümlelerle anlatmak ve yalnızca gerçekten farklı bilgi sunabildiğiniz bölgeler için ayrı sayfa açmaktır.
 
 > [!vitrin] Kurduğumuz her sitede yerel temel hazır gelir
-> Vitrinweb'in temel paketinde Google Haritalar ve iletişim sayfası her siteye dahil; işletme bilgileri de yapısal veri olarak işleniyor. Sipariş sonrasındaki içerik formunda adres, telefon ve çalışma saatlerinizi ayrıca soruyoruz. Müşterilerimize verdiğimiz en sık tavsiye şu: Formu doldururken bu bilgileri Google İşletme Profili'nizdeki hâliyle birebir aynı yazın. Sitedeki ve profildeki bilgiler örtüştüğünde ne müşteri ne de Google kararsız kalır. Paketin tüm içeriğini [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi) bulabilirsiniz.
+> Vitrinweb'in temel paketinde Google Haritalar ve iletişim sayfası her siteye dahil; işletme bilgileri de yapısal veri olarak işleniyor. Proje başlangıcındaki içerik formunda adres, telefon ve çalışma saatlerinizi ayrıca soruyoruz. Müşterilerimize verdiğimiz en sık tavsiye şu: Formu doldururken bu bilgileri Google İşletme Profili'nizdeki hâliyle birebir aynı yazın. Sitedeki ve profildeki bilgiler örtüştüğünde ne müşteri ne de Google kararsız kalır. Paketin tüm içeriğini [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi) bulabilirsiniz.
 
 [[cta]]
 

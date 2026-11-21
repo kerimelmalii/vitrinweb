@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-12
+updated: 2026-11-21
 title: Web sitesi fiyatları 2026: Bir web sitesi kaça çıkar, fiyatı ne belirler?
 seoTitle: Web Sitesi Fiyatları 2026: Fiyatı Ne Belirler?
 description: Web sitesi fiyatları neden bu kadar farklı? Fiyatı belirleyen kalemleri, yıllık maliyetleri ve teklif karşılaştırırken sormanız gereken soruları anlatıyoruz.
@@ -105,10 +105,9 @@ Hayır. Küçük bir işletme için gerekenden karmaşık ve pahalı bir sistem,
 
 Doğru soru "En ucuz ya da en pahalı hangisi?" değil, "İşletmemin bugünkü ihtiyacını hangi teklif en net ve en sürdürülebilir şekilde karşılıyor?" sorusudur. Firmayı seçerken bakmanız gereken diğer ölçütleri [web tasarım firması nasıl seçilir](/blog/web-tasarim-firmasi-nasil-secilir) yazımızda ayrıntılı anlattık.
 
-> [!vitrin] Fiyatımızı neden açıkça yazıyoruz?
-> Vitrinweb'de temel web sitesi paketinin fiyatı herkes için aynı ve sitede açıkça yazılı: KDV dahil 10.000 TL. Bu fiyata modern ve mobil uyumlu tasarım, temel SEO altyapısı (sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri), WhatsApp bağlantısı, Google Haritalar ve iletişim sayfası dahil.
-> İlk yıl servis ve bakım ücretsiz; ikinci yıl ücreti 1.000 TL ve sonraki yıllarda enflasyon oranında güncelleniyor, yenilemeden önce bildiriliyor. Taahhüt yok: Memnun kalmazsanız yenilemezsiniz.
-> Ek özelliklerin fiyatları da listede: blog 2.000 TL, online randevu 3.000 TL, gelişmiş form 1.250 TL, ürün ve hizmet kataloğu 2.000 TL, çoklu dil 2.500 TL. Online ödeme ve yönetim paneli ise kapsamı işletmeye göre değiştiği için teklif üzerine fiyatlanıyor. Bu şeffaflığı, yukarıda saydığımız soruların cevabını sipariş öncesinde verebilmek için tercih ettik. Ayrıntılar [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi).
+> [!vitrin] Vitrinweb'de fiyat nasıl belirlenir?
+> Vitrinweb'de bir web sitesinin ücreti, kısa bir görüşmede ihtiyacınızı dinledikten sonra yazılı teklifte belirlenir. Teklifte teslim edilecek sayfalar ve özellikler, sizden beklenen içerikler, revizyon sınırları, takvim ve yayından sonraki bakım koşulları ücretle birlikte tek belgede yer alır; böylece yukarıda saydığımız soruların cevabını çalışma başlamadan almış olursunuz.
+> Temel pakete modern ve mobil uyumlu tasarım, temel SEO altyapısı (sayfa başlıkları, açıklamalar, site haritası ve işletme bilgileri için yapısal veri), WhatsApp bağlantısı, Google Haritalar ve iletişim sayfası dahildir. Blog, online randevu veya çoklu dil gibi ek ihtiyaçlar teklifte ayrı kalemler olarak gösterilir. Ayrıntılar [web sitesi paketi sayfamızda](/urunler/web-sitesi-paketi).
 
 [[cta]]
 

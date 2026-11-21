@@ -15,7 +15,7 @@ function Hero() {
   return (
     <section className="hero hero-a">
       <div className="container-x hero-grid">
-        <div className="hero-copy rise">
+        <div className="hero-copy">
           <h1 className="h-display">İşletmeniz için tasarlanan dijital ürünler ve özel yazılımlar.</h1>
           <p className="lead">
             Marka değerinizi yansıtan web siteleri, görsel üretimden reklam ve stok takibine kadar kritik işleri hızlandıran hazır dijital ürünler ve

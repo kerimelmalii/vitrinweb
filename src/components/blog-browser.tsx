@@ -9,6 +9,7 @@ export interface PostLite {
   slug: string;
   title: string;
   description: string;
+  coverAlt: string;
   category: string;
   group: string;
   date: string;
@@ -24,7 +25,7 @@ export function PostCard({ p, eager = false, level = "h2" }: { p: PostLite; eage
   return (
     <Link className="bcard" href={`/blog/${p.slug}`}>
       <span className="bcover">
-        <Image src={cover(p.slug)} alt="" width={1600} height={900} sizes="(min-width: 1024px) 380px, (min-width: 700px) 50vw, 100vw" priority={eager} />
+        <Image src={cover(p.slug)} alt={p.coverAlt} width={1600} height={900} sizes="(min-width: 1024px) 380px, (min-width: 700px) 50vw, 100vw" priority={eager} />
       </span>
       <span className="bbody">
         <span className="bmeta">

@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /* Vitrinweb SEO denetimi — derlenmiş HTML üzerinde çalışır (bağımlılık yok).
    Kullanım:
-     node .claude/skills/seo-denetim/denetle.mjs <klasör> --site https://www.ornek.com.tr [--json cikti.json] [--md rapor.md]
+     node .claude/skills/seo-denetim/denetle.mjs <klasör> --site https://www.ornek.com.tr [--json cikti.json] [--md rapor.md] [--eski ifadeler.txt]
+   --eski: her satırı "düzenli ifade | açıklama" olan dosya; eşleşen eski/tutarsız metin K20 olarak raporlanır.
+   Site vitrinweb.com.tr ise referans/vitrinweb-eski-ifadeler.txt kendiliğinden kullanılır.
    <klasör>: Next.js için ".next/server/app", statik siteler için çıktı klasörü (out/, dist/).
    Kontrol kodları (K01…) referans/kontrol-listesi.md ile birebir eşleşir. */
 import fs from "node:fs";
@@ -57,6 +59,21 @@ const toRoute = (file) => {
 const files = walk(root).filter((f) => !SKIP.test(path.relative(root, f).split(path.sep).join("/")));
 const pages = files.map((file) => ({ file, route: toRoute(file), html: fs.readFileSync(file, "utf8") }));
 const routes = new Set(pages.map((p) => p.route));
+/* Next.js'te istek anında çizilen (HTML'i önceden üretilmeyen) sayfalar da geçerli hedeftir. */
+const manifest = path.join(root, "..", "app-paths-manifest.json");
+if (fs.existsSync(manifest))
+  for (const k of Object.keys(JSON.parse(fs.readFileSync(manifest, "utf8"))))
+    if (k.endsWith("/page") && !k.includes("[")) routes.add(k.slice(0, -5) || "/");
+
+const eskiFile =
+  opt("--eski") ||
+  (/vitrinweb\.com\.tr/.test(SITE) ? path.join(path.dirname(new URL(import.meta.url).pathname), "referans", "vitrinweb-eski-ifadeler.txt") : "");
+const ESKI = eskiFile && fs.existsSync(eskiFile)
+  ? fs.readFileSync(eskiFile, "utf8").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#")).map((l) => {
+      const [re, label] = l.split(/\s+\|\s+/);
+      return [new RegExp(re, "i"), label || re];
+    })
+  : [];
 
 /* ---------- bulgular ---------- */
 const findings = [];
@@ -211,8 +228,17 @@ for (const p of pages) {
   if (!noindex && words < 150 && !route.startsWith("/yasal/")) add("K16", "bilgi", route, `Az metin (${words} kelime) — sayfa amacını karşılıyor mu?`);
   for (const [re, label] of RISKY) {
     const m = re.exec(text);
-    if (m) add("K17", "kritik", route, `Riskli ifade (${label}): "…${text.slice(Math.max(0, m.index - 40), m.index + m[0].length + 40)}…"`);
+    if (!m) continue;
+    const around = text.slice(Math.max(0, m.index - 80), m.index + m[0].length + 80);
+    /* "ilk sıra garantisi verenlere temkinli yaklaşın" gibi uyarılar vaat değildir. */
+    const warning = /temkin|uyar|veren|edemez|etmiyoruz|vermeyiz|vermez|kimse/i.test(around);
+    add("K17", warning ? "bilgi" : "kritik", route, `${warning ? "Uyarı bağlamında " : ""}riskli ifade (${label}): "…${around}…"`);
   }
+  if (!noindex)
+    for (const [re, label] of ESKI) {
+      const m = re.exec(text);
+      if (m) add("K20", "onemli", route, `Eski/tutarsız ifade (${label}): "…${text.slice(Math.max(0, m.index - 50), m.index + m[0].length + 50)}…"`);
+    }
 }
 
 // Site geneli: tekrar eden başlık/açıklama

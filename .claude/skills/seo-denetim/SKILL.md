@@ -5,7 +5,7 @@ description: Vitrinweb'in kendi sitesini ya da bir müşteri sitesini (teslim ö
 
 # Vitrinweb SEO denetimi
 
-**Durum:** Sürüm 0.2 (10 Ekim 2026). Betik (K01–K19), kontrol listesi (C01–C08), Google kuralları bilgi tabanı, güncelleme günlüğü, rapor şablonları ve aylık otomatik görev hazır. Açık işler: `referans/devir-notu.md`.
+**Durum:** Sürüm 0.3 (21 Kasım 2026). Betik (K01–K20; K20 = eski/tutarsız metin taraması, K17 uyarı bağlamını ayırır, dinamik sayfalar K10'da geçerli hedef sayılır), kontrol listesi (C01–C08), Google kuralları bilgi tabanı, güncelleme günlüğü, rapor şablonları ve aylık otomatik görev hazır. Açık işler: `referans/devir-notu.md`.
 
 ## Dosyalar
 - `denetle.mjs` — derlenmiş HTML üzerinde otomatik kontroller (bağımlılık yok)
@@ -39,6 +39,7 @@ Her ayın 1'inde 08:52 (TR) zamanlanmış görev bu bölümü uygular. Her çal�
    - C02: `https://www.vitrinweb.com.tr/robots.txt` ve `https://www.vitrinweb.com.tr/sitemap.xml` açılıyor mu; site haritasında `example.com` ya da başka alan adı var mı
    - C07: `https://www.vitrinweb.com.tr/seo-denetim-404-testi` 404 mü
    - C04: PageSpeed Insights'a WebFetch ile ulaşılamıyorsa "bakılmadı" yaz, kullanıcıdan istemeye gerek yok
+3b. **Lighthouse (C04b):** Derlenmiş siteyi `OG_KART=1 npx next start -p 3123` ile arka planda başlat. Lighthouse'u ayrı bir klasöre kur (`npm i lighthouse@12.8.2`), Chromium yolunu Playwright'tan al (`python3 -c "from playwright.sync_api import sync_playwright as s; p=s().start(); print(p.chromium.executable_path)"`) ve `CHROME_PATH` olarak ver. `/`, `/urunler/kulup-takip` ve en yeni blog yazısı için mobil ölçüm yap (`--chrome-flags="--headless=new --no-sandbox" --only-categories=performance,accessibility,best-practices,seo`); her sayfayı 3 kez ölçüp ortancayı yaz. 90'ın altındaki kategori raporda "iyileştirme" olur. Not: yerel ölçüm canlıdan (Vercel CDN) birkaç puan düşük çıkar.
 4. **Google güncellemeleri:** `referans/guncelleme-gunlugu.md`'deki "Son kontrol" tarihinden sonraki kayıtları https://developers.google.com/search/updates sayfasından oku ve günlüğün "Kontrol yöntemi" bölümünü uygula. Sayfası değişen kuralları `google-kurallari.md`'de güncelle.
 5. **Karşılaştır:** Projedeki en son `claude/seo-raporlari/*-vitrinweb*.md` raporuyla bulgu sayılarını ve açık işleri karşılaştır.
 6. **Rapor:** Şablon A ile `claude/seo-raporlari/YYYY-AA-vitrinweb.md` olarak projeye yaz. C03 (Search Console) için resmi bağlayıcı yok: raporda kullanıcıdan şu üçüne bakmasını iste: Sayfalar raporu (dizine eklenmeyen sebepler), Site haritaları durumu, Core Web Vitals (mobil).

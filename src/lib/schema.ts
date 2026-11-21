@@ -1,4 +1,3 @@
-import { FOUNDER } from "@/data/agency";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { PRODUCTS } from "@/data/products";
 import { SITE_URL } from "@/lib/site";
@@ -8,7 +7,6 @@ import { SITE_URL } from "@/lib/site";
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const SITE_ID = `${SITE_URL}/#website`;
-export const FOUNDER_ID = `${SITE_URL}/hakkimizda#kurucu`;
 
 export const BRAND_DESCRIPTION =
   "Vitrinweb; işletmeler için yüksek standartlı web siteleri, operasyonları hızlandıran hazır dijital ürünler ve iş süreçlerine özel yazılımlar geliştirir.";
@@ -33,7 +31,6 @@ export const organizationLd = {
     addressCountry: "TR",
   },
   areaServed: { "@type": "Country", name: "Türkiye" },
-  founder: { "@id": FOUNDER_ID },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
@@ -59,15 +56,6 @@ export const websiteLd = {
   publisher: { "@id": ORG_ID },
 };
 
-export const founderLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": FOUNDER_ID,
-  name: FOUNDER.name,
-  jobTitle: FOUNDER.role,
-  worksFor: { "@id": ORG_ID },
-  url: `${SITE_URL}/hakkimizda`,
-};
 
 export function serviceLd(o: { name: string; description: string; path: string; serviceType?: string; image?: string; category?: string }) {
   return {

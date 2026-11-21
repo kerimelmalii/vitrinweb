@@ -1,4 +1,4 @@
-import { CUSTOM_FAQS, CUSTOM_STEPS, CUSTOM_WORK_TYPES, FOUNDER, HOME_FAQS, PRINCIPLES, WHAT_IS, WORK_STEPS } from "@/data/agency";
+import { CUSTOM_FAQS, CUSTOM_STEPS, CUSTOM_WORK_TYPES, HOME_FAQS, PRINCIPLES, WHAT_IS, WORK_STEPS } from "@/data/agency";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { PRODUCTS } from "@/data/products";
 import { SECTORS } from "@/data/sectors";
@@ -18,7 +18,7 @@ function build(): string {
   L.push("## Şirket", "");
   L.push(`- Marka: ${COMPANY.brand}`, `- Ticaret unvanı: ${COMPANY.title}`, `- Adres: ${COMPANY.address}`, `- E-posta: ${COMPANY.email}`);
   if (PHONE_DIGITS) L.push(`- Telefon ve WhatsApp: ${COMPANY.phone}`);
-  L.push(`- Instagram: ${INSTAGRAM_URL}`, `- Kurucu: ${FOUNDER.name} (${FOUNDER.role})`, "");
+  L.push(`- Instagram: ${INSTAGRAM_URL}`, "");
   L.push("Bilgi almak için: " + `${SITE_URL}/bilgi-al` + " · Keşif görüşmesi: " + `${SITE_URL}/kesif-gorusmesi`, "");
 
   L.push("## Çalışma ilkeleri", "");

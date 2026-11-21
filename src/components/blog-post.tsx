@@ -5,8 +5,10 @@ import { PostCard, lite } from "@/components/blog";
 import { CopyLink } from "@/components/blog-browser";
 import { Md } from "@/components/markdown";
 import { coverSrc, formatDate, readMin, relatedPosts, type BlogPost as Post } from "@/data/blog";
+import { SITE_URL } from "@/lib/site";
 
-export const AUTHOR = { name: "Vitrinweb İçerik Ekibi", href: "/hakkimizda" };
+export const AUTHOR = { name: "Vitrinweb İçerik Ekibi", href: "/icerik-ekibi" };
+export const AUTHOR_ID = `${SITE_URL}/icerik-ekibi#ekip`;
 const TOC_MIN_WORDS = 1000;
 
 export function BlogPost({ p }: { p: Post }) {

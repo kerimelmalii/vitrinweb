@@ -7,6 +7,7 @@ const GROUPS: Record<string, string> = {
   "Dijital Pazarlama": "Görsel ve İçerik",
   Reklam: "Reklam",
   "Stok ve Operasyon": "Stok ve Operasyon",
+  Operasyon: "Stok ve Operasyon",
 };
 export const groupOf = (category: string): string => GROUPS[category] || "Web ve Görünürlük";
 
@@ -14,6 +15,7 @@ export const lite = (p: BlogPost): PostLite => ({
   slug: p.slug,
   title: p.title,
   description: p.description,
+  coverAlt: p.coverAlt,
   category: p.category,
   group: groupOf(p.category),
   date: p.updated ?? p.date,

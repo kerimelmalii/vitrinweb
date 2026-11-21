@@ -1,4 +1,4 @@
-import { FOUNDER, WHAT_IS } from "@/data/agency";
+import { WHAT_IS } from "@/data/agency";
 import { BLOG } from "@/data/blog";
 import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
@@ -31,7 +31,6 @@ function build(): string {
     `- E-posta: ${COMPANY.email}`,
     ...(PHONE_DIGITS ? [`- Telefon ve WhatsApp: ${COMPANY.phone}`] : []),
     `- Instagram: ${INSTAGRAM_URL}`,
-    `- Kurucu: ${FOUNDER.name}`,
     "",
     "## Sayfalar",
     "",
@@ -46,7 +45,9 @@ function build(): string {
     `- [Bilgi Alın](${SITE_URL}/bilgi-al): Ürün veya hizmet için bilgi talebi formu.`,
     `- [Blog](${SITE_URL}/blog): Ürün fotoğrafı, reklam raporlama, stok düzeni, web sitesi ve yerel görünürlük rehberleri.`,
     `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine kademeli hak edilen %2 pay karşılığında web sitesi, 12 ay bakım ve SEO desteği.`,
-    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in hikâyesi, kurucusu ve şirket bilgileri.`,
+    `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in hikâyesi, kurucunun notu ve şirket bilgileri.`,
+    `- [Bursa](${SITE_URL}/bursa): Merkezimizin bulunduğu Bursa'daki işletmeler için çözümler ve sık sorulan sorular.`,
+    `- [İçerik Ekibi](${SITE_URL}/icerik-ekibi): Blog yazılarını hazırlayan ekip ve editoryal süreç.`,
     `- [İletişim](${SITE_URL}/iletisim): Yeni proje, destek ve iş birliği kanalları.`,
     `- [İçerik Politikası](${SITE_URL}/icerik-politikasi): Blog yazılarının nasıl hazırlandığı, yapay zekâ kullanımı ve kaynak seçimi.`,
     "",

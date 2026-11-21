@@ -27,6 +27,7 @@ export function Logo({ sub = true }: { sub?: boolean }) {
         vitrin<span className="logo-web">web</span>
         <i></i>
       </span>
+      {sub && " "}
       {sub && <span className="logo-sub">Dijital Çözümler</span>}
     </Link>
   );

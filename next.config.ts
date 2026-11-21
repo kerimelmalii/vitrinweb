@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   // HTTP güvenlik başlıkları tek kaynak olarak vercel.json içinde tutulur.
   // Aynı CSP'yi burada da üretmek tarayıcıda iki ayrı politikanın birlikte
   // uygulanmasına ve iyzico izinlerinin eski politika tarafından engellenmesine yol açar.
@@ -108,6 +109,7 @@ const nextConfig: NextConfig = {
       { source: "/ucretlendirme", destination: "/bilgi-al?urun=web-sitesi-paketi", permanent: true },
       { source: "/siparis", destination: "/bilgi-al?urun=web-sitesi-paketi", permanent: true },
       { source: "/neden", destination: "/neden-web-sitesi", permanent: true },
+      { source: "/brosur", destination: "/urunler/web-sitesi-paketi", permanent: true },
       { source: "/urunler/web-sitesi", destination: "/urunler/web-sitesi-paketi", permanent: true },
       { source: "/urunler/ozel-cozumler", destination: "/isletmeye-ozel", permanent: true },
       { source: "/yasal/kosullar", destination: "/yasal/kullanim-kosullari", permanent: true },

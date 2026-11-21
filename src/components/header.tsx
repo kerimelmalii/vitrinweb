@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
 import { NAV_LINKS } from "@/data/agency";
 import { INSTAGRAM_URL, PHONE_DIGITS, WHATSAPP_URL } from "@/data/company";
-import { menuProducts, STATUS } from "@/data/products";
+import { menuProducts } from "@/data/products";
 
 export function Logo({ sub = true }: { sub?: boolean }) {
   const pathname = usePathname().replace(/\/$/, "") || "/";
@@ -97,7 +97,6 @@ function ProductsMenu({ onNavigate, mobile = false }: { onNavigate: () => void; 
             <Icon n={p.icon} size={17} sw={1.8} />
             <span>
               <b>{p.name}</b>
-              {!mobile && <small>{STATUS[p.status].label}</small>}
             </span>
           </Link>
         </li>

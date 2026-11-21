@@ -1,8 +1,8 @@
 # Vitrin
 
 **Kasım 2026'dan itibaren ajans sitesi** ("Vitrinweb Kurumsal Ajans Sitesi Metinleri" belgesine göre).
-Veri: `src/data/products.ts` (9 ürün, her birinin `status` alanı — hazir/pilot/gelistiriliyor — etiketi ve
-ana buton metnini belirler; yayın durumu değişince yalnızca bu alan güncellenir), `services.ts` (8
+Veri: `src/data/products.ts` (9 ürün; `status` alanı — hazir/pilot/gelistiriliyor — yalnızca iç kullanım içindir,
+sahibinin isteğiyle sitede **hiçbir durum etiketi gösterilmez** ve tüm ürün çağrıları "Bilgi Alın"dır), `services.ts` (8
 tamamlayıcı hizmet, `/hizmetler/[slug]`), `sectors.ts` (6 sektör, `/sektorler/[slug]`), `cases.ts`
 (izinli uygulama örnekleri, `/uygulamalar/[slug]`; boşken hiçbir sayfa/bölüm görünmez — uydurma vaka
 eklenmez), `agency.ts` (menü, ana sayfa, süreç, SSS, kurucu). Çizimler `src/components/art.tsx`'te saf SVG
@@ -14,7 +14,8 @@ formlar `/api/contact`'a `kind` = bilgi | kesif | proje | iptal | ileti (+ eski 
 **Online satın alma kapalı:** `/siparis` ve `/ucretlendirme` `next.config.ts` yönlendirmeleriyle
 `/bilgi-al`'a gider; `/siparis/tamamlandi`, `/icerik-formu` ve iyzico API'leri eski siparişler için
 çalışır durumda tutulur. Yeni web sitesi projelerinin içerik formu `/proje-baslangic` (proje numarası ile).
-Eski yasal metinler (web sitesi paketi sözleşmesi vb.) `/yasal/` altında "Önceki sürümler" olarak durur.
+Girişim Destek Programı `/girisim-programi` (%2 pay, 12 ay kademeli hak ediş — koşullar sahibine ait, değiştirme;
+form `kind: girisim`). Eski yasal metinler (web sitesi paketi sözleşmesi vb.) `/yasal/` altında "Önceki sürümler" olarak durur.
 
 Aşağıdaki not online satışın açık olduğu dönemden kalmadır; altyapı hâlâ kodda.
 Web sitesi paketi: tek paket (10.000 TL). Next.js 16 (App Router) +

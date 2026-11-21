@@ -1266,3 +1266,68 @@ export function ServiceArt({ icon, title, items }: { icon: ReactNode; title: str
     </div>
   );
 }
+
+/* ---------------- Girişim Destek Programı ---------------- */
+export const VEST: [string, string][] = [
+  ["Teslim", "%0,5"],
+  ["3. ay", "%0,875"],
+  ["6. ay", "%1,25"],
+  ["9. ay", "%1,625"],
+  ["12. ay", "%2"],
+];
+
+export function StartupArt() {
+  const pts = VEST.map((_, i) => [250 + i * 66, 300 - i * 44] as const);
+  return (
+    <Svg label="Girişim destek programı: web sitesinin yayına alınmasından 12. aya kadar kademeli hak edilen pay">
+      <Frame fill={C.s2} />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <line key={i} x1="232" x2="536" y1={120 + i * 52} y2={120 + i * 52} stroke={C.line} strokeDasharray="3 5" />
+      ))}
+      <rect x="24.5" y="94.5" width="196" height="232" rx="16" fill="#fff" stroke={C.line} />
+      {[38, 48, 58].map((x) => (
+        <circle key={x} cx={x} cy="110" r="3" fill="#DADAE0" />
+      ))}
+      <line x1="24" x2="220" y1="122" y2="122" stroke={C.line} />
+      <text x="40" y="146" fontSize="10" fontWeight="800" fill={C.ink}>
+        Nova Lojistik
+      </text>
+      <text x="40" y="176" fontSize="14" fontWeight="800" fill={C.ink} letterSpacing="-0.4">
+        Yük takibini
+      </text>
+      <text x="40" y="194" fontSize="14" fontWeight="800" fill={C.ink} letterSpacing="-0.4">
+        tek ekrana alın.
+      </text>
+      <rect x="40" y="206" width="130" height="6" rx="3" fill={C.bar} />
+      <rect x="40" y="218" width="100" height="6" rx="3" fill={C.s3} />
+      <rect x="40" y="236" width="76" height="22" rx="11" fill={C.ink} />
+      <text x="78" y="251" fontSize="8.5" fontWeight="700" fill="#fff" textAnchor="middle">
+        Demo İsteyin
+      </text>
+      {[0, 1].map((i) => (
+        <rect key={i} x={40 + i * 86} y="272" width="78" height="38" rx="9" fill={C.s2} />
+      ))}
+      <Pill x={40} y={64} text="Yayında" tone="ok" />
+      <text x="232" y="64" fontSize="12" fontWeight="800" fill={C.ink}>
+        Kademeli hak ediş
+      </text>
+      <text x="232" y="81" fontSize="9.5" fill={C.mute}>
+        12 ay destek · toplam %2 pay
+      </text>
+      <polyline points={pts.map(([x, y]) => `${x},${y}`).join(" ")} fill="none" stroke={C.ink} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d={`M${pts[0][0]} ${pts[0][1]} ${pts.map(([x, y]) => `L${x} ${y}`).join(" ")} L${pts[4][0]} 330 L${pts[0][0]} 330Z`} fill={C.ink} opacity="0.05" />
+      {pts.map(([x, y], i) => (
+        <g key={i}>
+          <circle cx={x} cy={y} r={i === 4 ? 9 : 6} fill={i === 4 ? C.ink : "#fff"} stroke={C.ink} strokeWidth="2.5" />
+          <text x={x} y={y - 16} fontSize="10.5" fontWeight="800" fill={C.ink} textAnchor="middle">
+            {VEST[i][1]}
+          </text>
+          <text x={x} y="352" fontSize="9.5" fill={C.mute} textAnchor="middle">
+            {VEST[i][0]}
+          </text>
+        </g>
+      ))}
+      <line x1="232" x2="536" y1="334" y2="334" stroke={C.bar} />
+    </Svg>
+  );
+}

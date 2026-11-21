@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ProductArt } from "@/components/art";
 import { Icon } from "@/components/icons";
-import { CATEGORIES, NEEDS, PRODUCTS, STATUS, type Product, type ProductCategory } from "@/data/products";
+import { CATEGORIES, NEEDS, PRODUCTS, type Product, type ProductCategory } from "@/data/products";
 
 export function ProductCard({ p, text, link }: { p: Product; text?: string; link?: string }) {
   return (
@@ -13,10 +13,6 @@ export function ProductCard({ p, text, link }: { p: Product; text?: string; link
         <ProductArt kind={p.art} uid={`card-${p.slug}`} />
       </span>
       <span className="pcard-body">
-        <span className={`tag tag-st-${p.status}`}>
-          <i aria-hidden="true"></i>
-          {STATUS[p.status].label}
-        </span>
         <span className="pcard-name">
           <Icon n={p.icon} size={18} sw={1.8} />
           {p.name}

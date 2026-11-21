@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProductArt } from "@/components/art";
-import { STATUS, getProduct } from "@/data/products";
+import { getProduct } from "@/data/products";
 
 /* Ürün paylaşım görsellerinin (public/og/<slug>.png) kaynağı. Yalnızca OG_KART=1 ile çalışan yerel
    sunucuda açılır; scripts/og-gorselleri.mjs bu sayfanın ekran görüntüsünü alır. Yayında 404 döner. */
@@ -20,10 +20,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <i></i>
         </span>
         <div>
-          <span className={`tag tag-st-${p.status}`}>
-            <i aria-hidden="true"></i>
-            {STATUS[p.status].label}
-          </span>
           <p className="ogc-name">{p.name}</p>
           <p className="ogc-t">{p.title}</p>
         </div>

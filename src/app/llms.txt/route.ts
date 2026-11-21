@@ -30,6 +30,7 @@ function build(): string {
     `- [Neden web sitesi?](${SITE_URL}/neden-web-sitesi): Kurumsal web sitesinin işletmeye katkıları.`,
     `- [Bilgi Alın](${SITE_URL}/bilgi-al): Ürün veya hizmet için bilgi talebi formu.`,
     `- [Blog](${SITE_URL}/blog): Ürün fotoğrafı, reklam raporlama, stok düzeni, web sitesi ve yerel görünürlük rehberleri.`,
+    `- [Girişim Destek Programı](${SITE_URL}/girisim-programi): Yeni girişimlere nakit yerine kademeli hak edilen %2 pay karşılığında web sitesi, 12 ay bakım ve SEO desteği.`,
     `- [Hakkımızda](${SITE_URL}/hakkimizda): Vitrinweb'in hikâyesi, kurucusu ve şirket bilgileri.`,
     `- [İletişim](${SITE_URL}/iletisim): Yeni proje, destek ve iş birliği kanalları.`,
     `- [İçerik Politikası](${SITE_URL}/icerik-politikasi): Blog yazılarının nasıl hazırlandığı, yapay zekâ kullanımı ve kaynak seçimi.`,

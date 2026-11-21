@@ -58,7 +58,6 @@ export function BilgiAlPage() {
   return (
     <main id="main" className="container-x lead-page">
       <div className="lead-head">
-        <p className="eyebrow">Bilgi Alın</p>
         <h1 className="h-1">{p ? `${p.name} hakkında bilgi ve kapsam alın.` : "Hangi çözümümüz hakkında bilgi almak istersiniz?"}</h1>
         <p className="lead">
           İlgilendiğiniz ürünü seçin ve çözmek istediğiniz ihtiyacı kısaca paylaşın. Tercih ettiğiniz iletişim kanalından size dönüş yapalım.
@@ -78,7 +77,6 @@ export function KesifPage() {
   return (
     <main id="main" className="container-x lead-page">
       <div className="lead-head">
-        <p className="eyebrow">Keşif Görüşmesi</p>
         <h1 className="h-1">İlk görüşmede hangi sürecinize odaklanalım?</h1>
         <p className="lead">
           Mevcut iş akışınızı, kullandığınız araçları ve hedeflediğiniz sonucu kısaca paylaşın. Aklınızda belirli bir ürün varsa seçebilir, henüz karar

@@ -48,6 +48,9 @@ export function Footer() {
                 <Link href="/sektorler">Sektörler</Link>
               </li>
               <li>
+                <Link href="/girisim-programi">Girişimlere Destek</Link>
+              </li>
+              <li>
                 <Link href="/blog">Blog</Link>
               </li>
             </ul>

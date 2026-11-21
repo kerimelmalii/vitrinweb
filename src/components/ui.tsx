@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/icons";
 import { PHONE_DIGITS } from "@/data/company";
-import { STATUS, type Product } from "@/data/products";
 
 /* Sayfalar arasında ortak, sunucuda çizilebilen küçük yapı taşları. */
 
@@ -10,15 +9,6 @@ export const waLink = (text: string): string =>
   PHONE_DIGITS ? `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent(text)}` : "";
 
 export const DEFAULT_WA_TEXT = "Merhaba, Vitrinweb’in çözümleri hakkında bilgi almak istiyorum.";
-
-export function StatusTag({ p }: { p: Product }) {
-  return (
-    <span className={`tag tag-st-${p.status}`} title={STATUS[p.status].desc}>
-      <i aria-hidden="true"></i>
-      {STATUS[p.status].label}
-    </span>
-  );
-}
 
 export function Crumbs({ items }: { items: { label: string; href?: string }[] }) {
   return (

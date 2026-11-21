@@ -3,9 +3,8 @@ import { ProductArt } from "@/components/art";
 import { ProductCard } from "@/components/catalog";
 import { DemoFrame } from "@/components/demos";
 import { Icon } from "@/components/icons";
-import { Checklist, Closing, Crumbs, FaqList, SecHead, StatusTag, Steps } from "@/components/ui";
+import { Checklist, Closing, Crumbs, FaqList, SecHead, Steps } from "@/components/ui";
 import {
-  STATUS,
   WEB_ADDONS,
   WEB_CUSTOM,
   getProduct,
@@ -37,8 +36,7 @@ function splitClosing(t: string): [string, string | undefined] {
 }
 
 export function ProductPage({ p }: { p: Product }) {
-  const status = STATUS[p.status];
-  const cta = { label: status.button, href: infoHref(p.slug) };
+  const cta = { label: "Bilgi Alın", href: infoHref(p.slug) };
   const related = p.related.map((s) => getProduct(s)).filter((x): x is Product => !!x);
   return (
     <main id="main">
@@ -49,7 +47,6 @@ export function ProductPage({ p }: { p: Product }) {
             <p className="pname">
               <Icon n={p.icon} size={20} sw={1.8} />
               {p.name}
-              <StatusTag p={p} />
             </p>
             <h1 className="h-1">{p.title}</h1>
             <p className="lead">{p.lead}</p>
@@ -61,7 +58,6 @@ export function ProductPage({ p }: { p: Product }) {
                 {p.secondary}
               </a>
             </div>
-            <p className="fine hero-note">{status.desc}</p>
           </div>
           <ProductHeroFigure p={p} />
         </div>

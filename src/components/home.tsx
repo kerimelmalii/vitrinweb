@@ -16,7 +16,6 @@ function Hero() {
     <section className="hero hero-a">
       <div className="container-x hero-grid">
         <div className="hero-copy rise">
-          <p className="eyebrow">Vitrinweb · Dijital Çözümler</p>
           <h1 className="h-display">İşletmeniz için tasarlanan dijital ürünler ve özel yazılımlar.</h1>
           <p className="lead">
             Marka değerinizi yansıtan web siteleri, görsel üretimden reklam ve stok takibine kadar kritik işleri hızlandıran hazır dijital ürünler ve
@@ -284,6 +283,15 @@ function WebsiteBand() {
           <div className="webband-art" aria-hidden="true">
             <WebArt />
           </div>
+        </div>
+        <div className="home-gp" style={{ marginTop: 14 }}>
+          <div>
+            <h3 className="h-3">Yeni bir girişim mi kuruyorsunuz?</h3>
+            <p>Seçtiğimiz girişimlere web sitesi, 12 ay bakım ve SEO desteğini nakit yerine kademeli hak edilen küçük bir pay karşılığında sunuyoruz.</p>
+          </div>
+          <Link className="btn btn-line" href="/girisim-programi">
+            Girişim Programını İnceleyin
+          </Link>
         </div>
       </div>
     </section>

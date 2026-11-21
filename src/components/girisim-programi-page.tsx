@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Field, Inp } from "@/components/checkout/fields";
 import { FileField } from "@/components/file-field";
 import { Icon } from "@/components/icons";
-import { Reveal } from "@/components/reveal";
-import { SectionHead } from "@/components/section-head";
+import Link from "next/link";
+import { StartupArt, VEST } from "@/components/art";
+import { Crumbs, FaqList, SecHead, Steps } from "@/components/ui";
 import { sendStartupApplication } from "@/lib/form-webhook";
 import { FILE_RULES, LIMITS, RX, clean, phoneOk } from "@/lib/security";
 
@@ -18,18 +19,10 @@ function fileToBase64(file: File): Promise<string> {
   });
 }
 
-const VEST_STOPS: [string, string][] = [
-  ["Teslim", "%0,5"],
-  ["3. ay", "%0,875"],
-  ["6. ay", "%1,25"],
-  ["9. ay", "%1,625"],
-  ["12. ay", "%2"],
-];
-
 const BENEFITS: { icon: "layout" | "shield" | "trend"; title: string; items: string[] }[] = [
   {
     icon: "layout",
-    title: "Web Sitesi",
+    title: "Web sitesi",
     items: [
       "5-6 sayfalık, mobil uyumlu, özel tasarım web sitesi",
       "2 revizyon turu",
@@ -38,12 +31,12 @@ const BENEFITS: { icon: "layout" | "shield" | "trend"; title: string; items: str
   },
   {
     icon: "shield",
-    title: "12 Ay Bakım",
+    title: "12 ay bakım",
     items: ["Güncellemeler, yedekleme, güvenlik kontrolü", "Ayda 2-3 saate kadar içerik değişikliği"],
   },
   {
     icon: "trend",
-    title: "SEO Desteği",
+    title: "SEO desteği",
     items: [
       "Ayda 1-2 içerik veya sayfa optimizasyonu",
       "Google İşletme Profili kurulumu",
@@ -52,11 +45,42 @@ const BENEFITS: { icon: "layout" | "shield" | "trend"; title: string; items: str
   },
 ];
 
-const STEPS: [string, string][] = [
-  ["Başvuru", "Başvuru formunu doldurun."],
-  ["Tanışma", "Kısa bir tanışma görüşmesi yapalım."],
-  ["Sözleşme", "Seçilen girişimlerle sözleşme imzalanır."],
-  ["Yayın", "Site 3-4 hafta içinde yayında, 12 aylık destek başlar."],
+const STEPS = [
+  { t: "Başvurun.", d: "Formu doldurun; girişiminizi, problemi ve çözümünüzü birkaç cümleyle anlatın. Varsa sunumunuzu ekleyin." },
+  { t: "Tanışalım.", d: "Kısa bir görüşmede ekibinizi, hedeflerinizi ve dijital tarafta önceliğiniz olan adımları konuşalım." },
+  { t: "Sözleşmeyi imzalayalım.", d: "Seçilen girişimlerle kapsam, takvim ve kademeli hak ediş koşulları yazılı sözleşmeyle netleşir." },
+  { t: "Yayına alalım ve destekleyelim.", d: "Siteniz 3-4 hafta içinde yayında olur; 12 aylık bakım ve SEO desteği başlar." },
+];
+
+/* Programın ana paketi dışında kalan, ihtiyaç doğduğunda kapsamı ve koşulları ayrıca belirlenen destekler. */
+const MORE: { slug: string; name: string; d: string; icon: string }[] = [
+  { slug: "urun-gorsel-studyosu", name: "Ürün Görsel Stüdyosu", icon: "image", d: "Lansman, satış sayfası ve yatırımcı sunumu için tutarlı ürün görselleri." },
+  { slug: "meta-reklam-paneli", name: "Meta Reklam Paneli", icon: "trend", d: "İlk kampanyalarınızın harcama ve sonuçlarını tek ekranda okuyun." },
+  { slug: "musteri-bulma", name: "Müşteri Bulma", icon: "target", d: "İlk B2B müşterileriniz için hedef listesi ve satış takibi." },
+  { slug: "google-haritalar-karnesi", name: "Google Haritalar Karnesi", icon: "pin", d: "Yerel hizmet veren girişimler için profil denetimi." },
+];
+
+const FAQS = [
+  {
+    q: "Neden nakit yerine hisse?",
+    a: "Erken aşamadaki girişimlerin nakdi en kritik kaynaklarından biridir. Dijital altyapınızı birlikte kurup sizinle aynı hedefe bakmak istiyoruz; bu yüzden karşılığında nakit değil, kademeli olarak hak edilen küçük bir pay alıyoruz.",
+  },
+  {
+    q: "Pay neden kademeli olarak hak ediliyor?",
+    a: "Pay, destek sürdükçe hak edilir: teslimde %0,5, ardından her üç ayda bir artarak 12. ayın sonunda toplam %2. Program erken biterse yalnızca hak edilmiş pay geçerli olur. Tüm detaylar sözleşmede açıkça yer alır.",
+  },
+  {
+    q: "Şirketim henüz kurulmadıysa başvurabilir miyim?",
+    a: "Evet. Kurulmuş veya yakında kurulacak girişimlerin başvurularını değerlendiriyoruz; kuruluş durumunuzu formda belirtmeniz yeterli.",
+  },
+  {
+    q: "Programa kabul edilmezsem ne olur?",
+    a: "Başvurunuzu inceleyip size dönüş yaparız. Program sizin için uygun değilse, ihtiyacınıza uyan ürün ve hizmetlerimizi standart çalışma modelimizle önerebiliriz.",
+  },
+  {
+    q: "Programda olmayan bir dijital ihtiyacımız olursa?",
+    a: "Görsel üretim, reklam raporlama veya müşteri takibi gibi ihtiyaçlar ana paketin dışındadır; ihtiyaç doğduğunda kapsamını ve koşullarını sizinle birlikte belirleriz.",
+  },
 ];
 
 const CRITERIA = [
@@ -196,8 +220,8 @@ function ApplicationForm() {
   }
 
   return (
-    <div className="panel">
-      <div className="grid sm:grid-cols-2 gap-x-4">
+    <div className="panel gp-form">
+      <div className="lead-grid">
         <Field id="g-founder" label="Kurucu Adı Soyadı" error={err.founderName}>
           <Inp
             id="g-founder"
@@ -307,7 +331,7 @@ function ApplicationForm() {
       <div className="form-foot">
         <span className="fine">Başvurunuzu inceleyip size döneriz.</span>
         <button className="btn btn-primary btn-lg" onClick={submit} disabled={status === "sending"}>
-          {status === "sending" ? "Gönderiliyor…" : "Başvuruyu Gönder"}
+          {status === "sending" ? "Gönderiliyor…" : "Başvuruyu Gönderin"}
         </button>
       </div>
     </div>
@@ -317,29 +341,40 @@ function ApplicationForm() {
 export function GirisimProgramiPage() {
   return (
     <main id="main">
-      <section className="sec" style={{ paddingBottom: "24px" }}>
-        <div className="container-x">
-          <h1 className="h-1" style={{ maxWidth: "18ch" }}>
-            Fikrinize yatırım yapıyoruz, sitenizi biz kuruyoruz.
-          </h1>
-          <p className="lead" style={{ marginTop: "16px", maxWidth: "56ch" }}>
-            Girişiminiz için profesyonel web sitesi, 12 ay bakım ve SEO desteği. Karşılığında nakit değil,{" "}
-            <b>%2 hisse</b>.
-          </p>
-          <div className="hero-cta" style={{ marginTop: "30px" }}>
-            <a className="btn btn-primary btn-lg" href="#basvuru">
-              Başvur
-            </a>
-            <a className="btn btn-line btn-lg" href="#surec">
-              Nasıl çalışır?
-            </a>
+      <section className="phero">
+        <div className="container-x phero-grid">
+          <div className="phero-copy">
+            <Crumbs items={[{ label: "Girişimlere Destek" }]} />
+            <p className="pname">
+              <Icon n="spark" size={20} sw={1.8} />
+              Girişim Destek Programı
+            </p>
+            <h1 className="h-1">Fikrinize ortak oluyoruz, dijital altyapınızı birlikte kuruyoruz.</h1>
+            <p className="lead">
+              Yeni kurulan girişimlere profesyonel web sitesi, 12 ay bakım ve SEO desteği sunuyoruz. Karşılığında nakit değil, 12 ay boyunca kademeli
+              olarak hak edilen toplam <b>%2 pay</b> alıyoruz.
+            </p>
+            <div className="hero-cta">
+              <a className="btn btn-primary btn-lg" href="#basvuru">
+                Başvurun
+              </a>
+              <a className="btn btn-line btn-lg" href="#program">
+                Programı İnceleyin
+              </a>
+            </div>
           </div>
+          <figure className="phero-shot">
+            <div className="phero-art">
+              <StartupArt />
+            </div>
+            <figcaption className="fine">Örnek girişim sitesi ve kademeli hak ediş takvimi</figcaption>
+          </figure>
         </div>
       </section>
 
-      <Reveal className="sec-s">
+      <section className="sec" id="program" aria-labelledby="gp-kapsam">
         <div className="container-x">
-          <SectionHead title="Neler alırsınız" sub="Sitenizden bakımına, arama motorlarındaki görünürlüğüne kadar tek elden." />
+          <SecHead id="gp-kapsam" title="Program kapsamında neler var?" sub="Sitenizden bakımına, arama motorlarındaki görünürlüğüne kadar tek elden." />
           <div className="gp-cards">
             {BENEFITS.map((b) => (
               <div className="gp-card" key={b.title}>
@@ -357,95 +392,119 @@ export function GirisimProgramiPage() {
             ))}
           </div>
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal className="sec-s" id="surec">
+      <section className="sec sec-tint" aria-labelledby="gp-surec">
         <div className="container-x">
-          <SectionHead title="Nasıl çalışır" sub="Dört adım. Başvurudan yayına net bir yol haritası." />
-          <ol className="proc">
-            {STEPS.map((s, i) => (
-              <li key={s[0]}>
-                <div className="n">0{i + 1}</div>
-                <h3 className="h-3">{s[0]}</h3>
-                <p>{s[1]}</p>
-              </li>
-            ))}
-          </ol>
+          <SecHead id="gp-surec" title="Nasıl ilerliyoruz?" sub="Başvurudan yayına dört adım; her adımda ne olacağını önceden bilirsiniz." />
+          <Steps steps={STEPS} cols={4} />
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal className="sec-s">
-        <div className="container-x">
-          <SectionHead
-            title="Karşılığında ne istiyoruz"
-            sub="Nakit yok. Toplam %2 hisse, kademeli olarak hak ediliyor."
-          />
-          <div className="panel" style={{ maxWidth: "760px" }}>
-            <div className="vest">
-              <div className="vest-track">
-                <i></i>
-              </div>
-              <div className="vest-stops">
-                {VEST_STOPS.map((s) => (
-                  <div className="vest-stop" key={s[0]}>
-                    <b>{s[1]}</b>
-                    <span>{s[0]}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="qnote">
-              <Icon n="info" size={16} />
-              Program erken biterse yalnızca hak edilmiş pay geçerli olur. Tüm detaylar sözleşmede açıkça yer alır.
+      <section className="sec" aria-labelledby="gp-karsilik">
+        <div className="container-x split">
+          <div>
+            <h2 className="h-2" id="gp-karsilik">
+              Karşılığında ne istiyoruz?
+            </h2>
+            <p className="lead">Nakit yok. Toplam %2 pay, destek sürdükçe kademeli olarak hak ediliyor.</p>
+            <ul className="chk" style={{ marginTop: 22 }}>
+              {EXTRA_EXPECTATIONS.map((x) => (
+                <li key={x}>
+                  <Icon n="check" size={16} sw={2.4} />
+                  <span>{x}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="vest-card">
+            <ol className="vest-list">
+              {VEST.map(([when, pct], i) => (
+                <li key={when}>
+                  <span className="vest-dot" aria-hidden="true">
+                    {i === VEST.length - 1 ? <Icon n="check" size={14} sw={2.6} /> : null}
+                  </span>
+                  <span className="vest-when">{when}</span>
+                  <b>{pct}</b>
+                </li>
+              ))}
+            </ol>
+            <p className="note-safe">
+              <Icon n="info" size={15} /> Program erken biterse yalnızca hak edilmiş pay geçerli olur. Tüm detaylar sözleşmede açıkça yer alır.
             </p>
           </div>
-          <ul className="gp-extra">
-            {EXTRA_EXPECTATIONS.map((x) => (
-              <li key={x}>
-                <Icon n="chev" size={14} sw={2.5} />
-                {x}
+        </div>
+      </section>
+
+      <section className="sec sec-tint" aria-labelledby="gp-ek">
+        <div className="container-x">
+          <SecHead
+            id="gp-ek"
+            title="Büyüdükçe yanınızdayız."
+            sub="Ana paketin dışında kalan dijital ihtiyaçlarınızda da ürünlerimizle destek oluyoruz; kapsamı ve koşulları ihtiyaç doğduğunda birlikte belirliyoruz."
+          />
+          <ul className="gp-more">
+            {MORE.map((m) => (
+              <li key={m.slug}>
+                <Link href={`/urunler/${m.slug}`}>
+                  <Icon n={m.icon} size={22} sw={1.7} />
+                  <b>{m.name}</b>
+                  <span>{m.d}</span>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal className="sec-s">
+      <section className="sec" aria-labelledby="gp-kim">
         <div className="container-x">
-          <SectionHead title="Kimleri arıyoruz" />
-          <ul className="checks" style={{ maxWidth: "640px" }}>
-            {CRITERIA.map((c) => (
-              <li key={c}>
-                <span className="ck">
-                  <Icon n="check" size={14} sw={2.5} />
-                </span>
-                <span>{c}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Reveal>
-
-      <Reveal className="sec-s" style={{ paddingBottom: "24px" }}>
-        <div className="container-x">
-          <div className="gp-out">
-            <Icon n="info" size={20} />
+          <div className="fitw">
             <div>
-              <b>Kapsam dışı</b>
-              <p style={{ margin: "4px 0 0", color: "var(--ink-2)" }}>
-                E-ticaret altyapısı (bu ön görüşme sonrasında ayrıca değerlendirilir).
-              </p>
+              <h2 className="h-3" id="gp-kim">
+                Kimleri arıyoruz?
+              </h2>
+              <ul className="chk" style={{ marginTop: 16 }}>
+                {CRITERIA.map((c) => (
+                  <li key={c}>
+                    <Icon n="check" size={16} sw={2.4} />
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="h-3">Kapsam dışı</h2>
+              <p>E-ticaret altyapısı programa dahil değildir; ihtiyaç varsa tanışma görüşmesinden sonra ayrıca değerlendirilir.</p>
             </div>
           </div>
         </div>
-      </Reveal>
+      </section>
 
-      <section className="sec-s" id="basvuru" style={{ paddingBottom: "96px" }}>
+      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="gp-sss">
+        <div className="container-x narrow">
+          <SecHead id="gp-sss" title="Sık sorulan sorular" />
+          <FaqList items={FAQS} idPrefix="sss-girisim" />
+        </div>
+      </section>
+
+      <section className="sec" id="basvuru" style={{ paddingTop: 0 }} aria-labelledby="gp-basvuru">
         <div className="container-x">
-          <SectionHead title="Başvurun" sub="Formu doldurun, sizi arayalım." />
-          <ApplicationForm />
+          <div className="final-form">
+            <div>
+              <h2 className="h-1" id="gp-basvuru">
+                Başvurun, girişiminizi tanıyalım.
+              </h2>
+              <p className="lead">Formu doldurun; başvurunuzu inceleyip size dönüş yapalım. Varsa sunumunuzu da ekleyebilirsiniz.</p>
+              <p className="fine">
+                Kişisel verilerinizin işlenmesine ilişkin detayları <Link href="/yasal/kvkk">KVKK Aydınlatma Metni</Link>’nde inceleyebilirsiniz.
+              </p>
+            </div>
+            <ApplicationForm />
+          </div>
         </div>
       </section>
     </main>
   );
 }
+

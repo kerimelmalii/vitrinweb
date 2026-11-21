@@ -373,7 +373,7 @@ function FinalForm() {
 
 export function Home() {
   return (
-    <main id="main">
+    <main id="main" className="home">
       <Hero />
       <Priorities />
       <Products />

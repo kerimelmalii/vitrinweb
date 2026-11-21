@@ -13,6 +13,7 @@ import {
   CUSTOM_WORK_TYPES,
   FOUNDER,
   WHY_WEB,
+  WHAT_IS,
   WHY_WEB_CHECKLIST,
   WORK_HOURS,
   WORK_STEPS,
@@ -580,6 +581,14 @@ export function AboutPage() {
         <div className="container-x">
           <Crumbs items={[{ label: "Hakkımızda" }]} />
           <h1 className="h-1 page-h">İşinizin gerçek işleyişini anlayarak kalıcı dijital çözümler geliştiriyoruz.</h1>
+        </div>
+      </section>
+      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="nedir">
+        <div className="container-x story">
+          <h2 className="h-3" id="nedir">
+            Vitrinweb nedir?
+          </h2>
+          <p className="lead what-is">{WHAT_IS}</p>
         </div>
       </section>
       <section className="sec" style={{ paddingTop: 0 }}>

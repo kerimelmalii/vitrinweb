@@ -128,7 +128,7 @@ export const SECTORS: Sector[] = [
     name: "Klinik ve Sağlık",
     formSector: "Klinik ve Sağlık",
     icon: "health",
-    seoTitle: "Klinikler İçin Kurumsal Web Sitesi ve İletişim Çözümleri | Vitrinweb",
+    seoTitle: "Klinikler İçin Web Sitesi ve İletişim Çözümleri | Vitrinweb",
     description:
       "Kliniğinizin adres, çalışma saatleri ve randevu iletişim kanallarını düzenli, güven veren bir kurumsal web sitesinde paylaşın.",
     title: "Kliniğinize ulaşmak için gereken tüm bilgiler net ve erişilebilir olsun.",

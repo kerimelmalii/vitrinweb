@@ -5,6 +5,7 @@ import { breadcrumbLd } from "@/components/ui";
 import { SECTORS, getSector } from "@/data/sectors";
 import { safeJsonLd } from "@/lib/json-ld";
 import { pageMeta } from "@/lib/page-meta";
+import { itemListLd, serviceLd } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -23,10 +24,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const s = getSector(slug);
   if (!s) notFound();
-  const ld = breadcrumbLd(SITE_URL, [
-    { name: "Sektörler", path: "/sektorler" },
-    { name: s.name, path: `/sektorler/${s.slug}` },
-  ]);
+  const ld = [
+    breadcrumbLd(SITE_URL, [
+      { name: "Sektörler", path: "/sektorler" },
+      { name: s.name, path: `/sektorler/${s.slug}` },
+    ]),
+    {
+      ...serviceLd({ name: `${s.name} için dijital çözümler`, description: s.description, path: `/sektorler/${s.slug}` }),
+      audience: { "@type": "BusinessAudience", audienceType: s.name },
+    },
+    itemListLd(`${s.name} için önerilen çözümler`, s.links.map((l) => ({ name: l.label, path: l.href }))),
+  ];
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(ld) }} />

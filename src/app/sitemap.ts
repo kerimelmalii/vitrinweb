@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG } from "@/data/blog";
-import { LEGAL_LINKS } from "@/data/legal";
+import { LEGAL_DOCS, LEGAL_LINKS } from "@/data/legal";
 import { PRODUCTS } from "@/data/products";
 import { SECTORS } from "@/data/sectors";
 import { SERVICES } from "@/data/services";
@@ -9,9 +9,16 @@ import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
 
-/* Derleme zamanı: statik ve yasal sayfaların içeriği ayrı bir "son güncelleme" tarihi
-   tutmadığından, bu sayfalar için en anlamlı değer sitenin en son yayınlandığı andır. */
-const buildDate = new Date();
+/* Her yayında "şimdi" yazmak Google'ın lastmod'a güvenmemesine yol açar; bu yüzden sayfalar
+   içeriklerinin gerçekten değiştiği günü taşır. Bir sayfanın metni değişince PAGE_UPDATED'deki
+   tarihi (yoksa SITE_UPDATED'i) o güne çekin. Blog yazıları kendi tarihlerini kullanır. */
+const SITE_UPDATED = "2026-11-21";
+const LEGAL_UPDATED_ISO = "2026-09-28";
+const PAGE_UPDATED: Record<string, string> = {
+  "/icerik-politikasi": "2026-10-10",
+};
+const newestPost = BLOG.map((p) => p.updated ?? p.date).sort().at(-1) ?? SITE_UPDATED;
+const pageDate = (path: string) => (path === "/blog" ? newestPost : PAGE_UPDATED[path] ?? SITE_UPDATED);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -37,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/isgale-hayir",
   ].map((path) => ({
     url: SITE_URL + path,
-    lastModified: buildDate,
+    lastModified: pageDate(path),
     changeFrequency: "monthly" as const,
     priority: path === "/" ? 1 : path.startsWith("/urunler") ? 0.8 : 0.7,
   }));
@@ -49,7 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   const legalRoutes = LEGAL_LINKS.map(([id]) => ({
     url: `${SITE_URL}/yasal/${id}`,
-    lastModified: buildDate,
+    lastModified: LEGAL_DOCS[id]?.u ? SITE_UPDATED : LEGAL_UPDATED_ISO,
     changeFrequency: "yearly" as const,
     priority: 0.2,
   }));

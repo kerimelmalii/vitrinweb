@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductPage } from "@/components/product-page";
 import { breadcrumbLd, faqLd } from "@/components/ui";
-import { COMPANY } from "@/data/company";
-import { PRODUCTS, getProduct } from "@/data/products";
+import { CATEGORIES, PRODUCTS, getProduct } from "@/data/products";
 import { safeJsonLd } from "@/lib/json-ld";
 import { pageMeta } from "@/lib/page-meta";
+import { serviceLd } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -25,22 +25,18 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const p = getProduct(slug);
   if (!p) notFound();
-  const url = `${SITE_URL}/urunler/${p.slug}`;
   const ld = [
     breadcrumbLd(SITE_URL, [
       { name: "Ürünler", path: "/urunler" },
       { name: p.name, path: `/urunler/${p.slug}` },
     ]),
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
+    serviceLd({
       name: p.name,
       description: p.description,
-      url,
+      path: `/urunler/${p.slug}`,
       image: `${SITE_URL}/og/${p.slug}.png`,
-      provider: { "@type": "Organization", name: COMPANY.brand, url: SITE_URL },
-      areaServed: "TR",
-    },
+      category: CATEGORIES.find((c) => c.id === p.category)?.label,
+    }),
     faqLd(p.faqs),
   ];
   return (

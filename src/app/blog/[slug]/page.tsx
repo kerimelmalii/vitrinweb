@@ -4,6 +4,7 @@ import { AUTHOR, BlogPost } from "@/components/blog-post";
 import { BLOG, coverSrc, getPost, isoWithZone } from "@/data/blog";
 import { COMPANY } from "@/data/company";
 import { safeJsonLd } from "@/lib/json-ld";
+import { ORG_ID, SITE_ID } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { openGraph } from "@/lib/open-graph";
 
@@ -18,7 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = getPost(slug);
   if (!post) return {};
   return {
-    title: post.seoTitle.includes("Vitrinweb") ? { absolute: post.seoTitle } : post.seoTitle,
+    /* Google ~60 karakterden sonra kırpar; marka eki sığmıyorsa başlık eksiz kullanılır. */
+    title: post.seoTitle.includes("Vitrinweb") || post.seoTitle.length > 48 ? { absolute: post.seoTitle } : post.seoTitle,
     description: post.description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: openGraph(
@@ -55,7 +57,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     articleSection: post.category,
     wordCount: post.words,
     author: [{ "@type": "Organization", name: AUTHOR.name, url: SITE_URL + AUTHOR.href }],
-    publisher: { "@type": "Organization", name: COMPANY.brand, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` } },
+    publisher: { "@type": "Organization", "@id": ORG_ID, name: COMPANY.brand, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` } },
+    isPartOf: { "@id": SITE_ID },
   };
   const breadcrumbLd = {
     "@context": "https://schema.org",

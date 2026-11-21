@@ -14,7 +14,7 @@ export function Logo({ sub = true }: { sub?: boolean }) {
     <Link
       className="logo"
       href="/"
-      aria-label="Vitrinweb ana sayfa"
+      aria-label={sub ? "Vitrinweb Dijital Çözümler, ana sayfa" : "Vitrinweb, ana sayfa"}
       onClick={(e) => {
         /* Zaten ana sayfadaysa Link gezinme yapmaz; kaydırmayı elle sıfırlıyoruz. */
         if (pathname === "/") {

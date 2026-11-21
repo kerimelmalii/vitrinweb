@@ -1,0 +1,22 @@
+# Canlı yayın (Vercel Production) başarıyla tamamlanınca sitemap'teki adresleri IndexNow'a bildirir.
+# Ayrıntı: scripts/indexnow.mjs
+name: IndexNow bildirimi
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bildir:
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sitemap adreslerini gönder
+        run: node scripts/indexnow.mjs https://www.vitrinweb.com.tr

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductArt } from "@/components/art";
 import { Icon } from "@/components/icons";
 import { CATEGORIES, NEEDS, PRODUCTS, type Product, type ProductCategory } from "@/data/products";
@@ -100,6 +100,11 @@ export function CatalogGrid() {
     veya "Durdurun" ile durur; hareket azaltma tercihinde kaydırılabilir bir liste olur. */
 export function ProductMarquee({ items }: { items: { p: Product; text?: string }[] }) {
   const [paused, setPaused] = useState(false);
+  /* Kesintisiz döngü için gereken ikinci kopya yalnızca tarayıcıda eklenir; sunucu HTML'inde ve
+     botların okuduğu metinde her ürün bir kez yer alır. */
+  const [ready, setReady] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setReady(true), []);
   const cards = (hidden: boolean) => (
     <ul className="marq-set" aria-hidden={hidden || undefined} inert={hidden || undefined}>
       {items.map(({ p, text }) => (
@@ -110,11 +115,11 @@ export function ProductMarquee({ items }: { items: { p: Product; text?: string }
     </ul>
   );
   return (
-    <div className={"marq" + (paused ? " paused" : "")}>
+    <div className={"marq" + (ready ? " ready" : "") + (paused ? " paused" : "")}>
       <div className="marq-view" role="region" aria-label="Ürünler" tabIndex={-1}>
         <div className="marq-track">
           {cards(false)}
-          {cards(true)}
+          {ready && cards(true)}
         </div>
       </div>
       <button type="button" className="marq-btn" onClick={() => setPaused(!paused)} aria-pressed={paused}>

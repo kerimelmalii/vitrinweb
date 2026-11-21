@@ -1,21 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 import { LeadForm } from "@/components/lead-form";
 import { WhatsAppButton } from "@/components/ui";
 import { COMPANY } from "@/data/company";
 import { getProduct, interestLabel } from "@/data/products";
 
-function useInit() {
-  const sp = useSearchParams();
-  const product = sp.get("urun") || "";
-  const sector = sp.get("sektor") || "";
-  const service = sp.get("hizmet") || "";
-  const message = (sp.get("not") || "").slice(0, 1000);
-  return useMemo(() => ({ product, sector, service, message }), [product, sector, service, message]);
+type Init = { product: string; sector: string; service: string; message: string };
+
+/* Adres çubuğundaki ön seçim yalnızca tarayıcıda okunur; böylece sayfanın başlığı, metni ve formu
+   sunucuda hazır HTML olarak üretilir (useSearchParams tüm sayfayı istemciye bırakırdı). */
+function useInit(): Init | undefined {
+  const [init, setInit] = useState<Init>();
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInit({
+      product: sp.get("urun") || "",
+      sector: sp.get("sektor") || "",
+      service: sp.get("hizmet") || "",
+      message: (sp.get("not") || "").slice(0, 1000),
+    });
+  }, []);
+  return init;
+}
+
+function NoScript() {
+  return (
+    <noscript>
+      <p className="form-msg">
+        Formu kullanmak için tarayıcınızda JavaScript açık olmalıdır. Bize doğrudan <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a> adresinden
+        yazabilirsiniz.
+      </p>
+    </noscript>
+  );
 }
 
 function Aside({ kesif }: { kesif?: boolean }) {
@@ -52,8 +72,8 @@ function Aside({ kesif }: { kesif?: boolean }) {
 export function BilgiAlPage() {
   const init = useInit();
   const [picked, setPicked] = useState<string | null>(null);
-  const slug = picked ?? init.product;
-  const p = getProduct(init.product);
+  const slug = picked ?? init?.product ?? "";
+  const p = getProduct(init?.product ?? "");
   const label = interestLabel(slug);
   return (
     <main id="main" className="container-x lead-page">
@@ -62,8 +82,9 @@ export function BilgiAlPage() {
         <p className="lead">
           İlgilendiğiniz ürünü seçin ve çözmek istediğiniz ihtiyacı kısaca paylaşın. Tercih ettiğiniz iletişim kanalından size dönüş yapalım.
         </p>
-        {label && picked !== null && picked !== init.product && <p className="fine">Seçiminiz: {label}</p>}
+        {label && picked !== null && picked !== init?.product && <p className="fine">Seçiminiz: {label}</p>}
       </div>
+      <NoScript />
       <div className="lead-wrap">
         <LeadForm init={init} onProduct={setPicked} />
         <Aside />
@@ -83,6 +104,7 @@ export function KesifPage() {
           vermediyseniz ihtiyacınızı tarif edebilirsiniz.
         </p>
       </div>
+      <NoScript />
       <div className="lead-wrap">
         <LeadForm mode="kesif" init={init} />
         <Aside kesif />

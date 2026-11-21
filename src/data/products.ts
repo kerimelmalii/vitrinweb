@@ -529,7 +529,7 @@ export const PRODUCTS: Product[] = [
     art: "belge",
     category: "belge-gorusme",
     status: "gelistiriliyor",
-    seoTitle: "Fatura ve Formlardan Otomatik Veri Çıkarma | Vitrinweb Belge Okuma",
+    seoTitle: "Fatura ve Formlardan Veri Çıkarma | Vitrinweb Belge Okuma",
     description:
       "PDF, fotoğraf ve taranmış belgelerden ihtiyacınız olan alanları çıkarın; ekip onayıyla tablolarınıza ve iş akışlarınıza aktarın.",
     listText: "Fatura, irsaliye, form ve sözleşmelerden kritik alanları çıkarın; ekip onayıyla kayıtlarınıza aktarın.",

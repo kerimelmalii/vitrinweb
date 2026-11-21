@@ -95,6 +95,19 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
   (tercih `localStorage`'da `vitrin:cookie-consent` anahtarıyla tutulur). CSP'ye bunun için
   `googletagmanager.com`/`google-analytics.com` eklendi (`vercel.json`) — Meta Pixel henüz yok.
 
+## SEO / yapay zekâ görünürlüğü
+
+- Site sunucuda üretilir (SSG/SSR); botlar tüm metni JavaScript'siz okur. `layout.tsx`'e "JavaScript gerekli"
+  türü `<noscript>` metni EKLEME (botların okuduğu ilk metin oluyordu). Formlu sayfalar (`/bilgi-al`,
+  `/kesif-gorusmesi`) URL parametrelerini `useEffect` içinde okur — `useSearchParams` + Suspense sayfayı
+  sunucu HTML'inde boşaltır.
+- JSON-LD tek kaynak `src/lib/schema.ts` (`@id` ile bağlı Organization/WebSite/Person; `serviceLd`, `itemListLd`).
+- `sitemap.ts` `lastmod`'u gerçek değişiklik tarihidir: sayfa içeriği değişince `SITE_UPDATED`'ı o güne çek
+  (derleme tarihi kullanma). `robots.ts` arama + yapay zekâ botlarına açıkça izin verir.
+- `/llms.txt` (özet) ve `/llms-full.txt` (tüm ürün/hizmet/sektör/SSS metni) veriden üretilir; elle metin yazma.
+- IndexNow: `public/<anahtar>.txt` + `scripts/indexnow.mjs`; `.github/workflows/indexnow.yml` her başarılı
+  Production deploy'undan sonra sitemap'i Bing/Yandex'e bildirir (ChatGPT araması Bing dizinini kullanır).
+
 ## Kod yapısı
 
 - `src/app/` — sayfa rotaları (App Router): `/`, `neden`, `ucretlendirme`, `blog`, `blog/[slug]`,

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { OrderProvider } from "@/lib/order-context";
 import { AppShell } from "@/components/app-shell";
-import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { safeJsonLd } from "@/lib/json-ld";
+import { organizationLd, websiteLd } from "@/lib/schema";
 import { SITE_URL } from "@/lib/site";
 import { openGraph, SITE_OG_DESCRIPTION, SITE_TITLE } from "@/lib/open-graph";
 import "./globals.css";
@@ -17,7 +17,14 @@ export const metadata: Metadata = {
      ve alaka skorunu markanın önde olmasından daha çok artırır. Diğer sayfalarda da bu sırada. */
   title: { default: "Vitrinweb | İşletmeler İçin Dijital Ürünler ve Özel Yazılım", template: "%s | Vitrinweb" },
   description: SITE_DESCRIPTION,
+  applicationName: "Vitrinweb",
   alternates: { canonical: "/" },
+  /* Arama sonuçlarında ve yapay zekâ özetlerinde büyük görsel ve tam uzunlukta alıntıya izin verir. */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
   openGraph: openGraph("/"),
   twitter: {
     card: "summary_large_image",
@@ -36,25 +43,6 @@ export const viewport: Viewport = {
   themeColor: "#FFFFFF",
 };
 
-const organizationLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: COMPANY.brand,
-  description: "Vitrinweb; işletmeler için yüksek standartlı web siteleri, operasyonları hızlandıran hazır dijital ürünler ve iş süreçlerine özel yazılımlar geliştirir.",
-  url: SITE_URL,
-  logo: `${SITE_URL}/logo.png`,
-  email: COMPANY.email,
-  ...(PHONE_DIGITS && { telephone: `+${PHONE_DIGITS}` }),
-  sameAs: [INSTAGRAM_URL],
-};
-
-const websiteLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: COMPANY.brand,
-  url: SITE_URL,
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr">
@@ -66,7 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip" href="#main">
           Ana İçeriğe Geç
         </a>
-        <noscript>Bu sitenin çalışması için JavaScript gereklidir.</noscript>
         <OrderProvider>
           <AppShell>{children}</AppShell>
         </OrderProvider>

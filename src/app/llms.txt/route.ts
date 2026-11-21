@@ -1,4 +1,6 @@
+import { FOUNDER, WHAT_IS } from "@/data/agency";
 import { BLOG } from "@/data/blog";
+import { COMPANY, INSTAGRAM_URL, PHONE_DIGITS } from "@/data/company";
 import { LEGAL_LINKS } from "@/data/legal";
 import { PRODUCTS } from "@/data/products";
 import { SECTORS } from "@/data/sectors";
@@ -17,6 +19,19 @@ function build(): string {
     "# Vitrinweb",
     "",
     "> Vitrinweb; işletmeler için yüksek standartlı web siteleri, operasyonları hızlandıran hazır dijital ürünler ve iş süreçlerine özel yazılımlar geliştirir.",
+    "",
+    WHAT_IS,
+    "",
+    `Tüm ürün, hizmet ve süreç ayrıntılarını tek dosyada okumak için: ${SITE_URL}/llms-full.txt`,
+    "",
+    "## Şirket ve iletişim",
+    "",
+    `- Ticaret unvanı: ${COMPANY.title}`,
+    `- Adres: ${COMPANY.address}`,
+    `- E-posta: ${COMPANY.email}`,
+    ...(PHONE_DIGITS ? [`- Telefon ve WhatsApp: ${COMPANY.phone}`] : []),
+    `- Instagram: ${INSTAGRAM_URL}`,
+    `- Kurucu: ${FOUNDER.name}`,
     "",
     "## Sayfalar",
     "",

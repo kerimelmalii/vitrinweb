@@ -1150,6 +1150,231 @@ export function WebDemo() {
   );
 }
 
+/* ---------------- 10. Kulüp Takip ---------------- */
+type Role = "yonetici" | "antrenor" | "veli";
+type Att = "geldi" | "gelmedi" | "izinli";
+const SQUAD: { no: string; n: string; pos: string }[] = [
+  { no: "0007", n: "Emre Kaya", pos: "Orta saha" },
+  { no: "0012", n: "Baran Tunç", pos: "Defans" },
+  { no: "0015", n: "Deniz Acar", pos: "Forvet" },
+  { no: "0021", n: "Kerem Sarı", pos: "Kaleci" },
+  { no: "0024", n: "Arda Yılmaz", pos: "Kanat" },
+];
+const ATT_LABEL: Record<Att, string> = { geldi: "Geldi", gelmedi: "Gelmedi", izinli: "İzinli" };
+
+export function KulupDemo() {
+  const [role, setRole] = useState<Role>("yonetici");
+  const [att, setAtt] = useState<Record<string, Att>>({});
+  const [saved, setSaved] = useState(false);
+  const marked = SQUAD.filter((p) => att[p.no]).length;
+  const count = (a: Att) => SQUAD.filter((p) => att[p.no] === a).length;
+  return (
+    <div className="dm-kulup">
+      <div className="dm-row dm-row-sb">
+        <Seg
+          label="Rol seçin"
+          value={role}
+          onChange={(r) => {
+            setRole(r);
+            setSaved(false);
+          }}
+          options={[
+            { v: "yonetici", l: "Yönetici" },
+            { v: "antrenor", l: "Antrenör" },
+            { v: "veli", l: "Veli" },
+          ]}
+        />
+        <span className="fine">Yıldıztepe SK · Kurgusal kulüp</span>
+      </div>
+
+      {role === "yonetici" && (
+        <div className="dm-k-grid" aria-live="polite">
+          <div className="dm-kpis dm-kpis-4">
+            <div>
+              <span>Aktif oyuncu</span>
+              <b>128</b>
+              <small>5 takım</small>
+            </div>
+            <div>
+              <span>Kasım aidatı</span>
+              <b>42/48</b>
+              <small>6 oyuncu bekliyor</small>
+            </div>
+            <div>
+              <span>Bu ay net</span>
+              <b>25.150 TL</b>
+              <small className="up">Gelir 86.400 · Gider 61.250</small>
+            </div>
+            <div>
+              <span>Kritik malzeme</span>
+              <b>2</b>
+              <small className="down">Forma (M), top</small>
+            </div>
+          </div>
+          <div className="dm-table-w">
+            <table className="dm-table dm-table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Takım</th>
+                  <th scope="col">Antrenör</th>
+                  <th scope="col">Oyuncu</th>
+                  <th scope="col">Sıradaki</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(
+                  [
+                    ["A Takım", "Selim Hoca", "26", "Pazar · Lig maçı"],
+                    ["U17", "Mert Hoca", "24", "Cumartesi · Deplasman"],
+                    ["U15", "Mert Hoca", "22", "Salı · İdman"],
+                    ["U13", "Ece Hoca", "28", "Çarşamba · İdman"],
+                    ["Futbol okulu", "Ece Hoca", "28", "Cumartesi · İdman"],
+                  ] as const
+                ).map((r) => (
+                  <tr key={r[0]}>
+                    <th scope="row">{r[0]}</th>
+                    <td>{r[1]}</td>
+                    <td>{r[2]}</td>
+                    <td>{r[3]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="fine">
+            <Icon n="lock" size={13} /> Maaşlar, gelir-gider ve değişiklik kayıtları yalnızca yönetici ekranında görünür.
+          </p>
+        </div>
+      )}
+
+      {role === "antrenor" && (
+        <div className="dm-k-grid">
+          <div className="dm-k-head">
+            <div>
+              <b>Salı idmanı · U17</b>
+              <span>Mert Hoca · Yalnızca atandığınız U17 ve U15 takımlarını görüyorsunuz.</span>
+            </div>
+            <span className="fine" aria-live="polite">
+              {marked}/{SQUAD.length} işaretlendi
+            </span>
+          </div>
+          <ul className="dm-roll">
+            {SQUAD.map((p) => (
+              <li key={p.no}>
+                <span className="dm-roll-p">
+                  <small>{p.no}</small>
+                  <b>{p.n}</b>
+                  <span>{p.pos}</span>
+                </span>
+                <span className="dm-roll-b" role="radiogroup" aria-label={`${p.n} yoklaması`}>
+                  {(["geldi", "izinli", "gelmedi"] as Att[]).map((a) => (
+                    <button
+                      key={a}
+                      type="button"
+                      role="radio"
+                      aria-checked={att[p.no] === a}
+                      className={att[p.no] === a ? `on ${a}` : ""}
+                      onClick={() => {
+                        setAtt((x) => ({ ...x, [p.no]: a }));
+                        setSaved(false);
+                      }}
+                    >
+                      {ATT_LABEL[a]}
+                    </button>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="dm-row">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={() => setSaved(true)}
+              disabled={marked < SQUAD.length}
+            >
+              Yoklamayı Kaydedin
+            </button>
+            <button type="button" className="btn btn-line btn-sm" onClick={() => setAtt(Object.fromEntries(SQUAD.map((p) => [p.no, "geldi" as Att])))}>
+              Hepsi Geldi
+            </button>
+          </div>
+          <div aria-live="polite">
+            {saved ? (
+              <p className="dm-msg ok">
+                Yoklama kaydedildi: {count("geldi")} geldi, {count("izinli")} izinli, {count("gelmedi")} gelmedi. Veliler yalnızca kendi çocuğunun
+                durumunu görür.
+              </p>
+            ) : (
+              marked < SQUAD.length && <p className="fine">Kaydetmek için her oyuncuyu işaretleyin.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {role === "veli" && (
+        <div className="dm-k-grid">
+          <div className="dm-k-head">
+            <div>
+              <b>Deniz Acar · U17</b>
+              <span>Veli ekranı · Yalnızca kendi çocuğunuzun bilgileri</span>
+            </div>
+          </div>
+          <div className="dm-kpis dm-kpis-4">
+            <div>
+              <span>İdman katılımı</span>
+              <b>%92</b>
+              <small>Son 12 idmanda 11</small>
+            </div>
+            <div>
+              <span>Sezon</span>
+              <b>6 gol</b>
+              <small>3 asist · 540 dk</small>
+            </div>
+            <div>
+              <span>30 m sprint</span>
+              <b>4,6 sn</b>
+              <small className="up">Önceki test 4,8 sn</small>
+            </div>
+            <div>
+              <span>Aidat</span>
+              <b>Kasım ödendi</b>
+              <small>Aralık bekliyor</small>
+            </div>
+          </div>
+          <div className="dm-k-two">
+            <div className="dm-side">
+              <h4>Zimmet</h4>
+              <ul className="dm-list">
+                <li>
+                  <b>Maç forması</b>
+                  <span className="tag">Beden M</span>
+                </li>
+                <li>
+                  <b>Antrenman şortu</b>
+                  <span className="tag">Beden M</span>
+                </li>
+              </ul>
+              <h4>Karne</h4>
+              <p className="fine">Antrenör dönem karnesini henüz sizinle paylaşmadı.</p>
+            </div>
+            <div className="dm-side">
+              <h4>Veliye kapalı bilgiler</h4>
+              <ul className="dm-locked">
+                {["İdman performans puanları", "Karne iç notları", "Diğer oyuncuların bilgileri", "Maaşlar ve kulüp kasası", "Rakip analizi"].map((t) => (
+                  <li key={t}>
+                    <Icon n="lock" size={14} /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const DEMOS: Partial<Record<ArtKind, () => React.ReactElement>> = {
   gorsel: () => <StudioDemo />,
   meta: MetaDemo,
@@ -1159,5 +1384,6 @@ const DEMOS: Partial<Record<ArtKind, () => React.ReactElement>> = {
   belge: BelgeDemo,
   asistan: AsistanDemo,
   musteri: MusteriDemo,
+  kulup: KulupDemo,
   web: WebDemo,
 };

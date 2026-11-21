@@ -247,6 +247,13 @@ export const DEMO_CARDS: { kind: string; title: string; text: string; action: st
     slug: "musteri-bulma",
   },
   {
+    kind: "kulup",
+    title: "Üç rol, üç farklı ekran",
+    text: "Yönetici, antrenör ve veli arasında geçiş yapın; kim neyi görüyor karşılaştırın ve idman yoklaması alın.",
+    action: "Kulüp Panelini Açın",
+    slug: "kulup-takip",
+  },
+  {
     kind: "web",
     title: "Kurumsal web sitesi ön izleme",
     text: "Örnek bir işletme sitesini mobil ve masaüstü görünümlerinde inceleyin.",

@@ -95,3 +95,32 @@ export function CatalogGrid() {
     </>
   );
 }
+
+/** Ana sayfadaki sağdan sola kayan ürün şeridi. Fareyle üzerine gelince, klavyeyle odaklanınca
+    veya "Durdurun" ile durur; hareket azaltma tercihinde kaydırılabilir bir liste olur. */
+export function ProductMarquee({ items }: { items: { p: Product; text?: string }[] }) {
+  const [paused, setPaused] = useState(false);
+  const cards = (hidden: boolean) => (
+    <ul className="marq-set" aria-hidden={hidden || undefined} inert={hidden || undefined}>
+      {items.map(({ p, text }) => (
+        <li key={p.slug}>
+          <ProductCard p={p} text={text} />
+        </li>
+      ))}
+    </ul>
+  );
+  return (
+    <div className={"marq" + (paused ? " paused" : "")}>
+      <div className="marq-view" role="region" aria-label="Ürünler" tabIndex={-1}>
+        <div className="marq-track">
+          {cards(false)}
+          {cards(true)}
+        </div>
+      </div>
+      <button type="button" className="marq-btn" onClick={() => setPaused(!paused)} aria-pressed={paused}>
+        <Icon n={paused ? "arrow" : "x"} size={14} sw={2.2} />
+        {paused ? "Kaydırmayı Başlatın" : "Kaydırmayı Durdurun"}
+      </button>
+    </div>
+  );
+}

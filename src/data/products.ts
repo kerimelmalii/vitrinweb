@@ -1,13 +1,13 @@
 import type { MockData } from "@/lib/types";
 
 /* ================= ÜRÜNLER =================
-   Katalogdaki dokuz çekirdek ürün. Metinler "Vitrinweb Kurumsal Ajans Sitesi Metinleri"
-   belgesinden gelir. Ekranlar ve demolar örnek veridir. Her ürünün yayın durumu tek bir
-   alandan (status) okunur; etiket ve ana buton metni bu alana bağlıdır. */
+   Katalogdaki çekirdek ürünler. Metinler "Vitrinweb Kurumsal Ajans Sitesi Metinleri"
+   belgesinden gelir. Ekranlar ve demolar örnek veridir. `status` yalnızca iç takip içindir;
+   sahibinin isteğiyle sitede durum etiketi gösterilmez, tüm çağrılar "Bilgi Alın"dır. */
 
 export type ProductStatus = "hazir" | "pilot" | "gelistiriliyor";
 export type ProductCategory = "gorsel-web" | "reklam-musteri" | "stok-operasyon" | "belge-gorusme";
-export type ArtKind = "gorsel" | "meta" | "depo" | "karne" | "web" | "gorusme" | "belge" | "asistan" | "musteri" | "ozel";
+export type ArtKind = "gorsel" | "meta" | "depo" | "karne" | "web" | "gorusme" | "belge" | "asistan" | "musteri" | "kulup" | "ozel";
 
 export const STATUS: Record<ProductStatus, { label: string; desc: string; button: string }> = {
   hazir: {
@@ -715,6 +715,119 @@ export const PRODUCTS: Product[] = [
     formExample: "Satış ekibimizin elindeki işletme listesini sektör ve bölgeye göre sınıflandırmak istiyoruz.",
     related: ["meta-reklam-paneli", "gorusme-ozeti", "google-haritalar-karnesi"],
   },
+  {
+    slug: "kulup-takip",
+    name: "Kulüp Takip",
+    icon: "ball",
+    art: "kulup",
+    category: "stok-operasyon",
+    status: "gelistiriliyor",
+    seoTitle: "Futbol Kulübü Yönetim Yazılımı | Kulüp Takip | Vitrinweb",
+    description:
+      "Futbol kulübünüzün oyuncu, idman, maç, aidat, gelir-gider ve malzeme işlerini yönetici, antrenör ve veli için ayrı yetkilerle tek panelden yönetin.",
+    listText:
+      "Oyuncuları, idmanları, maçları, aidatları ve malzemeyi tek panelden yönetin; antrenör ve veli yalnızca kendisine açılan bilgiyi görsün.",
+    homeText:
+      "Futbol kulübünüzün oyuncu, idman, maç, aidat ve malzeme işlerini web paneli ve mobil uygulamadan tek yerden yönetin.",
+    linkLabel: "Kulüp Takibi İnceleyin",
+    title: "Kulübünüzün oyuncusu, idmanı, maçı ve kasası tek ekranda.",
+    lead: "Futbol kulüplerinin günlük işlerini tek yerden yönetmesi için geliştirdiğimiz yazılım. Yönetici kulübün tamamını görür; antrenör kendi takımlarını, veli yalnızca kendi çocuğunu.",
+    secondary: "Demoyu Deneyin",
+    caption: "Kulüp yönetim paneli · Örnek veri",
+    alt: "Örnek bir futbol kulübü için sıradaki maç, idman yoklaması, takım kadrosu ve aylık aidat özetini gösteren yönetim paneli.",
+    stepsTitle: "Kulüp Takip nasıl çalışır?",
+    steps: [
+      {
+        t: "Kulübünüzü ve takımlarınızı tanımlayın.",
+        d: "A takım, altyapı ve futbol okulu gibi takımları açın; oyuncu kartlarını ve veli bilgilerini ekleyin. Toplu içe aktarma da planlanabilir.",
+      },
+      {
+        t: "Ekibinizi davetle ekleyin.",
+        d: "Antrenör ve velilere tek kullanımlık, 7 gün geçerli davet bağlantısı gönderin. Antrenör davetine takımları, veli davetine çocuğun kaydı önceden bağlanır.",
+      },
+      {
+        t: "Günlük işleri tek yerden yürütün.",
+        d: "Yoklama, idman planı, maç kadrosu, maç olayları, aidat ve malzeme zimmetini web panelinden veya mobil uygulamadan kaydedin.",
+      },
+    ],
+    features: {
+      title: "Kulüp Takip'te neler var?",
+      items: [
+        {
+          t: "Takımlar ve oyuncular",
+          d: "Kulübe özel oyuncu numarası; mevki, güçlü ayak, boy-kilo, lisans bitiş tarihi, fotoğraf, takım geçmişi, sakatlık kayıtları ve veli bilgileri.",
+        },
+        {
+          t: "İdman",
+          d: "Geldi, gelmedi, izinli yoklaması; 1–10 performans puanı ve notu; bloklara ayrılmış idman planı ve kaydedilebilir şablonlar.",
+        },
+        {
+          t: "Maçlar",
+          d: "Fikstür, kadro (11 as, en fazla 10 yedek), gol, asist, değişiklik ve kartlar. Maç bitince her oyuncunun dakikası ve istatistiği otomatik hesaplanır.",
+        },
+        {
+          t: "Gelir ve gider",
+          d: "Aidat, sponsorluk, maaş ve saha giderleri için hazır kategoriler; aynı ay için mükerrer aidat girişi engellenir, aylık gelir-gider özeti hazır gelir.",
+        },
+        {
+          t: "Gelişim",
+          d: "Sprint, sıçrama ve dayanıklılık gibi fiziksel testler; teknik, taktik, fiziksel ve mental başlıklarda dönemlik karne ve veliye mesaj.",
+        },
+        {
+          t: "Malzeme ve stok",
+          d: "Kritik seviye takibi, oyuncuya beden bilgisiyle zimmet ve iade, giriş-çıkış hareketleri.",
+        },
+        {
+          t: "Kulüp web sitesi",
+          d: "İsteğe bağlı ek hizmet: kulüp adı, renkleri, logosu, fikstür, sonuçlar ve kadro. Oyuncu adı yalnızca veli izin verdiyse görünür.",
+        },
+      ],
+    },
+    chips: {
+      title: "Kim neyi görür?",
+      intro:
+        "Yetkiler uygulamada değil, veritabanı seviyesinde kontrol edilir. Bir kişi aynı anda hem antrenör hem veli olabilir.",
+      items: [
+        "Yönetici: kulübün tamamı; para, maaş ve değişiklik kayıtları yalnızca onda",
+        "Antrenör: yalnızca atandığı takımların oyuncuları, idmanları ve maçları",
+        "Veli: yalnızca kendi çocuğunun yoklaması, maçları, test sonuçları, aidatı ve zimmeti",
+        "Karne veliye ancak antrenör paylaştığında açılır; idman puanları ve iç notlar veliye kapalıdır",
+      ],
+    },
+    demoTitle: "Her rol kendi ekranını görür.",
+    demoIntro: "Yönetici, antrenör ve veli arasında geçiş yapın; antrenör ekranında idman yoklamasını deneyin.",
+    forWho:
+      "Altyapısı, futbol okulu veya amatör takımları olan ve oyuncu, idman, aidat ve malzeme takibini hâlâ defter, tablo ve mesaj gruplarıyla yürüten futbol kulüpleri için. Web paneli bilgisayardan, mobil uygulama sahadan kullanım için tasarlandı.",
+    setup: {
+      title: "Planlar ve kurulum",
+      text: "Kulübünüzün takım, oyuncu ve personel sayısına göre abonelik planı seçilir; yeni kulüp deneme süresiyle başlar. Takım ve oyuncu listenizi ilk kurulumda birlikte aktarabiliriz.",
+    },
+    faqs: [
+      {
+        q: "Veli, diğer oyuncuların bilgilerini görebilir mi?",
+        a: "Hayır. Veli yalnızca kendi çocuğunun yoklamasını, maçlarını, istatistiklerini, test sonuçlarını, aidat durumunu ve zimmetini görür. Maaşlar, idman puanları, karne iç notları ve rakip analizi veliye hiç açılmaz.",
+      },
+      {
+        q: "Verilerimiz başka kulüplerle karışabilir mi?",
+        a: "Hayır. Her kayıt kulübün kimliğiyle birlikte tutulur ve satır düzeyinde güvenlik tüm tablolarda açıktır; bir kulübün verisine başka kulüp veritabanı seviyesinde erişemez.",
+      },
+      {
+        q: "Aboneliği bırakırsak verilerimiz silinir mi?",
+        a: "Hayır. Abonelik sona erdiğinde kulüp salt okunur hâle gelir; veriler silinmez, yalnızca yeni kayıt girilemez.",
+      },
+      {
+        q: "Oyuncu fotoğrafları herkese açık mı?",
+        a: "Hayır. Fotoğraflar özel bir depoda tutulur; personel ve yalnızca kendi çocuğunun fotoğrafı için veli erişebilir.",
+      },
+      {
+        q: "Yönetici hesabı nasıl korunuyor?",
+        a: "Yöneticiler için iki adımlı doğrulama zorunludur; antrenörler için kulüp isterse açılır. Oyuncu, para, üyelik ve stok gibi önemli kayıtlardaki her değişiklik silinemeyen bir denetim kaydında tutulur.",
+      },
+    ],
+    closing: "Kulübünüzün takım ve oyuncu yapısını paylaşın; Kulüp Takip kullanıma açıldığında sizi ilk haberdar edelim.",
+    formExample: "Altyapıda 4 takım ve yaklaşık 120 oyuncumuz var; yoklama ve aidatı şu an tabloda tutuyoruz.",
+    related: ["depo-takibi", "web-sitesi-paketi", "musteri-asistani"],
+  },
 ];
 
 /** Menü ve alt bilgideki sıra (katalog sırasından farklı). */
@@ -728,11 +841,12 @@ export const MENU_ORDER = [
   "musteri-asistani",
   "musteri-bulma",
   "google-haritalar-karnesi",
+  "kulup-takip",
 ];
 
 export const getProduct = (slug: string): Product | undefined => PRODUCTS.find((p) => p.slug === slug);
 export const menuProducts = (): Product[] => MENU_ORDER.map((s) => getProduct(s)).filter((p): p is Product => !!p);
-export const HOME_PRODUCTS = ["urun-gorsel-studyosu", "meta-reklam-paneli", "depo-takibi"];
+export const HOME_PRODUCTS = ["urun-gorsel-studyosu", "kulup-takip", "meta-reklam-paneli", "depo-takibi"];
 
 /** /urunler ihtiyaca göre gezinme. */
 export const NEEDS: { label: string; slugs: string[] }[] = [
@@ -741,6 +855,7 @@ export const NEEDS: { label: string; slugs: string[] }[] = [
   { label: "Stoklarımı kontrol altına almak istiyorum", slugs: ["depo-takibi", "belge-okuma"] },
   { label: "Dijitalde güçlü görünmek istiyorum", slugs: ["web-sitesi-paketi", "google-haritalar-karnesi", "urun-gorsel-studyosu"] },
   { label: "Tekrarlanan işleri otomatikleştirmek istiyorum", slugs: ["belge-okuma", "gorusme-ozeti", "musteri-asistani"] },
+  { label: "Spor kulübümü tek yerden yönetmek istiyorum", slugs: ["kulup-takip"] },
 ];
 
 /** Bilgi talebi formundaki "İlgilendiğiniz Ürün" alanı için ek seçenekler. */

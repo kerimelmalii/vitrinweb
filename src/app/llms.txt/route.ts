@@ -21,7 +21,7 @@ function build(): string {
     "## Sayfalar",
     "",
     `- [Ana Sayfa](${SITE_URL}/): Ürünler, çalışma şekli ve sık sorulan sorular.`,
-    `- [Ürünler](${SITE_URL}/urunler): Dokuz dijital ürünün kataloğu.`,
+    `- [Ürünler](${SITE_URL}/urunler): Dijital ürün kataloğu.`,
     `- [İşletmeye Özel Çözümler](${SITE_URL}/isletmeye-ozel): Yönetim paneli, süreç otomasyonu ve sistem entegrasyonu.`,
     `- [Tamamlayıcı Hizmetler](${SITE_URL}/hizmetler): Google profil, WhatsApp karşılama, online randevu ve diğer hizmetler.`,
     `- [Demolar](${SITE_URL}/demolar): Örnek veriyle çalışan etkileşimli demolar.`,

@@ -981,6 +981,120 @@ export function OzelArt({ uid = "ozel" }: { uid?: string }) {
   );
 }
 
+/* ---------------- Kulüp Takip ---------------- */
+export function KulupArt() {
+  const mods = ["Oyuncular", "İdman", "Maçlar", "Gelir-Gider", "Gelişim", "Malzeme"];
+  const roll: [string, string, "ok" | "warn" | "bad"][] = [
+    ["0007", "Emre K.", "ok"],
+    ["0012", "Baran T.", "ok"],
+    ["0015", "Deniz A.", "warn"],
+    ["0021", "Kerem S.", "ok"],
+    ["0024", "Arda Y.", "bad"],
+  ];
+  const lbl = { ok: "Geldi", warn: "İzinli", bad: "Gelmedi" } as const;
+  return (
+    <Svg label="Örnek kulüp yönetim paneli: sıradaki maç, idman yoklaması ve aylık aidat özeti">
+      <WindowBar title="Kulüp Paneli" right="Yıldıztepe SK · Örnek veri" />
+      <rect x="16" y="54" width="112" height="330" rx="12" fill={C.s2} />
+      <circle cx="36" cy="76" r="10" fill={C.ink} />
+      <path d="M36 70l3 2.2-1.1 3.6h-3.8l-1.1-3.6z" fill="#fff" />
+      <text x="52" y="80" fontSize="10.5" fontWeight="800" fill={C.ink}>
+        Yıldıztepe
+      </text>
+      {mods.map((m, i) => (
+        <g key={m}>
+          <rect x="24" y={100 + i * 34} width="96" height="26" rx="8" fill={i === 1 ? C.ink : "transparent"} />
+          <text x="36" y={117 + i * 34} fontSize="10" fontWeight={i === 1 ? 700 : 500} fill={i === 1 ? "#fff" : C.ink2}>
+            {m}
+          </text>
+        </g>
+      ))}
+      <rect x="140.5" y="54.5" width="248" height="96" rx="12" fill="#fff" stroke={C.line} />
+      <text x="154" y="74" fontSize="9" fontWeight="800" fill={C.mute} letterSpacing="0.5">
+        SIRADAKİ MAÇ · U17
+      </text>
+      <circle cx="176" cy="108" r="16" fill={C.ink} />
+      <text x="176" y="112" fontSize="9" fontWeight="800" fill="#fff" textAnchor="middle">
+        YSK
+      </text>
+      <text x="264" y="113" fontSize="15" fontWeight="800" fill={C.ink} textAnchor="middle">
+        – : –
+      </text>
+      <circle cx="352" cy="108" r="16" fill={C.s3} />
+      <text x="352" y="112" fontSize="9" fontWeight="800" fill={C.ink2} textAnchor="middle">
+        KGS
+      </text>
+      <text x="264" y="138" fontSize="9" fill={C.mute} textAnchor="middle">
+        Cumartesi 11.00 · Deplasman · Beyaz forma
+      </text>
+      <rect x="140.5" y="160.5" width="248" height="224" rx="12" fill="#fff" stroke={C.line} />
+      <text x="154" y="182" fontSize="11" fontWeight="800" fill={C.ink}>
+        İdman yoklaması
+      </text>
+      <text x="374" y="182" fontSize="9" fill={C.mute} textAnchor="end">
+        Salı · U17
+      </text>
+      {roll.map(([no, n, t], i) => {
+        const y = 194 + i * 36;
+        return (
+          <g key={no}>
+            <rect x="152" y={y} width="224" height="30" rx="8" fill={C.s2} />
+            <text x="164" y={y + 19} fontSize="9" fontWeight="700" fill={C.mute}>
+              {no}
+            </text>
+            <text x="196" y={y + 19} fontSize="10" fontWeight="700" fill={C.ink}>
+              {n}
+            </text>
+            <Pill x={368} y={y + 6} text={lbl[t]} tone={t} anchor="end" />
+          </g>
+        );
+      })}
+      <rect x="400.5" y="54.5" width="143" height="160" rx="12" fill="#fff" stroke={C.line} />
+      <text x="414" y="76" fontSize="11" fontWeight="800" fill={C.ink}>
+        Kasım aidatı
+      </text>
+      <circle cx="472" cy="140" r="38" fill="none" stroke={C.s3} strokeWidth="10" />
+      <circle
+        cx="472"
+        cy="140"
+        r="38"
+        fill="none"
+        stroke={C.ink}
+        strokeWidth="10"
+        strokeDasharray={`${2 * Math.PI * 38 * (42 / 48)} 400`}
+        transform="rotate(-90 472 140)"
+        strokeLinecap="round"
+      />
+      <text x="472" y="143" fontSize="15" fontWeight="800" fill={C.ink} textAnchor="middle">
+        42/48
+      </text>
+      <text x="472" y="157" fontSize="8.5" fill={C.mute} textAnchor="middle">
+        ödendi
+      </text>
+      <rect x="400.5" y="224.5" width="143" height="160" rx="12" fill="#fff" stroke={C.line} />
+      <text x="414" y="246" fontSize="11" fontWeight="800" fill={C.ink}>
+        Bu ay
+      </text>
+      {(
+        [
+          ["Gelir", "86.400 TL", C.ok],
+          ["Gider", "61.250 TL", C.bad],
+          ["Net", "25.150 TL", C.ink],
+        ] as const
+      ).map(([k, v, col], i) => (
+        <g key={k}>
+          <text x="414" y={276 + i * 36} fontSize="9" fill={C.mute}>
+            {k}
+          </text>
+          <text x="414" y={292 + i * 36} fontSize="13" fontWeight="800" fill={col}>
+            {v}
+          </text>
+        </g>
+      ))}
+    </Svg>
+  );
+}
+
 export function ProductArt({ kind, uid = "x", pos = 0.5, scene = "studyo" }: { kind: ArtKind; uid?: string; pos?: number; scene?: Scene }) {
   switch (kind) {
     case "gorsel":
@@ -1001,6 +1115,8 @@ export function ProductArt({ kind, uid = "x", pos = 0.5, scene = "studyo" }: { k
       return <AsistanArt />;
     case "musteri":
       return <MusteriArt />;
+    case "kulup":
+      return <KulupArt />;
     default:
       return <OzelArt uid={uid} />;
   }

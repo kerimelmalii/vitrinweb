@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HeroAdsCard, HeroStockCard, HeroStudioCard, WebArt } from "@/components/art";
-import { ProductCard } from "@/components/catalog";
+import { ProductMarquee } from "@/components/catalog";
 import { StudioDemo } from "@/components/demos";
 import { Icon } from "@/components/icons";
 import { LeadForm } from "@/components/lead-form";
@@ -9,7 +9,7 @@ import { FaqList, SecHead, Steps, WhatsAppButton } from "@/components/ui";
 import { HOME_FAQS, HOME_GUIDES, HOME_PRIORITIES, HOME_PROCESS, PRINCIPLES } from "@/data/agency";
 import { BLOG, coverSrc, type BlogPost } from "@/data/blog";
 import { CASES } from "@/data/cases";
-import { HOME_PRODUCTS, getProduct, type Product } from "@/data/products";
+import { HOME_PRODUCTS, PRODUCTS, getProduct, type Product } from "@/data/products";
 
 function Hero() {
   return (
@@ -91,23 +91,23 @@ function Priorities() {
 }
 
 function Products() {
-  const ps = HOME_PRODUCTS.map((s) => getProduct(s)).filter((p): p is Product => !!p);
+  const first = HOME_PRODUCTS.map((s) => getProduct(s)).filter((p): p is Product => !!p);
+  const rest = PRODUCTS.filter((p) => !HOME_PRODUCTS.includes(p.slug));
+  const items = [...first, ...rest].map((p) => ({ p, text: p.homeText }));
   return (
     <section className="sec sec-tint" id="urunler" aria-labelledby="urunler-h">
       <div className="container-x">
         <SecHead
           id="urunler-h"
           title="Ürünler"
-          sub="Satışa hazır ürün görselleri üretin, reklam bütçenizin getirisini net biçimde okuyun ve depo hareketlerinizi anlık yönetin."
+          sub="Satışa hazır ürün görselleri üretin, reklam bütçenizin getirisini net biçimde okuyun, depo hareketlerinizi ve kulübünüzün günlük işlerini anlık yönetin."
         />
-        <div className="pgrid">
-          {ps.map((p) => (
-            <ProductCard key={p.slug} p={p} text={p.homeText} />
-          ))}
-        </div>
+      </div>
+      <ProductMarquee items={items} />
+      <div className="container-x">
         <div className="more-row">
           <p>Görüşme Özeti, Belge Okuma, Müşteri Asistanı, Müşteri Bulma ve diğer dijital çözümlerimizi katalogda inceleyin.</p>
-          <Link className="btn btn-line" href="/urunler">
+          <Link className="btn btn-primary" href="/urunler">
             Tüm Ürünleri İnceleyin
           </Link>
         </div>

@@ -88,7 +88,7 @@ function ProductsMenu({ onNavigate, mobile = false }: { onNavigate: () => void; 
       <li className="pmenu-all">
         <Link href="/urunler" onClick={onNavigate}>
           <b>Tüm Ürünler</b>
-          {!mobile && <small>Dokuz ürünü karşılaştırın</small>}
+          {!mobile && <small>Tüm ürünleri karşılaştırın</small>}
         </Link>
       </li>
       {ps.map((p) => (

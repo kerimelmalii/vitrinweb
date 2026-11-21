@@ -6,7 +6,7 @@ import { openGraph } from "@/lib/open-graph";
 
 const TITLE = "İşgale Hayır!";
 const DESCRIPTION =
-  "Vitrinweb olarak Filistin ve Doğu Türkistan halklarının özgürlük ve onurlu yaşam hakkının yanındayız; insani yardım için çalışan dernek ve kuruluşlara ücretsiz web sitesi ve dijital destek sunuyoruz.";
+  "Filistin ve Doğu Türkistan halklarının özgürlük ve onurlu yaşam hakkının yanındayız; insani yardım kuruluşlarına ücretsiz web sitesi ve dijital destek sunuyoruz.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/brosur" },
+  /* Online satış döneminin paket broşürü; güncel ajans sayfalarıyla arama sonuçlarında yarışmasın. */
+  robots: { index: false, follow: true },
   openGraph: openGraph("/brosur", { title: TITLE, description: DESCRIPTION }),
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };

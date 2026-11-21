@@ -2,7 +2,7 @@
 updated: 2026-10-28
 title: Sayfa hızı neden önemli? Yavaş bir sitenin işletmenize maliyeti
 seoTitle: Sayfa Hızı Neden Önemli? Core Web Vitals Rehberi
-description: Yavaş açılan bir site müşteri kaybettirir mi? Core Web Vitals ölçütlerini, hızın satışa etkisini gösteren araştırmaları ve sitenizi hızlandırmanın yollarını anlatıyoruz.
+description: Yavaş site müşteri kaybettirir mi? Core Web Vitals ölçütleri, hızın satışa etkisini gösteren araştırmalar ve sitenizi hızlandırmanın yolları.
 date: 2026-09-26
 category: SEO ve Teknik
 coverAlt: Yüklenen bir web sitesi penceresinin önünde yüksek hızı gösteren hız göstergesi

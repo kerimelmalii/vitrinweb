@@ -1,6 +1,6 @@
 ---
 title: Web sitesi tasarımında sık yapılan 8 hata
-description: Bir web sitesini kötü değil, etkisiz yapan çoğu zaman büyük bir eksiklik değil, küçük ve tekrar eden hatalardır. En sık karşılaşılan sekiz hatayı ve çözümlerini derledik.
+description: Bir web sitesini etkisiz yapan çoğu zaman küçük ve tekrar eden hatalardır. En sık karşılaşılan sekiz tasarım hatası ve çözümleri.
 date: 2026-09-26
 category: Web Sitesi Rehberi
 coverAlt: Öğeleri kaymış bir web sitesi penceresi ve yanında uyarı işareti

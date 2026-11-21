@@ -2,7 +2,7 @@
 updated: 2026-10-30
 title: Web sitesi neden gerekli? Sitesi olmayan bir işletme neler kaybeder?
 seoTitle: Web Sitesi Neden Gerekli? İşletmeler İçin 8 Neden
-description: Web sitesi neden gerekli, Instagram ve Google İşletme Profili yetmez mi? Sitesi olmayan işletmenin kaybettiklerini ve eski bir sitenin ne zaman yenilenmesi gerektiğini anlatıyoruz.
+description: Web sitesi neden gerekli, Instagram ve Google İşletme Profili yetmez mi? Sitesi olmayan işletmenin kayıpları ve eski sitenin ne zaman yenilenmesi gerektiği.
 date: 2026-10-02
 category: Web Sitesi Rehberi
 coverAlt: Bir dükkân çizimi ve yanında web sitesinin yerini gösteren boş, kesik çizgili bir pencere

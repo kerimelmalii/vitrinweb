@@ -112,6 +112,9 @@ tüm geliştirme geçmişi ve güvenlik kararları: `IYZICO-ENTEGRASYON.md`.
 - Yerel sayfa: `/bursa` (merkez Nilüfer). Başka şehir sayfası açma: gerçek varlık olmadan doorway sayılır.
 - Yazı tipleri `public/fonts/` altında, `layout.tsx` içinde `preload` edilir (mobil LCP); `vercel.json`'da 1 yıl önbellek.
   Dosya değişirse adını değiştir. Ana sayfa hero metninde giriş animasyonu yok (LCP adayı görünür başlasın).
+- Özel teklif sayfaları: `/teklif/<kod>` (`src/data/teklifler.ts`). Menüde, site haritasında, llms'te yok; noindex meta +
+  `vercel.json`'da X-Robots-Tag/no-store; `robots.ts`'e EKLEME (noindex görülebilsin). Geçerlilik günü TR saatiyle bitince
+  sayfa kendiliğinden 404 olur; sonra kaydı dosyadan sil. Ödeme yalnızca müşteriye verilen iyzico bağlantısıyla (iyzi.link).
 - `/brosur` kaldırıldı (online satış dönemi), `/urunler/web-sitesi-paketi`'ne 308. Blog takvimi: projedeki
   `claude/blog-plani-ajans-donemi.md`; eski satış dönemi ifadeleri SEO betiğinde K20 ile taranır.
 

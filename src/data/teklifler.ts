@@ -17,6 +17,8 @@ export interface Teklif {
   gecerlilik: string;
   yaklasim: string;
   toplam: string;
+  /** Toplamın yanında küçük yazılır: "KDV dahil" ya da "+ KDV". */
+  kdv: string;
   kapsamGiris: string;
   kapsam: { t: string; d: string }[];
   incelenenSite?: { ad: string; url: string };
@@ -48,7 +50,8 @@ export const TEKLIFLER: Teklif[] = [
     gecerlilik: "2026-11-30",
     yaklasim:
       "IES'in 1995'ten bu yana edindiği deneyimi, İstanbul ve Mersin ofislerini ve okul iş birliklerini yeni tasarımda görünür kılacağız. Öğrenciler ve veliler ülke ve program türüne göre seçenekleri inceleyebilecek, ilgilendikleri okuldan veya programdan doğrudan danışmanlık talebi iletebilecek. IES ekibi de okul kayıtlarını ve güncel içerikleri yönetim panelinden düzenleyebilecek.",
-    toplam: "95.000 TL + KDV",
+    toplam: "95.000 TL",
+    kdv: "KDV dahil",
     kapsamGiris:
       "Mevcut okul kataloğu, eğitim programları, kampanyalar ve danışmanlık sayfaları yenilenecek. Okul arama ve danışmana ulaşma adımları mobilde ve masaüstünde kolayca kullanılabilecek.",
     kapsam: [
@@ -90,7 +93,7 @@ export const TEKLIFLER: Teklif[] = [
       { ne: "Tasarım onayında", oran: "%30", tutar: "28.500 TL" },
       { ne: "Yayın onayında", oran: "%20", tutar: "19.000 TL" },
     ],
-    odemeNotu: "KDV, her ödeme dilimine ayrıca eklenir.",
+    odemeNotu: "Tüm tutarlar %20 KDV dahildir.",
     haricNotu: "Alan adı, barındırma (hosting), kurumsal e-posta, ücretli eklenti ve lisans gibi üçüncü taraf giderleri teklif bedeline dahil değildir.",
     kosullar: [
       {
@@ -122,7 +125,7 @@ export const TEKLIFLER: Teklif[] = [
     odeme: {
       url: "https://iyzi.link/AK25_Q",
       etiket: "Proje Başlangıç Ödemesini Yapın",
-      aciklama: "Proje başlangıcındaki ilk ödeme dilimi (%50 / 47.500 TL + KDV)",
+      aciklama: "Proje başlangıcındaki ilk ödeme dilimi (%50 / 47.500 TL, KDV dahil)",
     },
   },
 ];

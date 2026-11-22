@@ -1631,3 +1631,41 @@ textarea.input{min-height:120px;resize:vertical}
 .dm-inf-box li{display:flex;gap:8px;align-items:flex-start}
 .dm-inf-box li .ic{color:var(--ok);flex:none;margin-top:2px}
 .dm-inf-box .fine{margin:0}
+/* Özel teklif sayfası (/teklif/[kod]) */
+.tk-eyebrow{margin:0 0 10px;font-size:.86rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.tk-letter{margin-top:22px;max-width:72ch;border-left:3px solid var(--ink);padding:4px 0 4px 18px}
+.tk-letter p{margin:8px 0 0;color:var(--ink-2)}
+.tk-letter .tk-sign{color:var(--mute);font-size:.92rem}
+.tk-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:26px 0 0;max-width:820px}
+@media(min-width:760px){.tk-meta{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.tk-meta div{border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.tk-meta dt{font-size:.78rem;color:var(--mute)}
+.tk-meta dd{margin:4px 0 0;font-weight:700;font-size:.95rem}
+.tk-total{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;background:var(--ink);color:#fff;border-radius:24px;padding:22px 26px;max-width:820px}
+.tk-total span{font-size:.9rem;opacity:.8;flex-basis:100%}
+.tk-total b{font-size:clamp(1.8rem,5vw,2.6rem);letter-spacing:-.02em;margin-right:auto}
+.tk-pay{background:#fff;color:var(--ink);border:0;display:inline-flex;align-items:center;gap:8px}
+.tk-pay:hover{background:#ECECF0}
+.tk-plan{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px;max-width:920px}
+.tk-plan li{display:grid;gap:4px 18px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:14px 18px}
+@media(min-width:760px){.tk-plan li{grid-template-columns:120px 240px 1fr}}
+.tk-week{display:inline-block;justify-self:start;background:var(--surface-2);border-radius:999px;padding:.3rem .75rem;font-size:.84rem;font-weight:700}
+.tk-plan li span:last-child{color:var(--ink-2)}
+.tk-paybox{background:var(--ink);color:#fff;border-radius:28px;padding:clamp(22px,4vw,36px);display:flex;flex-direction:column;gap:20px}
+.tk-paybox .h-2{color:#fff;margin:0}
+.tk-paybox-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.tk-chip{background:#fff;color:var(--ink);border-radius:999px;padding:.5rem 1rem;font-size:1.05rem}
+.tk-installments{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+@media(min-width:760px){.tk-installments{grid-template-columns:repeat(3,1fr)}}
+.tk-installments li{border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.tk-installments span{font-size:.88rem;opacity:.8}
+.tk-installments b{font-size:1.3rem}
+.tk-note{margin:0;font-size:.88rem;opacity:.8}
+.tk-paycta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid rgba(255,255,255,.18);padding-top:20px}
+.tk-paycta div{max-width:60ch}
+.tk-paycta p{margin:6px 0 0;font-size:.92rem;opacity:.85}
+.tk-terms{display:grid;gap:12px;margin:24px 0 0}
+@media(min-width:760px){.tk-terms{grid-template-columns:1fr 1fr}}
+.tk-terms div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.tk-terms dt{font-weight:800}
+.tk-terms dd{margin:6px 0 0;color:var(--ink-2)}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
-import { GorselArt, type Scene } from "@/components/art";
+import { GorselArt, Persona, type Scene } from "@/components/art";
 import { Icon } from "@/components/icons";
 import { MockPhone, MockSite, BrowserFrame } from "@/components/mock-site";
 import { SAMPLE_SITES, type ArtKind } from "@/data/products";
@@ -1375,6 +1375,192 @@ export function KulupDemo() {
   );
 }
 
+/* ---------------- AI Influencer ---------------- */
+type InfTone = "samimi" | "uzman" | "eglenceli";
+type InfType = "urun" | "ipucu" | "kamera";
+type InfStatus = "taslak" | "onayda" | "duzeltme" | "planlandi";
+const INF_CAPTIONS: Record<InfType, Record<InfTone, string>> = {
+  urun: {
+    samimi:
+      "Yeni seri yayında! 🌿 Lavanta ve badem yağı içeren el kremi, Doğa Kozmetik'in kış koleksiyonunda. İçerik listesi ve kullanım önerileri profildeki bağlantıda.",
+    uzman:
+      "Kış koleksiyonunun yeni el kremi lavanta ve badem yağı içeriyor. İçerik listesinin tamamını ve kullanım önerilerini ürün sayfasında bulabilirsiniz.",
+    eglenceli: "Soğuk hava, kuru eller… tanıdık mı? 🧤 Kış koleksiyonuna lavantalı yeni bir el kremi katıldı. Ayrıntılar profildeki bağlantıda!",
+  },
+  ipucu: {
+    samimi:
+      "Küçük bir öneri: El kremini el yıkadıktan sonra, eller kuruyunca ince bir kat hâlinde sürmek pratik bir alışkanlık. Siz günün hangi saatinde sürüyorsunuz? 💬",
+    uzman: "Kullanım önerisi: Ürünü temiz ve kuru cilde, nohut tanesi kadar alarak uygulayın. Hassas ciltlerde önce küçük bir alanda deneyin.",
+    eglenceli: "Nohut tanesi kadar = tam kıvamı 😄 Fazlası ellerinizi değil, telefon ekranınızı nemlendirir. Kaydedin, unutmayın!",
+  },
+  kamera: {
+    samimi: "Bu gönderi nasıl hazırlandı? Önce ürünün gerçek fotoğrafı, sonra sahne taslağı, en son marka onayı. ✨ Sırada hangi ürün olsun?",
+    uzman:
+      "Nasıl hazırlıyoruz? Her içerik ürünün gerçek fotoğrafıyla başlar, sahne yapay zekâ ile kurulur ve yayından önce Doğa Kozmetik ekibinin onayından geçer.",
+    eglenceli: "Kamera arkası, sanal versiyon 🎬 Ürün fotoğrafı → sahne → marka onayı. Kahve molası yok ama onay molası var! Sırada hangi ürün?",
+  },
+};
+const INF_TAGS: Record<InfType, string> = {
+  urun: "#dogakozmetik #elkremi #kiskoleksiyonu",
+  ipucu: "#dogakozmetik #bakimrutini #ipucu",
+  kamera: "#dogakozmetik #kameraarkasi #yapayzeka",
+};
+const INF_CHECKS = [
+  "Yapay zekâ etiketi açık (kapatılamaz)",
+  "Ürün bilgisi markanın onaylı kaynağından",
+  "Kişisel deneyim ya da sağlık vaadi yok",
+  "Ton karakter kitabına uygun",
+];
+const INF_STEPS: { id: InfStatus; l: string }[] = [
+  { id: "taslak", l: "Taslak" },
+  { id: "onayda", l: "Marka onayında" },
+  { id: "planlandi", l: "Planlandı" },
+];
+
+function InfScene({ type }: { type: InfType }) {
+  return (
+    <svg viewBox="0 0 320 240" className="dm-inf-img" aria-hidden="true">
+      <rect width="320" height="240" fill={type === "ipucu" ? "#ECECF0" : "#F5F5F7"} />
+      {type === "kamera" ? (
+        <g>
+          <rect x="40" y="70" width="70" height="90" rx="10" fill="#fff" stroke="#B4B4BC" strokeDasharray="5 5" />
+          <path d="M120 115h22m-8-8 8 8-8 8" stroke="#8E8E96" strokeWidth="3" fill="none" />
+          <rect x="152" y="70" width="70" height="90" rx="10" fill="#fff" stroke="#B4B4BC" />
+          <path d="M232 115h22m-8-8 8 8-8 8" stroke="#8E8E96" strokeWidth="3" fill="none" />
+          <circle cx="282" cy="115" r="18" fill="#111114" />
+          <path d="M274 115l6 6 10-12" stroke="#fff" strokeWidth="3" fill="none" />
+          <rect x="66" y="96" width="18" height="44" rx="4" fill="#111114" />
+          <circle cx="187" cy="112" r="28" fill="#ECECF0" />
+          <rect x="178" y="96" width="18" height="44" rx="4" fill="#111114" />
+        </g>
+      ) : (
+        <g>
+          <Persona cx={118} cy={140} r={78} uid={`dm-inf-${type}`} />
+          <rect x="206" y={type === "urun" ? 96 : 120} width="44" height="96" rx="10" fill="#111114" />
+          <rect x="216" y={type === "urun" ? 78 : 102} width="24" height="22" rx="4" fill="#B4B4BC" />
+          <rect x="214" y={type === "urun" ? 132 : 156} width="28" height="16" rx="3" fill="#fff" />
+          {type === "ipucu" && <circle cx="272" cy="96" r="7" fill="#fff" stroke="#111114" strokeWidth="2" />}
+        </g>
+      )}
+    </svg>
+  );
+}
+
+export function InfluencerDemo() {
+  const [tone, setTone] = useState<InfTone>("samimi");
+  const [type, setType] = useState<InfType>("urun");
+  const [status, setStatus] = useState<InfStatus>("taslak");
+  const pick = <T,>(set: (v: T) => void) => (v: T) => {
+    set(v);
+    setStatus("taslak");
+  };
+  const stepIdx = status === "duzeltme" ? 0 : INF_STEPS.findIndex((x) => x.id === status);
+  return (
+    <div className="dm-inf">
+      <div className="dm-row dm-row-sb">
+        <Seg
+          label="Karakterin tonu"
+          value={tone}
+          onChange={pick(setTone)}
+          options={[
+            { v: "samimi", l: "Samimi" },
+            { v: "uzman", l: "Uzman" },
+            { v: "eglenceli", l: "Eğlenceli" },
+          ]}
+        />
+        <Seg
+          label="İçerik türü"
+          value={type}
+          onChange={pick(setType)}
+          options={[
+            { v: "urun", l: "Ürün tanıtımı" },
+            { v: "ipucu", l: "Kullanım ipucu" },
+            { v: "kamera", l: "Kamera arkası" },
+          ]}
+        />
+      </div>
+      <div className="dm-inf-grid">
+        <article className="dm-inf-post" aria-live="polite">
+          <header>
+            <svg viewBox="0 0 40 40" width="36" height="36" aria-hidden="true">
+              <Persona cx={20} cy={20} r={20} uid="dm-inf-av" />
+            </svg>
+            <div>
+              <b>lina.dogal</b>
+              <small>Yapay zekâ bilgisi</small>
+            </div>
+          </header>
+          <InfScene type={type} />
+          <p>
+            <b>lina.dogal</b> {INF_CAPTIONS[type][tone]}
+          </p>
+          <p className="dm-inf-tags">{INF_TAGS[type]}</p>
+        </article>
+        <div className="dm-inf-side">
+          <ol className="dm-inf-steps" aria-label="Onay durumu">
+            {INF_STEPS.map((x, i) => (
+              <li key={x.id} className={i < stepIdx ? "done" : i === stepIdx ? "on" : ""} aria-current={i === stepIdx ? "step" : undefined}>
+                {x.l}
+              </li>
+            ))}
+          </ol>
+          <div className="dm-inf-box">
+            <b>Yayın öncesi kontroller</b>
+            <ul>
+              {INF_CHECKS.map((c) => (
+                <li key={c}>
+                  <Icon n="check" size={15} sw={2.4} /> {c}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="dm-inf-box" aria-live="polite">
+            {status === "taslak" && (
+              <>
+                <p className="fine">Taslak hazır. Gönderi marka onayına gönderilmeden yayın takvimine girmez.</p>
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => setStatus("onayda")}>
+                  Onaya Gönderin
+                </button>
+              </>
+            )}
+            {status === "onayda" && (
+              <>
+                <p className="fine">Marka sorumlusu gönderiyi inceliyor.</p>
+                <div className="dm-row">
+                  <button type="button" className="btn btn-primary btn-sm" onClick={() => setStatus("planlandi")}>
+                    Onaylayın
+                  </button>
+                  <button type="button" className="btn btn-line btn-sm" onClick={() => setStatus("duzeltme")}>
+                    Düzeltme İsteyin
+                  </button>
+                </div>
+              </>
+            )}
+            {status === "duzeltme" && (
+              <>
+                <p className="fine">Marka notu: &quot;Ürün adı açıklamanın ilk cümlesinde geçsin.&quot; Taslak güncellenip yeniden onaya gönderilir.</p>
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => setStatus("onayda")}>
+                  Düzeltip Yeniden Gönderin
+                </button>
+              </>
+            )}
+            {status === "planlandi" && (
+              <>
+                <p className="fine">
+                  <b>Çarşamba 19.00</b> için planlandı. Gönderi Instagram&apos;ın yapay zekâ etiketiyle yayınlanacak.
+                </p>
+                <button type="button" className="btn btn-line btn-sm" onClick={() => setStatus("taslak")}>
+                  Yeni Taslak Hazırlayın
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const DEMOS: Partial<Record<ArtKind, () => React.ReactElement>> = {
   gorsel: () => <StudioDemo />,
   meta: MetaDemo,
@@ -1385,5 +1571,6 @@ const DEMOS: Partial<Record<ArtKind, () => React.ReactElement>> = {
   asistan: AsistanDemo,
   musteri: MusteriDemo,
   kulup: KulupDemo,
+  influencer: InfluencerDemo,
   web: WebDemo,
 };

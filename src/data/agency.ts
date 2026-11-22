@@ -64,7 +64,7 @@ export const PRINCIPLES = [
 ];
 
 export const WHAT_IS =
-  "Vitrinweb, işletmelere dijital çözümler sunan bir ajanstır. Kurumsal web siteleri tasarlar; ürün görseli üretimi, Meta reklam raporlama, barkodlu stok takibi, belge okuma, müşteri asistanı ve futbol kulübü yönetimi gibi işler için dijital ürünler geliştirir; kendi süreçlerine özel yapı isteyen işletmelere de yönetim paneli, otomasyon ve entegrasyon yazılımı yapar. Her çalışmada kapsam, teslimatlar ve takvim baştan yazılı olarak belirlenir.";
+  "Vitrinweb, işletmelere dijital çözümler sunan bir ajanstır. Kurumsal web siteleri tasarlar; ürün görseli üretimi, markaya özel AI influencer (sanal karakter) yönetimi, Meta reklam raporlama, barkodlu stok takibi, belge okuma, müşteri asistanı ve futbol kulübü yönetimi gibi işler için dijital ürünler geliştirir; kendi süreçlerine özel yapı isteyen işletmelere de yönetim paneli, otomasyon ve entegrasyon yazılımı yapar. Her çalışmada kapsam, teslimatlar ve takvim baştan yazılı olarak belirlenir.";
 
 export const HOME_FAQS = [
   {

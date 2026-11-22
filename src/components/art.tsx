@@ -1095,6 +1095,152 @@ export function KulupArt() {
   );
 }
 
+/* ---------------- AI Influencer ---------------- */
+export function Persona({ cx, cy, r, uid }: { cx: number; cy: number; r: number; uid: string }) {
+  const k = r / 26;
+  const X = (v: number) => (cx + v * k).toFixed(1);
+  const Y = (v: number) => (cy + v * k).toFixed(1);
+  return (
+    <g>
+      <clipPath id={`${uid}-pc`}>
+        <circle cx={cx} cy={cy} r={r} />
+      </clipPath>
+      <circle cx={cx} cy={cy} r={r} fill={C.s3} />
+      <g clipPath={`url(#${uid}-pc)`}>
+        <path d={`M${X(-14)} ${Y(14)}C${X(-16)} ${Y(-10)} ${X(-10)} ${Y(-20)} ${X(0)} ${Y(-20)}C${X(10)} ${Y(-20)} ${X(16)} ${Y(-10)} ${X(14)} ${Y(14)}Z`} fill={C.ink} />
+        <path d={`M${X(-20)} ${Y(32)}C${X(-20)} ${Y(18)} ${X(-11)} ${Y(12)} ${X(0)} ${Y(12)}C${X(11)} ${Y(12)} ${X(20)} ${Y(18)} ${X(20)} ${Y(32)}Z`} fill={C.ink2} />
+        <rect x={X(-3.5)} y={Y(3)} width={7 * k} height={10 * k} fill={C.bar} />
+        <ellipse cx={cx} cy={Y(-4)} rx={9 * k} ry={10.5 * k} fill="#fff" />
+        <path d={`M${X(-9.5)} ${Y(-7)}C${X(-8)} ${Y(-16)} ${X(4)} ${Y(-17)} ${X(10)} ${Y(-8)}C${X(4)} ${Y(-11.5)} ${X(-3)} ${Y(-11)} ${X(-9.5)} ${Y(-7)}Z`} fill={C.ink} />
+        <circle cx={X(-3.5)} cy={Y(-4)} r={1.3 * k} fill={C.ink} />
+        <circle cx={X(3.5)} cy={Y(-4)} r={1.3 * k} fill={C.ink} />
+        <path d={`M${X(-3)} ${Y(1.5)}Q${X(0)} ${Y(4)} ${X(3)} ${Y(1.5)}`} fill="none" stroke={C.ink2} strokeWidth={1.2 * k} strokeLinecap="round" />
+      </g>
+    </g>
+  );
+}
+
+export function InfluencerArt({ uid = "inf" }: { uid?: string }) {
+  const tiles = [0, 1, 2, 3, 4, 5];
+  const week: [string, string, string, "ok" | "warn" | "mute"][] = [
+    ["Pzt", "Reels", "Sabah rutini", "ok"],
+    ["Çar", "Gönderi", "Yeni seri tanıtımı", "ok"],
+    ["Cum", "Hikâye", "Kamera arkası", "warn"],
+    ["Paz", "Gönderi", "Kullanım ipucu", "mute"],
+  ];
+  const st = { ok: "Onaylandı", warn: "Onayda", mute: "Taslak" } as const;
+  return (
+    <Svg label="Yapay zekâ ile oluşturulmuş örnek bir marka karakterinin Instagram profili ve haftalık içerik takvimi">
+      <WindowBar title="AI Influencer" right="Kurgusal karakter · Örnek veri" />
+      <rect x="16.5" y="54.5" width="270" height="330" rx="14" fill="#fff" stroke={C.line} />
+      <Persona cx={56} cy={94} r={26} uid={uid} />
+      <text x="94" y="86" fontSize="12" fontWeight="800" fill={C.ink}>
+        lina.dogal
+      </text>
+      <text x="94" y="102" fontSize="9" fill={C.mute}>
+        Doğa Kozmetik&apos;in sanal karakteri
+      </text>
+      <Pill x={94} y={108} text="Yapay zekâ ile oluşturuldu" tone="mute" />
+      {(
+        [
+          ["48", "gönderi"],
+          ["2.140", "takipçi"],
+          ["3", "gönderi/hafta"],
+        ] as const
+      ).map(([v, l], i) => (
+        <g key={l}>
+          <text x={46 + i * 84} y="152" fontSize="13" fontWeight="800" fill={C.ink} textAnchor="middle">
+            {v}
+          </text>
+          <text x={46 + i * 84} y="165" fontSize="8.5" fill={C.mute} textAnchor="middle">
+            {l}
+          </text>
+        </g>
+      ))}
+      {tiles.map((t) => {
+        const x = 26 + (t % 3) * 85;
+        const y = 180 + Math.floor(t / 3) * 100;
+        const dark = t === 1 || t === 5;
+        return (
+          <g key={t}>
+            <rect x={x} y={y} width="80" height="94" rx="8" fill={dark ? C.ink : C.s2} />
+            {t === 0 && <Persona cx={x + 40} cy={y + 50} r={30} uid={`${uid}-t0`} />}
+            {t === 1 && (
+              <g>
+                <rect x={x + 30} y={y + 30} width="20" height="44" rx="5" fill="#fff" />
+                <rect x={x + 34} y={y + 20} width="12" height="12" rx="2" fill={C.soft} />
+                <rect x={x + 34} y={y + 46} width="12" height="8" rx="2" fill={C.ink} />
+              </g>
+            )}
+            {t === 2 && <path d={`M${x + 22} ${y + 70}c4-30 22-44 38-46-2 22-16 40-38 46z`} fill={C.bar} />}
+            {t === 3 && (
+              <g>
+                <Persona cx={x + 32} cy={y + 52} r={22} uid={`${uid}-t3`} />
+                <rect x={x + 52} y={y + 46} width="14" height="30" rx="4" fill={C.ink} />
+              </g>
+            )}
+            {t === 4 && (
+              <g>
+                <circle cx={x + 40} cy={y + 47} r="16" fill="#fff" />
+                <path d={`M${x + 35} ${y + 39}v16l13-8z`} fill={C.ink} />
+              </g>
+            )}
+            {t === 5 && <Persona cx={x + 40} cy={y + 52} r={26} uid={`${uid}-t5`} />}
+            {t === 4 && (
+              <text x={x + 8} y={y + 86} fontSize="8" fontWeight="700" fill={C.mute}>
+                Reels
+              </text>
+            )}
+          </g>
+        );
+      })}
+      <rect x="298.5" y="54.5" width="245" height="196" rx="14" fill="#fff" stroke={C.line} />
+      <text x="312" y="76" fontSize="11" fontWeight="800" fill={C.ink}>
+        Bu haftanın takvimi
+      </text>
+      {week.map(([d, type, title, tone], i) => {
+        const y = 88 + i * 39;
+        return (
+          <g key={d}>
+            <rect x="310" y={y} width="222" height="33" rx="8" fill={C.s2} />
+            <text x="322" y={y + 20} fontSize="9.5" fontWeight="800" fill={C.ink}>
+              {d}
+            </text>
+            <text x="350" y={y + 14} fontSize="8" fill={C.mute}>
+              {type}
+            </text>
+            <text x="350" y={y + 26} fontSize="9.5" fontWeight="700" fill={C.ink}>
+              {title}
+            </text>
+            <Pill x={524} y={y + 8} text={st[tone]} tone={tone} anchor="end" />
+          </g>
+        );
+      })}
+      <rect x="298.5" y="260.5" width="245" height="124" rx="14" fill="#fff" stroke={C.line} />
+      <text x="312" y="282" fontSize="11" fontWeight="800" fill={C.ink}>
+        Karakter kitabı
+      </text>
+      {(
+        [
+          ["Ton", "Samimi, bilgili"],
+          ["Konular", "Doğal bakım, rutinler"],
+          ["Kaçınır", "Sağlık vaadi, kişisel deneyim"],
+          ["Etiket", "Yapay zekâ bilgisi açık"],
+        ] as const
+      ).map(([k, v], i) => (
+        <g key={k}>
+          <text x="312" y={304 + i * 20} fontSize="9" fill={C.mute}>
+            {k}
+          </text>
+          <text x="372" y={304 + i * 20} fontSize="9.5" fontWeight="700" fill={C.ink}>
+            {v}
+          </text>
+        </g>
+      ))}
+    </Svg>
+  );
+}
+
 export function ProductArt({ kind, uid = "x", pos = 0.5, scene = "studyo" }: { kind: ArtKind; uid?: string; pos?: number; scene?: Scene }) {
   switch (kind) {
     case "gorsel":
@@ -1117,6 +1263,8 @@ export function ProductArt({ kind, uid = "x", pos = 0.5, scene = "studyo" }: { k
       return <MusteriArt />;
     case "kulup":
       return <KulupArt />;
+    case "influencer":
+      return <InfluencerArt uid={uid} />;
     default:
       return <OzelArt uid={uid} />;
   }

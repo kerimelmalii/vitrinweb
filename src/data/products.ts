@@ -7,7 +7,7 @@ import type { MockData } from "@/lib/types";
 
 export type ProductStatus = "hazir" | "pilot" | "gelistiriliyor";
 export type ProductCategory = "gorsel-web" | "reklam-musteri" | "stok-operasyon" | "belge-gorusme";
-export type ArtKind = "gorsel" | "meta" | "depo" | "karne" | "web" | "gorusme" | "belge" | "asistan" | "musteri" | "kulup" | "ozel";
+export type ArtKind = "gorsel" | "meta" | "depo" | "karne" | "web" | "gorusme" | "belge" | "asistan" | "musteri" | "kulup" | "influencer" | "ozel";
 
 export const STATUS: Record<ProductStatus, { label: string; desc: string; button: string }> = {
   hazir: {
@@ -163,7 +163,124 @@ export const PRODUCTS: Product[] = [
     closing:
       "İlk üründen başlayarak kalite farkını birlikte görelim. Kullanacağınız kanalları ve mevcut fotoğrafınızı paylaşın, görsel yönü planlayalım.",
     formExample: "Mağazamızda listeleyeceğimiz 12 ürünün telefonla çekilmiş fotoğrafları hazır.",
-    related: ["web-sitesi-paketi", "meta-reklam-paneli", "depo-takibi"],
+    related: ["ai-influencer", "web-sitesi-paketi", "meta-reklam-paneli"],
+  },
+  {
+    slug: "ai-influencer",
+    name: "AI Influencer",
+    icon: "instagram",
+    art: "influencer",
+    category: "reklam-musteri",
+    status: "pilot",
+    seoTitle: "Markanıza Özel AI Influencer ve Instagram Hesabı | Vitrinweb",
+    description:
+      "Markanız için yapay zekâ ile tasarlanan, kendi Instagram hesabı olan bir sanal karakter oluşturun; içerik takvimi, gönderiler ve aylık rapor dahil.",
+    listText:
+      "Markanıza özel, kendi Instagram hesabı olan ve yapay zekâ ile oluşturulduğu açıkça belirtilen bir sanal karakterle düzenli içerik yayınlayın.",
+    homeText: "Markanız için yapay zekâ ile tasarlanan, kendi Instagram hesabı olan bir sanal karakterle her hafta düzenli içerik yayınlayın.",
+    linkLabel: "AI Influencer'ı İnceleyin",
+    title: "Markanızın kendi sanal yüzü, kendi Instagram hesabıyla.",
+    lead: "Markanızın değerlerine göre bir yapay zekâ karakteri tasarlıyor; hesabını açıyor, içerik takvimini hazırlıyor ve onayınızla her hafta düzenli paylaşım yapıyoruz. Karakterin yapay zekâ ile oluşturulduğu her zaman açıkça belirtilir.",
+    secondary: "Demoyu Deneyin",
+    caption: "Örnek karakter profili · Örnek veri",
+    alt: "Yapay zekâ ile oluşturulmuş örnek bir marka karakterinin Instagram profili, gönderi ızgarası ve haftalık içerik takvimi.",
+    stepsTitle: "AI Influencer nasıl hayata geçer?",
+    steps: [
+      {
+        t: "Karakteri birlikte tasarlayın.",
+        d: "Hedef kitlenizden, marka tonunuzdan ve değerlerinizden yola çıkarak karakterin adını, kişiliğini, konuşma dilini, görsel kimliğini ve hiç girmeyeceği konuları içeren bir karakter kitabı hazırlarız.",
+      },
+      {
+        t: "Görünümü ve hesabı onaylayın.",
+        d: "Karakterin farklı açı ve ortamlarda tutarlı görünen görsel setini onayınıza sunarız. Instagram hesabı işletmeniz adına açılır; biz yalnızca yetkilendirilmiş iş ortağı olarak erişiriz.",
+      },
+      {
+        t: "Takvime göre yayına başlayın.",
+        d: "Aylık takvime göre gönderi, Reels ve hikâyeler hazırlanır; her içerik yayından önce onayınıza gelir. Ay sonunda erişim, etkileşim ve profil ziyaretlerini içeren raporu paylaşırız.",
+      },
+    ],
+    features: {
+      title: "AI Influencer çalışmasında neler var?",
+      items: [
+        {
+          t: "Karakter kitabı",
+          d: "Ad, yaş aralığı, kişilik, ses tonu, ilgi alanları, marka sınırları, yasaklı konular ve örnek cümlelerden oluşan, tüm içeriklerin dayandığı yazılı rehber.",
+        },
+        {
+          t: "Tutarlı görsel kimlik",
+          d: "Yüz hatları, saç, kıyafet tarzı ve renk paleti sabit kalır; karakter her gönderide aynı kişi olarak tanınır. Görünüm gerçek bir kişiye benzetilmez.",
+        },
+        {
+          t: "Instagram hesabı ve profil",
+          d: "Kullanıcı adı, biyografi, profil fotoğrafı, öne çıkan hikâye kapakları ve bağlantı alanı. Biyografide karakterin markanın yapay zekâ ile oluşturulmuş karakteri olduğu yazılır.",
+        },
+        {
+          t: "İçerik üretimi",
+          d: "Gönderi görselleri, kısa Reels videoları, hikâyeler ve açıklama metinleri. Ürünleriniz, rengi, logosu ve etiketi korunarak karakterin dünyasına yerleştirilir.",
+        },
+        {
+          t: "Onaylı yayın takvimi",
+          d: "Aylık takvim, içerik türleri ve paylaşım saatleri önceden planlanır; hiçbir içerik onayınız olmadan yayınlanmaz.",
+        },
+        {
+          t: "Yorum ve mesaj akışı",
+          d: "Yanıtların kimde olacağı kurulumda belirlenir; sık sorulara onaylı yanıt kalıpları hazırlanır. Sipariş, şikâyet, fiyat ve özel talepler her zaman ekibinize aktarılır.",
+        },
+        {
+          t: "Aylık rapor",
+          d: "Erişim, etkileşim, kaydetme, profil ziyareti ve bağlantı tıklamaları; hangi içerik türünün işe yaradığına dair önerilerle birlikte.",
+        },
+      ],
+    },
+    chips: {
+      title: "Şeffaflık ve sınırlar",
+      intro: "Sanal bir karakterin güven kazanması, gerçek bir insan gibi davranmamasına bağlıdır. Her hesapta şu kurallar geçerlidir:",
+      items: [
+        "Biyografide ve gerektiğinde gönderilerde karakterin yapay zekâ ile oluşturulduğu açıkça yazılır; Instagram'ın yapay zekâ etiketi kullanılır",
+        "Karakter, ürünü gerçekten kullanmış bir müşteri gibi deneyim ya da yorum anlatmaz; ürün bilgisi markanın onayladığı kaynaktan gelir",
+        "Gerçek bir kişinin yüzü, sesi veya kimliği taklit edilmez; ünlülere benzeyen görünüm kullanılmaz",
+        "Takipçi, beğeni veya yorum satın alınmaz; büyüme içerik ve isteğe bağlı reklamla sağlanır",
+        "Başka markalarla iş birliği içeriklerinde reklam olduğu açıkça belirtilir",
+      ],
+    },
+    demoTitle: "Bir gönderiyi baştan sona hazırlayın.",
+    demoIntro: "Karakterin tonunu ve içerik türünü seçin, taslak gönderiyi görün ve onay akışını deneyin.",
+    forWho:
+      "Ürünlerini sosyal medyada düzenli anlatmak isteyen ama her hafta çekim yapacak ekibi, mankeni ya da bütçesi olmayan markalar, e-ticaret işletmeleri ve yeni girişimler için. Yüzü olan ve hep aynı tonda konuşan bir marka karakteri; kozmetik, moda, yiyecek-içecek, ev-yaşam ve teknoloji ürünleri gibi görselle anlatılan kategorilere uyum sağlar.",
+    setup: {
+      title: "Kurulum ve aylık içerik planı",
+      text: "Kurulum; karakter kitabını, görsel kimliği ve hesap hazırlığını kapsar. Sonrasında aylık plan, gönderi, Reels ve hikâye adedine göre belirlenir; ücret, teslim takvimi ve karakterin kullanım hakları yazılı teklifte yer alır. İçerikleri öne çıkarmak isterseniz Meta reklam kurulumunu ve raporlamasını da ekleyebiliriz.",
+    },
+    faqs: [
+      {
+        q: "AI influencer kullanmak yasal mı?",
+        a: "Türkiye'de sosyal medyadaki ticari iletişimin kuralları Reklam Kurulu'nun sosyal medya etkileyicileri kılavuzunda yer alır; kılavuz, ürünler hakkında iletişimde sahte ya da var olmayan kimlikler kullanılmasını yasaklar. Bu yüzden karakteri gerçek bir kişi gibi sunmuyor, markanın yapay zekâ ile oluşturulmuş karakteri olduğunu açıkça belirtiyoruz. Sektörünüze özel kurallar için hukuk danışmanınızın görüşünü almanızı öneririz.",
+      },
+      {
+        q: "Instagram hesabı kimin olur?",
+        a: "Hesap işletmeniz adına açılır ve size aittir. Biz Meta Business Suite üzerinden iş ortağı olarak erişiriz; çalışma sona erdiğinde erişimimiz kaldırılır. Karakter tasarımının kullanım hakları teklif belgesinde yazılı olarak belirlenir.",
+      },
+      {
+        q: "Karakter her gönderide aynı mı görünür?",
+        a: "Evet. Onaylanan görsel kimlik tüm üretimlerde referans alınır ve her içerik yayından önce tutarlılık açısından kontrol edilir. Belirgin farklılık gösteren bir içerik yayınlanmaz, yeniden üretilir.",
+      },
+      {
+        q: "Ürünlerim içeriklerde nasıl yer alır?",
+        a: "Ürünlerinizin net fotoğraflarından yola çıkarak ürünü karakterin dünyasına yerleştiririz. Rengi, logosu, etiket yazısı ve biçimi kaynak fotoğrafa sadık kalır; ürün detayları onay aşamasında ayrıca kontrol edilir.",
+      },
+      {
+        q: "Takipçi sayısı garanti ediyor musunuz?",
+        a: "Hayır. Takipçi ve etkileşim; içeriğin kalitesine, paylaşım düzenine, sektöre ve isteğe bağlı reklam bütçesine göre değişir. Takipçi satın almıyoruz; aylık raporda gerçek verileri paylaşıyor ve içerik planını bu verilere göre güncelliyoruz.",
+      },
+      {
+        q: "Yorumlara ve mesajlara kim yanıt veriyor?",
+        a: "Kurulumda birlikte belirleriz: Yanıtları ekibiniz verebilir ya da onaylı yanıt kalıplarıyla biz destek olabiliriz. Sipariş, şikâyet, fiyat ve özel talepler her zaman ekibinize aktarılır.",
+      },
+    ],
+    closing:
+      "Markanızın hedef kitlesini ve öne çıkarmak istediğiniz ürünleri paylaşın; karakterin ilk taslağını ve örnek bir haftalık içerik planını birlikte değerlendirelim.",
+    formExample: "Doğal kozmetik markamız için haftada 3 paylaşım yapacak, samimi tonda bir sanal karakter düşünüyoruz.",
+    related: ["urun-gorsel-studyosu", "meta-reklam-paneli", "musteri-asistani"],
   },
   {
     slug: "meta-reklam-paneli",
@@ -834,6 +951,7 @@ export const PRODUCTS: Product[] = [
 export const MENU_ORDER = [
   "urun-gorsel-studyosu",
   "meta-reklam-paneli",
+  "ai-influencer",
   "depo-takibi",
   "web-sitesi-paketi",
   "gorusme-ozeti",
@@ -846,7 +964,7 @@ export const MENU_ORDER = [
 
 export const getProduct = (slug: string): Product | undefined => PRODUCTS.find((p) => p.slug === slug);
 export const menuProducts = (): Product[] => MENU_ORDER.map((s) => getProduct(s)).filter((p): p is Product => !!p);
-export const HOME_PRODUCTS = ["urun-gorsel-studyosu", "kulup-takip", "meta-reklam-paneli", "depo-takibi"];
+export const HOME_PRODUCTS = ["urun-gorsel-studyosu", "ai-influencer", "kulup-takip", "meta-reklam-paneli", "depo-takibi"];
 
 /** /urunler ihtiyaca göre gezinme. */
 export const NEEDS: { label: string; slugs: string[] }[] = [
@@ -854,6 +972,7 @@ export const NEEDS: { label: string; slugs: string[] }[] = [
   { label: "Reklam verilerimi net okumak istiyorum", slugs: ["meta-reklam-paneli"] },
   { label: "Stoklarımı kontrol altına almak istiyorum", slugs: ["depo-takibi", "belge-okuma"] },
   { label: "Dijitalde güçlü görünmek istiyorum", slugs: ["web-sitesi-paketi", "google-haritalar-karnesi", "urun-gorsel-studyosu"] },
+  { label: "Sosyal medyada düzenli içerik paylaşmak istiyorum", slugs: ["ai-influencer", "urun-gorsel-studyosu", "meta-reklam-paneli"] },
   { label: "Tekrarlanan işleri otomatikleştirmek istiyorum", slugs: ["belge-okuma", "gorusme-ozeti", "musteri-asistani"] },
   { label: "Spor kulübümü tek yerden yönetmek istiyorum", slugs: ["kulup-takip"] },
 ];

@@ -1,7 +1,7 @@
 # Vitrin
 
 **Kasım 2026'dan itibaren ajans sitesi** ("Vitrinweb Kurumsal Ajans Sitesi Metinleri" belgesine göre).
-Veri: `src/data/products.ts` (9 ürün; `status` alanı — hazir/pilot/gelistiriliyor — yalnızca iç kullanım içindir,
+Veri: `src/data/products.ts` (11 ürün; AI Influencer dahil — sanal karakter her yerde "yapay zekâ ile oluşturuldu" diye açıkça sunulur, gerçek kişi gibi gösterilmez; `status` alanı — hazir/pilot/gelistiriliyor — yalnızca iç kullanım içindir,
 sahibinin isteğiyle sitede **hiçbir durum etiketi gösterilmez** ve tüm ürün çağrıları "Bilgi Alın"dır), `services.ts` (8
 tamamlayıcı hizmet, `/hizmetler/[slug]`), `sectors.ts` (6 sektör, `/sektorler/[slug]`), `cases.ts`
 (izinli uygulama örnekleri, `/uygulamalar/[slug]`; boşken hiçbir sayfa/bölüm görünmez — uydurma vaka

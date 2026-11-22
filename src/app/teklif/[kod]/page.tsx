@@ -61,6 +61,7 @@ export default async function Page({ params }: { params: Promise<{ kod: string }
           <div className="tk-total">
             <span>Toplam proje bedeli</span>
             <b>{t.toplam}</b>
+            {t.haricNotu && <small className="tk-excl">{t.haricNotu}</small>}
             <a className="btn btn-lg tk-pay" href="#odeme">
               Ödeme Planını Görün
             </a>
@@ -142,7 +143,10 @@ export default async function Page({ params }: { params: Promise<{ kod: string }
                 </li>
               ))}
             </ol>
-            <p className="tk-note">{t.odemeNotu}</p>
+            <p className="tk-note">
+              {t.odemeNotu}
+              {t.haricNotu && ` ${t.haricNotu}`}
+            </p>
             <div className="tk-paycta">
               <div>
                 <b>{t.odeme.aciklama}</b>

@@ -24,6 +24,8 @@ export interface Teklif {
   takvim: { hafta: string; is: string; d: string }[];
   odemeler: { ne: string; oran: string; tutar: string }[];
   odemeNotu: string;
+  /** Bedele dahil olmayan giderler; toplam bedelin ve ödeme planının altında da gösterilir. */
+  haricNotu?: string;
   kosullar: { t: string; d: string }[];
   onay: string;
   /** iyzico ödeme bağlantısı ve neyin ödemesi olduğu. */
@@ -89,6 +91,7 @@ export const TEKLIFLER: Teklif[] = [
       { ne: "Yayın onayında", oran: "%20", tutar: "19.000 TL" },
     ],
     odemeNotu: "KDV, her ödeme dilimine ayrıca eklenir.",
+    haricNotu: "Alan adı, barındırma (hosting), kurumsal e-posta, ücretli eklenti ve lisans gibi üçüncü taraf giderleri teklif bedeline dahil değildir.",
     kosullar: [
       {
         t: "Onay ve revizyon",
@@ -105,6 +108,10 @@ export const TEKLIFLER: Teklif[] = [
       {
         t: "Yıllık bakım",
         d: "Web sitesi için yıllık bakım hizmeti gereklidir. İlk yıllık bakım ödemesi proje tesliminden bir yıl sonra yapılır. Teklif tarihi itibarıyla yıllık bakım bedeli 5.000 TL'dir. Bedel, ödeme döneminde enflasyona göre güncellenebilir.",
+      },
+      {
+        t: "Bedele dahil olmayan giderler",
+        d: "Alan adı kaydı ve yenilemesi, barındırma (hosting), kurumsal e-posta, ücretli eklenti, tema, yazı tipi, görsel ve yazılım lisansları gibi üçüncü taraf hizmet bedelleri teklif bedeline dahil değildir; IES tarafından doğrudan ya da ayrıca faturalandırılarak karşılanır.",
       },
       {
         t: "Ek hizmetler",
